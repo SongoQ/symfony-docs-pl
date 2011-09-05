@@ -13,7 +13,7 @@ wymagań z linii komend:
 
     php app/check.php
 
-Poniżej znajduje się lista wymaganych oraz opcjonalnych wymagań które musi spełniać Twój system.
+Poniżej znajduje się lista koniecznych oraz opcjonalnych wymagań które musi spełniać Twój system.
 
 Wymagane
 --------
