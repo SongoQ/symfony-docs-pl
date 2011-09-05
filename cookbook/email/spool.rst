@@ -5,7 +5,7 @@ Jeśli używasz ``SwiftmailerBundle`` do wysyłania e-maili z aplikacji Symfony2
 Aby uniknąć problemów wydajnościowych w komunikacji pomiędzy ``Swiftmailer`` oraz transporterem e-mail, który może spowodować
 że użytkownik będzie musiał czekać na kolejną stronę zanim e-mail zostanie wysłany. Problem oczekiwania na stronę może zostać wyeliminowany 
 poprzez wybranie opcji "spool" (kolejkowania) e-maili zamiast natychmiastowego ich wysyłania. Oznacza to że ``Swiftmailer`` nie próbuje 
-wysłać e-maila  ale zamiast tego zapisuje je w np. pliku. Inny proces może tak zapisane e-maile odczytać z kolejki oraz je wysłać.
+wysłać e-maila, ale zamiast tego zapisuje je w np. pliku. Inny proces może tak zapisane e-maile odczytać z kolejki oraz je wysłać.
 Aktualnie w ``Swiftmailer`` dostępne jest tylko kolejkowanie do pliku.
 
 Aby korzystać z kolejkowania, użyj następującej konfiguracji:
