@@ -11,7 +11,7 @@ który wykorzystuje moc biblioteki `Swiftmailer`_.
 
 .. note::
 
-    Nie zapomnij o włączeniu bundla w swoim kernelu przed użyciem::
+    Przed użyciem nie zapomnij o włączeniu bundla w swoim kernelu::
 
         public function registerBundles()
         {
@@ -29,7 +29,7 @@ Konfiguracja
 ------------
 
 Przed użyciem Swiftmailer, należy pamiętać o jego konfiguracji.
-Jedynym obowiązkowym parametrem konfiguracyjnym jest ``transport``:
+Jedynym, obowiązkowym parametrem konfiguracyjnym jest ``transport``:
 
 .. configuration-block::
 
@@ -86,8 +86,8 @@ Dostępne są następujące atrybuty konfiguracyjne:
 * ``auth_mode``         (``plain``, ``login``, or ``cram-md5``)
 * ``spool``
 
-  * ``type`` (jak składować wiadomości, aktualnie dostępna jest tylko opcja ``file`` )
-  * ``path`` (gdzie składować wiadomości)
+  * ``type`` (jaki typ kolejki wiadomości, aktualnie dostępna jest tylko opcja ``file`` )
+  * ``path`` (gdzie przechowywać wiadomości)
 * ``delivery_address``  (adres e-mail gdzie będą wysyłane WSZYSTKIE wiadomości)
 * ``disable_delivery``  (ustaw na true jeśli chcesz wyłączyć wysyłanie e-maili)
 
@@ -95,7 +95,7 @@ Wysyłanie E-maili
 ---------------
 Biblioteka Swiftmailer działa w ten sposób że są tworzone, konfigurowane a następnie wysyłane obiekty ``Swift_Message``.
 "Mailer" jest odpowiedzialny za dostarczanie maili, dostępny jest on w usłudze ``mailer``.
-Ogólnie rzecz biorąc, wysyłanie e-maili jest bardzo proste::
+Wysyłanie e-maili jest bardzo proste::
 
     public function indexAction($name)
     {
