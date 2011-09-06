@@ -13,7 +13,7 @@ Wyłączenie wysyłania
 
 Możesz wyłączyć wysyłanie e-maili poprzez ustawienie opcji ``disable_delivery`` na ``true``.
 Jest to domyślna wartośc w środowisku ``test`` w Standardowej dystrybucji.
-Jeśli ustawisz tą opcję w pliku konfiguracyjnym ``test`` e-maile nie będą wysyłane podczas wywoływania testów,
+Jeśli ustawisz tę opcję w pliku konfiguracyjnym ``test`` e-maile nie będą wysyłane podczas wywoływania testów,
 ale będą wysyłane w środowisku ``prod`` oraz ``dev``:
 
 .. configuration-block::
