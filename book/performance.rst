@@ -4,7 +4,7 @@
 Wydajność
 =========
 
-Symfony2 jest szybkie, od razu po wyjęciu z pudełka. Oczywiście jeśli potrzebujesz
+Symfony2 jest szybkie, od razu po uruchomieniu. Oczywiście jeśli potrzebujesz
 jeszcze lepszej wydajności jest kilka sposobów na przyśpieszenie Symfony. W tym
 rozdziale, poznasz wiele, z najbardziej potężnych i najczęściej stosowanych sposobów
 na przyśpieszenie aplikacji opartych na Symfony.
@@ -29,7 +29,7 @@ Cache bajtowego kodu zwykle monitoruje czy źródło pliku się zmieniło. Zapew
 Jest to naprawdę wygodnę, ale w oczywisty sposób dodaje narzutu czasowego.
 
 Z tego powodu, niektóre cache bajt kodu oferują wyłączenie takiego sprawdzania.
-Oczywiste jest że gdy wyłączymy tą funkcjonalność, sami będziemy musieli dbać o to aby
+Oczywiste jest że gdy wyłączymy tę funkcjonalność, sami będziemy musieli dbać o to aby
 czyścić cache gdy źródło pliku się zmieni. W przeciwnym razie zmiany które zrobiłeś
 nie będą widoczne.
 
