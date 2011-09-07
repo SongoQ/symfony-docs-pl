@@ -1,8 +1,8 @@
 .. index::
    single: Routing; Scheme requirement
 
-Jak wymusić w routingu używania zawsze HTTPS
-============================================
+Jak zawsze wymusić w routingu używanie protokołu HTTPS
+======================================================
 
 Czasami chcesz zabezpieczyć niektóre routingi aby być pewnym że 
 zawsze będą dostępne tylko przez protokół HTTPS. Komponent Routing 
