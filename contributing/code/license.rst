@@ -6,10 +6,10 @@ Symfony2 jest wydane na licencji MIT.
 Zgodne z `Wikipedia`_:
 
     "Jest liberalną licencją, która ​​pozwala na wykorzystanie z własnym 
-     oprogramowaniem pod warunkiem, że licencja jest rozpowszechniana wraz
-     z tym oprogramowaniem. Licencja jest również zgodna z GPL, która pozwala 
-     na różne kombinacje ​​GPL i redystrybucje wraz z oprogramowaniem, które korzysta 
-     z MIT Licencji."
+    oprogramowaniem pod warunkiem, że licencja jest rozpowszechniana wraz
+    z tym oprogramowaniem. Licencja jest również zgodna z GPL, która pozwala 
+    na różne kombinacje ​​GPL i redystrybucje wraz z oprogramowaniem, które 
+    korzysta z MIT Licencji."
 
 Licencja
 -----------
@@ -35,5 +35,7 @@ SZKODY A TAKŻE ŻADNEJ INNEJ ODPOWIEDZIALNOŚCI CZY TO WYNIKAJĄCEJ Z UMOWY, DE
 JAKIEJKOLWIEK INNEJ PODSTAWY POWSTAŁEJ W ZWIĄZKU Z OPROGRAMOWANIEM LUB UŻYTKOWANIEM GO 
 LUB WPROWADZANIEM GO DO OBROTU.
 
+`Polskie tłumaczenie licencji MIT`_
+
 .. _Wikipedia: http://en.wikipedia.org/wiki/MIT_License
-.. _Polskie tłumaczenie licencji MIT: http://blaszyk-jarosinski.pl/?p=49
+.. _Polskie tłumaczenie licencji MIT http://blaszyk-jarosinski.pl/?p=49
