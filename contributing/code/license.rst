@@ -38,4 +38,4 @@ LUB WPROWADZANIEM GO DO OBROTU.
 `Polskie tłumaczenie licencji MIT`_
 
 .. _Wikipedia: http://en.wikipedia.org/wiki/MIT_License
-.. _Polskie tłumaczenie licencji MIT http://blaszyk-jarosinski.pl/?p=49
+.. _Polskie tłumaczenie licencji MIT: http://blaszyk-jarosinski.pl/?p=49
