@@ -16,9 +16,9 @@
 
 * **Formularze i walidatory**
 
-  * :doc:`Form Field Type Reference</reference/forms/types>`
-  * :doc:`Validation Constraints Reference </reference/constraints>`
-  * :doc:`Twig Template Function Reference</reference/forms/twig_reference>`
+  * :doc:`Typy formularza </reference/forms/types>`
+  * :doc:`Walidacja poprzez ograniczenia </reference/constraints>`
+  * :doc:`Funkcje formularza w Twig </reference/forms/twig_reference>`
 
 * **Pozostałe**
 
