@@ -195,8 +195,6 @@ w szablonie ``index``. Aby to zrobić, użyj tagu ``render``:
 Argumenty (``name`` oraz ``color``) zachowują się jakby były zmiennymi zapytania (request)
 (tak jakby ``fancyAction`` obsługiwał całe zapytanie) oraz są dostępne dla kontrolera::
 
-.. code-block:: php
-
     // src/Acme/DemoBundle/Controller/DemoController.php
 
     class DemoController extends Controller
