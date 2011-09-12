@@ -25,7 +25,7 @@ Konfiguracja
     * `field_name`
 
 charset
-.......
+~~~~~~~
 
 **type**: ``string`` **default**: ``UTF-8``
 
@@ -33,7 +33,7 @@ Zestaw znaków (kodowanie) który jest używany w całym frameworku.
 Wartość tą możemy wyciągnąć z parametru ``kernel.charset``.
 
 secret
-......
+~~~~~~
 
 **type**: ``string`` **required**
 
@@ -43,7 +43,7 @@ w każdym kontekście gdzie potrzebne jest użycie unikalnego ciągu znaków.
 Wartość tą możemy wyciągnąć z parametru ``kernel.secret``.
 
 ide
-...
+~~~
 
 **type**: ``string`` **default**: ``null``
 
@@ -72,7 +72,7 @@ w pliku PHP.ini. Jeśli opcja ta jest ustawiona, nie ma potrzeby definiowania op
 konfiguracji.
 
 test
-....
+~~~~
 
 **type**: ``Boolean``
 
@@ -82,11 +82,92 @@ aplikacji zostaną załadowane. Ta opcja powinna być włączana na poziomie śr
 zobacz :doc:`/book/testing`.
 
 form
-....
+~~~~
 
 csrf_protection
 ...............
 
+session
+~~~~~~~
+
+lifetime
+........
+
+**type**: ``integer`` **default**: ``86400``
+
+Wartość ta określa czas życia sesji - w sekundach.
+
+templating
+
+.. _ref-framework-assets-version:
+
+assets_version
+..............
+
+**type**: ``string``
+
+Ta opcja jest używana do *odświeżania* cache zasobów poprzez globalne dodanie
+parametru do zapytania przy renderowaniu ścieżek do zasobów (np. ``/images/logo.png?v2`).
+Ma to zastosowanie tylko do zasobów renderowanych przez funkcję Twig ``asset`` (lub
+równoważną w PHP) oraz zasobów renderowanych przez assetic.
+
+Załóżmy na przykład:
+
+.. configuration-block::
+
+    .. code-block:: html+jinja
+
+        <img src="{{ asset('images/logo.png') }}" alt="Symfony!" />
+
+    .. code-block:: php
+
+        <img src="<?php echo $view['assets']->getUrl('images/logo.png') ?>" alt="Symfony!" />
+
+Domyślnie, powyższy przykład wyrenderuje ścieżkę taką ścieżkę do Twojego obrazka ``/images/logo.png``.
+Teraz, aktywujmy opcję ``assets_version``:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/config.yml
+        framework:
+            # ...
+            templating: { engines: ['twig'], assets_version: v2 }
+
+    .. code-block:: xml
+
+        <!-- app/config/config.xml -->
+        <framework:templating assets-version="v2">
+            <framework:engine id="twig" />
+        </framework:templating>
+
+    .. code-block:: php
+
+        // app/config/config.php
+        $container->loadFromExtension('framework', array(
+            // ...
+            'templating'      => array(
+                'engines' => array('twig'),
+                'assets_version' => 'v2',
+            ),
+        ));
+
+Teraz, ten sam zasób zostanie wyrenderowany jako ``/images/logo.png?v2``
+Jeśli używasz tej funkcjonalności, **musisz** ręcznie inkrementować wartość
+``assets_version`` przed każdym wdrożeniem aby parametr zapytania do ścieżki
+się zmienił.
+
+Możesz także kontrolować jak ma wyglądać parametr zapytania poprzez opcję
+`assets_version_format`_.
+
+assets_version_format
+.....................
+
+Opcja ta odnosi się do opcji `assets_version`_ i kontroluje jak ma być
+skonstruowane zapytanie. Dla przykładu, jeśli ``assets_version_format``
+jest ustawione na ``%s?version=%s`` oraz ``assets_version`` jest ustawione
+na ``5``, wyrenderowany zasób będzie wyglądać tak ``/images/logo.png?version=5``.
 
 Pełna Domyślna Konfiguracja
 --------------------------
@@ -140,7 +221,7 @@ Pełna Domyślna Konfiguracja
                 default_locale:       en
                 storage_id:           session.storage.native
                 name:                 ~
-                lifetime:             ~
+                lifetime:             86400
                 path:                 ~
                 domain:               ~
                 secure:               ~
@@ -149,7 +230,7 @@ Pełna Domyślna Konfiguracja
             # konfiguracja szablonów
             templating:
                 assets_version:       ~
-                assets_version_format:  ~
+                assets_version_format:  "%s?%s"
                 assets_base_urls:
                     http:                 []
                     ssl:                  []
