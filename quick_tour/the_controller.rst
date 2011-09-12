@@ -2,7 +2,7 @@ Kontroler
 =========
 
 Wciąż z nami po pierwszych dwóch częściach?
-Zaczynasz się uzależniać os Symfony2! Bez zbędnych ceregieli, zobacz
+Zaczynasz się uzależniać od Symfony2! Bez zbędnych ceregieli, zobacz
 co kontrolery potrafią zrobić dla Ciebie.
 
 Formaty Używania
@@ -28,7 +28,7 @@ domyślnej wartości ``xml`` dla zmiennej ``_format``::
     }
 
 Dzięki wykorzystaniu formatu zapytania (zdefiniowanego przez wartość ``_format``),
-Symfony2 automatycznie zaznacza odpowiedni szablon, w tym przypadku ``hello.xml.twig``:
+Symfony2 automatycznie wybierze odpowiedni szablon, w tym przypadku ``hello.xml.twig``:
 
 .. code-block:: xml+php
 
@@ -37,10 +37,10 @@ Symfony2 automatycznie zaznacza odpowiedni szablon, w tym przypadku ``hello.xml.
         <name>{{ name }}</name>
     </hello>
 
-Wszystko w temacie. Dla standardowych formatów, Symfony2 będzie także
+Dla standardowych formatów, Symfony2 będzie także
 automatycznie dobierał najlepszy nagłówek ``Content-Type`` dla odpowiedzi
 (response). Jeśli chcesz mieć możliwość obsłużenia kilku formatów w jednej akcji,
-użyj rozgranicznika w wzorcu routingu::
+użyj zmiennej {_format} w wzorcu routingu::
 
     // src/Acme/DemoBundle/Controller/DemoController.php
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -58,7 +58,7 @@ użyj rozgranicznika w wzorcu routingu::
 Kontroler może być teraz wywoływany przez URL ``/demo/hello/Fabien.xml`` lub
 ``/demo/hello/Fabien.json``.
 
-Wpis ``requirements`` definiuje wyrażenie regularne do którego rozgraniczniki muszą pasować.
+Wpis ``requirements`` definiuje wyrażenie regularne do którego zmienna {_format} musi pasować.
 W tym przykładzie, jeśli spróbujesz dostać się do ``/demo/hello/Fabien.js``, dostaniesz
 w odpowiedzi błąd HTTP 404, ponieważ nie pasuje do wymaganej opcji ``_format``.
 
@@ -79,7 +79,7 @@ pod-zapytania::
 
     $response = $this->forward('AcmeDemoBundle:Hello:fancy', array('name' => $name, 'color' => 'green'));
 
-    // zrób coś z obiektem odpowiedzi lub też zwróć go bezpośrednio
+    // zrób coś z obiektem Response lub też zwróć go bezpośrednio
 
 Pobieranie informacji z Zapytania (Request)
 -------------------------------------------
@@ -109,10 +109,10 @@ zmienną ``app.request``:
 Trzymanie Danych w Sesji
 ------------------------
 
-Nawet jeśli HTTP jest protokołem bezstanowym, Symfony2 zapewnia miły
-obiekt sesji reprezentujący klienta (może to być prawdziwa osoba używająca
-przeglądarki, bot, lub też web service). Pomiędzy zapytaniami, Symfony2
-przechowuje atrybuty w ciasteczku używając natywnej obsługi sesji w PHP.
+Nawet jeśli HTTP jest protokołem bezstanowym, Symfony2 zapewnia obiekt sesji 
+reprezentujący klienta (może to być prawdziwa osoba używająca przeglądarki, bot, 
+lub też web service). Pomiędzy zapytaniami, Symfony2 przechowuje atrybuty 
+w ciasteczku używając natywnej obsługi sesji w PHP.
 
 W prosty sposób możemy zapisywać jak i odczytywać dane z sesji w kontrolerze::
 
@@ -127,7 +127,7 @@ W prosty sposób możemy zapisywać jak i odczytywać dane z sesji w kontrolerze
     // ustawienie lokalizacji użytkownika
     $session->setLocale('fr');
 
-Możesz także przechowywać małe wiadomości które będą dostępne tylko w najbliższym
+Możesz także przechowywać małe wiadomości które będą dostępne tylko w kolejnym
 zapytaniu::
 
     // zapis wiadomości dla następnego zapytania (w kontrolerze)
@@ -222,7 +222,7 @@ dostęp do tego zasobu.
 
     Warstwa bezpieczeństwa Symfony2 jest bardzo elastyczna i posiada wiele
     różnych dostawców użytkownika (jak jeden dla Doctrine ORM) oraz dostawców
-    uwierzytelniania (podstaowe HTTP, HTTP digest, czy certyfikaty X.509).
+    uwierzytelniania (podstawowe HTTP, HTTP digest, czy certyfikaty X.509).
     Przeczytaj rozdział ":doc:`/book/security`" aby dowiedzieć się więcej jak
     ich używać oraz jak je skonfigurować.
 
