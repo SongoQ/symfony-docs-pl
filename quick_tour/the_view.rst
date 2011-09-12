@@ -226,7 +226,7 @@ URLe bazując na konfiguracji routingu. Tym sposobem, każdy z Twoich linków mo
 
 Funkcja ``path`` bierze nazwę routingu oraz tablicę parametrów jako argumetny.
 Nazwa routingu jest głównym kluczem pod którym zapisana jest ścieżka routingu
-a parametry są wartościami które zamieniają zmienne w wzorcu routingu:
+a parametry są wartościami które zamieniają zmienne w wzorcu routingu::
 
     // src/Acme/DemoBundle/Controller/DemoController.php
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
