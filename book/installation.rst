@@ -1,7 +1,7 @@
 .. index::
    single: Installation
 
-Instalacja oraz Konfiguracja Symfony
+Instalacja oraz konfiguracja Symfony
 ====================================
 
 Celem tego rozdziału jest uruchomienie aplikacji opartej na Symfony.
