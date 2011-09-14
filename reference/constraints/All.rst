@@ -2,7 +2,7 @@ All
 ===
 
 
-"Ograniczenie" (reguła walidacji) to ma zastosowane do tablic (lub obiektów typu "Traversable"), pozwala
+"Ograniczenie" (reguła walidacji) ma zastosowanie do tablic (lub obiektów typu "Traversable"), która pozwala
 na przypisanie kolekcji "ograniczeń" dla każdego elementu tablicy.
 
 +----------------+------------------------------------------------------------------------+
@@ -18,8 +18,7 @@ na przypisanie kolekcji "ograniczeń" dla każdego elementu tablicy.
 Podstawowe użycie
 -----------------
 
-Przypuśćmy że chcesz zwalidować każdy element w tablicy napisów.
-Możesz to uczynić poprzez następującą konfiguracje:
+Przypuśćmy że chcesz zwalidować każdy element w tablicy ciągu znaków co możesz uczynić poprzez następującą konfiguracje:
 
 .. configuration-block::
 
@@ -62,6 +61,6 @@ constraints
 
 **typ**: ``array`` [:ref:`default option<validation-default-option>`]
 
-Jest to opcja wymagana która powinna być tablicą "ograniczeń" które będą zastosowane 
-dla każdego elementu tablicy dla której zdefiniujesz to "ograniczenie". 
+Jest to opcja wymagana, która powinna być tablicą "ograniczeń", które będą zastosowane 
+dla każdego elementu tablicy dla której zdefiniujesz to "ograniczenie".
 
