@@ -1,12 +1,12 @@
 Zarys całości
 ===============
 
-Zacznij korzystać Symfony2 w 10 minut! Ten rozdział poprowadzi Cię przez kilka
+Zacznij korzystać z Symfony2 w 10 minut! Ten rozdział poprowadzi Cię przez kilka
 z najważniejszych koncepcji Symfony2 i wyjaśni, jak można rozpocząć
 szybko pracę, pokazując prosty przykład projektu w działaniu.
 
 Jeśli kiedykolwiek używałeś frameworka webowego to z Symfony2 powinieneś czuć się jak w domu.
-Jeśli nie, to zapraszamy do poznania zupełnie nowego sposobu tworzenia plikacji internetowych.
+Jeśli nie, to zapraszamy do poznania zupełnie nowego sposobu tworzenia aplikacji internetowych.
 
 .. tip::
 
@@ -88,7 +88,7 @@ Jednym z głównych celów frameworka jest zapewnienie `Separacji zagadnień`_.
 Dzięki temu Twoja organizacja kodu pozwala aplikacji łatwo się rozrastać
 w czasie, unikając mieszania wywoływań zapytań bazy danych, HTML i logiki 
 biznesowej w tym samym skrypcie. Aby osiągnąć ten cel z Symfony, będziesz na początku
-musiał się nauczyć kilku podstawowych pojęć i terminów.
+musiał nauczyć się kilku podstawowych pojęć i terminów.
 
 .. tip::
 
@@ -97,7 +97,7 @@ musiał się nauczyć kilku podstawowych pojęć i terminów.
 
 Standardowa dystrybucja wyposażona jest w przykładowy kod, który można użyć, aby dowiedzieć się 
 więcej o głównych koncepcjach Symfony2. Przejdź do następującego adresu URL, zostaniesz powitany
-przez Symfony2 (zamiast *Fabien* użyj swoje imię):
+przez Symfony2 (zamiast *Fabien* wpisz swoje imię):
 
 .. code-block:: text
 
@@ -141,9 +141,9 @@ W Standard Edition, trasy do stron "demo" są umieszczane w tym pliku:
 
     # ...
 
-Pierwsze trzy linie (po komentarz) określają kod, który jest wykonywany
+Pierwsze trzy linie (po komentarzu) określają kod, który jest wykonywany
 gdy użytkownik zażąda zasobu "``/``" (tj. strony powitalnej, którą widziałeś
-wcześniej). Zapytanie wywoła kontroler ``AcmeDemoBundle:Witamy:indeks``. 
+wcześniej). Zapytanie wywoła kontroler ``AcmeDemoBundle:Welcome:index``. 
 W kolejnym rozdziale dowiesz się dokładnie co to oznacza.
 
 .. tip::
@@ -193,3 +193,26 @@ konfiguracji routingu: ``AcmeDemoBundle:Welcome:index``. Ten ciąg znaków jest
             return $this->render('AcmeDemoBundle:Welcome:index.html.twig');
         }
     }
+
+.. tip::
+
+    Można używać pełnej nazwy klasy i metody - 
+    ``Acme\DemoBundle\Controller\WelcomeController::indexAction`` dla wartości ``_controller``
+    Jeśli jendnak chcesz wykorzystywać proste konwencje, używaj nazwy logicznej,
+    która jest krótsza i pozwala na większą elastyczność.
+
+Końcowe myśli
+--------------
+
+Gratulacje! Dostałeś pierwszy kąsek kodu Symfony2. To nie było takie
+trudne, prawda? Jest jeszcze dużo więcej do odkrycia, ale już teraz możesz zobaczyć, jak
+Symfony2 jest proste i szybkie w implementacji stron internetowych. Jeśli
+chcesz dowiedzieć się więcej o Symfony2, zanurz się w następnej sekcji:
+":doc:`The View<the_view>`".
+
+.. _Symfony2 Standard Edition:      http://symfony.com/download
+.. _Symfony w 5 minut:              http://symfony.com/symfony-in-five-minutes
+.. _Separacja zagadnień:            http://en.wikipedia.org/wiki/Separation_of_concerns
+.. _YAML:                           http://www.yaml.org/
+.. _Adnotacje w kontrolerach:       http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html#annotations-for-controllers
+.. _Twig:                           http://www.twig-project.org/
