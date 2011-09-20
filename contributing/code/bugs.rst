@@ -1,7 +1,7 @@
 Raportowanie Błędów
 ===================
 
-Gdy znajdziesz błąd w Symfony2, prosimy zgłoś go. Pomaga nam to w tworzeniu
+Gdy znajdziesz błąd w Symfony2, prosimy o zgłoszenie go. Pomaga nam to w tworzeniu
 coraz to lepszego Symfony2.
 
 .. caution::
