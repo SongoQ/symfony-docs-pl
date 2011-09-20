@@ -19,7 +19,7 @@ Aby zacząć, będziesz musiał pobrać Symfony oraz zainicjować lokalne repozy
 1. Pobierz wersję `Symfony2 Standard Edition`_ bez dodatków ("without vendors").
 
 2. Rozpakuj dystrybucję. Po rozpakowaniu zobaczysz folder o nazwie Symfony z 
-   nową strukturą projektu, plikami konfiguracyjnymi, etc. Możesz dowolnie zmienić
+   nową strukturą projektu, plikami konfiguracyjnymi, itd. Możesz dowolnie zmienić
    nazwę tego katalogu.
 
 3. Utwórz nowy plik ``.gitignore`` w głównym katalogu Twojego nowego projektu (tam gdzie
