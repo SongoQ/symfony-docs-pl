@@ -104,6 +104,6 @@
   * :doc:`/cookbook/request/mime_type`
   * :doc:`/cookbook/profiler/data_collector`
 
-* **Symfony2 for symfony1 Users**
+* **Symfony2 dla Użytkowników symfony1**
 
   * :doc:`/cookbook/symfony1`
