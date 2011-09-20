@@ -22,18 +22,18 @@ Słownik
    Bundle
         *Bundle* (Bundle) jest katalogiem zawierającym zbiór plików (PHP, kaskadowych arkuszy
         stylów, JavaScripts, obrazków, ...) który *implementuje* pojedyńczą funkcjonalność
-        (np. blog, forum, etc.). W Symfony2 (*prawie*) wszystko żyje w środku bundla.
+        (np. blog, forum, etc.). W Symfony2 (*prawie*) wszystko znajduje się w środku bundla.
         (zobacz :ref:`page-creation-bundles`)
 
    Front Kontroler
-        *Front Kontroler* (Front Controller) jest małym plikiem PHP który żyje w głównym katalogu web
+        *Front Kontroler* (Front Controller) jest małym plikiem PHP który znajduje się w głównym katalogu web
         Twojego projektu. Zazwyczaj *wszystkie* zapytania są obsługiwane przez
         wykonanie tego samego front kontrolera, którego zadaniem jest zainicjowanie
         aplikacji Symfony.
 
    Kontroler
         *Kontroler* (Controller) jest funkcją PHP która posiada całą niezbędną logikę aby zwrócić
-        obiekt ``Response`` który reprezentuje konkretną stronę. Zazwyczaj
+        obiekt ``Response``, który reprezentuje konkretną stronę. Zazwyczaj
         routing jest zmapowany z kontrolerem, który używa informacji z zapytania
         do przetwarzania informacji, wykonywania akcji, a ostatecznie do zbudowania
         i zwrócenia obiektu ``Response``.
