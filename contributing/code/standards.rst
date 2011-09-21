@@ -134,4 +134,4 @@ Licencja
 --------
 
 * Symfony jest wydany na licencji MIT, informacja o licencji musi być obecna
-  na górzekażdego pliku PHP, przed przestrzenią nazw.
+  na górze każdego pliku PHP, przed przestrzenią nazw.
