@@ -2,11 +2,11 @@ Standardy Kodowania
 ===================
 
 Gdy wysyłasz kod do Symfony2, musisz stosować się do jego standardów kodowania.
-Aby skrócić tą opowieść, mogę powiedzieć Ci złotą zasadę: **Naśladuj istniejący
+Aby skrócić tę opowieść, mogę powiedzieć Ci złotą zasadę: **Naśladuj istniejący
 kod Symfony2**. Większość Bundli open-source oraz bibliotek używanych przez Symfony2
 także stosuje się do tych samych wytycznych, Ty także powinieneś.
 
-Pamiętaj że główną zaletą standardów jest to że każdy kawałek kodu wygląda oraz odbiera
+Pamiętaj że główną zaletą standardów jest to, że każdy kawałek kodu wygląda oraz odbiera
 się znajomo, i tu nie chodzi o to, czy to, czy tamto, jest bardziej czytelne.
 
 Jako że zdjęcie - lub trochę kodu - jest wstanie zastąpić tysiące słów, poniżej
