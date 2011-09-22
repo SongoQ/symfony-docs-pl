@@ -9,25 +9,25 @@ Może być wyrenderowany jako pole ``select``, przyciski radio, lub checkboxy.
 
 Aby użyć tego pola, musisz zdefiniować *jedno* z opcji ``choice_list`` lub ``choices``.
 
-+------------------+-----------------------------------------------------------------------------+
-| Rednerowany jako | może być generowany na kilka sposobów (zobacz poniżej)                      |
-+------------------+-----------------------------------------------------------------------------+
-| Opcje            | - `choices`_                                                                |
-|                  | - `choice_list`_                                                            |
-|                  | - `multiple`_                                                               |
-|                  | - `expanded`_                                                               |
-|                  | - `preferred_choices`_                                                      |
-|                  | - `empty_value`_                                                            |
-+------------------+-----------------------------------------------------------------------------+
-| Odziedziczone    | - `required`_                                                               |
-| opcje            | - `label`_                                                                  |
-|                  | - `read_only`_                                                              |
-|                  | - `error_bubbling`_                                                         |
-+------------------+-----------------------------------------------------------------------------+
-| Rodzic           | :doc:`form</reference/forms/types/form>` (if expanded), ``field`` otherwise |
-+------------------+-----------------------------------------------------------------------------+
-| Klasa            | :class:`Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType`        |
-+------------------+-----------------------------------------------------------------------------+
++------------------+----------------------------------------------------------------------------------------------+
+| Rednerowany jako | może być generowany na kilka sposobów (zobacz poniżej)                                       |
++------------------+----------------------------------------------------------------------------------------------+
+| Opcje            | - `choices`_                                                                                 |
+|                  | - `choice_list`_                                                                             |
+|                  | - `multiple`_                                                                                |
+|                  | - `expanded`_                                                                                |
+|                  | - `preferred_choices`_                                                                       |
+|                  | - `empty_value`_                                                                             |
++------------------+----------------------------------------------------------------------------------------------+
+| Odziedziczone    | - `required`_                                                                                |
+| opcje            | - `label`_                                                                                   |
+|                  | - `read_only`_                                                                               |
+|                  | - `error_bubbling`_                                                                          |
++------------------+----------------------------------------------------------------------------------------------+
+| Rodzic           | :doc:`form</reference/forms/types/form>` (jeśli rozszerzono), ``field`` w przeciwnym wypadku |
++------------------+----------------------------------------------------------------------------------------------+
+| Klasa            | :class:`Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType`                         |
++------------------+----------------------------------------------------------------------------------------------+
 
 Przykład Użycia
 ---------------

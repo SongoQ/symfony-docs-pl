@@ -1,7 +1,7 @@
 .. index::
    single: Forms; Fields; birthday
 
-birthday (urodziny) Typ Pola
+birthday Typ Pola
 ============================
 Pole :doc:`date</reference/forms/types/date>` które specjalizuje się w
 obsługiwaniu daty urodzin.
