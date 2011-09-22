@@ -34,7 +34,7 @@ przyjmuje wartość 120 lat wstecz od aktualnego roku.
 | Klasa                  | :class:`Symfony\\Component\\Form\\Extension\\Core\\Type\\BirthdayType`                                                 |
 +------------------------+------------------------------------------------------------------------------------------------------------------------+
 
-Opcje Pól
+Opcje Pola
 ---------
 
 years
@@ -48,7 +48,7 @@ gdy opcja ``widget`` jest ustawiona na wartość ``choice``.
 Odziedziczone opcje
 -----------------
 
-Opcje te odziedziczone są po typie :doc:`date</reference/forms/types/date>`:
+Opcje te są odziedziczone z typu :doc:`date</reference/forms/types/date>`:
 
 .. include:: /reference/forms/types/options/date_widget.rst.inc
     
