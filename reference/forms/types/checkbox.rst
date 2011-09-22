@@ -48,7 +48,7 @@ na wartość ustawioną na Twoim obiekcie.
 Odziedziczone opcje
 -------------------
 
-Opcje te są odziedziczone po typie :doc:`field</reference/forms/types/field>`:
+Opcje te są odziedziczone z typu :doc:`field</reference/forms/types/field>`:
 
 .. include:: /reference/forms/types/options/required.rst.inc
 
