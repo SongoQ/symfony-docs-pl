@@ -1,7 +1,7 @@
 .. index::
    single: Forms; Fields; country
 
-country (kraj) Typ Pola
+country Typ Pola
 =======================
 
 Typ ``country`` jest podzbiorem ``ChoiceType`` który wyświetla kraje świata.
