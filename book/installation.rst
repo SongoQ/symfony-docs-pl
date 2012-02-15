@@ -12,8 +12,8 @@ natychmiast.
 .. tip::
 
     Jeśli szukasz instrukcji jak najlepiej utworzyć nowy projekt
-    i przechowywać go poprzez system kontrolii wersji, zobacz
-    `Używanie Systemu Kontrolii Wersji`_.
+    i przechowywać go poprzez system kontroli wersji, zobacz
+    `Używanie Systemu Kontroli Wersji`_.
 
 Pobieranie Dystrybucji Symfony2
 -------------------------------
@@ -185,11 +185,11 @@ Jeśli dopiero rozpoczynasz pracę z Symfony, dołącz do nas w ":doc:`page_crea
 gdzie dowiesz się jak tworzyć strony, zmieniać konfigurację, i robić wszystkie inne
 rzeczy potrzebne w Twojej aplikacji.
 
-Używanie Systemu Kontrolii Wersji
----------------------------------
+Używanie Systemu Kontroli Wersji
+--------------------------------
 
-Jeśli używasz systemu kontrolii wersji jak ``Git`` lub ``Subversion``,
-możesz skonfigurować swój system kontrolii wersji oraz rozpocząć wysyłanie
+Jeśli używasz systemu kontroli wersji jak ``Git`` lub ``Subversion``,
+możesz skonfigurować swój system kontroli wersji oraz rozpocząć wysyłanie
 tam swojego projektu. Symfony Standard edition *jest* startowym punktem
 dla Twojego projektu.
 
@@ -200,7 +200,7 @@ Ignorowanie Katalogu ``vendor/``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Jeśli pobrałeś archiwum *without vendors*, możesz na spokojnie zignorować
-zawartość katalogu ``vendor/`` i nie wysyłać go do systemu kontrolii wersji.
+zawartość katalogu ``vendor/`` i nie wysyłać go do systemu kontroli wersji.
 Z ``Git`` możesz to zrobić poprzez stworzenie oraz dodanie do pliku ``.gitignore``
 następującej linii:
 
@@ -208,7 +208,7 @@ następującej linii:
 
     vendor/
 
-Teraz, katalog vendor nie będzie wysyłany do systemu kontrolii wersji. Tak jest dobrze
+Teraz, katalog vendor nie będzie wysyłany do systemu kontroli wersji. Tak jest dobrze
 (nawet bardzo dobrze!) ponieważ gdy ktoś sklonuje lub też pobierze projekt,
 on/ona może w prosty sposób odpalić skrypt ``php bin/vendors install`` który
 zainstaluje wszystkie potrzebne biblioteki zewnętrzne.

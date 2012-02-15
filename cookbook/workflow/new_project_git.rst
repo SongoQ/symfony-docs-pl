@@ -3,13 +3,13 @@ Jak utworzyć oraz przechowywać Projekt oparty na Symfony2 w git
 
 .. tip::
 
-    Pomimo tego że wpis ten jest o systemie kontrolii wersji git, takie same
+    Pomimo tego że wpis ten jest o systemie kontroli wersji git, takie same
     ogólne zasady można zastosować podczas przechowywania projektu w Subversion.
 
 Jeśli przeczytałeś :doc:`/book/page_creation` oraz zapoznałeś się z używaniem Symfony,
 bez wątpienia jesteś gotowy do rozpoczęcia swojego projektu. W tym artykule, dowiesz
 się jak najlepiej rozpocząć nowy projekt który będzie przechowywany przy użyciu
-systemu kontrolii wersji `git`_.
+systemu kontroli wersji `git`_.
 
 Wstępna Konfiguracja Projektu
 -----------------------------
