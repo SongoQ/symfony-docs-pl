@@ -6,22 +6,22 @@ Tworzenie stron w Symfony2
 
 Tworzenie nowej strony w Symfony2 to prosty, dwuetapowy proces:
 
-  * *Utwórz trasê (ang. route)*: Trasa definiuje URL (np. ``/o-nas``) do Twojej strony
-    oraz okreœla kontroler (który jest funkcj¹ PHP) który Symfony2 powinno wykonaæ,
-    kiedy URL przychodz¹cego ¿¹dania pasuje do wzorca trasy.
+  * *UtwÃ³rz trasÄ™ (ang. route)*: Trasa definiuje URL (np. ``/o-nas``) do Twojej strony
+    oraz okreÅ›la kontroler (ktÃ³ry jest funkcjÄ… PHP) ktÃ³ry Symfony2 powinno wykonaÄ‡,
+    kiedy URL przychodzÄ…cego Å¼Ä…dania pasuje do wzorca trasy.
 
-  * *Utwórz kontroler*: Kontroler jest funkcj¹ PHP, która pobiera przychodz¹ce ¿¹danie
-    i transformuje je w obiekt ``Odpowiedzi`` Symfony2, który jest zwracany u¿ytkownikowi.
+  * *UtwÃ³rz kontroler*: Kontroler jest funkcjÄ… PHP, ktÃ³ra pobiera przychodzÄ…ce Å¼Ä…danie
+    i transformuje je w obiekt ``Odpowiedzi`` Symfony2, ktÃ³ry jest zwracany uÅ¼ytkownikowi.
 
 
-To proste podejœcie jest piêkne, gdy¿ pasuje do sposobu funkcjonowania Sieci.
-Ka¿da interakcja w Sieci jest inicjowana przez ¿¹danie HTTP. Zadaniem Twojej aplikacji jest
-po prostu zinterpretowaæ ¿¹danie i zwróciæ w³aœciw¹ odpowiedŸ HTTP.
+To proste podejÅ›cie jest piÄ™kne, gdyÅ¼ pasuje do sposobu funkcjonowania Sieci.
+KaÅ¼da interakcja w Sieci jest inicjowana przez Å¼Ä…danie HTTP. Zadaniem Twojej aplikacji jest
+po prostu zinterpretowaÄ‡ Å¼Ä…danie i zwrÃ³ciÄ‡ wÅ‚aÅ›ciwÄ… odpowiedÅº HTTP.
 
-Symfony2 stosuje t¹ filozofiê i dostarcza Ci narzêdzia oraz konwencje, które pomog¹ Ci utrzymaæ
-swoj¹ aplikacjê zorganizowan¹ wraz ze wzrostem liczby u¿ytkowników i z³o¿onoœci.
+Symfony2 stosuje tÄ… filozofiÄ™ i dostarcza Ci narzÄ™dzia oraz konwencje, ktÃ³re pomogÄ… Ci utrzymaÄ‡
+swojÄ… aplikacjÄ™ zorganizowanÄ… wraz ze wzrostem liczby uÅ¼ytkownikÃ³w i zÅ‚oÅ¼onoÅ›ci.
 
-Brzmi wystarczaj¹co prosto? Do dzie³a!
+Brzmi wystarczajÄ…co prosto? Do dzieÅ‚a!
 
 .. index::
    single: Page creation; Example
@@ -29,44 +29,44 @@ Brzmi wystarczaj¹co prosto? Do dzie³a!
 Strona "Witaj Symfony!"
 -----------------------
 
-Zacznijmy od klasycznej aplikacji "Witaj Œwiecie!". Kiedy skoñczysz, u¿ytkownik bêdzie
-mia³ mo¿liwoœæ ujrzeæ osobiste pozdrowienie (np. "Witaj Symfony") wchodz¹c w poni¿szy URL:
+Zacznijmy od klasycznej aplikacji "Witaj Åšwiecie!". Kiedy skoÅ„czysz, uÅ¼ytkownik bÄ™dzie
+miaÅ‚ moÅ¼liwoÅ›Ä‡ ujrzeÄ‡ osobiste pozdrowienie (np. "Witaj Symfony") wchodzÄ…c w poniÅ¼szy URL:
 
 .. code-block:: text
 
     http://localhost/app_dev.php/hello/Symfony
 
-W rzeczywistoœci bêdziesz móg³ zast¹piæ *Symfony* innym imieniem, które ma byæ u¿yte w pozdrowieniu.
-Aby utworzyæ stronê, wykonaj prosty, dwuetapowy proces.
+W rzeczywistoÅ›ci bÄ™dziesz mÃ³gÅ‚ zastÄ…piÄ‡ *Symfony* innym imieniem, ktÃ³re ma byÄ‡ uÅ¼yte w pozdrowieniu.
+Aby utworzyÄ‡ stronÄ™, wykonaj prosty, dwuetapowy proces.
 
 .. note::
 
-    Ten tutorial zak³ada, ¿e ju¿ pobra³eœ Symfony2 i skonfigurowa³eœ swój serwer. Powy¿szy URL przyjmuje,
-    ¿e ``localhost`` wskazuje na katalog ``web`` Twojego nowego projektu Symfony2.
-    Po wiêcej informacji na temat tego procesu zobacz: :doc:`Instalacja Symfony2</book/installation>`.
+    Ten tutorial zakÅ‚ada, Å¼e juÅ¼ pobraÅ‚eÅ› Symfony2 i skonfigurowaÅ‚eÅ› swÃ³j serwer. PowyÅ¼szy URL przyjmuje,
+    Å¼e ``localhost`` wskazuje na katalog ``web`` Twojego nowego projektu Symfony2.
+    Po wiÄ™cej informacji na temat tego procesu zobacz: :doc:`Instalacja Symfony2</book/installation>`.
 
-Zanim zaczniesz: Utwórz Bundle
+Zanim zaczniesz: UtwÃ³rz Bundle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Zanim zaczniesz, musisz utworzyæ *bundle*. W Symfony2 :term:`bundle`
-jest jak wtyczka, tyle, ¿e ca³y kod Twojej aplikacji bêdzie znajdowa³
-siê wewn¹trz bundle.
+Zanim zaczniesz, musisz utworzyÄ‡ *bundle*. W Symfony2 :term:`bundle`
+jest jak wtyczka, tyle, Å¼e caÅ‚y kod Twojej aplikacji bÄ™dzie znajdowaÅ‚
+siÄ™ wewnÄ…trz bundle.
 
-Bundle to nic innego jak katalog, który przechowuje wszystko zwi¹zane
-z dan¹ funkcj¹, w³¹czaj¹c w to klasy PHP, konfiguracjê, a nawet arkusze stylów
+Bundle to nic innego jak katalog, ktÃ³ry przechowuje wszystko zwiÄ…zane
+z danÄ… funkcjÄ…, wÅ‚Ä…czajÄ…c w to klasy PHP, konfiguracjÄ™, a nawet arkusze stylÃ³w
 czy pliki Javascript (zobacz :ref:`page-creation-bundles`).
 
-Aby utworzyæ bundle o nazwie ``AcmeHelloBundle`` (testowy bundle, który
-zbudujesz w tym rozdziale), wykonaj poni¿sze polecenie i postêpuj ze wskazówkami
-na ekranie (zastosuj wszystkie domyœlne opcje):
+Aby utworzyÄ‡ bundle o nazwie ``AcmeHelloBundle`` (testowy bundle, ktÃ³ry
+zbudujesz w tym rozdziale), wykonaj poniÅ¼sze polecenie i postÄ™puj ze wskazÃ³wkami
+na ekranie (zastosuj wszystkie domyÅ›lne opcje):
 
 .. code-block:: bash
 
     php app/console generate:bundle --namespace=Acme/HelloBundle --format=yml
 
 Za kulisami tworzony jest katalog dla bundle ``src/Acme/HelloBundle``.
-Ponadto do ``app/AppKernel.php`` automatycznie dodana jest linia, dziêki której bundle
-jest rejestrowany w j¹drze::
+Ponadto do ``app/AppKernel.php`` automatycznie dodana jest linia, dziÄ™ki ktÃ³rej bundle
+jest rejestrowany w jÄ…drze::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -80,18 +80,18 @@ jest rejestrowany w j¹drze::
         return $bundles;
     }
 
-W³aœnie skonfigurowa³eœ swój bundle, teraz mo¿esz zacz¹æ budowaæ swoj¹ aplikacjê
-wewn¹trz bundle.
+WÅ‚aÅ›nie skonfigurowaÅ‚eÅ› swÃ³j bundle, teraz moÅ¼esz zaczÄ…Ä‡ budowaÄ‡ swojÄ… aplikacjÄ™
+wewnÄ…trz bundle.
 
-Krok 1: Utwórz trasê
+Krok 1: UtwÃ³rz trasÄ™
 ~~~~~~~~~~~~~~~~~~~~
 
-Domyœlnie, plik konfiguracyjny routingu w aplikacji Symfony2 znajduje siê w katalogu
-``app/config/routing.yml``. Podobnie jak w ca³ej konfiguracji Symfony2, mo¿esz równie¿
-wybraæ XML lub PHP "out of the box" do konfiguracji tras.
+DomyÅ›lnie, plik konfiguracyjny routingu w aplikacji Symfony2 znajduje siÄ™ w katalogu
+``app/config/routing.yml``. Podobnie jak w caÅ‚ej konfiguracji Symfony2, moÅ¼esz rÃ³wnieÅ¼
+wybraÄ‡ XML lub PHP "out of the box" do konfiguracji tras.
 
-Jeœli spojrzysz na g³ówny plik routingu, zobaczysz, ¿e Symfony ju¿ doda³o wpis, kiedy
-generowa³eœ ``AcmeHelloBundle``:
+JeÅ›li spojrzysz na gÅ‚Ã³wny plik routingu, zobaczysz, Å¼e Symfony juÅ¼ dodaÅ‚o wpis, kiedy
+generowaÅ‚eÅ› ``AcmeHelloBundle``:
 
 .. configuration-block::
 
@@ -128,13 +128,13 @@ generowa³eœ ``AcmeHelloBundle``:
 
         return $collection;
 
-Ten wpis jest bardzo prosty: mówi on Symfony, aby wczytywa³ konfiguracjê routingu
-z pliku ``Resources/config/routing.yml``, który ¿yje wewn¹trz ``AcmeHelloBundle``.
-Oznacza to, ¿e mo¿esz umieœciæ konfiguracjê routingu bezpoœrednio w ``app/config/routing.yml``
-lub zorganizowaæ swoje trasy po ca³ej swojej aplikacji i importowaæ je tutaj.
+Ten wpis jest bardzo prosty: mÃ³wi on Symfony, aby wczytywaÅ‚ konfiguracjÄ™ routingu
+z pliku ``Resources/config/routing.yml``, ktÃ³ry Å¼yje wewnÄ…trz ``AcmeHelloBundle``.
+Oznacza to, Å¼e moÅ¼esz umieÅ›ciÄ‡ konfiguracjÄ™ routingu bezpoÅ›rednio w ``app/config/routing.yml``
+lub zorganizowaÄ‡ swoje trasy po caÅ‚ej swojej aplikacji i importowaÄ‡ je tutaj.
 
-Teraz, kiedy plik ``routing.yml`` bundle'a jest importowany dodaj now¹ trasê, która
-zdefiniuje URL strony któr¹ chcesz utworzyæ:
+Teraz, kiedy plik ``routing.yml`` bundle'a jest importowany dodaj nowÄ… trasÄ™, ktÃ³ra
+zdefiniuje URL strony ktÃ³rÄ… chcesz utworzyÄ‡:
 
 .. configuration-block::
 
