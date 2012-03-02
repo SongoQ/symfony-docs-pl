@@ -7,11 +7,12 @@ Tworzenie stron w Symfony2
 Tworzenie nowej strony w Symfony2 to prosty, dwuetapowy proces:
 
   * *Utwórz trasę (ang. route)*: Trasa definiuje URL (np. ``/o-nas``) do Twojej strony
-    oraz określa kontroler (który jest funkcją PHP) który Symfony2 powinno wykonać,
+    oraz określa kontroler (który jest funkcją PHP), który Symfony2 powinno wykonać,
     kiedy URL przychodzącego żądania pasuje do wzorca trasy.
 
   * *Utwórz kontroler*: Kontroler jest funkcją PHP, która pobiera przychodzące żądanie
-    i transformuje je w obiekt ``Odpowiedzi`` Symfony2, który jest zwracany użytkownikowi.
+    i transformuje je w obiekt ``Odpowiedzi`` (ang. ``Response``) Symfony2, który jest zwracany
+    użytkownikowi.
 
 
 To proste podejście jest piękne, gdyż pasuje do sposobu funkcjonowania Sieci.
@@ -46,7 +47,7 @@ Aby utworzyć stronę, wykonaj prosty, dwuetapowy proces.
     Po więcej informacji na temat tego procesu zobacz: :doc:`Instalacja Symfony2</book/installation>`.
 
 Zanim zaczniesz: Utwórz Bundle
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Zanim zaczniesz, musisz utworzyć *bundle*. W Symfony2 :term:`bundle`
 jest jak wtyczka, tyle, że cały kod Twojej aplikacji będzie znajdował
@@ -172,32 +173,31 @@ zdefiniuje URL strony którą chcesz utworzyć:
 
         return $collection;
 
-The routing consists of two basic pieces: the ``pattern``, which is the URL
-that this route will match, and a ``defaults`` array, which specifies the
-controller that should be executed. The placeholder syntax in the pattern
-(``{name}``) is a wildcard. It means that ``/hello/Ryan``, ``/hello/Fabien``
-or any other similar URL will match this route. The ``{name}`` placeholder
-parameter will also be passed to the controller so that you can use its value
-to personally greet the user.
+
+Routing składa się z dwóch podstawowych części: ``wzorca``, którym jest URL
+do którego prowadzi trasa, oraz z tablicy ``defaults``, która definiuje
+kontroler, który ma być wykonany. Składnia symbolu zastępczego we wzorcu
+(``{name}``) jest wieloznacznikiem. Oznacza to, że ``/hello/Ryan``, ``/hello/Fabien``
+oraz każdy inny podobny URL będzie pasował do tej trasy. Parametr symbolu ``{name}``
+będzie również przekazany do kontrolera, więc możesz używać jego wartość, aby
+pozdrowić użytkownika po imieniu.
 
 .. note::
 
-  The routing system has many more great features for creating flexible
-  and powerful URL structures in your application. For more details, see
-  the chapter all about :doc:`Routing </book/routing>`.
+  System routingu posiada wiele świetnych funkcji do tworzenia elastycznych
+  i potężnych struktur URL w Twojej aplikacji. W celu uzyskania więcej informacji,
+  zobacz rozdział dotyczący :doc:`Routingu </book/routing>`.
 
-Step 2: Create the Controller
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Krok 2: Utwórz kontroler
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-When a URL such as ``/hello/Ryan`` is handled by the application, the ``hello``
-route is matched and the ``AcmeHelloBundle:Hello:index`` controller is executed
-by the framework. The second step of the page-creation process is to create
-that controller.
+Kiedy URL taki jak ``/hello/Ryan`` jest obsługiwany przez aplikację, dopasowana jest
+trasa ``hello``, a kontroler ``AcmeHelloBundle:Hello:index`` jest wykonywany przez
+framework. Drugim krokiem procestu tworzenia strony jest utworzenie tego kontrolera.
 
-The controller - ``AcmeHelloBundle:Hello:index`` is the *logical* name of
-the controller, and it maps to the ``indexAction`` method of a PHP class
-called ``Acme\HelloBundle\Controller\Hello``. Start by creating this file
-inside your ``AcmeHelloBundle``::
+Kontroler - ``AcmeHelloBundle:Hello:index`` jest *logiczną* nazwą kontrolera i mapuje
+ona metodę ``indexAction`` klasy PHP o nazwie ``Acme\HelloBundle\Controller\Hello``.
+Zacznij od utworzenia tego pliku wewnątrz Twojego ``AcmeHelloBundle``::
 
     // src/Acme/HelloBundle/Controller/HelloController.php
     namespace Acme\HelloBundle\Controller;
@@ -208,14 +208,13 @@ inside your ``AcmeHelloBundle``::
     {
     }
 
-In reality, the controller is nothing more than a PHP method that you create
-and Symfony executes. This is where your code uses information from the request
-to build and prepare the resource being requested. Except in some advanced
-cases, the end product of a controller is always the same: a Symfony2 ``Response``
-object.
+W rzeczywistości, kontroler to nic innego jak metoda PHP, którą Ty tworzysz,
+a Symfony ją wykonuje. To tutaj Twój kod używa informacje z żądania, aby zbudować
+i przygotować żądany zasób. Z wyjątkiem szczególnych przypadków, końcowy produkt
+kontrolera jest zawsze taki sam: obiekt ``Odpowiedzi`` Symfony2.
 
-Create the ``indexAction`` method that Symfony will execute when the ``hello``
-route is matched::
+Utwórz akcję ``indexAction``, którą Symfony uruchomi, kiedy trasa ``hello`` będzie
+dopasowana::
 
     // src/Acme/HelloBundle/Controller/HelloController.php
 
@@ -228,13 +227,11 @@ route is matched::
         }
     }
 
-The controller is simple: it creates a new ``Response`` object, whose first
-argument is the content that should be used in the response (a small HTML
-page in this example).
+Kontroler jest prosty: tworzy nowy obiekt ``Response``, którego pierwszym argumentem
+jest treść będzie użyta w odpowiedzi (w tym przykładzie jest to niewielka strona HTML).
 
-Congratulations! After creating only a route and a controller, you already
-have a fully-functional page! If you've setup everything correctly, your
-application should greet you:
+Gratulacje! Po utworzeniu wyłącznie trasy oraz kontrolera, masz już w pełni funkcjonalną
+stronę. Jeśli ustawiłeś wszystko poprawnie, Twoja aplikacja powinna Cię pozdrowić:
 
 .. code-block:: text
 
@@ -242,34 +239,32 @@ application should greet you:
 
 .. tip::
 
-    You can also view your app in the "prod" :ref:`environment<environments-summary>`
-    by visiting:
+    Możesz również zobaczyć swoją aplikację w środowisku "prod" (produkcyjnym) :ref:`środowiska <environments-summary>`
+    odwiedzając:
 
     .. code-block:: text
 
         http://localhost/app.php/hello/Ryan
 
-    If you get an error, it's likely because you need to clear your cache
-    by running:
+    Jeśli otrzymujesz błąd, prawdopodobnie musisz wyczyścić cache za pomocą komendy:
 
     .. code-block:: bash
 
         php app/console cache:clear --env=prod --no-debug
 
-An optional, but common, third step in the process is to create a template.
+Opcjonalnym, lecz częstym, trzecim krokiem procesu tworzenia strony jest utworzenie szablonu.
 
 .. note::
 
-   Controllers are the main entry point for your code and a key ingredient
-   when creating pages. Much more information can be found in the
-   :doc:`Controller Chapter </book/controller>`.
+   Kontrolery są głównym punktem wejścia Twojego kodu oraz kluczowym składnikiem
+   podczas tworzenia stron. Więcej informacji można znaleźć w rozdziale :doc:`Kontroler </book/controller>`,
 
-Optional Step 3: Create the Template
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Opcjonalny Krok 3: Utwórz szablon
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Templates allows you to move all of the presentation (e.g. HTML code) into
-a separate file and reuse different portions of the page layout. Instead
-of writing the HTML inside the controller, render a template instead:
+Szablon pozwala Ci przenieść całą warstwę prezentacji (np. kod HTML) do oddzielnego pliku
+i ponownie wykorzystywać różne części układu strony. Zamiast pisać kod HTML wewnątrz
+kontrolera, wyrenderuj szablon:
 
 .. code-block:: php
     :linenos:
@@ -292,34 +287,34 @@ of writing the HTML inside the controller, render a template instead:
 
 .. note::
 
-   In order to use the ``render()`` method, your controller must extend the
-   ``Symfony\Bundle\FrameworkBundle\Controller\Controller`` class (API
+   Aby móc używać metody ``render()``, Twój kontroler musi dziedziczyć klasę
+   ``Symfony\Bundle\FrameworkBundle\Controller\Controller`` (API
    docs: :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`),
-   which adds shortcuts for tasks that are common inside controllers. This
-   is done in the above example by adding the ``use`` statement on line 4
-   and then extending ``Controller`` on line 6.
+   która dodaje skróty do częstych zadań wykonywanych w kontrolerach. Jest to
+   zastosowane w powyższym przykładzie poprzez dodanie wyrażenia ``use`` w 4
+   linii, a następnie rozszerzenia ``Controller`` w linii 6.
 
-The ``render()`` method creates a ``Response`` object filled with the content
-of the given, rendered template. Like any other controller, you will ultimately
-return that ``Response`` object.
+Metoda ``render()`` tworzy nową ``Odpowiedź`` (ang. ``Response``) wypełnioną
+zawartością danego, wyrenderowanego szablonu. Podobnie jak inny kontroler,
+ostatecznie zwróci on obiekt ``Response``.
 
-Notice that there are two different examples for rendering the template.
-By default, Symfony2 supports two different templating languages: classic
-PHP templates and the succinct but powerful `Twig`_ templates. Don't be
-alarmed - you're free to choose either or even both in the same project.
+Zauważ, że są dwa różne przykłady renderowania szablonów. Domyślnie Symfony2
+wspiera dwa różne języki szablonów: klasyczne szablony PHP oraz zwięzłe, lecz
+potężne szablony `Twig`_. Nie przejmuj się - możesz wybrać jeden, lub nawet
+oba z nich w tym samym projekcie.
 
-The controller renders the ``AcmeHelloBundle:Hello:index.html.twig`` template,
-which uses the following naming convention:
+Kontroler renderuje szablon ``AcmeHelloBundle:Hello:index.html.twig``, który
+używa następującej konwencji nazewnictwa:
 
-    **BundleName**:**ControllerName**:**TemplateName**
+    **NazwaBundle**:**NazwaKontrolera**:**NazwaSzablonu**
 
-This is the *logical* name of the template, which is mapped to a physical
-location using the following convention.
+To jest *logiczna* nazwa szablonu, który jest zmapowany do fizycznej lokacji
+używając następującej konwencji:
 
-    **/path/to/BundleName**/Resources/views/**ControllerName**/**TemplateName**
+    **/path/to/NazwaBundle**/Resources/views/**NazwaKontrolera**/**NazwaSzablonu**
 
-In this case, ``AcmeHelloBundle`` is the bundle name, ``Hello`` is the
-controller, and ``index.html.twig`` the template:
+W tym przypadku, ``AcmeHelloBundle`` jest nazwą Bundle, ``Hello`` to kontroler, a
+``index.html.twig`` jest szablonem:
 
 .. configuration-block::
 
@@ -340,20 +335,18 @@ controller, and ``index.html.twig`` the template:
 
         Hello <?php echo $view->escape($name) ?>!
 
-Let's step through the Twig template line-by-line:
+Przeanalizujmy szablon Twig krok po kroku:
 
-* *line 2*: The ``extends`` token defines a parent template. The template
-  explicitly defines a layout file inside of which it will be placed.
+* *linia 2*: Znacznik ``extends`` definiuje szablon rodzica. Szablon wyraźnie
+  definiuje plik układu strony, wewnątrz którego ma być on umieszczony.
 
-* *line 4*: The ``block`` token says that everything inside should be placed
-  inside a block called ``body``. As you'll see, it's the responsibility
-  of the parent template (``base.html.twig``) to ultimately render the
-  block called ``body``.
+* *linia 4*: Znacznik ``block`` mówi, że wszystko wewnątrz szablonu powinno zostać
+  umieszczone wewnątrz bloku ``body``. Jak się później przekonasz, to szablon-rodzic
+  (``base.html.twig``) jest odpowiedzialny za ostatecznie wyrenderowanie bloku ``body``.
 
-The parent template, ``::base.html.twig``, is missing both the **BundleName**
-and **ControllerName** portions of its name (hence the double colon (``::``)
-at the beginning). This means that the template lives outside of the bundles
-and in the ``app`` directory:
+Szablon nadrzędny ``::base.html.twig`` nie posiada w swojej nazwie zarówno **NazwaBundle**,
+jak i **NazwaKontrolera** (stąd podwójny dwukropek (``::``) na początku). Oznacza to, że
+szablon żyje na zewnątrz bundle, wewnątrz katalogu ``app``:
 
 .. configuration-block::
 
@@ -391,11 +384,9 @@ and in the ``app`` directory:
             </body>
         </html>
 
-The base template file defines the HTML layout and renders the ``body`` block
-that you defined in the ``index.html.twig`` template. It also renders a ``title``
-block, which you could choose to define in the ``index.html.twig`` template.
-Since you did not define the ``title`` block in the child template, it defaults
-to "Welcome!".
+Podstawowy plik szablonu definiuje układ strony HTML i renderuje blok ``body``, który
+zdefiniowałeś w szablonie ``index.html.twig``. W przypadku, gdy nie zdefiniujesz bloku
+``title`` w szablonie-dziecku, domyślnie zwraca on "Welcome!".
 
 Templates are a powerful way to render and organize the content for your
 page. A template can render anything, from HTML markup, to CSS code, or anything
