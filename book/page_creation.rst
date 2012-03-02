@@ -1,5 +1,5 @@
 .. index::
-   single: Page creation
+   single: Strony
 
 Tworzenie stron w Symfony2
 ==========================
@@ -25,7 +25,7 @@ swoją aplikację zorganizowaną wraz ze wzrostem liczby użytkowników i złoż
 Brzmi wystarczająco prosto? Do dzieła!
 
 .. index::
-   single: Page creation; Example
+   single: Strony; Przykład
 
 Strona "Witaj Symfony!"
 -----------------------
@@ -388,43 +388,43 @@ Podstawowy plik szablonu definiuje układ strony HTML i renderuje blok ``body``,
 zdefiniowałeś w szablonie ``index.html.twig``. W przypadku, gdy nie zdefiniujesz bloku
 ``title`` w szablonie-dziecku, domyślnie zwraca on "Welcome!".
 
-Templates are a powerful way to render and organize the content for your
-page. A template can render anything, from HTML markup, to CSS code, or anything
-else that the controller may need to return.
+Szablony to potężny sposób renderowania i organizacji treści dla Twojej strony.
+Szablon może wyrenderować wszystko, od znaczników HTML do kodu CSS, czy cokolwiek
+innego, co kontroler potrzebuje zwracać.
 
-In the lifecycle of handling a request, the templating engine is simply
-an optional tool. Recall that the goal of each controller is to return a
-``Response`` object. Templates are a powerful, but optional, tool for creating
-the content for that ``Response`` object.
+W cyklu życia obsługi żądania, silnik szablonów jest po prostu dodatkowym narzędziem.
+Przypomnij sobie, że celem każdego kontrolera jest zwrócić obiekt ``Response``.
+Szablony są potężnym, lecz opcjonalnym narzędziem do tworzenia treści dla
+obiektu ``Response``.
 
 .. index::
-   single: Directory Structure
+   single: Struktura katalogów
 
-The Directory Structure
------------------------
+Struktura katalogów
+-------------------
 
-After just a few short sections, you already understand the philosophy behind
-creating and rendering pages in Symfony2. You've also already begun to see
-how Symfony2 projects are structured and organized. By the end of this section,
-you'll know where to find and put different types of files and why.
+Już po kilku krótkich akapitach rozumiesz filozofię tworzenia i renderowania stron
+w Symfony2. Zobaczyłeś również jak projekty Symfony2 są zbudowane i zorganizowane.
+Na koniec tej sekcji będziesz wiedział gdzie znaleźć i umieścić różne typy
+plików, oraz dlaczego.
 
-Though entirely flexible, by default, each Symfony :term:`application` has
-the same basic and recommended directory structure:
+Pomimo całkowitej elastyczności, domyślnie każda :term:`aplikacja` symfony
+ma tą samą podstawę oraz zalecaną strukturę katalogów:
 
-* ``app/``: This directory contains the application configuration;
+* ``app/``: Ten katalog zawiera konfigurację aplikacji;
 
-* ``src/``: All the project PHP code is stored under this directory;
+* ``src/``: Cały kod PHP projektu przechowywany jest w tym katalogu;
 
-* ``vendor/``: Any vendor libraries are placed here by convention;
+* ``vendor/``: Wszelkie dodatkowe biblioteki umieszczone są tutaj w celu zachowania konwencji;
 
-* ``web/``: This is the web root directory and contains any publicly accessible files;
+* ``web/``: To jest główny katalog strony (web root), który zawiera wszystkie dostępne publicznie pliki;
 
-The Web Directory
-~~~~~~~~~~~~~~~~~
+Katalog Web
+~~~~~~~~~~~
 
-The web root directory is the home of all public and static files including
-images, stylesheets, and JavaScript files. It is also where each
-:term:`front controller` lives::
+Katalog web root jest głównym katalogiem wszystkich publicznych i statycznych
+plików, włączając w to obrazki, arkusze stylów oraz pliki JavaScript. Tutaj
+również znajduje się :term:`front kontroler`::
 
     // web/app.php
     require_once __DIR__.'/../app/bootstrap.php.cache';
@@ -436,57 +436,55 @@ images, stylesheets, and JavaScript files. It is also where each
     $kernel->loadClassCache();
     $kernel->handle(Request::createFromGlobals())->send();
 
-The front controller file (``app.php`` in this example) is the actual PHP
-file that's executed when using a Symfony2 application and its job is to
-use a Kernel class, ``AppKernel``, to bootstrap the application.
+Plik front kontrolera (w tym przypadku ``app.php``) jest właściwym plikiem PHP,
+który jest wykonywany przy każdym użyciu aplikacji Symfony2, a jego zadaniem
+jest użyć klasy Jądra (ang. Kernel) ``AppKernel``, aby wykonać rozruch aplikacji.
 
 .. tip::
 
-    Having a front controller means different and more flexible URLs than
-    are used in a typical flat PHP application. When using a front controller,
-    URLs are formatted in the following way:
+    Posiadanie front kontrolera oznacza różne i bardziej elastyczne URLe niż te
+    używane w typowej aplikacji PHP. Wykorzystując front kontroler, URLe formatowane
+    są w następujący sposób:
 
     .. code-block:: text
 
         http://localhost/app.php/hello/Ryan
 
-    The front controller, ``app.php``, is executed and the "internal:" URL
-    ``/hello/Ryan`` is routed internally using the routing configuration.
-    By using Apache ``mod_rewrite`` rules, you can force the ``app.php`` file
-    to be executed without needing to specify it in the URL:
+    Wykonywany jest front kontroler ``app.php``, a "wewnętrzny:" URL ``/hello/Ryan``
+    jest trasowany wewnętrzenie przy użyciu konfiguracji routingu.
+    Dzięki zastosowaniu reguł ``mod_rewrite`` serwera Apache, możesz wymusić, aby plik
+    ``app.php`` był uruchamiany bez konieczności podawania jego nazwy w adresie URL:
 
     .. code-block:: text
 
         http://localhost/hello/Ryan
 
-Though front controllers are essential in handling every request, you'll
-rarely need to modify or even think about them. We'll mention them again
-briefly in the `Environments`_ section.
+Pomimo, że front kontrolery są niezbędne w obsłudze każdego żądania, bardzo rzadko
+będziesz potrzebował je modyfikować, czy nawet myśleć o nich. Wspomnimy o nich
+pokrótce w sekcji `Środowiska`_.
 
-The Application (``app``) Directory
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Katalog aplikacji (``app``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As you saw in the front controller, the ``AppKernel`` class is the main entry
-point of the application and is responsible for all configuration. As such,
-it is stored in the ``app/`` directory.
+Jak mogłeś zobaczyć we front kontrolerze, klasa ``AppKernel`` jest głównym punktem
+wejścia aplikacji i jest odpowiedzialna za całą konfigurację. Jako taki,
+jest on przechowywany w katalogu ``app/``.
 
-This class must implement two methods that define everything that Symfony
-needs to know about your application. You don't even need to worry about
-these methods when starting - Symfony fills them in for you with sensible
-defaults.
+Ta klasa musi zawierać dwie metody, które definiują wszystko, co Symfony potrzebuje
+wiedzieć o Twojej aplikacji. Nie musisz nawet martwić się o te metody kiedy
+zaczynasz - Symfony uzupełni je za Ciebie odpowiednimi wartościami domyślnymi.
 
-* ``registerBundles()``: Returns an array of all bundles needed to run the
-  application (see :ref:`page-creation-bundles`);
+* ``registerBundles()``: Zwraca tablicę wszystkich bundli potrzebnych do uruchomienia
+  aplikacji (zobacz :ref:`page-creation-bundles`);
 
-* ``registerContainerConfiguration()``: Loads the main application configuration
-  resource file (see the `Application Configuration`_ section).
+* ``registerContainerConfiguration()``: Ładuje główny plik konfiguracji aplikacji
+  (zobacz dział `Konfiguracja aplikacji`_).
 
-In day-to-day development, you'll mostly use the ``app/`` directory to modify
-configuration and routing files in the ``app/config/`` directory (see
-`Application Configuration`_). It also contains the application cache
-directory (``app/cache``), a log directory (``app/logs``) and a directory
-for application-level resource files, such as templates (``app/Resources``).
-You'll learn more about each of these directories in later chapters.
+W codziennej pracy w większości będziesz używał katalogu ``app/`` do modyfikacji
+konfiguracji, oraz plików routingu w katalogu ``app/config`` (zobacz `Konfiguracja aplikacji`_).
+Katalog ten zawiera również katalog cache (``app/cache``), katalog logów (``app/logs``),
+a także katalog dla plików zasobów aplikacji, takich jak szablony (``app/Resources``).
+O każdym z nich dowiesz się więcej w kolejnych rozdziałach.
 
 .. _autoloading-introduction-sidebar:
 
