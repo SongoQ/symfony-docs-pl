@@ -490,70 +490,64 @@ O każdym z nich dowiesz się więcej w kolejnych rozdziałach.
 
 .. sidebar:: Autoloading
 
-    When Symfony is loading, a special file - ``app/autoload.php`` - is included.
-    This file is responsible for configuring the autoloader, which will autoload
-    your application files from the ``src/`` directory and third-party libraries
-    from the ``vendor/`` directory.
+    Kiedy Symfony jest uruchamiany, dołączany jest specjalny plik - ``app/autoload.php``.
+    Ten plik odpowiedzialny jest za konfigurację autoloadera, który dołączy pliki
+    Twojej aplikacji z katalogu ``src/`` oraz dodatkowe biblioteki z katalogu ``vendor/``.
 
-    Because of the autoloader, you never need to worry about using ``include``
-    or ``require`` statements. Instead, Symfony2 uses the namespace of a class
-    to determine its location and automatically includes the file on your
-    behalf the instant you need a class.
+    Dzięki autoloaderowi, nigdy nie musisz martwić się o używanie wyrażeń ``include``
+    czy ``require``. Zamiast tego, Symfony2 używa przestrzeni nazw klasy do określenia
+    jej lokalizacji i automatycznie dołącza plik, kiedy potrzebujesz zawartej w nim klasy.
 
-    The autoloader is already configured to look in the ``src/`` directory
-    for any of your PHP classes. For autoloading to work, the class name and
-    path to the file have to follow the same pattern:
+    Autoloader jest domyślnie skonfigurowany aby szukać Twoich klas PHP w katalogu ``src/``.
+    Aby autoloading działał, nazwa klasy oraz ścieżka do pliku powinny mieć tą samą formę:
 
     .. code-block:: text
 
-        Class Name:
+        Nazwa klasy:
             Acme\HelloBundle\Controller\HelloController
-        Path:
+        Ścieżka:
             src/Acme/HelloBundle/Controller/HelloController.php
 
-    Typically, the only time you'll need to worry about the ``app/autoload.php``
-    file is when you're including a new third-party library in the ``vendor/``
-    directory. For more information on autoloading, see
-    :doc:`How to autoload Classes</components/class_loader>`.
+    Zwykle jedyny przypadek, kiedy musisz martwić się o plik ``app/autoload.php`` jest wtedy,
+    kiedy dołączasz zewnętrzne biblioteki w katalogu ``vendor/``. Aby dowiedzieć się więcej
+    o autoloadingu, zobacz :doc:`Jak dołączać klasy </components/class_loader>`.
 
-The Source (``src``) Directory
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Katalog źródeł (``src``)
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-Put simply, the ``src/`` directory contains all of the actual code (PHP code,
-templates, configuration files, stylesheets, etc) that drives *your* application.
-When developing, the vast majority of your work will be done inside one or
-more bundles that you create in this directory.
+Katalog ``src/`` zawiera po prostu cały właściwy kod (PHP, szablony, pliki konfiguracyjne,
+arkusze stylów, itd.), który obsługuje *Twoją* aplikację.
+W trakcie rozwoju projektu, zdecydowana większość Twojej pracy będzie wykonana wewnątrz
+jednego lub więcej bundli, które utworzysz w tym katalogu.
 
-But what exactly is a :term:`bundle`?
+Lecz co właściwie oznacza termin :term:`bundle`?
 
 .. _page-creation-bundles:
 
-The Bundle System
------------------
+System Bundli
+-------------
 
-A bundle is similar to a plugin in other software, but even better. The key
-difference is that *everything* is a bundle in Symfony2, including both the
-core framework functionality and the code written for your application.
-Bundles are first-class citizens in Symfony2. This gives you the flexibility
-to use pre-built features packaged in `third-party bundles`_ or to distribute
-your own bundles. It makes it easy to pick and choose which features to enable
-in your application and to optimize them the way you want.
+Bundle jest podobny do pluginów czy podobnego oprogramowania, jednakże jest od nich znacznie lepszy.
+Kluczową różnicą jest to, że *wszystko* jest bundlem w Symfony2, włączając w to
+rdzenną funkcjonalność frameworka oraz kod napisany dla Twojej aplikacji.
+Bundle jest typem pierwszoklasowym w Symfony2. Daje Ci to elastyczność
+użycia wbudowanych funkcji spakowanych w bundle osób trzecich, lub możliwość
+rozprowadzania swoich własnych bundli. Ułatwia to wybierać które funkcje włączyć
+w Twojej aplikacji, oraz optymalizować je na swój własny sposób.
 
 .. note::
 
-   While you'll learn the basics here, an entire cookbook entry is devoted
-   to the organization and best practices of :doc:`bundles</cookbook/bundles/best_practices>`.
+   Podczas gdy tutaj nauczysz się podstaw, w cookbook znajduje się cały rozdział
+   poświęcony organizacji i najlepszym praktykom podczas korzystana z :doc:`bundli</cookbook/bundles/best_practises>`.
 
-A bundle is simply a structured set of files within a directory that implement
-a single feature. You might create a ``BlogBundle``, a ``ForumBundle`` or
-a bundle for user management (many of these exist already as open source
-bundles). Each directory contains everything related to that feature, including
-PHP files, templates, stylesheets, JavaScripts, tests and anything else.
-Every aspect of a feature exists in a bundle and every feature lives in a
-bundle.
+Bundle jest po prostu uporządkowanym zbiorem plików wewnątrz katalogu, który
+implementuje pojedynczą funkcję. Możesz utworzyć ``BlogBundle``, ``ForumBundle``
+czy bundle do zarządzania użytkownikami (wiele z nich już istnieje jako bundle
+open source). Każdy katalog posiada wszystko związane z daną funkcją, włączając w
+to pliki PHP, szablony, arkusze stylów, JavaScript, testy i całą resztę.
+Każdy aspekt danej funkcji zawarty jest w bundle, jak również każda funkcja żyje w bundle.
 
-An application is made up of bundles as defined in the ``registerBundles()``
-method of the ``AppKernel`` class::
+Aplikacja składa się z bundli zdefiniowanych w metodzie ``registerBundles()`` klasy ``AppKernel``::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -580,31 +574,31 @@ method of the ``AppKernel`` class::
         return $bundles;
     }
 
-With the ``registerBundles()`` method, you have total control over which bundles
-are used by your application (including the core Symfony bundles).
+Za pomocą metody ``registerBundles()`` masz całkowitą kontrolę nad tym, które bundle
+będą używane przez Twoją aplikacją (włączając w to rdzenne bundle Symfony).
 
 .. tip::
 
-   A bundle can live *anywhere* as long as it can be autoloaded (via the
-   autoloader configured at ``app/autoload.php``).
+   Bundle może znajdować się *wszędzie* dopóty, dopóki może być automatycznie ładowany
+   (przez autoloader skonfigurowany w ``app/autoload.php``).
 
-Creating a Bundle
+Tworzenie Bundle
 ~~~~~~~~~~~~~~~~~
 
-The Symfony Standard Edition comes with a handy task that creates a fully-functional
-bundle for you. Of course, creating a bundle by hand is pretty easy as well.
+Symfony Standard Edition przychodzi z poręcznym zadaniem, które tworzy w pełni funkcjonalny
+bundle za Ciebie. Oczywiście tworzenie bundle ręcznie jest również bardzo proste.
 
-To show you how simple the bundle system is, create a new bundle called
-``AcmeTestBundle`` and enable it.
+Aby pokazać Ci jak prosty jest system bundli, utwórz nowy bundle o nazwie ``AcmeTestBundle``
+i włącz go.
 
 .. tip::
 
-    The ``Acme`` portion is just a dummy name that should be replaced by
-    some "vendor" name that represents you or your organization (e.g. ``ABCTestBundle``
-    for some company named ``ABC``).
+    Część ``Acme`` jest po prostu przykładową nazwą, która powinna zostać zastąpiona
+    przez unikalną nazwę, która reprezentuje Ciebie lub Twoją organizację (np. ``ABCTestBundle``)
+    dla firmy o nazwie ``ABC``).
 
-Start by creating a ``src/Acme/TestBundle/`` directory and adding a new file
-called ``AcmeTestBundle.php``::
+Zacznij od utworzenia katalogu ``src/Acme/TestBundle/`` i dodania nowego pliku o nazwie
+``AcmeTestBundle.php``::
 
     // src/Acme/TestBundle/AcmeTestBundle.php
     namespace Acme\TestBundle;
@@ -617,15 +611,15 @@ called ``AcmeTestBundle.php``::
 
 .. tip::
 
-   The name ``AcmeTestBundle`` follows the standard :ref:`Bundle naming conventions<bundles-naming-conventions>`.
-   You could also choose to shorten the name of the bundle to simply ``TestBundle``
-   by naming this class ``TestBundle`` (and naming the file ``TestBundle.php``).
+   Nazwa ``AcmeTestBundle`` podąża za standardem :ref:`Konwencji nazewnictwa bundli<bundles-naming-conventions>`.
+   Możesz również zdecydować, by skrócić nazwę bundla do prostego ``TestBundle``
+   nazywając tą klasę ``TestBundle`` (i nazywając plik ``TestBundle.php``).
 
-This empty class is the only piece you need to create the new bundle. Though
-commonly empty, this class is powerful and can be used to customize the behavior
-of the bundle.
+Ta pusta klasa jest jedyną rzeczą, jaką musisz zrobić, by utworzyć bundle. Pomimo, iż
+jest całkowicie pusta, jest ona w pełni skuteczna i może zostać użyta do dostosowania
+zachowań bundla.
 
-Now that you've created the bundle, enable it via the ``AppKernel`` class::
+Teraz, kiedy już utworzyłeś bundle, włącz za pomocą klasy ``AppKernel``::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -641,58 +635,56 @@ Now that you've created the bundle, enable it via the ``AppKernel`` class::
         return $bundles;
     }
 
-And while it doesn't do anything yet, ``AcmeTestBundle`` is now ready to
-be used.
+Pomimo, że jeszcze nic on nie robi, ``AcmeTestBundle`` jest już gotowy do użycia.
 
-And as easy as this is, Symfony also provides a command-line interface for
-generating a basic bundle skeleton:
+Tak łatwo jak to, Symfony dostarcza również interfejs linii poleceń do
+generowania podstawowego szkieletu bundle:
 
 .. code-block:: bash
 
     php app/console generate:bundle --namespace=Acme/TestBundle
 
-The bundle skeleton generates with a basic controller, template and routing
-resource that can be customized. You'll learn more about Symfony2's command-line
-tools later.
+Szkielet bundla generowany jest wraz z podstawowym kotrolerem, szablonem i
+zasobem routingu, który może być dostosowywany do Twoich potrzeb.
+Więcej o linii poleceń Symfony2 dowiesz się później.
 
 .. tip::
 
-   Whenever creating a new bundle or using a third-party bundle, always make
-   sure the bundle has been enabled in ``registerBundles()``. When using
-   the ``generate:bundle`` command, this is done for you.
+   Za każdym razem, kiedy tworzysz nowy bundle lub używasz bundle osób trzecich,
+   upewnij się, że został on włączony w ``registerBundles()``. Kiedy używasz
+   komendy ``generate:bundle``, to wszystko jest zrobione za Ciebie.
 
-Bundle Directory Structure
+Struktura katalogów bundli
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The directory structure of a bundle is simple and flexible. By default, the
-bundle system follows a set of conventions that help to keep code consistent
-between all Symfony2 bundles. Take a look at ``AcmeHelloBundle``, as it contains
-some of the most common elements of a bundle:
+Struktura katalogów bundla jest prosta i elastyczna. Domyślnie system bundli
+podąża za zbiorem konwencji, które pomagają utrzymać kod zwarty pomiędzy
+wszystkimi bundlami Symfony2. Spójrz na ``AcmeHelloBundle``, zawiera on
+kilka najczęściej wykorzystywanych elementów bundla:
 
-* ``Controller/`` contains the controllers of the bundle (e.g. ``HelloController.php``);
+* ``Controller/`` zawiera kontrolery bundla (np. ``HelloController.php``);
 
-* ``Resources/config/`` houses configuration, including routing configuration
-  (e.g. ``routing.yml``);
+* ``Resources/config/`` przechowuje konfigurację, włączając w to konfigurację
+  routingu (np. ``routing.yml``);
 
-* ``Resources/views/`` holds templates organized by controller name (e.g.
+* ``Resources/views/`` zawiera szablony uporządkowane wg nazw kontrolerów (np.
   ``Hello/index.html.twig``);
 
-* ``Resources/public/`` contains web assets (images, stylesheets, etc) and is
-  copied or symbolically linked into the project ``web/`` directory via
-  the ``assets:install`` console command;
+* ``Resources/public/`` przechowuje obrazki, arkusze stylów, itd. oraz jest kopiowany
+  lub linkowany symbolicznie do katalogu ``web/`` projektu poprzez komendę
+  ``assets:install`` w konsoli.
 
-* ``Tests/`` holds all tests for the bundle.
+* ``Tests/`` Zawiera wszystkie testy dla bundla.
 
-A bundle can be as small or large as the feature it implements. It contains
-only the files you need and nothing else.
+Bundle może być tak mały czy duży, jak funkcja, którą on implementuje. Zawiera on
+tylko te pliki, które potrzebujesz - i nic więcej.
 
-As you move through the book, you'll learn how to persist objects to a database,
-create and validate forms, create translations for your application, write
-tests and much more. Each of these has their own place and role within the
-bundle.
+W miarę jak poruszasz się po książce, nauczysz się wstawiać obiekty do bazy danych,
+tworzyć i walidować formularze, tworzyć tłumaczenia dla Twojej aplikacji, pisać testy
+i wiele innych. Każdy z tych elementów ma swoje miejsce i rolę w bundlu.
 
-Application Configuration
--------------------------
+Konfiguracja aplikacji
+----------------------
 
 An application consists of a collection of bundles representing all of the
 features and capabilities of your application. Each bundle can be customized
