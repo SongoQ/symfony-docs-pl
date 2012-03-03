@@ -686,12 +686,11 @@ i wiele innych. Każdy z tych elementów ma swoje miejsce i rolę w bundlu.
 Konfiguracja aplikacji
 ----------------------
 
-An application consists of a collection of bundles representing all of the
-features and capabilities of your application. Each bundle can be customized
-via configuration files written in YAML, XML or PHP. By default, the main
-configuration file lives in the ``app/config/`` directory and is called
-either ``config.yml``, ``config.xml`` or ``config.php`` depending on which
-format you prefer:
+Aplikacja składa się z kolekcji bundli reprezentujących wszystkie funkcje
+i zdolności Twojej aplikacji. Każdy bundle może być dostosowany poprzez
+pliki konfiguracyjne napisane w YAML, XML lub PHP. Domyślnie, główny plik
+konfiguracyjny znajduje się w katalogu ``app/config/`` i jest nazwany odpowiednio
+``config.yml``, ``config.xml`` lub ``config.php`` zależnie od tego, który format preferujesz:
 
 .. configuration-block::
 
@@ -756,40 +755,39 @@ format you prefer:
 
 .. note::
 
-   You'll learn exactly how to load each file/format in the next section
-   `Environments`_.
+   O tym jak ładować każdy plik/format nauczysz się dokładniej w następnym dziale
+   `Środowiska`_.
 
-Each top-level entry like ``framework`` or ``twig`` defines the configuration
-for a particular bundle. For example, the ``framework`` key defines the configuration
-for the core Symfony ``FrameworkBundle`` and includes configuration for the
-routing, templating, and other core systems.
+Każa główna pozycja jak ``framework`` czy ``twig`` definiują konfigurację dla
+pojedynczego bundla. Dla przykładu, klucz ``framework`` definiuje konfigurację
+dla rdzennego ``FrameworkBundle`` Symfony i ładuje konfigurację routingu, szablonów oraz
+pozostałych systemów rdzenia.
 
-For now, don't worry about the specific configuration options in each section.
-The configuration file ships with sensible defaults. As you read more and
-explore each part of Symfony2, you'll learn about the specific configuration
-options of each feature.
+Na chwilę obecną nie martw się o szczegółowe opcje konfiguracji w każdej sekcji.
+Plik konfiguracyjny ładuje się z rozsądnymi wartościami domyślnymi. W miarę dalszego
+czytania oraz odkrywana każdej części Symfony2, nauczysz się więcej o szczegółowych
+opcjach konfiguracji każdej funkcji.
 
-.. sidebar:: Configuration Formats
+.. sidebar:: Formaty konfiguracji
 
-    Throughout the chapters, all configuration examples will be shown in all
-    three formats (YAML, XML and PHP). Each has its own advantages and
-    disadvantages. The choice of which to use is up to you:
+    Przez wszystkie rozdziały, wszystkie przykłady konfiguracji będą pokazane
+    we wszystkich trzech formatach (YAML, XML i PHP). Każdy z nich ma swoje wady
+    i zalety. Decyzja, który z nich wybrać, należy do Ciebie:
 
-    * *YAML*: Simple, clean and readable;
+    * *YAML*: Prosty, przejrzysty i czytelny;
 
-    * *XML*: More powerful than YAML at times and supports IDE autocompletion;
+    * *XML*: Czasami potężniejszy niż YAML i wspiera autouzupełnianie środowisk IDE.
 
-    * *PHP*: Very powerful but less readable than standard configuration formats.
+    * *PHP*: Najbardziej potężny, lecz najmniej czytelny ze standardowych formatów konfiguracji.
 
-Default Configuration Dump
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Zrzut domyślnej konfiguracji
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. versionadded:: 2.1
-    The ``config:dump-reference`` command was added in Symfony 2.1
+    Polecenie ``config:dump-reference`` zostało dodane w Symfony 2.1
 
-You can dump the default configuration for a bundle in yaml to the console using
-the ``config:dump-reference`` command.  Here is an example of dumping the default
-FrameworkBundle configuration:
+Możesz zrzucić domyślną konfigurację bundla w yaml do konsoli używając polecenia
+``config:dump-reference``. Oto przykład zrzutu domyślnej konfiguracji FrameworkBundle:
 
 .. code-block:: text
 
@@ -797,74 +795,73 @@ FrameworkBundle configuration:
 
 .. note::
 
-    See the cookbook article: :doc:`How to expose a Semantic Configuration for
-    a Bundle</cookbook/bundles/extension>` for information on adding
-    configuration for your own bundle.
+    Zobacz artykuł w cookbook: :doc:`H`How to expose a Semantic Configuration for
+    a Bundle</cookbook/bundles/extension>` aby uzyskać więcej informacji nt. dodawania
+    konfiguracji do Twojego bundla.
 
 .. index::
-   single: Environments; Introduction
+   single: Środowiska; Wprowadzenie
 
 .. _environments-summary:
 
-Environments
-------------
+Środowiska
+----------
 
-An application can run in various environments. The different environments
-share the same PHP code (apart from the front controller), but use different
-configuration. For instance, a ``dev`` environment will log warnings and
-errors, while a ``prod`` environment will only log errors. Some files are
-rebuilt on each request in the ``dev`` environment (for the developer's convenience),
-but cached in the ``prod`` environment. All environments live together on
-the same machine and execute the same application.
+Aplikacja może być uruchomiona w różnych środowiskach. Różne środowiska
+dzielą ten sam kod PHP (oprócz front kontrolera), lecz używają różnej konfiguracji.
+Dla przykładu, środowisko ``dev`` będzie logował ostrzeżenia i błędy, podczas gdy
+środowisko ``prod`` będzie logował wyłącznie błędy. Niektóre pliki są
+tworzone ponownie podczas każdego żądania w środowisku ``dev`` (dla wygody deweloperów),
+zaś w środowisku ``prod`` są cache'owane. Wszystkie środowiska żyją razem na
+tej samej maszynie i uruchamiają tą samą aplikację.
 
-A Symfony2 project generally begins with three environments (``dev``, ``test``
-and ``prod``), though creating new environments is easy. You can view your
-application in different environments simply by changing the front controller
-in your browser. To see the application in the ``dev`` environment, access
-the application via the development front controller:
+Projekt Symfony2 generalnie ma początek z trzeba środowiskami (``dev`, ``test`` i ``prod``),
+jednakże tworzenie nowych środowisk jest proste. Możesz łatwo zobaczyć swoją aplikację w różnych
+środowiskach zmieniając front kontroler w przeglądarce. Aby ujrzeć aplikację
+w środowisku ``dev``, uruchom aplikację przez deweloperski front kontroler:
 
 .. code-block:: text
 
     http://localhost/app_dev.php/hello/Ryan
 
-If you'd like to see how your application will behave in the production environment,
-call the ``prod`` front controller instead:
+Jeśli chcesz zobaczyć jak Twoja aplikacja zachowa się w środowisku produkcyjnym,
+wywołaj front kontroler ``prod``:
 
 .. code-block:: text
 
     http://localhost/app.php/hello/Ryan
 
-Since the ``prod`` environment is optimized for speed; the configuration,
-routing and Twig templates are compiled into flat PHP classes and cached.
-When viewing changes in the ``prod`` environment, you'll need to clear these
-cached files and allow them to rebuild::
+Ponieważ środowisko ``prod`` jest optymalizowane pod względem szybkości; konfiguracja,
+routing i szablony Twig są kompilowane do postaci klas PHP i cache'owane.
+Aby zobaczyć zmiany w środowisku ``prod``, musisz wyczyścić zcache'owane pliki
+i pozwolić im wygenerować się od nowa::
 
     php app/console cache:clear --env=prod --no-debug
 
 .. note::
 
-   If you open the ``web/app.php`` file, you'll find that it's configured explicitly
-   to use the ``prod`` environment::
+   Jeśli otworzysz plik ``web/app.php``, zobaczysz, że jest on skonfigurowany specjalnie,
+   aby używać środowiska ``prod``::
 
        $kernel = new AppKernel('prod', false);
 
-   You can create a new front controller for a new environment by copying
-   this file and changing ``prod`` to some other value.
+   Możesz utworzyć nowy front kontroler dla nowego środowiska kopiując ten plik
+   i zmieniając wartość ``prod`` na inną.
 
 .. note::
 
-    The ``test`` environment is used when running automated tests and cannot
-    be accessed directly through the browser. See the :doc:`testing chapter</book/testing>`
-    for more details.
+    Środowisko ``test`` jest używane podczas uruchamiania zautomatyzowanych testów
+    i nie jest dostępny bezpośrednio z przeglądarki. Po więcej informacji zobacz rozdział
+    :doc:`Testowanie</book/testing>`.
 
 .. index::
-   single: Environments; Configuration
+   single: Środowiska; Konfiguracja
 
-Environment Configuration
+Konfiguracja środowiska
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``AppKernel`` class is responsible for actually loading the configuration
-file of your choice::
+Klasa ``AppKernel`` jest odpowiedzialna za właściwe ładowanie wybranego przez Ciebie
+pliku konfiguracyjnego::
 
     // app/AppKernel.php
     public function registerContainerConfiguration(LoaderInterface $loader)
@@ -872,10 +869,10 @@ file of your choice::
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
 
-You already know that the ``.yml`` extension can be changed to ``.xml`` or
-``.php`` if you prefer to use either XML or PHP to write your configuration.
-Notice also that each environment loads its own configuration file. Consider
-the configuration file for the ``dev`` environment.
+Wiesz już, że rozszerzenie ``.yml`` może być zamienione na ``.xml`` lub ``.php``,
+jeśli preferujesz używać HML lub PHP do pisania Twojej konfiguracji.
+Zauważ również, że każde środowisko ładuje swój własny plik konfiguracyjny. Zwróćmy
+uwagę na plik konfiguracyjny środowiska ``dev``.
 
 .. configuration-block::
 
@@ -917,46 +914,44 @@ the configuration file for the ``dev`` environment.
 
         // ...
 
-The ``imports`` key is similar to a PHP ``include`` statement and guarantees
-that the main configuration file (``config.yml``) is loaded first. The rest
-of the file tweaks the default configuration for increased logging and other
-settings conducive to a development environment.
+Klucz ``imports`` jest podobny do wyrażenia ``include`` w PHP i gwarantuje,
+że główny plik konfiguracji (``config.yml``) jest ładowany jako pierwszy.
+Pozostała część pliku podkręca domyślną konfigurację o zwiększone logowanie
+i inne ustawienia sprzyjające środowisku deweloperskiemu.
 
-Both the ``prod`` and ``test`` environments follow the same model: each environment
-imports the base configuration file and then modifies its configuration values
-to fit the needs of the specific environment. This is just a convention,
-but one that allows you to reuse most of your configuration and customize
-just pieces of it between environments.
+Oba środowiska ``prod`` i ``test`` działają wg tego samego modelu: każde środowisko
+importuje podstawowy plik konfiguracyjny i modyfikuje jego wartości konfiguracyjne,
+aby dopasować je do potrzeb danego środowiska. To tylko konwencja, lecz pozwala to na
+ponowne wykorzystanie większości Twojej konfiguracji i dostosowywania tylko niektórych jej części
+pomiędzy środowiskami.
 
-Summary
--------
+Podsumowanie
+------------
 
-Congratulations! You've now seen every fundamental aspect of Symfony2 and have
-hopefully discovered how easy and flexible it can be. And while there are
-*a lot* of features still to come, be sure to keep the following basic points
-in mind:
+Gratulacje! Poznałeś już każdy fundamentalny aspekt Symfony2 i szczęśliwie odkryłeś
+jak łatwe i elastyczne może ono być. Pomimo, iż przed nami jest jeszcze *wiele* funkcji,
+upewnij się, by mieć poniższe elementy podstaw w swojej pamięci:
 
-* creating a page is a three-step process involving a **route**, a **controller**
-  and (optionally) a **template**.
+* tworzenie strony to trzyetapowy proces dotyczący **trasy** (ang. **route**),
+  **kontrolera** i (opcjonalnie) **szablonu**;
 
-* each project contains just a few main directories: ``web/`` (web assets and
-  the front controllers), ``app/`` (configuration), ``src/`` (your bundles),
-  and ``vendor/`` (third-party code) (there's also a ``bin/`` directory that's
-  used to help updated vendor libraries);
+* każdy projekt zawiera kilka głównych katalogów: ``web/`` (pliki statyczne i front
+  kontrolery), ``app/`` (konfiguracja), ``src/`` (Twoje bundle), oraz ``vendor/``
+  (kod osób trzecich) (jest jeszcze katalog ``bin/``, który używany jest w celu aktualizacji
+  bibliotek osób trzecich);
 
-* each feature in Symfony2 (including the Symfony2 framework core) is organized
-  into a *bundle*, which is a structured set of files for that feature;
+* każda funkcja w Symfony2 (włączając to rdzeń frameworka Symfony2) zorganizowana jest
+  w *bundle*, który jest uporządkowanym zbiorem plików dla tej funkcji;
 
-* the **configuration** for each bundle lives in the ``app/config`` directory
-  and can be specified in YAML, XML or PHP;
+* **konfiguracja** każdego bundla znajduje się w katalogu ``app/config`` i może być
+  określona w YAML, XML lub PHP;
 
-* each **environment** is accessible via a different front controller (e.g.
-  ``app.php`` and ``app_dev.php``) and loads a different configuration file.
+* każde **środowisko** jest dostępne przez różny front kontroler (np. ``app.php`` i
+  ``app_dev.php``) i wczytuje oddzielny plik konfiguracji.
 
-From here, each chapter will introduce you to more and more powerful tools
-and advanced concepts. The more you know about Symfony2, the more you'll
-appreciate the flexibility of its architecture and the power it gives you
-to rapidly develop applications.
+Od teraz, każdy rodział będzie przedstawiał Ci coraz bardziej i bardziej potężne
+narzędzia i zaawansowane koncepcje. Czym więcej wiesz o Symfony2, tym więcej docenisz
+elastyczność jego architektury i moc, jaką Ci daje do szybkiego tworzenia aplikacji.
 
 .. _`Twig`: http://twig.sensiolabs.org
 .. _`third-party bundles`: http://symfony2bundles.org/
