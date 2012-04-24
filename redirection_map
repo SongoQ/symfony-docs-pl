@@ -2,5 +2,13 @@
 /cookbook/doctrine/doctrine_fixtures /bundles/DoctrineFixturesBundle/index
 /cookbook/doctrine/mongodb /bundles/DoctrineMongoDBBundle/index
 /cookbook/form/simple_signup_form_with_mongodb /bundles/DoctrineMongoDBBundle/form
+/cookbook/email /cookbook/email/email
+/cookbook/gmail /cookbook/email/gmail
+/cookbook/console /components/console
+/cookbook/tools/autoloader /components/class_loader
+/cookbook/tools/finder /components/finder
 /reference/configuration/mongodb /bundles/DoctrineMongoDBBundle/config
-
+/reference/YAML /components/yaml
+/components/dependency_injection /components/dependency_injection/introduction
+/components/event_dispatcher /components/event_dispatcher/introduction
+/components/http_foundation /components/http_foundation/introduction
