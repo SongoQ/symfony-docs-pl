@@ -40,13 +40,13 @@ używa tego połączenia.
             my.listener:
                 class: Acme\SearchBundle\Listener\SearchIndexer
                 tags:
-                    - { name: doctrine.event_listener, event: postSave }
+                    - { name: doctrine.event_listener, event: postPersist }
             my.listener2:
                 class: Acme\SearchBundle\Listener\SearchIndexer2
                 tags:
-                    - { name: doctrine.event_listener, event: postSave, connection: default }
+                    - { name: doctrine.event_listener, event: postPersist, connection: default }
             my.subscriber:
-                class: Acme\SearchBundle\Listener\SearchIndexerSubsriber
+                class: Acme\SearchBundle\Listener\SearchIndexerSubscriber
                 tags:
                     - { name: doctrine.event_subscriber, connection: default }
 
@@ -64,12 +64,12 @@ używa tego połączenia.
 
             <services>
                 <service id="my.listener" class="Acme\SearchBundle\Listener\SearchIndexer">
-                    <tag name="doctrine.event_listener" event="postSave" />
+                    <tag name="doctrine.event_listener" event="postPersist" />
                 </service>
                 <service id="my.listener2" class="Acme\SearchBundle\Listener\SearchIndexer2">
-                    <tag name="doctrine.event_listener" event="postSave" connection="default" />
+                    <tag name="doctrine.event_listener" event="postPersist" connection="default" />
                 </service>
-                <service id="my.subscriber" class="Acme\SearchBundle\Listener\SearchIndexerSubsriber">
+                <service id="my.subscriber" class="Acme\SearchBundle\Listener\SearchIndexerSubscriber">
                     <tag name="doctrine.event_subscriber" connection="default" />
                 </service>
             </services>
@@ -79,23 +79,24 @@ Tworzenie Klasy "Listener"
 --------------------------
 
 W poprzednim przykładzie, usługa ``my.listener`` była skonfigurowana jako "listener" Doctrine
-na zdarzeniu (event) ``postSave``. Ta klasa za tą usługą musi posiadać metodę ``postSave``, 
+na zdarzeniu (event) ``postPersist``. Ta klasa za tą usługą musi posiadać metodę ``postPersist``, 
 która będzie wywoływana kiedy zdarzenie jest rzucane::
 
     // src/Acme/SearchBundle/Listener/SearchIndexer.php
     namespace Acme\SearchBundle\Listener;
     
     use Doctrine\ORM\Event\LifecycleEventArgs;
+    use Acme\StoreBundle\Entity\Product;
     
     class SearchIndexer
     {
-        public function postSave(LifecycleEventArgs $args)
+        public function postPersist(LifecycleEventArgs $args)
         {
             $entity = $args->getEntity();
-            $entityManager = $args->getEntityManager();
+            $entityManager = $args->getManager();
             
             // perhaps you only want to act on some "Product" entity
-            if ($entity instanceof Acme\StoreBundle\Entity\Product) {
+            if ($entity instanceof Product) {
                 // do something with the Product
             }
         }
@@ -109,4 +110,4 @@ dla *wszystkich* encji w Twojej aplikacji. Więc, jeśli jesteś zainteresowany 
 tylko wybranych typów encji (np. ``Product`` a nie ``BlogPost``), powinienieś 
 sprawdzać nazwę klasy encji w swojej metodzie (tak jak jest to pokazane wyżej).
 
-.. _`The Event System`: http://www.doctrine-project.org/docs/orm/2.0/en/reference/events.html
+.. _`The Event System`: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html
