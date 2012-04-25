@@ -1,5 +1,5 @@
 Podręcznik
-====
+========
 
 .. toctree::
     :hidden:
@@ -12,6 +12,7 @@ Podręcznik
     routing
     templating
     doctrine
+    propel
     testing
     validation
     forms
