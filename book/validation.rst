@@ -448,68 +448,67 @@ reguły pozwalają Ci podać *domyślną* wartość zamiast tablicy. W przypadku
             }
         }
 
-This is purely meant to make the configuration of the most common option of
-a constraint shorter and quicker.
+Ma to jedynie na celu ułatwienie i przyspieszenie konfiguracji najczęściej używanych opcji reguł.
 
-If you're ever unsure of how to specify an option, either check the API documentation
-for the constraint or play it safe by always passing in an array of options
-(the first method shown above).
+Jeśli nie jesteś pewien jak określić daną opcję, sprawdź dokumentację API dla reguł lub
+zrób to bezpiecznie zawsze podając tablicę opcji (pierwsza metoda pokazana powyżej).
 
 .. index::
-   single: Validation; Constraint targets
+   single: Walidacja; Targety reguł
 
 .. _validator-constraint-targets:
 
-Constraint Targets
-------------------
+Targety reguł
+----------
 
-Constraints can be applied to a class property (e.g. ``name``) or a public
-getter method (e.g. ``getFullName``). The first is the most common and easy
-to use, but the second allows you to specify more complex validation rules.
+Reguły mogą być zastosowane do właściwości klasy (np. ``imie``) lub do
+publicznej metody getter (np. ``getImie``). Pierwszy sposób jest najpowszechniejszy
+i najłatwiejszy w użyciu, lecz drugi wariant pozwala Ci na określenie bardziej
+złożonych reguł walidacji.
 
 .. index::
-   single: Validation; Property constraints
+   single: Walidacja; Reguły właściwości
 
 .. _validation-property-target:
 
-Properties
-~~~~~~~~~~
+Właściwości
+~~~~~~~~~~~
 
-Validating class properties is the most basic validation technique. Symfony2
-allows you to validate private, protected or public properties. The next
-listing shows you how to configure the ``$firstName`` property of an ``Author``
-class to have at least 3 characters.
+Walidacja właściwości klasy jest najbardziej podstawową techniką walidacji.
+Symfont2 pozwala Ci sprawdzać właściwości typu private, protected i public.
+Poniższy listing pokazuje jak skonfigurować właściwość ``$imie`` klasy ``Autor``,
+aby miała minimum 3 znaki.
 
 .. configuration-block::
 
     .. code-block:: yaml
 
         # src/Acme/BlogBundle/Resources/config/validation.yml
-        Acme\BlogBundle\Entity\Author:
+        Acme\BlogBundle\Entity\Autor:
             properties:
-                firstName:
+                imie:
                     - NotBlank: ~
                     - MinLength: 3
 
     .. code-block:: php-annotations
 
-        // Acme/BlogBundle/Entity/Author.php
+        // Acme/BlogBundle/Entity/Autor.php
         use Symfony\Component\Validator\Constraints as Assert;
 
-        class Author
+        class Autor
         {
             /**
              * @Assert\NotBlank()
              * @Assert\MinLength(3)
              */
-            private $firstName;
+            private $imie;
         }
 
     .. code-block:: xml
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
-        <class name="Acme\BlogBundle\Entity\Author">
-            <property name="firstName">
+        <class name="Acme\BlogBundle\Entity\Autor">
+            <property name="imie">
                 <constraint name="NotBlank" />
                 <constraint name="MinLength">3</constraint>
             </property>
@@ -517,58 +516,57 @@ class to have at least 3 characters.
 
     .. code-block:: php
 
-        // src/Acme/BlogBundle/Entity/Author.php
+        // src/Acme/BlogBundle/Entity/Autor.php
         use Symfony\Component\Validator\Mapping\ClassMetadata;
         use Symfony\Component\Validator\Constraints\NotBlank;
         use Symfony\Component\Validator\Constraints\MinLength;
 
-        class Author
+        class Autor
         {
-            private $firstName;
+            private $imie;
 
             public static function loadValidatorMetadata(ClassMetadata $metadata)
             {
-                $metadata->addPropertyConstraint('firstName', new NotBlank());
-                $metadata->addPropertyConstraint('firstName', new MinLength(3));
+                $metadata->addPropertyConstraint('imie', new NotBlank());
+                $metadata->addPropertyConstraint('imie', new MinLength(3));
             }
         }
 
 .. index::
-   single: Validation; Getter constraints
+   single: Walidacja; Reguły getterów
 
-Getters
+Gettery
 ~~~~~~~
 
-Constraints can also be applied to the return value of a method. Symfony2
-allows you to add a constraint to any public method whose name starts with
-"get" or "is". In this guide, both of these types of methods are referred
-to as "getters".
+Reguły mogą być również używane do zwracania wartości przez daną metodę.
+Symfony2 pozwala Ci dodać regułę do jakiejkolwiek publicznej metody, której
+nazwa zaczyna się od "get" lub "is". W tym przewodniku, oba z tych typów metod
+są uznawane za gettery.
 
-The benefit of this technique is that it allows you to validate your object
-dynamically. For example, suppose you want to make sure that a password field
-doesn't match the first name of the user (for security reasons). You can
-do this by creating an ``isPasswordLegal`` method, and then asserting that
-this method must return ``true``:
+Zaletą tej techniki jest to, że pozwala Ci walidować Twój obiekt dynamicznie.
+Na przykład, załóżmy że chcesz się upewnić, że wartość pola z hasłem nie jest
+taka sama, jak imię użytkownika (z powodów bezpieczeństwa). Możesz zrobić to
+tworząc metodę ``isPasswordLegal`` i wtedy zmapować, że metoda musi zwracać ``true``:
 
 .. configuration-block::
 
     .. code-block:: yaml
 
         # src/Acme/BlogBundle/Resources/config/validation.yml
-        Acme\BlogBundle\Entity\Author:
+        Acme\BlogBundle\Entity\Autor:
             getters:
                 passwordLegal:
-                    - "True": { message: "The password cannot match your first name" }
+                    - "True": { message: "Hasło nie może być takie samo jak Twoje imię" }
 
     .. code-block:: php-annotations
 
-        // src/Acme/BlogBundle/Entity/Author.php
+        // src/Acme/BlogBundle/Entity/Autor.php
         use Symfony\Component\Validator\Constraints as Assert;
 
-        class Author
+        class Autor
         {
             /**
-             * @Assert\True(message = "The password cannot match your first name")
+             * @Assert\True(message = "Hasło nie może być takie samo jak Twoje imię")
              */
             public function isPasswordLegal()
             {
@@ -579,31 +577,31 @@ this method must return ``true``:
     .. code-block:: xml
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
-        <class name="Acme\BlogBundle\Entity\Author">
+        <class name="Acme\BlogBundle\Entity\Autor">
             <getter property="passwordLegal">
                 <constraint name="True">
-                    <option name="message">The password cannot match your first name</option>
+                    <option name="message">Hasło nie może być takie samo jak Twoje imię</option>
                 </constraint>
             </getter>
         </class>
 
     .. code-block:: php
 
-        // src/Acme/BlogBundle/Entity/Author.php
+        // src/Acme/BlogBundle/Entity/Autor.php
         use Symfony\Component\Validator\Mapping\ClassMetadata;
         use Symfony\Component\Validator\Constraints\True;
 
-        class Author
+        class Autor
         {
             public static function loadValidatorMetadata(ClassMetadata $metadata)
             {
                 $metadata->addGetterConstraint('passwordLegal', new True(array(
-                    'message' => 'The password cannot match your first name',
+                    'message' => 'Hasło nie może być takie samo jak Twoje imię',
                 )));
             }
         }
 
-Now, create the ``isPasswordLegal()`` method, and include the logic you need::
+Teraz utwórz metodę ``isPasswordLegal`` i zastosuj w niej logikę, którą potrzebujesz::
 
     public function isPasswordLegal()
     {
@@ -612,36 +610,34 @@ Now, create the ``isPasswordLegal()`` method, and include the logic you need::
 
 .. note::
 
-    The keen-eyed among you will have noticed that the prefix of the getter
-    ("get" or "is") is omitted in the mapping. This allows you to move the
-    constraint to a property with the same name later (or vice versa) without
-    changing your validation logic.
+    Bystrzejsi spośród Was na pewno zauważyli, że prefiks gettera ("get" lub "is")
+    został pominięty w mapowaniu. To pozwala Ci na późniejsze używanie reguły
+    dla właściwości o innej nazwie bez zmiany logiki walidacji.
 
 .. _validation-class-target:
 
-Classes
-~~~~~~~
+Klasy
+~~~~~
 
-Some constraints apply to the entire class being validated. For example,
-the :doc:`Callback</reference/constraints/Callback>` constraint is a generic
-constraint that's applied to the class itself. When that class is validated,
-methods specified by that constraint are simply executed so that each can
-provide more custom validation.
+Niektóre reguły dotyczą całej klasy podczas walidacji. Np. reguła
+:doc:`Callback</reference/constraints/Callback>` jest ogólną regułą stosowaną
+dla klasy. Podczas gdy klasa jest walidowana, metody określone
+w regule są łatwo wykonywane, dzięki czemu każdy może dołożyć więcej swoich własnych
+reguł.
 
 .. _book-validation-validation-groups:
 
-Validation Groups
------------------
+Grupy walidacji
+---------------
 
-So far, you've been able to add constraints to a class and ask whether or
-not that class passes all of the defined constraints. In some cases, however,
-you'll need to validate an object against only *some* of the constraints
-on that class. To do this, you can organize each constraint into one or more
-"validation groups", and then apply validation against just one group of
-constraints.
+Jak dotąd, nauczyłeś się jak dodać reguły do klasy i sprawdzić, czy klasa spełnia
+wszystkie ze zdefiniowanych reguł. Jednakże w niektórych przypadkach będziesz
+musiał walidować obiekt dla tylko *niektórych* reguł klasy. Aby to zrobić, możesz
+zorganizować każdą regułę w jedną lub więcej "grup walidacji", a następnie zastosować
+walidację dla wyłącznie jednej grupy reguł.
 
-For example, suppose you have a ``User`` class, which is used both when a
-user registers and when a user updates his/her contact information later:
+Na przykład, załóżmy że masz klasę ``User``, która jest używana zarówno kiedy
+użytkownik się rejestruje, a także kiedy później edytuje swoje dane kontaktowe:
 
 .. configuration-block::
 
@@ -744,82 +740,79 @@ user registers and when a user updates his/her contact information later:
             }
         }
 
-With this configuration, there are two validation groups:
+Przy takiej konfiguracji, mamy tutaj dwie grupy walidacji:
 
-* ``Default`` - contains the constraints not assigned to any other group;
+* ``Default`` - zawiera reguły nieprzypisane do żadnej innej grupy;
 
-* ``registration`` - contains the constraints on the ``email`` and ``password``
-  fields only.
+* ``registration`` - zawiera reguły wyłącznie dla pól ``email`` i ``password``.
 
-To tell the validator to use a specific group, pass one or more group names
-as the second argument to the ``validate()`` method::
+Aby powiedzieć walidatorowi, aby używał konkretnej grupy, podaj jedną lub więcej
+nazw grup jako drugi argument metody ``validate()``::
 
     $errors = $validator->validate($author, array('registration'));
 
-Of course, you'll usually work with validation indirectly through the form
-library. For information on how to use validation groups inside forms, see
+Oczywiście zazwyczaj będziesz pracował z niebezpośrednią walidacją formularzy.
+Aby uzyskać więcej informacji jak używać grup walidacji dla formularzy, zobacz
 :ref:`book-forms-validation-groups`.
 
 .. index::
-   single: Validation; Validating raw values
+   single: Walidacja; Walidacja zwykłych wartości
 
 .. _book-validation-raw-values:
 
-Validating Values and Arrays
-----------------------------
+Walidacja wartości i tablic
+---------------------------
 
-So far, you've seen how you can validate entire objects. But sometimes, you
-just want to validate a simple value - like to verify that a string is a valid
-email address. This is actually pretty easy to do. From inside a controller,
-it looks like this::
+Jak dotąd, zobaczyłeś jak można walidować całe obiekty. Czasem jednak możesz
+chcieć walidować zwykłą wartość - np. aby zweryfikować, czy dany ciąg znaków
+jest poprawnym adresem email. Jest to również bardzo proste. Z poziomu kontrolera
+wygląda to tak::
 
-    // add this to the top of your class
+    // dpdaj to na początku klasy
     use Symfony\Component\Validator\Constraints\Email;
     
     public function addEmailAction($email)
     {
         $emailConstraint = new Email();
-        // all constraint "options" can be set this way
-        $emailConstraint->message = 'Invalid email address';
+        // ustawiamy wszystkie opcje reuły
+        $emailConstraint->message = 'Niepoprawny adres email';
 
-        // use the validator to validate the value
+        // używamy walidatora do sprawdzenia wartości
         $errorList = $this->get('validator')->validateValue($email, $emailConstraint);
 
         if (count($errorList) == 0) {
-            // this IS a valid email address, do something
+            // adres email jest poprawny
         } else {
-            // this is *not* a valid email address
+            // to *nie* jest poprawny adres email
             $errorMessage = $errorList[0]->getMessage()
             
-            // do something with the error
+            // obsługa błędu
         }
         
         // ...
     }
 
-By calling ``validateValue`` on the validator, you can pass in a raw value and
-the constraint object that you want to validate that value against. A full
-list of the available constraints - as well as the full class name for each
-constraint - is available in the :doc:`constraints reference</reference/constraints>`
-section .
+Podczas wywoływania metody ``validateValue`` walidatora, możesz przekazać wartość
+oraz obiekt reguły, który chcesz użyć do walidacji podanej wartości. Pełna lista
+dostępnych reguł jest dostępna w sekcji :doc:`constraints reference</reference/constraints>`.
 
-The ``validateValue`` method returns a :class:`Symfony\\Component\\Validator\\ConstraintViolationList`
-object, which acts just like an array of errors. Each error in the collection
-is a :class:`Symfony\\Component\\Validator\\ConstraintViolation` object,
-which holds the error message on its `getMessage` method.
+Metoda ``validateValue`` zwraca obiekt :class:`Symfony\\Component\\Validator\\ConstraintViolationList`,
+który zachowuje się zupełnie jak tablica błędów. Każdy błąd w kolekcji jest obiektem
+:class:`Symfony\\Component\\Validator\\ConstraintViolation` który przechowuje
+komunikat błędu w swojej metodzie `getMessage`.
 
-Final Thoughts
---------------
+Myśli końcowe
+-------------
 
-The Symfony2 ``validator`` is a powerful tool that can be leveraged to
-guarantee that the data of any object is "valid". The power behind validation
-lies in "constraints", which are rules that you can apply to properties or
-getter methods of your object. And while you'll most commonly use the validation
-framework indirectly when using forms, remember that it can be used anywhere
-to validate any object.
+``Walidator`` Symfony2 to potężne narzędzie, które może być wykorzystywane w celu
+zagwarantowania, że dane jakiegokolwiek obiektu są "poprawne". Cała moc
+walidacji leży w regułach, czyli zasadach, które możesz przypisać do właściwości
+lub getterów Twojego obiektu. Pomimo, iż najczęściej będziesz używał walidacji
+niebezpośrednio podczas używania formularzy, pamiętaj, że może ona być użyta
+gdziekolwiek w celu walidacji jakiegokolwiek obiektu.
 
-Learn more from the Cookbook
-----------------------------
+Dowiedz się więcej z Cookbooka
+------------------------------
 
 * :doc:`/cookbook/validation/custom_constraint`
 
