@@ -798,7 +798,7 @@ dostępnych reguł jest dostępna w sekcji :doc:`constraints reference</referenc
 
 Metoda ``validateValue`` zwraca obiekt :class:`Symfony\\Component\\Validator\\ConstraintViolationList`,
 który zachowuje się zupełnie jak tablica błędów. Każdy błąd w kolekcji jest obiektem
-:class:`Symfony\\Component\\Validator\\ConstraintViolation`m który przechowuje
+:class:`Symfony\\Component\\Validator\\ConstraintViolation` który przechowuje
 komunikat błędu w swojej metodzie `getMessage`.
 
 Myśli końcowe
