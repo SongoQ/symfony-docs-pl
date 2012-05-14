@@ -172,27 +172,25 @@ Aby uzyskać więcej informacji odnośnie formatów odsyłaczy do różnych kont
 
 .. note::
 
-    This example places the routing configuration directly in the ``app/config/``
-    directory. A better way to organize your routes is to place each route
-    in the bundle it belongs to. For more information on this, see
-    :ref:`routing-include-external-resources`.
+    W tym przykładzie konfiguracja routingu znajduje się bezpośrednio w katalogu ``app/config/``.
+    Lepszym sposobem na organizację ścieżek jest umieszczać każdą trasę w bundlu, do którego
+    ona należy. Po więcej informacji sięgnij tutaj: :ref:`routing-include-external-resources`.
 
 .. tip::
 
-    You can learn much more about the routing system in the :doc:`Routing chapter</book/routing>`.
+    O wiele więcej o routingu możesz dowiedzieć się w rozdziale :doc:`Routing</book/routing>`.
 
 .. index::
-   single: Controller; Controller arguments
+   single: Kontroler; Argumenty kontrolera
 
 .. _route-parameters-controller-arguments:
 
-Route Parameters as Controller Arguments
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Parametry ścieżki jako argumenty kontrolera
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You already know that the ``_controller`` parameter ``AcmeHelloBundle:Hello:index``
-refers to a ``HelloController::indexAction()`` method that lives inside the
-``AcmeHelloBundle`` bundle. What's more interesting is the arguments that are
-passed to that method:
+Wiesz już, że wartość ``AcmeHelloBundle:Hello:index`` parametru ``_controller`` odnosi
+się do metody ``HelloController::indexAction()``, która znajduje się w bundlu ``AcmeHelloBundle``.
+Zobacz w jaki sposób argumenty są przekazywane do tej metody:
 
 .. code-block:: php
 
@@ -210,11 +208,10 @@ passed to that method:
         }
     }
 
-The controller has a single argument, ``$name``, which corresponds to the
-``{name}`` parameter from the matched route (``ryan`` in our example). In
-fact, when executing your controller, Symfony2 matches each argument of
-the controller with a parameter from the matched route. Take the following
-example:
+Kontroler ma jeden argument ``$name``, który odpowiada parametrowi ``{name}``
+z przypisanej ścieżki (w naszym przypadku ma on wartość ``ryan``). W rzeczywistości,
+kiedy uruchamiasz swój kontroler, Symfony2 dopasowuje każdy argument kontrolera
+z parametrem ścieżki. Spójrz na poniższy przykład:
 
 .. configuration-block::
 
@@ -241,56 +238,55 @@ example:
             'color'       => 'green',
         )));
 
-The controller for this can take several arguments::
+W tym przypadku kontroler może przyjąć kilka argumentów::
 
     public function indexAction($first_name, $last_name, $color)
     {
         // ...
     }
 
-Notice that both placeholder variables (``{first_name}``, ``{last_name}``)
-as well as the default ``color`` variable are available as arguments in the
-controller. When a route is matched, the placeholder variables are merged
-with the ``defaults`` to make one array that's available to your controller.
+Zauważ, że obie zmienne (``{first_name}`` i ``{last_name}``) oraz domyślny parametr
+``color`` są dostępne w kontrolerze jako jego argumenty. Kiedy trasa jest przypisana,
+parametry ścieżki oraz ``wartości domyślne`` są łączone w jedną tablicę, która
+jest dostępna dla kontrolera.
 
-Mapping route parameters to controller arguments is easy and flexible. Keep
-the following guidelines in mind while you develop.
+Mapowanie parametrów ścieżki do argumentów kontrolera jest łatwe i elastyczne. Pamiętaj
+o następujących krokach:
 
-* **The order of the controller arguments does not matter**
+* **Kolejność argumentów kontrolera nie ma znaczenia**
 
-    Symfony is able to match the parameter names from the route to the variable
-    names in the controller method's signature. In other words, it realizes that
-    the ``{last_name}`` parameter matches up with the ``$last_name`` argument.
-    The arguments of the controller could be totally reordered and still work
-    perfectly::
+    Symfony potrafi dopasować nazwy parametrów ścieżki do nazw zmiennych w metodzie
+    kontrolera. Innymi słowy, Symfony rozumie, że parametr ``{last_name}`` pasuje do
+    argumentu ``$last_name``. Argumenty kontrolera mogą być kompletnie pomieszane, a
+    i tak będą działać doskonale::
 
         public function indexAction($last_name, $color, $first_name)
         {
             // ..
         }
 
-* **Each required controller argument must match up with a routing parameter**
+* **Każdy wymagany argument kontrolera musi pasować do parametru routingu**
 
-    The following would throw a ``RuntimeException`` because there is no ``foo``
-    parameter defined in the route::
+    Poniższy przykład wyrzuci ``RuntimeException``, ponieważ w routingu nie został
+    zdefiniowany parametr ``foo``::
 
         public function indexAction($first_name, $last_name, $color, $foo)
         {
             // ..
         }
 
-    Making the argument optional, however, is perfectly ok. The following
-    example would not throw an exception::
+    Rozwiązaniem problemu może być przypisanie wartości domyślnej do argumentu. Poniższy
+    przykład nie wyrzuci wyjątku::
 
         public function indexAction($first_name, $last_name, $color, $foo = 'bar')
         {
             // ..
         }
 
-* **Not all routing parameters need to be arguments on your controller**
+* **Nie wszystkie parametry routingu muszą być argumentami kontrolera**
 
-    If, for example, the ``last_name`` weren't important for your controller,
-    you could omit it entirely::
+    Jeśli, na przykład, ``last_name`` nie jest istotny dla Twojego kontrolera,
+    możesz go całkowicie pominąć::
 
         public function indexAction($first_name, $color)
         {
@@ -299,18 +295,18 @@ the following guidelines in mind while you develop.
 
 .. tip::
 
-    Every route also has a special ``_route`` parameter, which is equal to
-    the name of the route that was matched (e.g. ``hello``). Though not usually
-    useful, this is equally available as a controller argument.
+    Każda ścieżka posiada również specjalny parametr ``_route``, który jest równoważny
+    z nazwą ścieżki, która została dopasowana (np. ``hello``). Rzadko jest to użyteczne,
+    ale jest to również dostępne jako argument kontrolera.
 
 .. _book-controller-request-argument:
 
-The ``Request`` as a Controller Argument
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Żądanie jako argument kontrolera
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For convenience, you can also have Symfony pass you the ``Request`` object
-as an argument to your controller. This is especially convenient when you're
-working with forms, for example::
+Dla Twojej wygody, możesz powiedzieć Symfony, żeby przekazywał obiekt ``Request``
+jako argument kontrolera. Jest to przydatne przede wszystkim wtedy, kiedy pracujesz
+z formularzami, na przykład::
 
     use Symfony\Component\HttpFoundation\Request;
 
@@ -323,18 +319,17 @@ working with forms, for example::
     }
 
 .. index::
-   single: Controller; Base controller class
+   single: Kontroler; Podstawowa klasa kontrolera
 
-The Base Controller Class
--------------------------
+Podstawowa klasa kontrolera
+---------------------------
+Dla ułatwienia, Symfony2 udostępnia podstawową klasę ``Controller``, która pomaga
+w najczęstszych zadaniach kontrolerów i daje Twojej klasie kontrolera dostęp
+do jakiegokolwiek zasobu, który może potrzebować. Dzięki dziedziczeniu z klasy ``Controller``
+możesz uzyskać kilka pomocnych funkcji.
 
-For convenience, Symfony2 comes with a base ``Controller`` class that assists
-with some of the most common controller tasks and gives your controller class
-access to any resource it might need. By extending this ``Controller`` class,
-you can take advantage of several helper methods.
-
-Add the ``use`` statement atop the ``Controller`` class and then modify the
-``HelloController`` to extend it:
+Dodaj instrukcję ``use`` na początku pliku kontrolera, a później zmodyfikuj ``HelloController`` tak,
+aby dziedziczył klasę ``Controller``:
 
 .. code-block:: php
 
@@ -352,57 +347,52 @@ Add the ``use`` statement atop the ``Controller`` class and then modify the
         }
     }
 
-This doesn't actually change anything about how your controller works. In
-the next section, you'll learn about the helper methods that the base controller
-class makes available. These methods are just shortcuts to using core Symfony2
-functionality that's available to you with or without the use of the base
-``Controller`` class. A great way to see the core functionality in action
-is to look in the
-:class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller` class
-itself.
+W rzeczywistości niczego to nie zmienia w sposobie działania Twojego kontrolera.
+W następnym dziale dowiesz się o metodach helperów, które otrzymujesz z klasą
+podstawowego kontrolera. Te metody to po prostu skróty do rdzennych funkcji Symfony2,
+które są dla Ciebie dostępne niezależnie od tego, czy używasz podstawowej klasy ``Controller``,
+czy nie. Świetnym sposobem, aby zobaczyć rdzenne funkcje w akcji to spojrzeć samemu
+do pliku klasy :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`.
 
 .. tip::
 
-    Extending the base class is *optional* in Symfony; it contains useful
-    shortcuts but nothing mandatory. You can also extend
-    ``Symfony\Component\DependencyInjection\ContainerAware``. The service
-    container object will then be accessible via the ``container`` property.
+    Dziedziczenie podstawowej klasy w Symfony jest *opcjonalne*; zawiera ona przydatne skróty,
+    lecz nic niezbędnego. Możesz również dziedziczyć ``Symfony\Component\DependencyInjection\ContainerAware``.
+    Kontener usługi będzie wtedy dostępny przez właściwość ``container``.
 
 .. note::
 
-    You can also define your :doc:`Controllers as Services
-    </cookbook/controller/service>`.
+    Możesz również definiować własne :doc:`Kontrolery jako usługi</cookbook/controller/service>`.
 
 .. index::
-   single: Controller; Common Tasks
+   single: Kontroler; Powszechne zadania
 
-Common Controller Tasks
------------------------
+Powszechne zadania kontrolera
+-----------------------------
 
-Though a controller can do virtually anything, most controllers will perform
-the same basic tasks over and over again. These tasks, such as redirecting,
-forwarding, rendering templates and accessing core services, are very easy
-to manage in Symfony2.
+Choć kontroler może robić dosłownie wszystko, większość z nich będzie wykonywać
+te same podstawowe zadania w kółko. Te zadania, takie jak przekierowania, forwardowanie,
+renderowanie szablonów, czy uzyskiwanie dostępu do rdzennych usług, w Symfony2 są bardzo
+łatwe w użyciu.
 
 .. index::
-   single: Controller; Redirecting
+   single: Kontroler; Przekierowania
 
-Redirecting
-~~~~~~~~~~~
+Przekierowania
+~~~~~~~~~~~~~~
 
-If you want to redirect the user to another page, use the ``redirect()`` method::
+Jeśli hccesz przekierować użytkownika na inną stronę, użyj metody ``redirect()``::
 
     public function indexAction()
     {
         return $this->redirect($this->generateUrl('homepage'));
     }
 
-The ``generateUrl()`` method is just a helper function that generates the URL
-for a given route. For more information, see the :doc:`Routing </book/routing>`
-chapter.
+Metoda ``generateUrl`` jest po prostu helperem, który generuje URL dla podanej ścieżki.
+Po więcej informacji sięgnij do rozdziału :doc:`Routing </book/routing>`.
 
-By default, the ``redirect()`` method performs a 302 (temporary) redirect. To
-perform a 301 (permanent) redirect, modify the second argument::
+Domyślnie, metoda ``redirect()`` dokonuje przekierowania 302 (tymczasowe, ang. temporary).
+Aby wykonać przekierowanie 301 (trwałe, ang. permanent), zmodyfikuj drugi argument::
 
     public function indexAction()
     {
@@ -411,8 +401,8 @@ perform a 301 (permanent) redirect, modify the second argument::
 
 .. tip::
 
-    The ``redirect()`` method is simply a shortcut that creates a ``Response``
-    object that specializes in redirecting the user. It's equivalent to:
+    Metoda ``redirect()`` to po prostu skrót, który tworzy obiekt ``Response``,
+    którego zadaniem jest przekierowanie użytkownika. Jest to równoznaczne z:
 
     .. code-block:: php
 
@@ -421,15 +411,15 @@ perform a 301 (permanent) redirect, modify the second argument::
         return new RedirectResponse($this->generateUrl('homepage'));
 
 .. index::
-   single: Controller; Forwarding
+   single: Kontroler; Forwardowanie
 
-Forwarding
-~~~~~~~~~~
+Forwardowanie
+~~~~~~~~~~~~~
 
-You can also easily forward to another controller internally with the ``forward()``
-method. Instead of redirecting the user's browser, it makes an internal sub-request,
-and calls the specified controller. The ``forward()`` method returns the ``Response``
-object that's returned from that controller::
+Możesz również w łatwy sposów forwardować do innego kontrolera wewnętrznie za pomocą
+metody ``forward()``. Zamiast przekierowywania przeglądarki użytkownika, tworzy ona
+wewnętrzne pod-żądanie (ang. sub-request), które uruchamia określony kontroler. Metoda
+``forward()`` zwraca obiekt ``Response``, który jest zwracany przez ten kontroler::
 
     public function indexAction($name)
     {
@@ -438,18 +428,17 @@ object that's returned from that controller::
             'color' => 'green'
         ));
 
-        // further modify the response or return it directly
+        // dalej zmodyfikuj odpowiedź, lub ją zwróć bezpośrednio
 
         return $response;
     }
 
-Notice that the `forward()` method uses the same string representation of
-the controller used in the routing configuration. In this case, the target
-controller class will be ``HelloController`` inside some ``AcmeHelloBundle``.
-The array passed to the method becomes the arguments on the resulting controller.
-This same interface is used when embedding controllers into templates (see
-:ref:`templating-embedding-controller`). The target controller method should
-look something like the following::
+Zauważ, że metoda `forward()` używa takiej samej reprezentacji jak kontroler
+użyty w konfiguracji routingu. W tym wypadku, docelową klasą kontrolera będzie
+``HelloController`` wewnątrz ``AcmeHelloBundle``. Tablica przekazana do metody
+zostanie argumentami wynikowego kontrolera. Taki sam interfejs jest używany podczas
+zagnieżdżania kontrolerów w szablonach (zobacz :ref:`templating-embedding-controller`).
+Metoda docelowego kontrolera powinna wyglądać mniej więcej tak, jak poniżej::
 
     public function fancyAction($name, $color)
     {
