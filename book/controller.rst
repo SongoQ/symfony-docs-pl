@@ -442,21 +442,19 @@ Metoda docelowego kontrolera powinna wyglądać mniej więcej tak, jak poniżej:
 
     public function fancyAction($name, $color)
     {
-        // ... create and return a Response object
+        // ... utworzenie i zwrócenie obiektu Response
     }
 
-And just like when creating a controller for a route, the order of the arguments
-to ``fancyAction`` doesn't matter. Symfony2 matches the index key names
-(e.g. ``name``) with the method argument names (e.g. ``$name``). If you
-change the order of the arguments, Symfony2 will still pass the correct
-value to each variable.
+Tak samo jak tworzenie kontrolera dla ścieżki, kolejność argumentów w ``fancyAction``
+nie ma znaczenia. Symfony2 dopasowuje nazwy kluczy indeksu (np. ``name``) do nazw
+argumentów metody (np. ``$name``). Jeśli zmienisz kolejność argumentów, Symfony2
+wcią będzie podawał poprawne wartości do każdej ze zmiennych.
 
 .. tip::
 
-    Like other base ``Controller`` methods, the ``forward`` method is just
-    a shortcut for core Symfony2 functionality. A forward can be accomplished
-    directly via the ``http_kernel`` service. A forward returns a ``Response``
-    object::
+    Tak samo jak inne podstawowe metody ``Controller``, metoda ``forward`` jest po prostu
+    skrótem do rdzennej funkcji Symfony2. Forwardowanie może być dokonane bezpośrednio
+    przez usługę ``http_kernel``. Forwardowanie zwraca obiekt ``Response``:
 
         $httpKernel = $this->container->get('http_kernel');
         $response = $httpKernel->forward('AcmeHelloBundle:Hello:fancy', array(
@@ -465,49 +463,49 @@ value to each variable.
         ));
 
 .. index::
-   single: Controller; Rendering templates
+   single: Kontroler; Renderowanie szablonów
 
 .. _controller-rendering-templates:
 
-Rendering Templates
-~~~~~~~~~~~~~~~~~~~
+Renderowanie szablonów
+~~~~~~~~~~~~~~~~~~~~~~
 
-Though not a requirement, most controllers will ultimately render a template
-that's responsible for generating the HTML (or other format) for the controller.
-The ``renderView()`` method renders a template and returns its content. The
-content from the template can be used to create a ``Response`` object::
+Chociaż nie jest to wymagane, większość kontrolerów ostatecznie renderuje szablon,
+który jest odpowiedzialny za generowanie HTML (lub innego formatu) dla kontrolera.
+Metoda ``renderView()`` renderuje szablon i zwraca jego zawartość. Zawartość
+szablonu może być użyta do utworzenia obiektu ``Response``::
 
     $content = $this->renderView('AcmeHelloBundle:Hello:index.html.twig', array('name' => $name));
 
     return new Response($content);
 
-This can even be done in just one step with the ``render()`` method, which
-returns a ``Response`` object containing the content from the template::
+Może to być zrobione nawet w jednym kroku poprzez metodę ``render``, która
+zwraca obiekt ``Response`` zawierający zawartość szablonu::
 
     return $this->render('AcmeHelloBundle:Hello:index.html.twig', array('name' => $name));
 
-In both cases, the ``Resources/views/Hello/index.html.twig`` template inside
-the ``AcmeHelloBundle`` will be rendered.
+W obu przypadkach, wyrenderowany zostanie szablon ``Resources/views/Hello/index.html.twig`` z
+``AcmeHelloBundle``.
 
-The Symfony templating engine is explained in great detail in the
-:doc:`Templating </book/templating>` chapter.
+System szablonów Symfony jest szczegółowo wyjaśniony w rozdziale :doc:`Szablony </book/templating>`.
 
 .. tip::
 
-    The ``renderView`` method is a shortcut to direct use of the ``templating``
-    service. The ``templating`` service can also be used directly::
+    Metoda ``renderView`` jest skrótem do bezpośredniego użycia usługi ``szablonów``.
+    Usługa ``szablonów`` moęe być również użyta bezpośrednio::
 
         $templating = $this->get('templating');
         $content = $templating->render('AcmeHelloBundle:Hello:index.html.twig', array('name' => $name));
 
 .. index::
-   single: Controller; Accessing services
+   single: Kontroler; Dostęp do usług
 
-Accessing other Services
-~~~~~~~~~~~~~~~~~~~~~~~~
+Dostęp do innych usług
+~~~~~~~~~~~~~~~~~~~~~~
 
-When extending the base controller class, you can access any Symfony2 service
-via the ``get()`` method. Here are several common services you might need::
+Podczas dziedziczenia podstawowej klasy kontrolera, możesz uzyskać dostęp do
+wszystkich usług Symfony2 poprzez metodę ``get()``. Poniżej znajduje się kilka
+popularnych usług, których możesz potrzebować::
 
     $request = $this->getRequest();
 
@@ -517,23 +515,24 @@ via the ``get()`` method. Here are several common services you might need::
 
     $mailer = $this->get('mailer');
 
-There are countless other services available and you are encouraged to define
-your own. To list all available services, use the ``container:debug`` console
-command:
+Istnieje niezliczona ilość dostępnych usług, a Ciebie zachęcamy do tworzenia własnych.
+Aby poznać listę wszstkich dostępnych usług, użyj polecenia konsoli ``container:debug``:
 
 .. code-block:: bash
 
     php app/console container:debug
 
-For more information, see the :doc:`/book/service_container` chapter.
+Aby dowiedzieć się więcej, zobacz rozdział :doc:`/book/service_container`.
 
 .. index::
-   single: Controller; Managing errors
-   single: Controller; 404 pages
+   single: Kontroler; Zarządzanie stronami błędów
+   single: Kontroler; strony 404
 
-Managing Errors and 404 Pages
------------------------------
+Zarządzanie stronami błędów i błąd 404
+--------------------------------------
 
+Kiedy dany zasób nie może zostać odnaleziony, powinieneś działać zgodnie z
+zasadami protokołu HTTP i zwrócić odpowiedź 404.
 When things are not found, you should play well with the HTTP protocol and
 return a 404 response. To do this, you'll throw a special type of exception.
 If you're extending the base controller class, do the following::
