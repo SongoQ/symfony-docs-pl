@@ -532,77 +532,76 @@ Zarządzanie stronami błędów i błąd 404
 --------------------------------------
 
 Kiedy dany zasób nie może zostać odnaleziony, powinieneś działać zgodnie z
-zasadami protokołu HTTP i zwrócić odpowiedź 404.
-When things are not found, you should play well with the HTTP protocol and
-return a 404 response. To do this, you'll throw a special type of exception.
-If you're extending the base controller class, do the following::
+zasadami protokołu HTTP i zwrócić odpowiedź 404. Aby to zrobić, musisz wyrzucić
+specjalny typ wyjątku. Jeśli rozszerzasz podstawową klasę kontrolera, zrób
+następująco::
 
     public function indexAction()
     {
-        $product = // retrieve the object from database
+        $product = // pobieramy obiekt z bazy danych
         if (!$product) {
-            throw $this->createNotFoundException('The product does not exist');
+            throw $this->createNotFoundException('Produkt nie istnieje');
         }
 
         return $this->render(...);
     }
 
-The ``createNotFoundException()`` method creates a special ``NotFoundHttpException``
-object, which ultimately triggers a 404 HTTP response inside Symfony.
+Metoda ``createNotFoundException()`` tworzy specjalny obiet ``NotFoundHttpException``,
+który w efekcie końcowym zwraca odpowiedź HTTP z kodem 404.
 
-Of course, you're free to throw any ``Exception`` class in your controller -
-Symfony2 will automatically return a 500 HTTP response code.
+Oczywiście możesz wyrzucić jakąkolwiek klasę ``Exception`` w Twoim kontrolerze -
+Symfony2 automatycznie zwróci odpowiedź HTTP z kodem 500.
 
 .. code-block:: php
 
-    throw new \Exception('Something went wrong!');
+    throw new \Exception('Coś poszło źle!');
 
-In every case, a styled error page is shown to the end user and a full debug
-error page is shown to the developer (when viewing the page in debug mode).
-Both of these error pages can be customized. For details, read the
-":doc:`/cookbook/controller/error_pages`" cookbook recipe.
+W każdym przypadku, użytkownikowi zostanie wyświetlona odpowiednia strona błędu,
+a deweloperowi kompletna strona debuggera (podczas przeglądania strony w trybie
+debugowania). Obie z tych stron błędu mogą być dostosowane do Twoich potrzeb.
+Aby dowiedzieć się więcej, przeczytaj przepis w cookbooku ":doc:`/cookbook/controller/error_pages`".
 
 .. index::
-   single: Controller; The session
-   single: Session
+   single: Kontroler; Sesja
+   single: Sesja
 
-Managing the Session
---------------------
+Zarządzanie sesją
+-----------------
 
-Symfony2 provides a nice session object that you can use to store information
-about the user (be it a real person using a browser, a bot, or a web service)
-between requests. By default, Symfony2 stores the attributes in a cookie
-by using the native PHP sessions.
+Symfony2 dostarcza niezły obiekt sesji, który możesz wykorzystać do przechowywania
+informacji o użytkowniku (prawdziwa osoba, bot, czy nawet usługa web) pomiędzy
+żądaniami. Domyślnie Symfony2 przechowuje atrybuty w ciasteczku przy użyciu natywnych
+sesji PHP.
 
-Storing and retrieving information from the session can be easily achieved
-from any controller::
+Przechowywanie i otrzymywanie informacji z sesji może być łatwo osiągnięte z dowolnego
+kontrolera::
 
     $session = $this->getRequest()->getSession();
 
-    // store an attribute for reuse during a later user request
+    // zapisujemy atrybut do odczytania w kolejnym żądaniu
     $session->set('foo', 'bar');
 
-    // in another controller for another request
+    // w innym kontrolerze i innym żądaniu
     $foo = $session->get('foo');
 
-    // use a default value of the key doesn't exist
-    $filters = $session->set('filters', array());
+    // użycie domyślnej wartości, jeśli atrybut nie istnieje
+    $filters = $session->get('filters', array());
 
-These attributes will remain on the user for the remainder of that user's
-session.
+Te atrybuty zostaną zapisane dla danego użytkownika dla pozostałej części
+sesji użytkownika.
 
 .. index::
-   single Session; Flash messages
+   single Sesje; Wiadomości flash
 
-Flash Messages
-~~~~~~~~~~~~~~
+Wiadomości flash
+~~~~~~~~~~~~~~~~
 
-You can also store small messages that will be stored on the user's session
-for exactly one additional request. This is useful when processing a form:
-you want to redirect and have a special message shown on the *next* request.
-These types of messages are called "flash" messages.
+Możesz również tworzyć krótkie komunikaty, które będą przechowywane w sesji użytkownika
+dla dokładnie jednego kolejnego żądania. Jest to przydatne, kiedy przetwarzamy
+formularz: chcesz przekierować użytkownika i wyświetlić mu specjalny komunikat
+podczas *następnego* żądania. Te typy wiadomości to komunikaty "flash".
 
-For example, imagine you're processing a form submit::
+Na przykład, wyobraź sobie że przetwarzasz wysłanie formularza::
 
     public function updateAction()
     {
@@ -610,9 +609,9 @@ For example, imagine you're processing a form submit::
 
         $form->bindRequest($this->getRequest());
         if ($form->isValid()) {
-            // do some sort of processing
+            // obsługa formularza
 
-            $this->get('session')->getFlashBag()->add('notice', 'Your changes were saved!');
+            $this->get('session')->getFlashBag()->add('notice', 'Zmiany zostały zapisane!');
 
             return $this->redirect($this->generateUrl(...));
         }
@@ -620,12 +619,12 @@ For example, imagine you're processing a form submit::
         return $this->render(...);
     }
 
-After processing the request, the controller sets a ``notice`` flash message
-and then redirects. The name (``notice``) isn't significant - it's just what
-you're using to identify the type of the message.
+Po obsłużeniu żądania, kontroler ustawia komunikat flash ``notice``, a następnie
+wykonuje przekierowanie. Nazwa (``notice``) nie ma znaczenia - używasz ją tylko
+do zidentyfikowania typu komunikatu.
 
-In the template of the next action, the following code could be used to render
-the ``notice`` message:
+W szablonie następnej akcji, poniższy kod może zostać użyty do wyrenderowania
+wiadomości ``notice``:
 
 .. configuration-block::
 
@@ -645,77 +644,75 @@ the ``notice`` message:
             </div>
         <?php endforeach; ?>
 
-By design, flash messages are meant to live for exactly one request (they're
-"gone in a flash"). They're designed to be used across redirects exactly as
-you've done in this example.
-
+Generalnie wiadomości flash są przeznaczone do istnienia tylko dla jednego żądania.
+Są zaprojektowanie tak, aby mogłby być używane poprzez przekierowania dokładnie tak,
+jak zrobiliśmy w powyższym przykładzie.
 .. index::
-   single: Controller; Response object
+   single: Kontroler; Obiekt odpowiedzi
 
-The Response Object
--------------------
+Obiekt odpowiedzi
+-----------------
 
-The only requirement for a controller is to return a ``Response`` object. The
-:class:`Symfony\\Component\\HttpFoundation\\Response` class is a PHP
-abstraction around the HTTP response - the text-based message filled with HTTP
-headers and content that's sent back to the client::
+Jedyny wymóg dla kontrolera to zwrócić obiekt ``Response``. Klasa
+:class:`Symfony\\Component\\HttpFoundation\\Response` to abstrakcja PHP dla
+odpowiedzi HTTP - tekstowa wiadomość zawierająca nagłówki HTTP i treść, która
+jest zwracana klientowi::
 
-    // create a simple Response with a 200 status code (the default)
+    // tworzymy prosty obiekt Response z kodem 200 (domyślny)
     $response = new Response('Hello '.$name, 200);
 
-    // create a JSON-response with a 200 status code
+    // tworzymy odpowiedź JSON z kodem 200
     $response = new Response(json_encode(array('name' => $name)));
     $response->headers->set('Content-Type', 'application/json');
 
 .. tip::
 
-    The ``headers`` property is a
-    :class:`Symfony\\Component\\HttpFoundation\\HeaderBag` object with several
-    useful methods for reading and mutating the ``Response`` headers. The
-    header names are normalized so that using ``Content-Type`` is equivalent
-    to ``content-type`` or even ``content_type``.
+    Właściwość ``headers`` to obiekt :class:`Symfony\\Component\\HttpFoundation\\HeaderBag`
+    zawierający kilka użytecznych metod służących do odczytywania i modyfikowania
+    nagłówków ``Response``. Nazwy nagłówków są normalizowane, dzięki czemu ``Content-Type``
+    jest tym samym, co ``content-type``, czy nawet ``content_type``.
 
 .. index::
-   single: Controller; Request object
+   single: Kontroler; Obiekt żądania
 
-The Request Object
-------------------
+Obiekt żądania
+--------------
 
-Besides the values of the routing placeholders, the controller also has access
-to the ``Request`` object when extending the base ``Controller`` class::
+Oprócz wartości z placeholderów routingu, kontroler ma również dostęp do obiektu
+``Request``, kiedy dziedziczysz podstawową klasę ``Controller``::
 
     $request = $this->getRequest();
 
-    $request->isXmlHttpRequest(); // is it an Ajax request?
+    $request->isXmlHttpRequest(); // żądanie Ajax?
 
     $request->getPreferredLanguage(array('en', 'fr'));
 
-    $request->query->get('page'); // get a $_GET parameter
+    $request->query->get('page'); // pobieramy parametr $_GET
 
-    $request->request->get('page'); // get a $_POST parameter
+    $request->request->get('page'); // pobieramy parametr $_POST
 
-Like the ``Response`` object, the request headers are stored in a ``HeaderBag``
-object and are easily accessible.
+Podobnie jak w przypadku obiektu ``Response``, nagłówki żądania są przechowywane w
+obiekcie ``HeaderBag`` i są równie łatwo dostępne.
 
-Final Thoughts
---------------
+Myśli końcowe
+-------------
 
-Whenever you create a page, you'll ultimately need to write some code that
-contains the logic for that page. In Symfony, this is called a controller,
-and it's a PHP function that can do anything it needs in order to return
-the final ``Response`` object that will be returned to the user.
+Za każdym razem, kiedy tworzysz stronę, musisz napisać kod, który zaiera logikę
+tej strony. W Symfony nazywa się to kontrolerem i jest to funkcja PHP, która
+może robić wszystko czego potrzebujesz, aby w efekcie końcowym zwrócić
+obiekt ``Response``, który zostanie wysłany do użytkownika.
 
-To make life easier, you can choose to extend a base ``Controller`` class,
-which contains shortcut methods for many common controller tasks. For example,
-since you don't want to put HTML code in your controller, you can use
-the ``render()`` method to render and return the content from a template.
+Aby ułatwić sobie życie, możesz rozszerzyć podstawową klasę ``Controller``,
+która zawiera metody-skróty do wielu powszechnych zadań kontrolera. Na przykład,
+jeśli nie chcesz umieszczać kodu HTML w swoim kontrolerze, możesz użyć metody
+``render()``, aby wyrenderować zawartość szablonu.
 
-In other chapters, you'll see how the controller can be used to persist and
-fetch objects from a database, process form submissions, handle caching and
-more.
+W kolejnych rozdziałach zobaczysz jak kontroler może być wykorzystany do umieszczania
+i pobierania obiektów z bazy danych, przetwarzania formularzy, wykorzystywania cache
+i wielu więcej.
 
-Learn more from the Cookbook
-----------------------------
+Dowiedz się więcej z Cookbooka
+------------------------------
 
 * :doc:`/cookbook/controller/error_pages`
 * :doc:`/cookbook/controller/service`
