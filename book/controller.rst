@@ -547,10 +547,10 @@ następująco::
     }
 
 Metoda ``createNotFoundException()`` tworzy specjalny obiet ``NotFoundHttpException``,
-który w efekcie końcowym zwraca odpowiedź HTTP z kodem 404.
+który w efekcie końcowym zwraca odpowiedź HTTP z kodem błędu 404.
 
 Oczywiście możesz wyrzucić jakąkolwiek klasę ``Exception`` w Twoim kontrolerze -
-Symfony2 automatycznie zwróci odpowiedź HTTP z kodem 500.
+Symfony2 automatycznie zwróci odpowiedź HTTP z kodem błędu 500.
 
 .. code-block:: php
 
