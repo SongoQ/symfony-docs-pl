@@ -4,33 +4,32 @@
 Routing
 =======
 
-Beautiful URLs are an absolute must for any serious web application. This
-means leaving behind ugly URLs like ``index.php?article_id=57`` in favor
-of something like ``/read/intro-to-symfony``.
+Piękne URLe to absolutna konieczność dla każdej poważnej aplikacji internetowej.
+Oznacza to porzucenie brzydkich adresów jak ``index.php?article_id=57``
+na rzecz czegoś takiego jak ``/read/intro-to-symfony``.
 
-Having flexibility is even more important. What if you need to change the
-URL of a page from ``/blog`` to ``/news``? How many links should you need to
-hunt down and update to make the change? If you're using Symfony's router,
-the change is simple.
+Jeszcze ważniejsza jest elastyczność. Co, jeśli musisz zmienić URL strony
+z ``/blog`` na ``/news``? Jak dużo linków musiałbyś odnaleźć i poprawić,
+aby dokonać takiej zmiany? Jeśli używasz routera Symfony, taka zmiana jest
+banalnie prosta.
 
-The Symfony2 router lets you define creative URLs that you map to different
-areas of your application. By the end of this chapter, you'll be able to:
+Router Symfony2 pozwala Ci definiować kreatywne URLe, które prowadzą do różnych
+miejsc w Twojej aplikacji. Na końcu tego rozdziału będziesz umiał:
 
-* Create complex routes that map to controllers
-* Generate URLs inside templates and controllers
-* Load routing resources from bundles (or anywhere else)
-* Debug your routes
+* Tworzyć kompleksowe trasy mapujące do kontrolerów
+* Generować URLe wewnątrz szablonów i kontrolerów
+* Wczytywać zasoby routingu z bundli (lub skądkolwiek indziej)
+* Debugować swoje trasy
 
 .. index::
-   single: Routing; Basics
+   single: Routing; Podstawy
 
-Routing in Action
------------------
+Routing w akcji
+---------------
 
-A *route* is a map from a URL pattern to a controller. For example, suppose
-you want to match any URL like ``/blog/my-post`` or ``/blog/all-about-symfony``
-and send it to a controller that can look up and render that blog entry.
-The route is simple:
+*Trasa* łączy wzorzec URL z kontrolerem. Na przykład, załóżmy, że chcesz dopasować
+URL jak ``/blog/moj-post`` czy ``/blog/wszystko-o-symfony`` i wysłać go do kontrolera,
+który może odnaleźć i wyświetlić dany wpis bloga. Ustawienie trasy jest banalne::
 
 .. configuration-block::
 
@@ -67,15 +66,15 @@ The route is simple:
 
         return $collection;
 
-The pattern defined by the ``blog_show`` route acts like ``/blog/*`` where
-the wildcard is given the name ``slug``. For the URL ``/blog/my-blog-post``,
-the ``slug`` variable gets a value of ``my-blog-post``, which is available
-for you to use in your controller (keep reading).
+Wzorzec zdefiniowany w trasie ``blog_show`` działa jak ``/blog/*``, gdzie
+wieloznaczny jest parametr ``slug``. Dla adresu URL ``/blog/moj-post`` zmienna
+``slug`` przybierze wartość ``moj-post``, która jest dostępna dla Ciebie z poziomu
+kontrolera (czytaj dalej).
 
-The ``_controller`` parameter is a special key that tells Symfony which controller
-should be executed when a URL matches this route. The ``_controller`` string
-is called the :ref:`logical name<controller-string-syntax>`. It follows a
-pattern that points to a specific PHP class and method:
+Parametr ``_controller`` jest specjalną wartością, która mówi Symfony który kontroler
+powinien być uruchomiony, kiedy URL zostanie dopasowany do tej trasy. Ciąg ``_controller``
+jest nazywany :ref:`logical name<controller-string-syntax>`. Stosuje on wzorzec, który
+określa konkretną klasę PHP oraz metodę:
 
 .. code-block:: php
 
@@ -96,64 +95,63 @@ pattern that points to a specific PHP class and method:
         }
     }
 
-Congratulations! You've just created your first route and connected it to
-a controller. Now, when you visit ``/blog/my-post``, the ``showAction`` controller
-will be executed and the ``$slug`` variable will be equal to ``my-post``.
+Gratulacje! Właśnie utworzyłeś swoją pierwszą trasę i połączyłeś ją z kontrolerem.
+Teraz, kiedy odwiedzisz ``/blog/moj-post``, zostanie uruchomiony kontroler ``showAction``,
+a zmienna ``$slug`` przyjmie wartość ``moj-post``.
 
-This is the goal of the Symfony2 router: to map the URL of a request to a
-controller. Along the way, you'll learn all sorts of tricks that make mapping
-even the most complex URLs easy.
+To jest właśnie zadanie routera Symfony2: zmapować URL żądania do kontrolera.
+Po drodze nauczysz się wielu trików, które sprawiają, że mapowanie nawet najbardziej
+złożonych URLi staje się łatwe.
 
 .. versionadded:: 2.1
 
-    As of Symfony 2.1, the Routing component also accepts Unicode values
-    in routes like: /Жени/
+    W Symfony2.1, komponent Routing obsługuje również wartości Unicode, takie
+    jak np.: /Жени/
 
 .. index::
-   single: Routing; Under the hood
+   single: Routing; Pod maską
 
-Routing: Under the Hood
+Routing: Pod maską
 -----------------------
 
-When a request is made to your application, it contains an address to the
-exact "resource" that the client is requesting. This address is called the
-URL, (or URI), and could be ``/contact``, ``/blog/read-me``, or anything
-else. Take the following HTTP request for example:
+Kiedy do Twojej aplikacji wysłane jest żądanie, zawiera ono adres do dokładnego
+"zasobu", który klient żąda. Ten adres nazywany jest URL (lub URI) i może być
+nim ``/kontakt``, ``/blog/informacje`` lub cokolwiek innego. Weźmy za przykład
+poniższe żądanie HTTP:
 
 .. code-block:: text
 
-    GET /blog/my-blog-post
+    GET /blog/moj-post
 
-The goal of the Symfony2 routing system is to parse this URL and determine
-which controller should be executed. The whole process looks like this:
+Zadaniem systemu routingu Symfony2 jest parsować ten URL i określić, który
+kontroler powinien zostać uruchomiony. Cały proces wygląda mniej więcej tak:
 
-#. The request is handled by the Symfony2 front controller (e.g. ``app.php``);
+#. Żądanie jest przetwarzane przez front kontroler Symfony2 (np. ``app.php``);
 
-#. The Symfony2 core (i.e. Kernel) asks the router to inspect the request;
+#. Rdzeń Symfony2 (np. Kernel) odpytuje router dla danego żądania;
 
-#. The router matches the incoming URL to a specific route and returns information
-   about the route, including the controller that should be executed;
+#. Router dopasowuje przychodzący URL do konkretnej trasy i zwraca informacje o tej właśnie
+   trasie, włączając w to kontroler, który powinien zostać uruchomiony;
 
-#. The Symfony2 Kernel executes the controller, which ultimately returns
-   a ``Response`` object.
+#. Kernel (Jądro) Symfony2 uruchamia kontroler, który ostatecznie zwraca obiekt
+   ``Response``.
 
 .. figure:: /images/request-flow.png
    :align: center
-   :alt: Symfony2 request flow
+   :alt: Przepływ żądania Symfony2
 
-   The routing layer is a tool that translates the incoming URL into a specific
-   controller to execute.
+   Warstwa routingu jest narzędziem, które tłumaczy przychodzące URLe na określony
+   kontroler do wykonania.
 
 .. index::
-   single: Routing; Creating routes
+   single: Routing; Tworzenie tras
 
-Creating Routes
----------------
+Tworzenie tras
+--------------
 
-Symfony loads all the routes for your application from a single routing configuration
-file. The file is usually ``app/config/routing.yml``, but can be configured
-to be anything (including an XML or PHP file) via the application configuration
-file:
+Symfony wczytuje wszystkie trasy dla Twojej aplikacji z pojedynczego pliku konfiguracyjnego
+routingu. Ten plik to zazwyczaj ``app/config/routing.yml``, jednakże może on być skonfigurowany
+w dowolny sposób (włączając w to plik XML czy PHP) przez plik konfiguracyjny aplikacji:
 
 .. configuration-block::
 
@@ -182,12 +180,12 @@ file:
 
 .. tip::
 
-    Even though all routes are loaded from a single file, it's common practice
-    to include additional routing resources from inside the file. See the
-    :ref:`routing-include-external-resources` section for more information.
+    Nawet, jeśli wszystkie trasy są wczytywane z pojedynczego pliku, dobrą praktyką
+    jest dołączać dodatkowe dane routingu z innych plików. Zobacz :ref:`routing-include-external-resources`
+    w celu uzyskania więcej informacji.
 
-Basic Route Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Podstawowa konfiguracja trasy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Defining a route is easy, and a typical application will have lots of routes.
 A basic route consists of just two parts: the ``pattern`` to match and a
