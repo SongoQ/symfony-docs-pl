@@ -187,9 +187,9 @@ w dowolny sposób (włączając w to plik XML czy PHP) przez plik konfiguracyjny
 Podstawowa konfiguracja trasy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Defining a route is easy, and a typical application will have lots of routes.
-A basic route consists of just two parts: the ``pattern`` to match and a
-``defaults`` array:
+Definiowanie tras jest proste, a typowa aplikacja będzie posiadała mnóstwo tras.
+Podstawowa trasa składa się z dwóch części: ``wzoru`` do dopasowania oraz z tablicy
+``defaults`` przechowującej wartości domyślne:
 
 .. configuration-block::
 
@@ -225,19 +225,19 @@ A basic route consists of just two parts: the ``pattern`` to match and a
 
         return $collection;
 
-This route matches the homepage (``/``) and maps it to the ``AcmeDemoBundle:Main:homepage``
-controller. The ``_controller`` string is translated by Symfony2 into an
-actual PHP function and executed. That process will be explained shortly
-in the :ref:`controller-string-syntax` section.
+Ta trasa pasuje do strony głównej (``/``) i prowadzi do kontrolera ``AcmeDemoBundle:Main:homepage``.
+Ciąg ``_controller`` jest zamieniany na nazwę odpowiedniej funkcji PHP, która następnie
+zostaje uruchomiona. Ten proces będzie pokrótce wyjaśniony w sekcji :ref:`controller-string-syntax`.
 
 .. index::
-   single: Routing; Placeholders
+   single: Routing; Parametry
 
-Routing with Placeholders
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Routing z parametrami
+~~~~~~~~~~~~~~~~~~~~~
 
-Of course the routing system supports much more interesting routes. Many
-routes will contain one or more named "wildcard" placeholders:
+Oczywiście system routingu wspiera o wiele więcej ciekawych tras. Wiele
+z nich będzie posiadało jeden lub więcej parametrów (symboli zastępczych, ang. placeholder) jako
+"wieloznacznik" (ang. wildcard):
 
 .. configuration-block::
 
@@ -272,21 +272,21 @@ routes will contain one or more named "wildcard" placeholders:
 
         return $collection;
 
-The pattern will match anything that looks like ``/blog/*``. Even better,
-the value matching the ``{slug}`` placeholder will be available inside your
-controller. In other words, if the URL is ``/blog/hello-world``, a ``$slug``
-variable, with a value of ``hello-world``, will be available in the controller.
-This can be used, for example, to load the blog post matching that string.
+Wzorzec będzie pasował do wszystkiego, co wygląda jak ``/blog/*``. Co więcej,
+wartość przypisana do parametru ``{slug}`` będzie dostępna wewnątrz Twojego
+kontrolera. Innymi słowy, jeśli URL wygląda tak: ``/blog/hello-world``,
+to zmienna ``$slug`` z wartością ``hello-world`` będzie dostępna dla kontrolera.
+Może być to użyte np. do pobrania wpisu bloga, który pasuje do tego ciągu.
 
-The pattern will *not*, however, match simply ``/blog``. That's because,
-by default, all placeholders are required. This can be changed by adding
-a placeholder value to the ``defaults`` array.
+Ten wzorzec jednakże *nie* będzie pasował do samego ``/blog``. Dzieje się tak,
+ponieważ domyślnie wszystkie parametry są wymagane. Może być to zmienione poprzez
+dodanie domyślnej wartości tego parametru do tablicy ``defaults``.
 
-Required and Optional Placeholders
+Wymagane oraz opcjonalne parametry
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To make things more exciting, add a new route that displays a list of all
-the available blog posts for this imaginary blog application:
+Aby uczynić to bardziej ekscytującym, dodaj nową trasę, która wyświetla
+listę wszystkich dostępnych wpisów bloga:
 
 .. configuration-block::
 
@@ -321,10 +321,10 @@ the available blog posts for this imaginary blog application:
 
         return $collection;
 
-So far, this route is as simple as possible - it contains no placeholders
-and will only match the exact URL ``/blog``. But what if you need this route
-to support pagination, where ``/blog/2`` displays the second page of blog
-entries? Update the route to have a new ``{page}`` placeholder:
+Jak dotąd, ta trasa jest tak prosta, jak to tylko możliwe - nie zawiera
+żadnych placeholderów i pasuje tylko do jednego URL ``/blog``. Ale co, jeśli
+chcesz, aby ta trasa obsługiwała paginację, gdzie ``/blog/2`` wyświetla drugą
+stronę wpisów bloga? Zmień tą trasę, aby posiadała nowy parameter ``{page}``:
 
 .. configuration-block::
 
@@ -359,15 +359,15 @@ entries? Update the route to have a new ``{page}`` placeholder:
 
         return $collection;
 
-Like the ``{slug}`` placeholder before, the value matching ``{page}`` will
-be available inside your controller. Its value can be used to determine which
-set of blog posts to display for the given page.
+Podobnie jak poprzedni parameter ``{slug``, wartość pasująca do ``{page}``
+będzie dostępna dla Twojego kontrolera. Ta wartość może być użyta do określenia,
+którą część postów bloga wyświetlić dla danej strony.
 
-But hold on! Since placeholders are required by default, this route will
-no longer match on simply ``/blog``. Instead, to see page 1 of the blog,
-you'd need to use the URL ``/blog/1``! Since that's no way for a rich web
-app to behave, modify the route to make the ``{page}`` parameter optional.
-This is done by including it in the ``defaults`` collection:
+Ale chwileczkę! Ponieważ parametry są domyślnie wymagane, ta trasa już nie będzie
+pasować do adresu ``/blog``. Ponadto, aby zobaczyć stronę 1 bloga, musisz
+wejść pod URL ``/blog/1``! Jako, że nie jest to właściwe zachowanie
+dla aplikacji internetowej, zmodyfikuj trasę tak, aby parametr ``{page}``
+był opcjonalny. Można tego dokonać dołączając kolekcję ``defaults``:
 
 .. configuration-block::
 
@@ -404,10 +404,10 @@ This is done by including it in the ``defaults`` collection:
 
         return $collection;
 
-By adding ``page`` to the ``defaults`` key, the ``{page}`` placeholder is no
-longer required. The URL ``/blog`` will match this route and the value of
-the ``page`` parameter will be set to ``1``. The URL ``/blog/2`` will also
-match, giving the ``page`` parameter a value of ``2``. Perfect.
+Po dodaniu ``page`` do tablicy ``defaults``, wieloznacznik ``{page}`` już nie jest
+wymagany. URL ``/blog`` będzie teraz pasował do tej trasy, a wartość parametru
+``page`` będzie ustawiona na ``1``. URL ``/blog/2`` również będzie pasować,
+dając parametrowi ``page`` wartość ``2``. Idelanie.
 
 +---------+------------+
 | /blog   | {page} = 1 |
@@ -418,12 +418,12 @@ match, giving the ``page`` parameter a value of ``2``. Perfect.
 +---------+------------+
 
 .. index::
-   single: Routing; Requirements
+   single: Routing; Wymagania
 
-Adding Requirements
-~~~~~~~~~~~~~~~~~~~
+Dodawanie wymagań
+~~~~~~~~~~~~~~~~~
 
-Take a quick look at the routes that have been created so far:
+Spójrz na utworzone przez nas wcześniej trasy:
 
 .. configuration-block::
 
@@ -472,12 +472,11 @@ Take a quick look at the routes that have been created so far:
 
         return $collection;
 
-Can you spot the problem? Notice that both routes have patterns that match
-URL's that look like ``/blog/*``. The Symfony router will always choose the
-**first** matching route it finds. In other words, the ``blog_show`` route
-will *never* be matched. Instead, a URL like ``/blog/my-blog-post`` will match
-the first route (``blog``) and return a nonsense value of ``my-blog-post``
-to the ``{page}`` parameter.
+Widzisz problem? Zauważ, że obie trasy mają wzory, do których pasują adresy
+URL takie jak ``/blog/*``. Router Symfony2 zawsze będzie wybierał **pierwszą**
+trasę, którą znajdzie. Innymi słowy, trasa ``blog_show`` nigdy nie będzie pasować.
+Ponadto, URL jak ``/blog/my-blog-post`` będzie pasował do pierwszej trasy
+(``blog``) i zwracał bezsensowną wartość ``my-blog-post`` do parametru ``{page}``.
 
 +--------------------+-------+-----------------------+
 | URL                | route | parameters            |
@@ -487,10 +486,11 @@ to the ``{page}`` parameter.
 | /blog/my-blog-post | blog  | {page} = my-blog-post |
 +--------------------+-------+-----------------------+
 
-The answer to the problem is to add route *requirements*. The routes in this
-example would work perfectly if the ``/blog/{page}`` pattern *only* matched
-URLs where the ``{page}`` portion is an integer. Fortunately, regular expression
-requirements can easily be added for each parameter. For example:
+Rozwiązaniem tego problemu jest dodanie do trasy *wymagań*. Trasy w tym przypadku
+będą działały idealnie, jeśli wzorzec ``/blog/{page}`` będzie pasował *wyłącznie*
+do URLi, w których parameter ``{page}`` jest typu integer. Na szczęście,
+wymagania w postaci wyrażeń regularnych mogą być łatwo dodane dla każdego parametru.
+Na przykład:
 
 .. configuration-block::
 
