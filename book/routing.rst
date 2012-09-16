@@ -4,7 +4,7 @@
 Routing
 =======
 
-Piękne URLe to absolutna konieczność dla każdej poważnej aplikacji internetowej.
+Piękne URL-e to absolutna konieczność dla każdej poważnej aplikacji internetowej.
 Oznacza to porzucenie brzydkich adresów jak ``index.php?article_id=57``
 na rzecz czegoś takiego jak ``/read/intro-to-symfony``.
 
@@ -13,11 +13,11 @@ z ``/blog`` na ``/news``? Jak dużo linków musiałbyś odnaleźć i poprawić,
 aby dokonać takiej zmiany? Jeśli używasz routera Symfony, taka zmiana jest
 banalnie prosta.
 
-Router Symfony2 pozwala Ci definiować kreatywne URLe, które prowadzą do różnych
+Router Symfony2 pozwala Ci definiować kreatywne URL-e, które prowadzą do różnych
 miejsc w Twojej aplikacji. Na końcu tego rozdziału będziesz umiał:
 
 * Tworzyć kompleksowe trasy mapujące do kontrolerów
-* Generować URLe wewnątrz szablonów i kontrolerów
+* Generować URL-e wewnątrz szablonów i kontrolerów
 * Wczytywać zasoby routingu z bundli (lub skądkolwiek indziej)
 * Debugować swoje trasy
 
@@ -101,7 +101,7 @@ a zmienna ``$slug`` przyjmie wartość ``moj-post``.
 
 To jest właśnie zadanie routera Symfony2: zmapować URL żądania do kontrolera.
 Po drodze nauczysz się wielu trików, które sprawiają, że mapowanie nawet najbardziej
-złożonych URLi staje się łatwe.
+złożonych URL-i staje się łatwe.
 
 .. versionadded:: 2.1
 
@@ -140,7 +140,7 @@ kontroler powinien zostać uruchomiony. Cały proces wygląda mniej więcej tak:
    :align: center
    :alt: Przepływ żądania Symfony2
 
-   Warstwa routingu jest narzędziem, które tłumaczy przychodzące URLe na określony
+   Warstwa routingu jest narzędziem, które tłumaczy przychodzące URL-e na określony
    kontroler do wykonania.
 
 .. index::
@@ -488,7 +488,7 @@ Ponadto, URL jak ``/blog/my-blog-post`` będzie pasował do pierwszej trasy
 
 Rozwiązaniem tego problemu jest dodanie do trasy *wymagań*. Trasy w tym przypadku
 będą działały idealnie, jeśli wzorzec ``/blog/{page}`` będzie pasował *wyłącznie*
-do URLi, w których parameter ``{page}`` jest typu integer. Na szczęście,
+do URL-i, w których parameter ``{page}`` jest typu integer. Na szczęście,
 wymagania w postaci wyrażeń regularnych mogą być łatwo dodane dla każdego parametru.
 Na przykład:
 
@@ -532,14 +532,12 @@ Na przykład:
 
         return $collection;
 
-The ``\d+`` requirement is a regular expression that says that the value of
-the ``{page}`` parameter must be a digit (i.e. a number). The ``blog`` route
-will still match on a URL like ``/blog/2`` (because 2 is a number), but it
-will no longer match a URL like ``/blog/my-blog-post`` (because ``my-blog-post``
-is *not* a number).
+Wzorzec wymagany ``\d+`` jest wyrażeniem regularnym, który mówi nam, że wartość
+parametru ``{page}`` może zawierać wyłącznie cyfry. Ścieżka ``blog`` wciąż będzie
+pasować do URL jak ``/blog/2`` (ponieważ 2 jest liczbą), ale nie będzie już pasować
+do URL takich jak ``/blog/my-blog-post`` (ponieważ ``my-blog-post`` *nie* jest liczbą).
 
-As a result, a URL like ``/blog/my-blog-post`` will now properly match the
-``blog_show`` route.
+W efekcie końcowym, URL ``/blog/my-blog-post`` będzie odpowiednio pasować do trasy ``blog_show``.
 
 +--------------------+-----------+-----------------------+
 | URL                | route     | parameters            |
@@ -549,18 +547,17 @@ As a result, a URL like ``/blog/my-blog-post`` will now properly match the
 | /blog/my-blog-post | blog_show | {slug} = my-blog-post |
 +--------------------+-----------+-----------------------+
 
-.. sidebar:: Earlier Routes always Win
+.. sidebar:: Wcześniejsze trasy zawsze wygrywają
 
-    What this all means is that the order of the routes is very important.
-    If the ``blog_show`` route were placed above the ``blog`` route, the
-    URL ``/blog/2`` would match ``blog_show`` instead of ``blog`` since the
-    ``{slug}`` parameter of ``blog_show`` has no requirements. By using proper
-    ordering and clever requirements, you can accomplish just about anything.
+    Znaczy to tyle, że kolejność ścieżek jest bardzo istotna. Jeśli trasa
+    ``blog_show`` jest umieszczona nad trasą ``blog``, URL ``/blog/2`` będzie
+    pasować do ``blog_show``, zamiast do ``blog``, ponieważ parametr ``{slug}``
+    ścieżki ``blog_show`` nie ma żadnych wymagań. Stosując odpowiednią kolejność
+    oraz mądre wymagania, możesz osiągnąć niemal wszystko.
 
-Since the parameter requirements are regular expressions, the complexity
-and flexibility of each requirement is entirely up to you. Suppose the homepage
-of your application is available in two different languages, based on the
-URL:
+Ponieważ wymagania parametrów są wyrażeniami regularnymi, kompleksowość i elastyczność
+każdego z wymagań należy całkowicie do Ciebie. Załóżmy, że strona główna Twojej
+aplikacji jest dostępna w dwóch różnych językach, zależnie od adresu URL:
 
 .. configuration-block::
 
@@ -602,30 +599,30 @@ URL:
 
         return $collection;
 
-For incoming requests, the ``{culture}`` portion of the URL is matched against
-the regular expression ``(en|fr)``.
+Dla nadchodzącego żądania, parametr ``{culture}`` jest dopasowany do wyrażenia
+regularnego ``(en|fr)``.
 
-+-----+--------------------------+
-| /   | {culture} = en           |
-+-----+--------------------------+
-| /en | {culture} = en           |
-+-----+--------------------------+
-| /fr | {culture} = fr           |
-+-----+--------------------------+
-| /es | *won't match this route* |
-+-----+--------------------------+
++-----+---------------------------+
+| /   | {culture} = en            |
++-----+---------------------------+
+| /en | {culture} = en            |
++-----+---------------------------+
+| /fr | {culture} = fr            |
++-----+---------------------------+
+| /es | *nie pasuje do tej trasy* |
++-----+---------------------------+
 
 .. index::
-   single: Routing; Method requirement
+   single: Routing; Wymagania metod
 
-Adding HTTP Method Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dodawanie wymagań metod HTTP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In addition to the URL, you can also match on the *method* of the incoming
-request (i.e. GET, HEAD, POST, PUT, DELETE). Suppose you have a contact form
-with two controllers - one for displaying the form (on a GET request) and one
-for processing the form when it's submitted (on a POST request). This can
-be accomplished with the following route configuration:
+Oprócz adresu URL, możesz również dopasować *metodę* nadchodzącego żądania
+(np. GET, HEAD, POST, PUT, DELETE). Przypuśćmy, że masz formularz kontaktowy
+z dwoma kontrolerami - jeden do wyświetlania formularza (dla żądania GET),
+a drugi do przetwarzania formularza, gdy jest on wysłany (podczas żądania POST).
+Można to osiągnąć poprzez następującą konfigurację routingu:
 
 .. configuration-block::
 
@@ -682,30 +679,29 @@ be accomplished with the following route configuration:
 
         return $collection;
 
-Despite the fact that these two routes have identical patterns (``/contact``),
-the first route will match only GET requests and the second route will match
-only POST requests. This means that you can display the form and submit the
-form via the same URL, while using distinct controllers for the two actions.
+Pomimo faktu, iż te dwie trasy mają identyczne wzorce (``/contact``), pierwsza
+z nich będzie pasować tylko do żądań GET, a druga tylko do żądań POST. Oznacza to,
+że możesz wyświetlać i wysyłać formularz poprzez ten sam URL, jednocześnie wykorzystując
+do tego oddzielne kontrolery do tych dwóch akcji.
 
 .. note::
-    If no ``_method`` requirement is specified, the route will match on
-    *all* methods.
+    Jeśli nie podano wymagań dla ``_method``, trasa będzie pasować do *wszystkich* metod HTTP.
 
-Like the other requirements, the ``_method`` requirement is parsed as a regular
-expression. To match ``GET`` *or* ``POST`` requests, you can use ``GET|POST``.
+Podobnie jak inne wymagania, parametrr ``_method`` jest parsowany jako wyrażenie regularne.
+Aby dopasować żądania ``GET`` *albo* ``POST``, możesz użyć ``GET|POST``.
 
 .. index::
-   single: Routing; Advanced example
-   single: Routing; _format parameter
+   single: Routing; Zzawansowany przykład
+   single: Routing; parametr _format
 
 .. _advanced-routing-example:
 
-Advanced Routing Example
-~~~~~~~~~~~~~~~~~~~~~~~~
+Zaawansowany przykład routingu
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-At this point, you have everything you need to create a powerful routing
-structure in Symfony. The following is an example of just how flexible the
-routing system can be:
+Na chwilę obecną masz do dyspozycji wszystko, co potrzebujesz, aby utworzyć
+potężną strukturę routingu w Symfony. Poniższy przykład obrazuje jak elastyczny
+może być system routingu:
 
 .. configuration-block::
 
@@ -753,72 +749,73 @@ routing system can be:
 
         return $collection;
 
-As you've seen, this route will only match if the ``{culture}`` portion of
-the URL is either ``en`` or ``fr`` and if the ``{year}`` is a number. This
-route also shows how you can use a period between placeholders instead of
-a slash. URLs matching this route might look like:
+Jak widisz, ta trasa będzie pasować tylko wtedy, kiedy parametr ``{culture}``
+adresu URL będzie równy ``en`` lub ``fr``, a ``{year}`` jest liczbą. Ponadto
+ta trasa pokazuje, jak możesz wykorzystać kropkę pomiędzy parametrami zamiast ukośnika.
+Adresy URL pasujące do tej trasy mogą wyglądać np. tak:
 
 * ``/articles/en/2010/my-post``
 * ``/articles/fr/2010/my-post.rss``
 
 .. _book-routing-format-param:
 
-.. sidebar:: The Special ``_format`` Routing Parameter
+.. sidebar:: Specjalny parametr ``_format``
 
-    This example also highlights the special ``_format`` routing parameter.
-    When using this parameter, the matched value becomes the "request format"
-    of the ``Request`` object. Ultimately, the request format is used for such
-    things such as setting the ``Content-Type`` of the response (e.g. a ``json``
-    request format translates into a ``Content-Type`` of ``application/json``).
-    It can also be used in the controller to render a different template for
-    each value of ``_format``. The ``_format`` parameter is a very powerful way
-    to render the same content in different formats.
+    Ten przykład prezentuje również specjalny parametr routingu ``_format``.
+    Stosując ten parametr, dopasowany element staje się "formatem żądania"
+    obiektu ``Request``. Ostatecznie format żądania jest używany do takich
+    rzeczy jak ustawienie nagłówka ``Content-Type`` odpowiedzi (np. format żądania
+    ``json`` jest zmieniany na ``Content-Type`` równy ``application/json``).
+    Może być on również wykorzystany w kontrolerze do renderowania różnych
+    szablonów dla każdej wartości parametru ``_format``. Jest on bardzo dobry
+    sposób do renderowania tej samej treści w różnych formatach.
 
-Special Routing Parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Specjalne parametry routingu
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As you've seen, each routing parameter or default value is eventually available
-as an argument in the controller method. Additionally, there are three parameters
-that are special: each adds a unique piece of functionality inside your application:
+Jak mogłeś się przekonać, każdy parametr routingu, czy też wartość domyślna, mogą być
+również dostępne jako argument metody kontrolera. Dodatkowo, istnieją jeszcze trzy specjalne
+parametry: każdy z nich dodaje unikatową część funkcjonalności do Twojej aplikacji:
 
-* ``_controller``: As you've seen, this parameter is used to determine which
-  controller is executed when the route is matched;
+* ``_controller``: Jak już wiesz, ten parametr jest używany do określenia kontrolera,
+  który ma być wykonany, kiedy trasa jest dopasowana;
 
-* ``_format``: Used to set the request format (:ref:`read more<book-routing-format-param>`);
+* ``_format``: Używany do ustawienia formatu żądania (:ref:`read more<book-routing-format-param>`);
 
-* ``_locale``: Used to set the locale on the request (:ref:`read more<book-translation-locale-url>`);
+* ``_locale``: Używany do ustawienia języka żądania (:ref:`read more<book-translation-locale-url>`);
 
 .. tip::
 
-    If you use the ``_locale`` parameter in a route, that value will also
-    be stored on the session so that subsequent requests keep this same locale.
+    Jeśli używasz parametru ``_locale``, jego wartość będzie również przechowywana
+    w sesji, dzięki czemu kolejne żądania będą zawierać tą samą wartość.
 
 .. index::
-   single: Routing; Controllers
-   single: Controller; String naming format
+   single: Routing; Kontrolery
+   single: Controller; Format nazewnictwa ciągów
 
 .. _controller-string-syntax:
 
-Controller Naming Pattern
--------------------------
+Wzór nazewnictwa Kontrolerów
+----------------------------
 
-Every route must have a ``_controller`` parameter, which dictates which
-controller should be executed when that route is matched. This parameter
-uses a simple string pattern called the *logical controller name*, which
-Symfony maps to a specific PHP method and class. The pattern has three parts,
-each separated by a colon:
+Każda trasa musi posiadać parametr ``_controller``, który mówi Symfony,
+który kontroler powinien zostać uruchomiony, gdy trasa zostanie dopasowana.
+Ten parametr wykorzystuje ciąg w postaci prostego wzoru nazywanego *logiczna
+nazwa kontrolera*, który Symfony dopasowuje do konkretnej metody PHP oraz klasy.
+Ten wzór składa się z trzech części, każda z nich oddzielona jest dwukropkiem:
 
-    **bundle**:**controller**:**action**
+    **bundle**:**kontroler**:**akcja**
 
+Na przykład, wartość ``AcmeBlogBundle:Blog:show`` parametru ``_controller_`` oznacza:
 For example, a ``_controller`` value of ``AcmeBlogBundle:Blog:show`` means:
 
-+----------------+------------------+-------------+
-| Bundle         | Controller Class | Method Name |
-+================+==================+=============+
-| AcmeBlogBundle | BlogController   | showAction  |
-+----------------+------------------+-------------+
++----------------+------------------+--------------+
+| Bundle         | Klasa kontrolera | Nazwa metody |
++================+==================+==============+
+| AcmeBlogBundle | BlogController   | showAction   |
++----------------+------------------+--------------+
 
-The controller might look like this:
+Kontroler może wyglądać np. tak:
 
 .. code-block:: php
 
@@ -835,26 +832,26 @@ The controller might look like this:
         }
     }
 
-Notice that Symfony adds the string ``Controller`` to the class name (``Blog``
-=> ``BlogController``) and ``Action`` to the method name (``show`` => ``showAction``).
+Zauważ, że Symfony dodaje ciąg ``Controller`` do nazwy klasy (``Blog`` => ``BlogController``)
+oraz ciąg ``Action`` do nazwy metody (``show`` => ``showAction``).
 
-You could also refer to this controller using its fully-qualified class name
-and method: ``Acme\BlogBundle\Controller\BlogController::showAction``.
-But if you follow some simple conventions, the logical name is more concise
-and allows more flexibility.
+Możesz również odwołać się do tego kontrolera poprzez pełną nazwę klasy oraz metody:
+``Acme\BlogBundle\Controller\BlogController::showAction``. Jeśli
+będziesz przestrzegał kilka prostych konwencji, logiczna nazwa kontrolera jest
+bardziej zwięzła i posiada większą elastyczność.
 
 .. note::
 
-   In addition to using the logical name or the fully-qualified class name,
-   Symfony supports a third way of referring to a controller. This method
-   uses just one colon separator (e.g. ``service_name:indexAction``) and
-   refers to the controller as a service (see :doc:`/cookbook/controller/service`).
+   Oprócz używania logicznej nazwy oraz pełnej nazwy klasy, Symfony dostarcza
+   trzeci sposób odwoływania się do kontrolera. Ta metoda używa tylko jednego
+   dwukropka jako separatora (np. ``service_name:indexAction``) i odwołuje się
+   do kontrolera jako usługi (patrz :doc:`/cookbook/controller/service`).
 
-Route Parameters and Controller Arguments
------------------------------------------
+Parametry adresów oraz argumenty kontrolerów
+--------------------------------------------
 
-The route parameters (e.g. ``{slug}``) are especially important because
-each is made available as an argument to the controller method:
+Parametry adresów (np. ``{slug}``) są szczególnie ważne, ponieważ każdy z nich
+jest dostępny jako argument metody kontrolera:
 
 .. code-block:: php
 
@@ -863,14 +860,13 @@ each is made available as an argument to the controller method:
       // ...
     }
 
-In reality, the entire ``defaults`` collection is merged with the parameter
-values to form a single array. Each key of that array is available as an
-argument on the controller.
+W rzeczywistości, cała kolekcja ``defaults``jest scalana z wartościami parametrów tak,
+aby utworzyć prostą tablicę. Każdy klucz tej tablicy jest dostępny jako argument kontrolera.
 
-In other words, for each argument of your controller method, Symfony looks
-for a route parameter of that name and assigns its value to that argument.
-In the advanced example above, any combination (in any order) of the following
-variables could be used as arguments to the ``showAction()`` method:
+Innymi słowy, dla kazdego argumentu metody Twojego kontrolera, Symfony szuka parametru
+o nazwie takiej samej jak argument i przypisuje jego wartość do tego argumentu. W poniższym
+bardziej zaawansowanym przykładzie, dowolna kombinacja (o dowolnej kolejności) poniższych
+zmiennych może być użyta jako argumenty metody ``showAction()``:
 
 * ``$culture``
 * ``$year``
@@ -878,27 +874,27 @@ variables could be used as arguments to the ``showAction()`` method:
 * ``$_format``
 * ``$_controller``
 
-Since the placeholders and ``defaults`` collection are merged together, even
-the ``$_controller`` variable is available. For a more detailed discussion,
-see :ref:`route-parameters-controller-arguments`.
+Jako, że parametry oraz kolekcja ``defaults`` są łączone razem, nawet zmienna
+``$_controller`` jest dostępna. Po więcej informacji zasięgnij do
+:ref:`route-parameters-controller-arguments`.
 
 .. tip::
 
-    You can also use a special ``$_route`` variable, which is set to the
-    name of the route that was matched.
+    Możesz również używać specjalnej zmiennej ``$_route``, która przechowuje
+    nazwę trasy, która została dopasowana.
 
 .. index::
-   single: Routing; Importing routing resources
+   single: Routing; Importowanie zasobów routingu
 
 .. _routing-include-external-resources:
 
-Including External Routing Resources
-------------------------------------
+Importowanie zewnętrznych zasobów routingu
+------------------------------------------
 
-All routes are loaded via a single configuration file - usually ``app/config/routing.yml``
-(see `Creating Routes`_ above). Commonly, however, you'll want to load routes
-from other places, like a routing file that lives inside a bundle. This can
-be done by "importing" that file:
+Wszystkie trasy są ładowane poprzez prosty plik konfiguracyjny - zazwyczaj ``app/config/routing.yml``
+(patrz `Tworzenie tras`_ ponizej). Jednakże najczęściej będziesz potrzebował ładować trasy
+z innych miejsc, takich jak plik routingu z paczki (bundla). Można tego dokonać poprzez "importowanie"
+tego pliku:
 
 .. configuration-block::
 
@@ -932,13 +928,12 @@ be done by "importing" that file:
 
 .. note::
 
-   When importing resources from YAML, the key (e.g. ``acme_hello``) is meaningless.
-   Just be sure that it's unique so no other lines override it.
+   Podczas importowania zasobów YAML, klucz (np. ``acme_hello``) jest bez znaczenia.
+   Po prostu upewnij się, że jest unikatowy, przez co żadna inna linia nie nadpisze go.
 
-The ``resource`` key loads the given routing resource. In this example the
-resource is the full path to a file, where the ``@AcmeHelloBundle`` shortcut
-syntax resolves to the path of that bundle. The imported file might look
-like this:
+Klucz ``resource`` wczytuje podany zasób routingu. W tym przypadku zasobem jest
+pełna ścieżka do pliku, gdzie skrót ``@AcmeHelloBundle`` zwraca ścieżkę do danej paczki.
+Importowany plik może wyglądać na przykład tak:
 
 .. configuration-block::
 
@@ -976,15 +971,15 @@ like this:
 
         return $collection;
 
-The routes from this file are parsed and loaded in the same way as the main
-routing file.
+Adresy z tego pliku są parsowane i ładowane w ten sam sposób, jak główny plik
+routingu.
 
-Prefixing Imported Routes
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Prefiksowanie importowanych tras
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can also choose to provide a "prefix" for the imported routes. For example,
-suppose you want the ``acme_hello`` route to have a final pattern of ``/admin/hello/{name}``
-instead of simply ``/hello/{name}``:
+Możesz również chcieć dołączać "prefix" do importowanych adresów. Na przykład, załóżmy,
+że chcesz, aby trasa ``acme_hello`` miała ostateczny wzór ``/admin/hello/{name}``, zamiast
+prostego ``/hello/{name}``:
 
 .. configuration-block::
 
@@ -1017,26 +1012,27 @@ instead of simply ``/hello/{name}``:
 
         return $collection;
 
-The string ``/admin`` will now be prepended to the pattern of each route
-loaded from the new routing resource.
+Ciąg ``/admin`` będzie teraz poprzedzał wzór każdej trasy ładowanej z naszego
+nowego zasobu routingu.
 
 .. index::
-   single: Routing; Debugging
+   single: Routing; Debugowanie
 
-Visualizing & Debugging Routes
-------------------------------
+Wizualizowanie i debugowanie adresów
+------------------------------------
 
-While adding and customizing routes, it's helpful to be able to visualize
-and get detailed information about your routes. A great way to see every route
-in your application is via the ``router:debug`` console command. Execute
-the command by running the following from the root of your project.
+Dodając i dostosowując adresy, pomocna może okazać się możliwość wizualizacji
+oraz uzyskania szczegółowej informacji na temat Twoich tras. Świetnym sposobem,
+aby zobaczyć każdy adres Twojej aplikacji jest użycie polecenia ``router:debug``.
+Uruchom do polecenie poprzez wpisanie go w linii poleceń w głównym katalogu
+Twojego projektu, tak jak poniżej:
 
 .. code-block:: bash
 
     php app/console router:debug
 
-The command will print a helpful list of *all* the configured routes in
-your application:
+To polecenie wyświetli na ekranie pomocną listę *wszystkich* skonfigurowanych
+adresów w Twojej aplikacji:
 
 .. code-block:: text
 
@@ -1047,25 +1043,25 @@ your application:
     blog                  ANY       /blog/{page}
     blog_show             ANY       /blog/{slug}
 
-You can also get very specific information on a single route by including
-the route name after the command:
+Możesz również uzyskać dokładne informacje o pojedynczym adresie, dołączając
+jego nazwę do powyższego polecenia:
 
 .. code-block:: bash
 
     php app/console router:debug article_show
 
 .. index::
-   single: Routing; Generating URLs
+   single: Routing; Generowanie adresów URL
 
-Generating URLs
----------------
+Generowanie adresów URL
+-----------------------
 
-The routing system should also be used to generate URLs. In reality, routing
-is a bi-directional system: mapping the URL to a controller+parameters and
-a route+parameters back to a URL. The
-:method:`Symfony\\Component\\Routing\\Router::match` and
-:method:`Symfony\\Component\\Routing\\Router::generate` methods form this bi-directional
-system. Take the ``blog_show`` example route from earlier::
+System routingu powinien również być używany do generowania URL-i. W rzeczywistości,
+routing jest systemem dwukierunkowym: mapuje URL do kontrolera i parametrów, oraz
+trasę i parametry z powrotem do URL. Metody :method:`Symfony\\Component\\Routing\\Router::match`
+oraz :method:`Symfony\\Component\\Routing\\Router::generate` wykorzystują ten
+dwukierunkowy system. Spójrz na poniższy przykład wykorzystujący wcześniejszą trasę
+``blog_show``::
 
     $params = $router->match('/blog/my-blog-post');
     // array('slug' => 'my-blog-post', '_controller' => 'AcmeBlogBundle:Blog:show')
@@ -1073,9 +1069,9 @@ system. Take the ``blog_show`` example route from earlier::
     $uri = $router->generate('blog_show', array('slug' => 'my-blog-post'));
     // /blog/my-blog-post
 
-To generate a URL, you need to specify the name of the route (e.g. ``blog_show``)
-and any wildcards (e.g. ``slug = my-blog-post``) used in the pattern for
-that route. With this information, any URL can easily be generated:
+Aby wygenerować URL, musisz określić nazwę trasy (np. ``blog_show``) oraz wszystkie
+parametry (np. ``slug = my-blog-post``) użyte we wzorze tego adresu. Dzięki tym informacjom,
+każdy URL moze być łatwo wygenerowany:
 
 .. code-block:: php
 
@@ -1089,29 +1085,28 @@ that route. With this information, any URL can easily be generated:
         }
     }
 
-In an upcoming section, you'll learn how to generate URLs from inside templates.
+W kolejnej sekcji nauczysz się jak generować URL-e w szablonach.
 
 .. tip::
 
-    If the frontend of your application uses AJAX requests, you might want
-    to be able to generate URLs in JavaScript based on your routing configuration.
-    By using the `FOSJsRoutingBundle`_, you can do exactly that:
+    Jeśli frontend Twojej aplikacji wykorzystuje żądania AJAX, możesz chcieć
+    mieć możliwość generowania URL-i w JavaScript na podstawie konfiguracji routingu.
+    Używając `FOSJsRoutingBundle`_, mozesz robić dokładnie tak:
 
     .. code-block:: javascript
 
         var url = Routing.generate('blog_show', { "slug": 'my-blog-post'});
 
-    For more information, see the documentation for that bundle.
+    Po więcej informacji zasięgnij do dokumentacji tej paczki.
 
 .. index::
-   single: Routing; Absolute URLs
+   single: Routing; Adresy absolutne
 
-Generating Absolute URLs
-~~~~~~~~~~~~~~~~~~~~~~~~
+Generowanie adresów absolutnych
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, the router will generate relative URLs (e.g. ``/blog``). To generate
-an absolute URL, simply pass ``true`` to the third argument of the ``generate()``
-method:
+Domyślnie router generuje relatywne adresy URL (np. ``/blog``). Aby wygenerować
+absolutny URL, po prostu przekaż ``true`` jako trzeci argument metody ``generate()``:
 
 .. code-block:: php
 
@@ -1120,76 +1115,76 @@ method:
 
 .. note::
 
-    The host that's used when generating an absolute URL is the host of
-    the current ``Request`` object. This is detected automatically based
-    on server information supplied by PHP. When generating absolute URLs for
-    scripts run from the command line, you'll need to manually set the desired
-    host on the ``Request`` object:
+    Host używany podczas generowania aboslutnego URL jest hostem dla aktualnego
+    obiektu ``Request`` (żądania). Jest on wykrywany automatycznie na podstawie informacji
+    o serwerze dostarczanych przez PHP. Podczas generowania absolutnych URL-i dla
+    skryptów uruchamianych z linii poleceń, musisz ręcznie podawać żądany
+    host dla obiektu ``Request``:
 
     .. code-block:: php
 
         $request->headers->set('HOST', 'www.example.com');
 
 .. index::
-   single: Routing; Generating URLs in a template
+   single: Routing; Generowanie URL-i wewnątrz szablonów
 
-Generating URLs with Query Strings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generowanie URL-i z QueryStrings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``generate`` method takes an array of wildcard values to generate the URI.
-But if you pass extra ones, they will be added to the URI as a query string::
+Metoda ``generate`` wykorzystuje tablicę parametrów aby wygenerować URI.
+Jednakże, jeśli podasz kilka dodatkowych, będą one dodane do URL jako query string (parametry GET)::
 
     $router->generate('blog', array('page' => 2, 'category' => 'Symfony'));
     // /blog/2?category=Symfony
 
-Generating URLs from a template
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generowanie URL-i wewnątrz szablonów
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The most common place to generate a URL is from within a template when linking
-between pages in your application. This is done just as before, but using
-a template helper function:
+Najczęściej wykorzystywanym miejscem do generowanie URL-i wewnątrz szablonów są
+linki pomiedzy stronami Twojej aplikacji. Jest to dokonywane tak samo jak powyżej,
+lecz za pomocą funkcji helpera szablonu:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
 
         <a href="{{ path('blog_show', { 'slug': 'my-blog-post' }) }}">
-          Read this blog post.
+          Przeczytaj ten post bloga.
         </a>
 
     .. code-block:: php
 
         <a href="<?php echo $view['router']->generate('blog_show', array('slug' => 'my-blog-post')) ?>">
-            Read this blog post.
+            Przeczytaj ten post bloga.
         </a>
 
-Absolute URLs can also be generated.
+Można generować również absolutne adresy URL.
 
 .. configuration-block::
 
     .. code-block:: html+jinja
 
         <a href="{{ url('blog_show', { 'slug': 'my-blog-post' }) }}">
-          Read this blog post.
+          Przeczytaj ten post bloga.
         </a>
 
     .. code-block:: php
 
         <a href="<?php echo $view['router']->generate('blog_show', array('slug' => 'my-blog-post'), true) ?>">
-            Read this blog post.
+            Przeczytaj ten post bloga.
         </a>
 
-Summary
--------
+Podsumowanie
+------------
 
-Routing is a system for mapping the URL of incoming requests to the controller
-function that should be called to process the request. It both allows you
-to specify beautiful URLs and keeps the functionality of your application
-decoupled from those URLs. Routing is a two-way mechanism, meaning that it
-should also be used to generate URLs.
+Routing to system mapowania URL-i przychodzących żądań do funkcji kontrolera,
+który ma być wywołany do przetworzenia żądania. Pozwala to zarówno na określanie
+ładnych URL-i, a także oddziela funkcjonalność Twojej aplikacji od tych URL-i.
+Routing jest dwukierunkowym mechanizmem, co oznacza, że może być również wykorzystywany
+do generowania adresów URL.
 
-Learn more from the Cookbook
-----------------------------
+Dowiedz się więcej z Cookbook'a
+------------------------------
 
 * :doc:`/cookbook/routing/scheme`
 
