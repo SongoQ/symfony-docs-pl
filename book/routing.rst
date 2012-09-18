@@ -29,7 +29,7 @@ Routing w akcji
 
 *Trasa* łączy wzorzec URL z kontrolerem. Na przykład, załóżmy, że chcesz dopasować
 URL jak ``/blog/moj-post`` czy ``/blog/wszystko-o-symfony`` i wysłać go do kontrolera,
-który może odnaleźć i wyświetlić dany wpis bloga. Ustawienie trasy jest banalne::
+który może odnaleźć i wyświetlić dany wpis bloga. Ustawienie trasy jest banalne:
 
 .. configuration-block::
 
