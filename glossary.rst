@@ -1,116 +1,133 @@
 :orphan:
 
 Słownik
-========
+=======
 
 .. glossary::
    :sorted:
 
-   Dystrybucja
-        *Dystrybucja* (Distribution) jest paczką komponentów Symfony2,
-        z wybranymi bundlami, sensowną strukturą katalogów,
-        domyślną konfiguracją, oraz opcjonalnym systemem konfiguracji.
+   **dystrybucja** (*ang. Distribution*)
+        *Dystrybucja* jest zestawem instalacyjnych komponentów Symfony2,
+        zawierajacym wybrane pakiett (*ang. bundles*), rozsądną strukturę katalogów,
+        domyślną konfigurację i opcjonalny systemem konfiguracyjny.
 
-   Projekt
-        *Projekt* (Project) jest katalogiem opakowanym w Aplikację, zbiorem bundli,
-        bibliotekami zewnętrznymi, autoloaderem, oraz web front kontrolerem.
+   **projekt** (*ang. Project*)
+        *Projekt* jest katalogiem składającym się z *aplikacji*, zestawu pakietów,
+        bibliotek dostawców, autoloadera i skryptów kontrolera wejścia.
 
-   Aplikacja
-        *Aplikacja* (Application) jest katalogiem zawierającym *konfigurację* dla danego zbioru
-        Bundli.
+   **aplikcja** (*ang. Application*)
+        Pojecie *aplikacji* jest używane w tej dokumentacji w dwóch kontekstach.
+        Pierwszy, to tradycyjne znaczenie `aplikacji internetowej`_.
+        Drugi, to katalog zawierający *konfigurację* dla danego zestawu
+        *pakietów*.
 
-   Bundle
-        *Bundle* (Bundle) jest katalogiem zawierającym zbiór plików (PHP, kaskadowych arkuszy
-        stylów, JavaScripts, obrazków, ...) który *implementuje* pojedyńczą funkcjonalność
-        (np. blog, forum, etc.). W Symfony2 (*prawie*) wszystko znajduje się w środku bundla.
-        (zobacz :ref:`page-creation-bundles`)
+   **pakiet** (*ang. Bundle*)
+        *Pakiet* jest katalogiem zawierającym zestaw plików (plików PHP,
+        arkuszy atylów, plików JavaScript, obrazów ...) które *implementują*
+        pojedyńczą funkcjonalność (blog, forum itp.). W Symfony2, (*prawie*)
+        wszystko jest umieszczone w pakietach. (zobacz :ref:`page-creation-bundles`).
+        W PHP koncepcja *pakietu*, od wersji PHP 5.3, odnosi się do *przestrzeni
+        nazw* - każdy pakiet Symfony dwa tworzy własna *przestrzeń nazw*.  
 
-   Front Kontroler
-        *Front Kontroler* (Front Controller) jest małym plikiem PHP który znajduje się w głównym katalogu web
-        Twojego projektu. Zazwyczaj *wszystkie* zapytania są obsługiwane przez
-        wykonanie tego samego front kontrolera, którego zadaniem jest zainicjowanie
-        aplikacji Symfony.
+   **kontroler wejścia** (*ang. Front Controller*)
+        *Kontroler wejścia* jest krótkim skryptem PHP umieszczonym w katalogu
+        sieciowym projektu (np. web). Zazwyczaj *wszystkie* żądania są
+        obsługiwane przez wykonanie jednego i tego samego kontrolera wejściowego,
+        którego zadaniem jest zainicjowaie aplikacji Symfony.
 
-   Kontroler
-        *Kontroler* (Controller) jest funkcją PHP która posiada całą niezbędną logikę aby zwrócić
-        obiekt ``Response``, który reprezentuje konkretną stronę. Zazwyczaj
-        routing jest zmapowany z kontrolerem, który używa informacji z zapytania
-        do przetwarzania informacji, wykonywania akcji, a ostatecznie do zbudowania
-        i zwrócenia obiektu ``Response``.
+   **kontroler** (*ang. Controller*)
+        *Kontroler* to funkcja PHP zawierająca całą logikę niezbędną do zwrócenia 
+        obiektu ``Response``, który reprezentuje daną stronę.
+        Zazwyczaj trasa jest odwzorowywana na kontroler, który następnie używa
+        informacji z żądania HTTP do przetworzenia danych, przetwarza akcje
+        i ostatecznie konstruuje i zwraca obiekt ``Response``. Należy zaznaczyć,
+        że w polskiej literaturze poświęconej Symfony [*]_ termin *kontroler*
+        odnoszony jest czasem do obiektu  zawierającego metody, które tu określone
+        zostały jako *kontroler* (np. ``DefaultController) a nie do tych metod.
+        Tutaj *kontrolerem* będziemy nazywać, zgodnie z naszą defnicją, metodę
+        (funkcję) wykonującą opisane tu działanie.    
 
-   Usługa
-        *Usługa* (Service) jest ogólnym określeniem dla każdego obiektu PHP który wykonuje
-        określone zadanie. Usługa jest zwykle używana "globalnie", jak obiekt połączenia
-        z bazą danych lub obiekt dostarczający wiadomości e-mail. W Symfony2, usługi
-        są często skonfigurowane i pobierane z kontenera usług. Aplikacja która posiada
-        wiele oddzielnych usług jest nazywana `architekturą zorientowaną na usługi`_.
+   **usługa** (*ang. Service*)
+        *Usługa* to ogólny termin dla każdego obiektu PHP który wykonuje określone
+        zadanie. Usługa zazwyczaj stosowana jest "globalnie", jako obiekt
+        nawiązujący połączenie z bazą danych lub obiekt wysyłający wiadomości
+        email. W Symfony2 usługi są często konfigurowane i pobierane z kontenera
+        usług. Aplikacja posiadająca wiele oddzielnych usług nazuwana jest
+        aplikacją o `architekturze zorientowanej na usługi`_.
+
+   **kontener usługi** (*ang. Service Container*)
+        *Kontroler usług*, zwany też *kontenerem DI* (*od. ang. Dependency
+        Injection Container*), jest specjalnym obiektem, który zarząda instancją
+        usług wewnątrz aplikacji. Programista może *poinstruować* kontener usług
+        (poprzez konfigurację) jak utworzyć usługi, zamiast tworzyć je bezpośrednio.
+        Kontener usłu zajmuje się leniwym tworzeniem instancji i wstrzykiwaniem
+        zależnych usług. Zobacz do rozdziału :doc:`/book/service_container`.
         
-   Kontener Usług
-        *Kontener Usług* (Service Container), zwany także *Dependency Injection Container*,
-        jest specjalnym obiektem który zarządza instancjami usług wewnątrz aplikacji.
-        Zamiast tworzyć usługi bezpośrednio, deweloper *instruuje* kontener usług
-        (poprzez konfigurację) jak utworzyć usługi. Kontener usług zajmuje się "leniwym"
-        inicjalizowaniem i wstrzykiwaniem zależnych usług. Zobacz rozdział 
-        :doc:`/book/service_container`.
-
-   Specyfikacja HTTP
+   **specyfikacja HTTP** (*ang. HTTP Specification*)
         *Specyfikacja Http* (Http Specification) jest dokumentem opisującym
         "Hypertext Transfer Protocol" - zbiór zasad leżących u podstaw klasycznej
-        komunikacji zapytanie-odpowiedź dla klient-serwer. Specyfikacja definiuje
-        format używany dla zapytania (Request) oraz odpowiedzi (Response) jak i 
-        możliwe nagłówki HTTP które mogą posiadać. Dla uzyskania większej ilości informacji
-        przeczytaj artykuł Wikipedii `HTTP`_ mówiący o `HTTP 1.1 RFC`_.
+        komunikacji żądanie-odpowiedź dla architektury klient-serwer.
+        Specyfikacja definiuje format używany dla żądania (Request) oraz odpowiedzi
+        (Response) jak i możliwe nagłówki HTTP które mogą one posiadać.
+        Więcej informacji mozna znaleźć w artykule
+        `HTTP`_ traktujący o `HTTP 1.1 RFC`_.
 
-   Środowisko
-        Środowisko (Environment) jest ciągiem znaków (np. ``prod`` lub ``dev``) który
-        przypisany jest dla specyficznego zestawu konfiguracyjnego. Ta sama aplikacja
-        może być uruchamiana na tej samej maszynie używając różnej konfiguracji poprzez
-        uruchamianie aplikacji w różnych środowiskach. Jest to użyteczne ponieważ pozwala
-        pojedyńczej aplikacji posiadać środowisko ``dev`` dostosowane do debugowania oraz
-        środowisko ``prod`` które jest zoptymalizowane pod kontem szybkości.
+   **środowisko** (*ang. Environment*)
+        *Środowisko* to specyficzna konfiguracja aplikacji reprezentowana przez
+        określone oznaczenie (np. ``prod`` lub ``dev``). Ta sama aplikacja
+        może być uruchamiana na tej samej maszynie używając różnej konfiguracji
+        poprzez uruchamianie aplikacji w różnych środowiskach. Jest to użyteczne
+        ponieważ pozwala pojedyńczej aplikacji posiadać środowisko ``dev``
+        dostosowane do debugowania oraz środowisko ``prod`` które jest zoptymalizowane
+        pod kontem szybkości.
+        
+   **dostawca** (*ang. Vendor*)
+        *Dostawca* to ktoś dostarczający biblioteki PHP i pakiety dołączne do Symfony2.
+        Pomimo skojarzenia tego słowa z kwestiami handlowymi (vendor w jezyku angielskim
+        oznacza dosłownie "sprzedawcę"), dostawca w Symfony bardzo często (nawet
+        zazwyczaj) dołącza bezpłatne oprogramowanie. Każda biblioteka którą chcesz
+        dodać do projektu Symfony2 powinna znaleźć się w katalogu``vendor``.
+        Zobacz :ref:`Architektura: Stosowanie "dostawców" <using-vendors>`
 
-   Vendor
-        *Vendor* jest dostawcą bibliotek PHP oraz bundli w tym także Symfony2.
-        Pomimo skojarzenia tego słowa (przypomnienie tłumacza: vendor z 
-        angielskiego to "sprzedawca") z kwestiami handlowymi, vendor w Symfony
-        bardzo często (nawet zazwyczaj) dołącza bezpłatne oprogramowanie. Każda
-        biblioteka którą chcesz dodać do projektu Symfony2 powinna znaleźć się w katalogu
-        ``vendor``. Zobacz :ref:`Architektura: Używanie "Vendors" <using-vendors>`.
-
-   Acme
-       *Acme* jest prostą nazwą firmy użytej w demo Symfony oraz dokumentacjach.
+   **Acme*** (*nazwa własna*)
+        *Acme* jest prostą, przykładową nazwą firmy użytej w demo Symfony oraz dokumentacji.
        Jest użyta w przestrzeni nazw gdzie zwykle używana jest nazwa Twojej firmy
        (np. ``Acme\BlogBundle``).
 
-   Akcja
-       *Akcja* (Action) jest funkcją lub metodą PHP która jest wykonywana, dla przykładu,
-       gdy przekazany routing zostanie dopasowany. Termin akcja jest synonimem z słowem
+   **akcja** (*ang. Action*)
+       *Akcja* jest funkcją lub metodą PHP która jest wykonywana, na przykład,
+       gdy zostaje dopasowana przekazana trasa. Termin *akcja* jest synonimem z słowa
        *kontroler*, choć kontroler może również odnosić się do całej klasy PHP która
        zawiera kilka akcji. Zobacz :doc:`Rozdział o Kontrolerze </book/controller>`.
-       
-   Asset
-       *Asset* jest nie-wykonywalnym, statycznym komponentem aplikacji webowej,
-       włączając w to CSS, JavaScript, obrazki oraz wideo. Mogą być umiejscowione
-       bezpośrednio w katalogu projektu ``web``, lub opublikowane z :term:`Bundle`
-       do katalogu web poprzez użycie zadania ``assets:install`` z linii poleceń.
 
-   Jądro
-       *Jądro* (Kernel) jest rdzeniem Symfony2. Obiekt jądra obsługuje zapytania
-       HTTP używając wszystkich bundli oraz bibliotek zarejestrowanych w nim.
+   **zasób** (*ang. Asset*)
+       *Zasób* jest komponentem aplikacji internetowej, bedącym plikiem takim jak
+       CSS, JavaScript, obraz czy wideo. Mogą one być umiejscowione bezpośrednio
+       w katalogu projektu ``web``, lub publikowane do katalogu ``web`` z :term:`pakietu`
+       przez wykonanie polecenia ``assets:install`` w terminalu.
+
+   **Kernel** (*nazwa własna*)
+        *Kernel* jest rdzeniem Symfony2. Obiekt *Kernel* obsługuje zapytania
+       HTTP używając wszystkich pakietów oraz bibliotek zarejestrowanych w nim.
        Zobacz :ref:`Architektura: Katalog app/ <the-app-dir>` oraz rozdział
-       :doc:`/book/internals`.
+       :doc:`/book/internals`
 
-   Firewall
-       W Symfony2, *Firewall* nie ma nic do czynienia z siecią. Zamiast tego,
-       definiuje mechanizmy uwierzytelniania (np. obsługuje proces ustalenia
-       tożsamości użytkowników), dla całej aplikacji lub też tylko jego części
-       Zobacz rozdział :doc:`/book/security`.
+   **zapora** (*ang. Firewall*)
+        W Symfony2 *zapora* to nie to samo, co *zapora sieciowa*. Jest to mechanizm
+        uwierzytelniania użytkowników (tzn. obsługuje proces identyfikacji użytkowników),
+        albo dla całej aplikacji albo tylko jej części. Zobacz rozdział
+        :doc:`/book/security`.
 
-   YAML
-       *YAML* jest rekurencyjnym akronim dla "YAML nie jest językiem znaczników".
-       Jest lekkim, łatwym dla człowieka językiem serializacji danych szeroko używanym
-       w plikach konfiguracyjnych Symfony2. Zobacz rozdział :doc:`/reference/YAML`.
+   **Yaml** (*nazwa własna*)
+        *YAML* jest to uniwersalny język ustrukturyzowanego reprezentowania danych
+        (tej samej klasy co XML), kekki i przejrzysty, szeroko stosowany w plikach
+        konfoguracyjnych Symfony 2. Zobacz rozdział :doc:`/components/yaml/introduction` 
+        oraz artykuł Wikipedii `YAML`_.
 
-.. _`architekturą zorientowaną na usługi`: http://wikipedia.org/wiki/Service-oriented_architecture
+
+.. _`service-oriented architecture`: http://pl.wikipedia.org/wiki/Architektura_zorientowana_na_us%C5%82ugi
 .. _`HTTP`: http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
 .. _`HTTP 1.1 RFC`: http://www.w3.org/Protocols/rfc2616/rfc2616.html
+.. _`aplikacji internetowej`: http://pl.wikipedia.org/wiki/Aplikacja_(informatyka)
+.. _`YAML` http://pl.wikipedia.org/wiki/YAML
+.. [*] W.Gajda "Symfony 2 od podstaw" Helion 2012
