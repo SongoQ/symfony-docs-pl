@@ -459,12 +459,6 @@ Wraz z pobraniem zależności Composer generuje plik ``vendor/autoload.php``,
 którego zadaniem jest automatyczne załadowanie wszystkich plików Symfony Framework,
 jak również plików wymienionych w sekcji ``autoload`` pliku ``composer.json``.
 
-Core to Symfony's philosophy is the idea that an application's main job is
-to interpret each request and return a response. To this end, Symfony2 provides
-both a :class:`Symfony\\Component\\HttpFoundation\\Request` and a
-:class:`Symfony\\Component\\HttpFoundation\\Response` class. These classes are
-object-oriented representations of the raw HTTP request being processed and
-the HTTP response being returned. Use them to improve the blog:
 Filozofią rdzenia Symfony jest przekonanie, że głównym zadaniem aplikacji jest
 interpretacja każdego żądania i zwracanie odpowiedzi. W tym celu Symfony2 dostarcza
 klasy :class:`Symfony\\Component\\HttpFoundation\\Request` jak i
@@ -540,10 +534,6 @@ URI (zawsze zwrane jest  ``/show a nigdy`` ``/index.php/show``). Tak więc, nawe
 gdy użytkownik zażąda ``/index.php/show``, to aplikacja w sposób inteligentny
 skieruje żądanie do metody ``show_action()``.
 
-The ``Response`` object gives flexibility when constructing the HTTP response,
-allowing HTTP headers and content to be added via an object-oriented interface.
-And while the responses in this application are simple, this flexibility
-will pay dividends as your application grows.
 Obiekt ``Response`` daje elastyczność przy konstruowaniu odpowiedzi HTTP, dzięki
 czemu nagłówki HTTP i zawartość są dodawane poprzez interfejs obiektowo zorientowany.
 Chociaż odpowiedzi w naszej aplikacji są proste, to uzyskana teraz elastyczność
@@ -602,10 +592,6 @@ w Symfony2::
         }
     }
 
-The two controllers are still lightweight. Each uses the :doc:`Doctrine ORM library</book/doctrine>`
-to retrieve objects from the database and the ``Templating`` component to
-render a template and return a ``Response`` object. The list template is
-now quite a bit simpler:
 Oba kontrolery są nadal lekkie. Każdy wykorzystuje bibliotekę :doc:`Doctrine ORM library</book/doctrine>`
 do pobierania obiektów z bazy danych oraz komponent ``Templating`` do wygenerowania
 szablonu i zwracania obiektu Response. Szablon wykazu wpisów na blogu jest teraz
@@ -721,7 +707,7 @@ od zwykłego PHP do Symfony2, ułatwiła nam życie:
   such as **HTTP caching** powered by **Symfony2's internal HTTP cache** or
   more powerful tools such as `Varnish`_. This is covered in a later chapter
   all about :doc:`caching</book/http_cache>`.
-  Ukierunkowana rchitektura Symfony2 na HTTP daje dostęp do zaawansowanych narzędzi,
+  Architektura Symfony2 ukierunkowana na HTTP daje dostęp do zaawansowanych narzędzi,
   takich jak buforowanie HTTP wspierane przez wewnętrzną pamięć podręczną HTTP
   Symfony2 lub bardziej zaawansowane narzędzia, takie jak ``Varnish``. Wszystko o
   :doc:`buforowaniu</book/http_cache>` jest opisane w dalszej części podręcznika.
