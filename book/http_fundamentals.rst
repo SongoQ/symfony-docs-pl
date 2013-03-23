@@ -70,13 +70,8 @@ Ten prosty komunikat przekazuje wszystkie niezbędne informacje dokładnie okre�
 żądany przez klienta zasób. Pierwsza linia żądania HTTP jest najważniejsza i zawiera
 dwie rzeczy: adres URI i metodę HTTP.
 
-The URI (e.g. ``/``, ``/contact``, etc) is the unique address or location
-that identifies the resource the client wants. The HTTP method (e.g. ``GET``)
-defines what you want to *do* with the resource. The HTTP methods are the
-*verbs* of the request and define the few common ways that you can act upon
-the resource:
 URI (np. ``/``, ``/contact`` itd.) jest unikalnym adresem lub lokalizacją
-identyfikująca żądany przez klienta zasób. Metoda HTTP (np. ``GET``) określa co
+identyfikującą żądany przez klienta zasób. Metoda HTTP (np. ``GET``) określa co
 chce się zrobić z tym zasobem. Metody HTTP są czasownikami żądania i określają
 kilka typowych sposobów oddziaływania na zasób:
 
@@ -194,14 +189,6 @@ W rzeczywistości PHP zwalnia Cię po części z takiej konieczności::
     echo 'The URI requested is: '.$uri;
     echo 'The value of the "foo" parameter is: '.$foo;
 
-As strange as it sounds, this small application is in fact taking information
-from the HTTP request and using it to create an HTTP response. Instead of
-parsing the raw HTTP request message, PHP prepares superglobal variables
-such as ``$_SERVER`` and ``$_GET`` that contain all the information from
-the request. Similarly, instead of returning the HTTP-formatted text response,
-you can use the ``header()`` function to create response headers and simply
-print out the actual content that will be the content portion of the response
-message. PHP will create a true HTTP response and return it to the client:
 Choć brzmi to dziwnie, ta mała aplikacja jest rzeczywistości pobiera informację z
 żądania HTTP i używa ją do utworzenia odpowiedzi HTTP. Zamiast parsować surowy
 komunikat żądania HTTP, PHP przygotowuje super globalne zmienne, takie jak
@@ -220,6 +207,7 @@ PHP utworzy prawdziwą odpowiedź HTTP i zwróci ją klientowi:
 
     The URI requested is: /testing?foo=symfony
     The value of the "foo" parameter is: symfony
+
 
 Żądanie i odpowiedź w Symfony
 -----------------------------
@@ -256,6 +244,7 @@ informacje o żądaniu pod ręką::
 
     $request->getMethod();          // GET, POST, PUT, DELETE, HEAD
     $request->getLanguages();       // an array of languages the client accepts
+
 
 Klasa ``Request`` wykonuje dużo pracy w tle, zwalniając programistę z konieczności
 pisania rozwlekłego kodu. Na przykład, metoda ``isSecure()`` sprawdza trzy różne
@@ -483,6 +472,7 @@ jest określony kontroler. Jak można się dowiedzieć w rozdziale :doc:`routing
         }
     }
 
+
 W tym prostym przykładzie kontroler tworzy obiekt :class:`Symfony\\Component\\HttpFoundation\\Response`
 z kodem HTML ``<h1>Contact us!</h1>``.
 W rozdziale :doc:`controller chapter</book/controller>`, dowiesz się jak kontroler
@@ -512,13 +502,10 @@ frameworka, tylko jakiejś jego części albo całości.
 .. index::
    single: Symfony2 Components
 
+
 Standalone Tools: The Symfony2 *Components*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-So what *is* Symfony2? First, Symfony2 is a collection of over twenty independent
-libraries that can be used inside *any* PHP project. These libraries, called
-the *Symfony2 Components*, contain something useful for almost any situation,
-regardless of how your project is developed. To name a few:
 Więc czym jest Symfony2? Po pierwsze, Symfony2 jest zbiorem ponad dwudziestu
 niezależnych bibliotek, które mogą być wykorzystane w jakimkolwiek projekcie PHP.
 Biblioteki te, o nazwie Symfony2 Components, zawierają pożyteczny kod dla niemal
