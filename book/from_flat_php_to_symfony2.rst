@@ -189,7 +189,7 @@ przeniesione do pliku o nazwie ``model.php``:
    powinna znajdować się w modelu (a nie w kontrolerze). W przeciwieństwie do tego
    przykładu, tylko część modelu (lub nic) faktycznie dotyczy dostępu do bazy danych.
 
-Kontroler (`index.php`) jest teraz bardzo prosty:
+Kontroler (``index.php``) jest teraz bardzo prosty:
 
 .. code-block:: html+php
 
@@ -311,11 +311,11 @@ pojedynczy wpis blogu:
     <?php include 'layout.php' ?>
 
 Utworzenie drugiej strony jest teraz bardzo łatwe a kod nie jest powielany.
-Pomimo to, strona ta wprowadza dalej utrzymujące się problemy, które rozwiązuje
+Pomimo tego, strona ta stwarza dalej kilka problemów, które rozwiązuje 
 framework. Na przykład, brak lub nieprawidłowy parametr zapytania ``id`` spowoduje
-krach strony. Byłoby lepiej, gdyby spowodowało to wygenerowanie strony 404, ale
-nie może być to tak łatwo zrobione. Gorzej, gdybyś zapomniał przekształcić
-parametr ``id`` za pomocą funkcji ``intval()`` - wówczas cała baza danych
+załamanie sie strony ("biały ekran"). Byłoby lepiej, gdyby spowodowało to wygenerowanie
+strony błedu 404, ale nie może być to tak łatwo zrobione. Gorzej, gdybyś zapomniał
+przekształcić parametr ``id`` za pomocą funkcji ``intval()`` - wówczas cała baza danych
 zostałaby narażona na atak wstrzyknięcia SQL
 
 Innym ważnym problemem jest to, że każdy plik kontrolera musi dołączać plik
@@ -325,8 +325,8 @@ W obecnym stanie, taki kod będzie musiał być dodany do każdego pliku kontrol
 Jeżeli zapomni się coś dodać w jakimś pliku, to powstanie następny problem, miejmy
 nadzieję, że nie dotyczy to bezpieczeństwa ...
 
-Lekarstwem "kontroler wejściowy"
---------------------------------
+Lekarstwem "kontroler wejścia"
+------------------------------
 
 Rozwiązanie jest zastosowanie *kontrolera wejściowego* -  pojedynczego pliku PHP,
 w którym przetwarzane są wszystkie żądania HTTP. Przy zastosowaniu kontrolera
@@ -351,7 +351,7 @@ Podczas korzystania z kontrolera wejściowego pojedynczy plik PHP (w naszym
 przypadku ``index.php``) przetworzy każde żądanie HTTP. W celu wyświetlenia strony
 "show” żądany jest zasób ``/index.php/show`` a w rzeczywistości wykonywany jest
 plik ``index.php``, który jest teraz odpowiedzialny za wewnętrzne kierowanie żądań
-na podstawie pełnego adresu URI. Jak widzisz, kontroler wejściowy jest bardzo
+na podstawie pełnego adresu URI. Jak widzisz, kontroler wejścia jest bardzo
 silnym narzędziem.
 
 Stworzenie kontrolera wejściowego
@@ -400,10 +400,10 @@ są teraz funkcjami PHP i zostały przeniesione do odrębnego pliku ``controller
         require 'templates/show.php';
     }
 
-Plik ``index.php`` jako kontroler wejściowy przybrał teraz całkiem nową rolę,
+Plik ``index.php`` jako kontroler wejścia przybrał teraz całkiem nową rolę,
 która polega na załadowaniu podstawowych bibliotek i trasowaniu aplikacji, tak
 aby wywołany został jeden z dwóch kontrolerów (funkcje ``list_action()``
-i ``show_action()``). Aktualnie nasz kontroler wejściowy zaczyna wyglądać i
+i ``show_action()``). Aktualnie nasz kontroler wejścia zaczyna wyglądać i
 działać jak mechanizm Symfony2 do obsługi i trasowania żądań.
 
 .. tip::
@@ -657,7 +657,7 @@ trasowania:
         path:     /blog/show/{id}
         defaults: { _controller: AcmeBlogBundle:Blog:show }
 
-Teraz Symfony2 obsługuje wszystkie prozaiczne zadania, kontroler wejściowy jest
+Teraz Symfony2 obsługuje wszystkie prozaiczne zadania, kontroler wejścia jest
 dziecinnie prosty. Ponieważ to nie tak mało, nie musisz go zmieniać po utworzeniu
 (a jeśli używasz dystrybucji Symfony2, to nawet nie trzeba go tworzyć)::
 
