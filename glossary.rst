@@ -41,8 +41,8 @@ Słownik
         Zazwyczaj trasa jest odwzorowywana na kontroler, który następnie używa
         informacji z żądania HTTP do przetworzenia danych, przetwarza akcje
         i ostatecznie konstruuje i zwraca obiekt ``Response``. Należy zaznaczyć,
-        że w polskiej literaturze poświęconej Symfony [*]_ termin *kontroler*
-        odnoszony jest czasem do obiektu  zawierającego metody, które tu określone
+        że w polskiej literaturze poświęconej Symfony [1]_ termin *kontroler*
+        odnoszony jest czasem do obiektu zawierającego metody, które tu określone
         zostały jako *kontroler* (np. ``DefaultController) a nie do tych metod.
         Tutaj *kontrolerem* będziemy nazywać, zgodnie z naszą defnicją, metodę
         (funkcję) wykonującą opisane tu działanie.    
@@ -52,7 +52,7 @@ Słownik
         zadanie. Usługa zazwyczaj stosowana jest "globalnie", jako obiekt
         nawiązujący połączenie z bazą danych lub obiekt wysyłający wiadomości
         email. W Symfony2 usługi są często konfigurowane i pobierane z kontenera
-        usług. Aplikacja posiadająca wiele oddzielnych usług nazuwana jest
+        usług. Aplikacja posiadająca wiele oddzielnych usług nazywana jest
         aplikacją o `architekturze zorientowanej na usługi`_.
 
    **kontener usługi** (*ang. Service Container*)
@@ -90,8 +90,8 @@ Słownik
         Zobacz :ref:`Architektura: Stosowanie "dostawców" <using-vendors>`
 
    **Acme*** (*nazwa własna*)
-        *Acme* jest prostą, przykładową nazwą firmy użytej w demo Symfony oraz dokumentacji.
-       Jest użyta w przestrzeni nazw gdzie zwykle używana jest nazwa Twojej firmy
+       *Acme* jest prostą, przykładową nazwą firmy użytej w demo Symfony oraz dokumentacji.
+       Jest użyta w przestrzeni nazw gdzie zwykle stosowana jest nazwa Twojej firmy
        (np. ``Acme\BlogBundle``).
 
    **akcja** (*ang. Action*)
@@ -107,7 +107,7 @@ Słownik
        przez wykonanie polecenia ``assets:install`` w terminalu.
 
    **Kernel** (*nazwa własna*)
-        *Kernel* jest rdzeniem Symfony2. Obiekt *Kernel* obsługuje zapytania
+       *Kernel* jest rdzeniem Symfony2. Obiekt *Kernel* obsługuje zapytania
        HTTP używając wszystkich pakietów oraz bibliotek zarejestrowanych w nim.
        Zobacz :ref:`Architektura: Katalog app/ <the-app-dir>` oraz rozdział
        :doc:`/book/internals`
@@ -120,14 +120,14 @@ Słownik
 
    **Yaml** (*nazwa własna*)
         *YAML* jest to uniwersalny język ustrukturyzowanego reprezentowania danych
-        (tej samej klasy co XML), kekki i przejrzysty, szeroko stosowany w plikach
-        konfoguracyjnych Symfony 2. Zobacz rozdział :doc:`/components/yaml/introduction` 
+        (tej samej klasy co XML), lekki i przejrzysty, szeroko stosowany w plikach
+        konfiguracyjnych Symfony 2. Zobacz rozdział :doc:`/components/yaml/introduction` 
         oraz artykuł Wikipedii `YAML`_.
 
 
-.. _`service-oriented architecture`: http://pl.wikipedia.org/wiki/Architektura_zorientowana_na_us%C5%82ugi
+.. _`architekturze zorientowanej na usługi`: http://pl.wikipedia.org/wiki/Architektura_zorientowana_na_us%C5%82ugi
 .. _`HTTP`: http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
 .. _`HTTP 1.1 RFC`: http://www.w3.org/Protocols/rfc2616/rfc2616.html
 .. _`aplikacji internetowej`: http://pl.wikipedia.org/wiki/Aplikacja_(informatyka)
-.. _`YAML` http://pl.wikipedia.org/wiki/YAML
-.. [*] W.Gajda "Symfony 2 od podstaw" Helion 2012
+.. _`YAML`: http://pl.wikipedia.org/wiki/YAML
+.. [1] W.Gajda "Symfony 2 od podstaw" Helion 2012
