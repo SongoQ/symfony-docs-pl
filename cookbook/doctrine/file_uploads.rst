@@ -294,6 +294,18 @@ Następnie, zrefaktoryzuj klasę ``Document`` tak aby obsłużyć zalety tych wy
 Klasa robi teraz wszystko czego potrzebujesz: generuje unikalną nazwę pliku przed
 zapisem, przenosi plik po zapisie, oraz usuwa plik jeśli encja jest usuwana.
 
+Teraz, kiedy przenoszenie pliku jest obsługiwane przez encję, odwołanie do
+``$document->upload()`` powinno zostać usunięte z kontrolera::
+
+    if ($form->isValid()) {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $em->persist($document);
+        $em->flush();
+
+        return $this->redirect(...);
+    }
+
 .. note::
 
     Zdarzenia ``@ORM\PrePersist()`` oraz ``@ORM\PostPersist()`` są wywoływane
