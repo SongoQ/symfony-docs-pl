@@ -1,5 +1,5 @@
 .. index::
-   single: Symfony2 Fundamentals
+   single: podstawy Symfony2
 
 Podstawy Symfony2 i HTTP
 ========================
@@ -41,7 +41,7 @@ też nie, HTTP jest czymś, co codziennie używasz serwując w internecie. Z Sym
 nauczysz się jak mistrzowsko to opanować.
 
 .. index::
-   single: HTTP; Request-response paradigm
+   single: HTTP; paradygmat żądanie-odpowiedź
 
 Krok 1: klient wysyła żądanie
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -174,7 +174,7 @@ Symfony jest zaprojektowany tak, aby dopasować sie do tej rzeczywistości.
     przeglądania jest rozszerzenie `Live HTTP Headers`_ do Firefox.
 
 .. index::
-   single: podstawy Symfony2; Żądania i odpowiedzi
+   single: podstawy Symfony2; żądania i odpowiedzi
 
 Żądanie i odpowiedź w PHP
 -------------------------
@@ -500,7 +500,7 @@ frameworka, tylko jakiejś jego części albo całości.
 
 
 .. index::
-   single: Symfony2 Components
+   single: komponenty Symfony2
 
 
 Standalone Tools: The Symfony2 *Components*
