@@ -765,8 +765,8 @@ Twig jest dobrze obsługiwany przez Symfony2, podobnie jak szablony PHP. Twig
 zostanie omówiony dokładniej w dalszej części podręcznika. Więcej informacji
 można znaleźć w rozdziale „:doc:`Szablonowanie</book/templating>`".
 
-Znajdź więcej w przypisach
---------------------------
+Dowiedz się więcej w Receptariuszu
+----------------------------------
 
 * :doc:`/cookbook/templating/PHP`
 * :doc:`/cookbook/controller/service`
