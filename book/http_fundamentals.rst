@@ -1,5 +1,6 @@
 .. index::
-   single: podstawy Symfony2
+   single: Symfony2; podstawy
+   single: HTTP; podstawy
 
 Podstawy Symfony2 i HTTP
 ========================
@@ -174,7 +175,7 @@ Symfony jest zaprojektowany tak, aby dopasować sie do tej rzeczywistości.
     przeglądania jest rozszerzenie `Live HTTP Headers`_ do Firefox.
 
 .. index::
-   single: podstawy Symfony2; żądania i odpowiedzi
+   single: Symfony2; żądanie i odpowiedź
 
 Żądanie i odpowiedź w PHP
 -------------------------
@@ -251,7 +252,7 @@ pisania rozwlekłego kodu. Na przykład, metoda ``isSecure()`` sprawdza trzy ró
 wartości w PHP wskazujące na to, czy użytkownik wykorzystuje bezpieczne połączenie
 (np. ``https``).
 
-.. sidebar:: ParameterBags and Request attributes
+.. sidebar:: atrybuty ParameterBags i Request
 
     Jak wyżej widać, zmienne ``$_GET`` i ``$_POST`` są dostępne poprzez publiczne
     właściwości, odpowiedznio ``query`` i ``request``. Każdy z tych obiektów jest
@@ -384,7 +385,7 @@ Można to zrobić szybko i brzydko::
 Rozwiązanie tego problemu może być trudne. Na szczęście jest to dokładnie
 zaprojektowane w Symfony.
 
-Przetwarzanie w palikacji Symfony
+Przetwarzanie w aplikacji Symfony
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Kiedy zdecydujesz się powierzyć Symfony obsługę każdego żądania, to życie może
@@ -500,7 +501,7 @@ frameworka, tylko jakiejś jego części albo całości.
 
 
 .. index::
-   single: komponenty Symfony2
+   single: Symfony2; komponenty
 
 
 Standalone Tools: The Symfony2 *Components*

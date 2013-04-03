@@ -6,6 +6,13 @@ Słownik
 .. glossary::
    :sorted:
 
+   aktywa
+      (*ang. assets*)
+      W nomenklaturze Symfony pojecie aktywów jest pojeciem szerszym niż
+      popularne pojecie zasobów i obejmuje nie tylko fizyczne pliki zasobów
+      (CSS, JavaScript, obrazy itd.) ale też skrypty generowane na ich podstawie,
+      czy tworzone "w locie".
+      
    dystrybucja
       (*ang. distribution*)
       *Dystrybucja* jest zestawem instalacyjnych komponentów Symfony2,
