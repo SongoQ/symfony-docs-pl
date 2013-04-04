@@ -367,10 +367,10 @@ każdy z własnymi opcjami. Więcej informacji na ten temat można znaleźć w r
         // ...
 
 .. index::
-      single: akcesor
+      single: metoda akcesor
 
-Wygenerowanie akcesorów get i set
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wygenerowanie metod akcesorów
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Chociaż już Doctrine wie jak utrwalić obiekt ``Product`` w bazie danych, sama klasa
 nie jest jeszcze przydatna. Ponieważ ``Product`` jest zwykłą klasą PHP, to potrzeba
