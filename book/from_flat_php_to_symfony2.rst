@@ -354,8 +354,8 @@ plik ``index.php``, który jest teraz odpowiedzialny za wewnętrzne kierowanie �
 na podstawie pełnego adresu URI. Jak widzisz, kontroler wejścia jest bardzo
 silnym narzędziem.
 
-Stworzenie kontrolera wejściowego
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Stworzenie kontrolera wejścia
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Mamy zamiar zrobić duży krok w rozbudowie aplikacji. Przy pomocy jednego pliku
 będziemy obsługiwać wszystkie żądania, centralizując takie rzeczy jak obsługa
@@ -765,8 +765,8 @@ Twig jest dobrze obsługiwany przez Symfony2, podobnie jak szablony PHP. Twig
 zostanie omówiony dokładniej w dalszej części podręcznika. Więcej informacji
 można znaleźć w rozdziale „:doc:`Szablonowanie</book/templating>`".
 
-Znajdź więcej w przypisach
---------------------------
+Dowiedz się więcej w Receptariuszu
+----------------------------------
 
 * :doc:`/cookbook/templating/PHP`
 * :doc:`/cookbook/controller/service`
