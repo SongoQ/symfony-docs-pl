@@ -1,3 +1,6 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 .. index::
    single: Doctrine
 
@@ -47,6 +50,7 @@ bazą danych. Zgodnie z konwencją informacja ta zapisywana jest w pliku
 ``app/config/parameters.yml``:
 
 .. code-block:: yaml
+   :linenos:
 
     # app/config/parameters.yml
     parameters:
@@ -67,6 +71,7 @@ bazą danych. Zgodnie z konwencją informacja ta zapisywana jest w pliku
     .. configuration-block::
 
         .. code-block:: yaml
+           :linenos:
 
             # app/config/config.yml
             doctrine:
@@ -78,7 +83,8 @@ bazą danych. Zgodnie z konwencją informacja ta zapisywana jest w pliku
                     password: "%database_password%"
 
         .. code-block:: xml
-
+           :linenos:
+           
             <!-- app/config/config.xml -->
             <doctrine:config>
                 <doctrine:dbal
@@ -91,7 +97,8 @@ bazą danych. Zgodnie z konwencją informacja ta zapisywana jest w pliku
             </doctrine:config>
 
         .. code-block:: php
-        
+           :linenos:
+           
             // app/config/config.php
             $configuration->loadFromExtension('doctrine', array(
                 'dbal' => array(
@@ -155,6 +162,7 @@ danych SQLite:
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         doctrine:
@@ -164,6 +172,7 @@ danych SQLite:
                 charset: UTF8
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <doctrine:config
@@ -175,6 +184,7 @@ danych SQLite:
         </doctrine:config>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('doctrine', array(
@@ -243,6 +253,7 @@ w kilku różnych formatach, włączając w to YAML, XML lub bezpośredni w klas
 .. configuration-block::
 
     .. code-block:: php-annotations
+       :linenos:
 
         // src/Acme/StoreBundle/Entity/Product.php
         namespace Acme\StoreBundle\Entity;
@@ -279,6 +290,7 @@ w kilku różnych formatach, włączając w to YAML, XML lub bezpośredni w klas
         }
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/StoreBundle/Resources/config/doctrine/Product.orm.yml
         Acme\StoreBundle\Entity\Product:
@@ -299,6 +311,7 @@ w kilku różnych formatach, włączając w to YAML, XML lub bezpośredni w klas
                     type: text
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/StoreBundle/Resources/config/doctrine/Product.orm.xml -->
         <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
@@ -812,6 +825,7 @@ Aby to zrobić, należy dodać nazwę klasy repozytorium do definicji odwzorowan
 .. configuration-block::
 
     .. code-block:: php-annotations
+       :linenos:
 
         // src/Acme/StoreBundle/Entity/Product.php
         namespace Acme\StoreBundle\Entity;
@@ -827,6 +841,7 @@ Aby to zrobić, należy dodać nazwę klasy repozytorium do definicji odwzorowan
         }
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/StoreBundle/Resources/config/doctrine/Product.orm.yml
         Acme\StoreBundle\Entity\Product:
@@ -835,6 +850,7 @@ Aby to zrobić, należy dodać nazwę klasy repozytorium do definicji odwzorowan
             # ...
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/StoreBundle/Resources/config/doctrine/Product.orm.xml -->
 
@@ -859,6 +875,7 @@ repozytorium. Metoda ta będzie przepytywać wszystkie encje ``Product`` w kolej
 alfabetycznej.
 
 .. code-block:: php
+   :linenos:
 
     // src/Acme/StoreBundle/Entity/ProductRepository.php
     namespace Acme\StoreBundle\Entity;
@@ -919,6 +936,7 @@ właściwości ``products`` w klasie ``Category``:
 .. configuration-block::
 
     .. code-block:: php-annotations
+       :linenos:
 
         // src/Acme/StoreBundle/Entity/Category.php
 
@@ -941,6 +959,7 @@ właściwości ``products`` w klasie ``Category``:
         }
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/StoreBundle/Resources/config/doctrine/Category.orm.yml
         Acme\StoreBundle\Entity\Category:
@@ -953,6 +972,7 @@ właściwości ``products`` w klasie ``Category``:
             # don't forget to init the collection in entity __construct() method
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/StoreBundle/Resources/config/doctrine/Category.orm.xml -->
         <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
@@ -998,6 +1018,7 @@ Następnie, ponieważ każda klasa ``Product`` odnosi się dokładnie do jednego
 .. configuration-block::
 
     .. code-block:: php-annotations
+       :linenos:
 
         // src/Acme/StoreBundle/Entity/Product.php
 
@@ -1014,6 +1035,7 @@ Następnie, ponieważ każda klasa ``Product`` odnosi się dokładnie do jednego
         }
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/StoreBundle/Resources/config/doctrine/Product.orm.yml
         Acme\StoreBundle\Entity\Product:
@@ -1028,6 +1050,7 @@ Następnie, ponieważ każda klasa ``Product`` odnosi się dokładnie do jednego
                         referencedColumnName: id
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/StoreBundle/Resources/config/doctrine/Product.orm.xml -->
         <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
@@ -1300,6 +1323,7 @@ wywołań zwrotnych cyklu życia. Nie jest to konieczne, jeśli stosuje się YAM
 do odwzorowywania:
 
 .. code-block:: php-annotations
+   :linenos:
 
     /**
      * @ORM\Entity()
@@ -1316,8 +1340,10 @@ kolumnę datową na bieżącą datę, ale tylko wtedy, gdy encja jest pierwszy r
 (tj. dołożona):
 
 .. configuration-block::
+   :linenos:
 
     .. code-block:: php-annotations
+       :linenos:
 
         /**
          * @ORM\PrePersist
@@ -1328,6 +1354,7 @@ kolumnę datową na bieżącą datę, ale tylko wtedy, gdy encja jest pierwszy r
         }
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/StoreBundle/Resources/config/doctrine/Product.orm.yml
         Acme\StoreBundle\Entity\Product:
@@ -1337,6 +1364,7 @@ kolumnę datową na bieżącą datę, ale tylko wtedy, gdy encja jest pierwszy r
                 prePersist: [ setCreatedValue ]
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/StoreBundle/Resources/config/doctrine/Product.orm.xml -->
 
@@ -1449,6 +1477,7 @@ Rozpatrzmy kilka przykładów:
 .. configuration-block::
 
     .. code-block:: php-annotations
+       :linenos:
 
         /**
          * A string field with length 255 that cannot be null
@@ -1468,6 +1497,7 @@ Rozpatrzmy kilka przykładów:
         protected $email;
 
     .. code-block:: yaml
+       :linenos:
 
         fields:
             # A string field length 255 that cannot be null
@@ -1485,6 +1515,7 @@ Rozpatrzmy kilka przykładów:
                 unique: true
 
     .. code-block:: xml
+       :linenos:
 
         <!--
             A string field length 255 that cannot be null
