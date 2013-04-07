@@ -1,3 +1,6 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 Symfony2 versus zwykły PHP
 ==========================
 
@@ -25,6 +28,7 @@ Aby rozpocząć, utworzymy plik, który będzie wyświetlał wpisy bloga, które
 utrwalona w bazie danych. Kod napisany w zwykłym PHP jest szybki, lecz pogmatwany:
 
 .. code-block:: html+php
+   :linenos:
 
     <?php
     // index.php
@@ -89,6 +93,7 @@ Kod może natychmiast zyskać po rozdzieleniu „logiki” aplikacji od kodu HTM
 wykonującego „prezentację”:
 
 .. code-block:: html+php
+   :linenos:
 
     <?php
     // index.php
@@ -111,6 +116,7 @@ Kod HTML jest teraz przechowywany w odrębnym pliku (``templates/list.php``), kt
 jest przede wszystkim plikiem HTML używającym składni „szablonopodobnej” PHP:
 
 .. code-block:: html+php
+   :linenos:
 
     <!DOCTYPE html>
     <html>
@@ -151,6 +157,7 @@ zachowania i dostępu do bazy danych zostały rozdzielone i te drugie zostały
 przeniesione do pliku o nazwie ``model.php``:
 
 .. code-block:: html+php
+   :linenos:
 
     <?php
     // model.php
@@ -192,6 +199,7 @@ przeniesione do pliku o nazwie ``model.php``:
 Kontroler (``index.php``) jest teraz bardzo prosty:
 
 .. code-block:: html+php
+   :linenos:
 
     <?php
     require_once 'model.php';
@@ -215,6 +223,7 @@ Tylko część kodu, która nie może być ponownie wykorzystana, to układ stro
 Poprawmy to przez utworzenie nowego pliku ``layout.php``:
 
 .. code-block:: html+php
+   :linenos:
 
     <!-- templates/layout.php -->
     <!DOCTYPE html>
@@ -231,6 +240,7 @@ Szablon (``templates/list.php``) może teraz zostać uproszczony do "rozszerzeni
 układu:
 
 .. code-block:: html+php
+   :linenos:
 
     <?php $title = 'List of Posts' ?>
 
@@ -284,6 +294,7 @@ pojedynczy wpis blogu na podstawie parametru id::
 Następnie utworzymy nowy plik ``show.php`` - kontroler dla nowej strony:
 
 .. code-block:: html+php
+   :linenos:
 
     <?php
     require_once 'model.php';
@@ -296,6 +307,7 @@ Na koniec, utwórzmy nowy plik szablonu, ``templates/show.php``, aby wygenerowa�
 pojedynczy wpis blogu:
 
 .. code-block:: html+php
+   :linenos:
 
     <?php $title = $post['title'] ?>
 
@@ -333,6 +345,7 @@ w którym przetwarzane są wszystkie żądania HTTP. Przy zastosowaniu kontroler
 wejściowego nieco zmieniają się adresy URI, ale zaczynają się bardziej elastycznie:
 
 .. code-block:: text
+   :linenos:
 
     Without a front controller
     /index.php          => Blog post list page (index.php executed)
@@ -364,6 +377,7 @@ być wystarczająco inteligentny, aby wygenerowac stronę wpisów bloga lub stro
 wpisu kierując się adresem URI:
 
 .. code-block:: html+php
+   :linenos:
 
     <?php
     // index.php
@@ -387,6 +401,7 @@ W celach organizacyjnych oba kontrolery (dawniej ``index.php`` i ``show.php``)
 są teraz funkcjami PHP i zostały przeniesione do odrębnego pliku ``controllers.php``:
 
 .. code-block:: php
+   :linenos:
 
     function list_action()
     {
@@ -438,6 +453,7 @@ W głównym katalogu naszej aplikacji utwórz plik ``composer.json`` z następuj
 zawartością:
 
 .. code-block:: json
+   :linenos:
 
     {
         "require": {
@@ -468,6 +484,7 @@ być przetworzone, oraz odpowiedzi, która ma być zwrócona. Wykorzystajmy te o
 do poprawienia naszego blogu:
 
 .. code-block:: html+php
+   :linenos:
 
     <?php
     // index.php
@@ -496,6 +513,7 @@ Aby to ułatwić, można dodać nową funkcję ``render_template()``, która naw
 mówiąc, działa trochę jak silnik szablonowania Symfony2:
 
 .. code-block:: php
+   :linenos:
 
     // controllers.php
     use Symfony\Component\HttpFoundation\Response;
@@ -598,6 +616,7 @@ szablonu i zwracania obiektu Response. Szablon wykazu wpisów na blogu jest tera
 nieco prostszy:
 
 .. code-block:: html+php
+   :linenos:
 
     <!-- src/Acme/BlogBundle/Resources/views/Blog/list.html.php -->
     <?php $view->extend('::layout.html.php') ?>
@@ -621,6 +640,7 @@ nieco prostszy:
 Układ jest niemal identyczny:
 
 .. code-block:: html+php
+   :linenos:
 
     <!-- app/Resources/views/layout.html.php -->
     <!DOCTYPE html>
@@ -647,6 +667,7 @@ HTTP. Informacje te są dostarczane w czytelnej formie przez mapę konfiguracji
 trasowania:
 
 .. code-block:: yaml
+   :linenos:
 
     # app/config/routing.yml
     blog_list:
@@ -727,6 +748,7 @@ mniej kodu. Dla przykładu przekształćmy szablon wykazu wpisów bloga na szabl
 napisany w Twigu:
 
 .. code-block:: html+jinja
+   :linenos:
 
     {# src/Acme/BlogBundle/Resources/views/Blog/list.html.twig #}
     {% extends "::layout.html.twig" %}
@@ -749,6 +771,7 @@ napisany w Twigu:
 Odpowiedni szablon ``layout.html.twig`` jest równie prosty:
 
 .. code-block:: html+jinja
+   :linenos:
 
     {# app/Resources/views/layout.html.twig #}
     <!DOCTYPE html>

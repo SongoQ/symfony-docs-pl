@@ -1,3 +1,6 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 .. index::
    single: Symfony2; podstawy
    single: HTTP; podstawy
@@ -61,6 +64,7 @@ xkcd (żądanie):
 W „języku HTTP”, to żądanie HTTP będzie wyglądać następująco:
 
 .. code-block:: text
+   :linenos:
 
     GET / HTTP/1.1
     Host: xkcd.com
@@ -123,6 +127,7 @@ Odpowiedź przesłana z powrotem do przeglądarki, przetłumaczona na HTTP, będ
 wyglądać podobnie do tego:
 
 .. code-block:: text
+   :linenos:
 
     HTTP/1.1 200 OK
     Date: Sat, 02 Apr 2011 21:05:05 GMT
@@ -322,6 +327,7 @@ Kontroler wejściowy
 Zwykle, aplikacje są budowane tak, aby każda "strona" witryny była fizycznym plikiem:
 
 .. code-block:: text
+   :linenos:
 
     index.php
     contact.php
@@ -426,6 +432,7 @@ W pierwszej kolejności dodaj wpis dla ``/contact`` do pliku konfiguracji trasow
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/routing.yml
         contact:
@@ -433,12 +440,14 @@ W pierwszej kolejności dodaj wpis dla ``/contact`` do pliku konfiguracji trasow
             defaults: { _controller: AcmeDemoBundle:Main:contact }
 
     .. code-block:: xml
+       :linenos:
 
         <route id="contact" path="/contact">
             <default key="_controller">AcmeBlogBundle:Main:contact</default>
         </route>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/routing.php
         use Symfony\Component\Routing\RouteCollection;
