@@ -1,73 +1,81 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 .. index::
    single: Strony
 
 Tworzenie stron w Symfony2
 ==========================
 
-Tworzenie nowej strony w Symfony2 to prosty, dwuetapowy proces:
+Procedura tworzenia stron w Symfony2 składa sie z dwóch etapów
 
-  * *Utwórz trasę (ang. route)*: Trasa definiuje URL (np. ``/o-nas``) do Twojej strony
-    oraz określa kontroler (który jest funkcją PHP), który Symfony2 powinno wykonać,
-    kiedy URL przychodzącego żądania pasuje do wzorca trasy.
+  * *Utworzenie trasy*: Trasa (*ang. route*) odpowiada części adresu URL określającej
+    ścieżkę dostępu do zasobu (np. ``/about``) i wyznacza też kontroler, który Symfony2
+    ma wykonać, gdy ścieżka dostępu przychodzącego żądania HTTP zostanie dopasowany do
+    wzorca trasy;
 
-  * *Utwórz kontroler*: Kontroler jest funkcją PHP, która pobiera przychodzące żądanie
-    i transformuje je w obiekt ``Odpowiedzi`` (ang. ``Response``) Symfony2, który jest zwracany
-    użytkownikowi.
+  * *Utworzenie kontrolera*: Kontroler jest funkcją PHP, która pobiera przychodzące
+    żądanie HTTP i przekształca je w obiekt Symfony2 o nazwie *Response*, który jest
+    zwracany klientowi.
 
+To proste podejście jest piękne, gdyż pasuje do sposobu funkcjonowania internetu.
+Każda interakcja w internecie jest inicjowana przez żądanie HTTP. Zadaniem aplikacji
+jest interpretacja żądania i zwrócenie odpowiedzi HTTP.
 
-To proste podejście jest piękne, gdyż pasuje do sposobu funkcjonowania Sieci.
-Każda interakcja w Sieci jest inicjowana przez żądanie HTTP. Zadaniem Twojej aplikacji jest
-po prostu zinterpretować żądanie i zwrócić właściwą odpowiedź HTTP.
-
-Symfony2 stosuje tą filozofię i dostarcza Ci narzędzia oraz konwencje, które pomogą Ci utrzymać
-swoją aplikację zorganizowaną wraz ze wzrostem liczby użytkowników i złożoności.
-
-Brzmi wystarczająco prosto? Do dzieła!
+Symfony2 dostosowuje się do tej filozofii i dostarcza narzędzia oraz konwencje,
+które pomogaja w utrzymaniu aplikacji w miarę wzrostu liczby użytkowników
+i złożoności aplikacji.
 
 .. index::
-   single: Strony; Przykład
+   single: tworzenie stron; przykład
 
 Strona "Witaj Symfony!"
 -----------------------
 
-Zacznijmy od klasycznej aplikacji "Witaj Świecie!". Kiedy skończysz, użytkownik będzie
-miał możliwość ujrzeć osobiste pozdrowienie (np. "Witaj Symfony") wchodząc w poniższy URL:
+Zacznijmy od klasycznej aplikacji "Witaj Świecie!". Kiedy skończymy, użytkownik będzie
+miał możliwość ujrzeć osobiste pozdrowienie (np. "Witaj Symfony") przesyłając
+następujący adres URL:
 
 .. code-block:: text
 
     http://localhost/app_dev.php/hello/Symfony
 
-W rzeczywistości będziesz mógł zastąpić *Symfony* innym imieniem, które ma być użyte w pozdrowieniu.
-Aby utworzyć stronę, wykonaj prosty, dwuetapowy proces.
+Faktycznie będziesz mógł zastąpić *Symfony* jakimkolwiek inną nazwą, które ma być
+użyte w pozdrowieniu. Aby utworzyć stronę, wykonamy wspomnianą już tą dwuetapową
+procedurę.
 
 .. note::
 
-    Ten tutorial zakłada, że już pobrałeś Symfony2 i skonfigurowałeś swój serwer. Powyższy URL przyjmuje,
-    że ``localhost`` wskazuje na katalog ``web`` Twojego nowego projektu Symfony2.
-    Po więcej informacji na temat tego procesu zobacz: :doc:`Instalacja Symfony2</book/installation>`.
+    Poradnik ten zakłada, że już pobrałeś Symfony2 i skonfigurowałeś swój serwer
+    internetowy. Powyższy URL przyjmuje, że ``localhost`` wskazuje na katalog
+    ``web`` Twojego nowego projektu Symfony2. Jest to tylko przykład. Szczegółowe
+    informacje dotyczące konfiguracji katalogu głównego serwera znajdziesz w dokumentacji
+    serwera, który używasz. Poniżej podane są odnośniki do odpowiedniej dokumentacji:
+    
+    * dla serwera Apache HTTP jest to dokumentacja`Apache's DirectoryIndex`_
+    * dla Nginx jest to dokumentacja umiejscawiania `Nginx HttpCoreModule`_
 
-Zanim zaczniesz: Utwórz Bundle
+Zanim zaczniesz: utwórz pakiet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Zanim zaczniesz, musisz utworzyć *bundle*. W Symfony2 :term:`bundle`
-jest jak wtyczka, tyle, że cały kod Twojej aplikacji będzie znajdował
-się wewnątrz bundle.
+Zanim zaczniesz, musisz utworzyć pakiet (*ang. bundle*). W Symfony2 :term:`pakiet`
+jest jak wtyczka, tyle, że cały kod aplikacji składa się z takich pakietów,
+odpowiedzialnych za konkretne funkcjonalności.
 
-Bundle to nic innego jak katalog, który przechowuje wszystko związane
-z daną funkcją, włączając w to klasy PHP, konfigurację, a nawet arkusze stylów
-czy pliki Javascript (zobacz :ref:`page-creation-bundles`).
+Pakiet to nic innego jak katalog, który przechowuje wszystko wszystko co związane
+jest z określoną funkcjonalnością, włączając w to klasy PHP, konfigurację, a nawet
+arkusze stylów i pliki Javascript (zobacz :ref:`System pakietów<page-creation-bundles>`).
 
-Aby utworzyć bundle o nazwie ``AcmeHelloBundle`` (testowy bundle, który
-zbudujesz w tym rozdziale), wykonaj poniższe polecenie i postępuj ze wskazówkami
-na ekranie (zastosuj wszystkie domyślne opcje):
+Aby utworzyć pakiet o nazwie ``AcmeHelloBundle`` (cwiczebny pakiet, który będziemy
+budować tym rozdziale), wykonaj poniższe polecenie i postępuj ze wskazówkami
+na ekranie (stosując wszystkie domyślne opcje):
 
 .. code-block:: bash
 
     php app/console generate:bundle --namespace=Acme/HelloBundle --format=yml
 
-Za kulisami tworzony jest katalog dla bundle ``src/Acme/HelloBundle``.
-Ponadto do ``app/AppKernel.php`` automatycznie dodana jest linia, dzięki której bundle
-jest rejestrowany w jądrze::
+Tworzy to katalog pakietu o lokalizacji ``src/Acme/HelloBundle``. Zostanie też
+automatycznie dodana linia w pliku ``app/AppKernel.php`` rejestrujaca pakiet w jądrze::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -81,22 +89,23 @@ jest rejestrowany w jądrze::
         return $bundles;
     }
 
-Właśnie skonfigurowałeś swój bundle, teraz możesz zacząć budować swoją aplikację
-wewnątrz bundle.
+Właśnie skonfigurowałeś swój pakiet, teraz możesz zacząć budowę swojej aplikacji
+wewnątrz katalogu tego pakietu.
 
 Krok 1: Utwórz trasę
 ~~~~~~~~~~~~~~~~~~~~
 
-Domyślnie, plik konfiguracyjny routingu w aplikacji Symfony2 znajduje się w katalogu
-``app/config/routing.yml``. Podobnie jak w całej konfiguracji Symfony2, możesz również
-wybrać XML lub PHP "out of the box" do konfiguracji tras.
+Domyślnie, plik konfiguracyjny trasowania aplikacji Symfony2 znajduje się w katalogu
+``app/config/routing.yml``. Podobnie jak w całej konfiguracji Symfony2, może to być
+również plik w formacie XML lub PHP.
 
-Jeśli spojrzysz na główny plik routingu, zobaczysz, że Symfony już dodało wpis, kiedy
-generowałeś ``AcmeHelloBundle``:
+Jeśli spojrzysz na główny plik trasowania, zobaczysz, że Symfony już dodało wpis,
+podczas generowania ``AcmeHelloBundle``:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/routing.yml
         AcmeHelloBundle:
@@ -104,6 +113,7 @@ generowałeś ``AcmeHelloBundle``:
             prefix:   /
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/routing.xml -->
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -116,6 +126,7 @@ generowałeś ``AcmeHelloBundle``:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/routing.php
         use Symfony\Component\Routing\RouteCollection;
@@ -129,17 +140,18 @@ generowałeś ``AcmeHelloBundle``:
 
         return $collection;
 
-Ten wpis jest bardzo prosty: mówi on Symfony, aby wczytywał konfigurację routingu
-z pliku ``Resources/config/routing.yml``, który żyje wewnątrz ``AcmeHelloBundle``.
-Oznacza to, że możesz umieścić konfigurację routingu bezpośrednio w ``app/config/routing.yml``
-lub zorganizować swoje trasy po całej swojej aplikacji i importować je tutaj.
+Ten wpis jest dość prosty: informuje Symfony, aby załadował konfigurację trasowania
+z pliku ``Resources/config/routing.yml``, który jest umieszczony wewnątrz ``AcmeHelloBundle``.
+Oznacza to, że konfiguracja trasowania jest umieszczona bezpośrednio w ``app/config/routing.yml``
+lub zorganizowano trasowanie dla całej aplikacji i zaimportowno je tutaj.
 
-Teraz, kiedy plik ``routing.yml`` bundle'a jest importowany dodaj nową trasę, która
-zdefiniuje URL strony którą chcesz utworzyć:
+Teraz gdy plik ``routing.yml`` został zaimportowany z pakietu, dodaj nową trasę
+określającą ścieżkę dostępu do strony, którą właśnie tworzysz:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/HelloBundle/Resources/config/routing.yml
         hello:
@@ -147,6 +159,7 @@ zdefiniuje URL strony którą chcesz utworzyć:
             defaults: { _controller: AcmeHelloBundle:Hello:index }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/HelloBundle/Resources/config/routing.xml -->
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -161,6 +174,7 @@ zdefiniuje URL strony którą chcesz utworzyć:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         // src/Acme/HelloBundle/Resources/config/routing.php
         use Symfony\Component\Routing\RouteCollection;
@@ -173,31 +187,30 @@ zdefiniuje URL strony którą chcesz utworzyć:
 
         return $collection;
 
-
-Routing składa się z dwóch podstawowych części: ``wzorca``, którym jest URL
-do którego prowadzi trasa, oraz z tablicy ``defaults``, która definiuje
-kontroler, który ma być wykonany. Składnia symbolu zastępczego we wzorcu
-(``{name}``) jest wieloznacznikiem. Oznacza to, że ``/hello/Ryan``, ``/hello/Fabien``
-oraz każdy inny podobny URL będzie pasował do tej trasy. Parametr symbolu ``{name}``
-będzie również przekazany do kontrolera, więc możesz używać jego wartość, aby
-pozdrowić użytkownika po imieniu.
+Trasowanie składa się z dwóch części: ``pattern``, która jest wzorcem ścieżki
+dostępu porównywanym z żądaniem HTTP i tablicy ``defaults``, która określa kontroler
+jaki ma być wykonany. Składnia symbolu ``{name}`` we wzorcu jest wieloznaczna.
+Oznacza to, że zostaną dopasowane do wzorca trasy ścieżki takie jak ``/hello/Ryan``,
+``/hello/Fabien`` i tym podobne. Parametr wieloznacznika ``{name}`` będzie również
+pasował do kontrolera, dzięki czemu można używać jego wartości do indywidualizowania
+powitania.
 
 .. note::
 
-  System routingu posiada wiele świetnych funkcji do tworzenia elastycznych
-  i potężnych struktur URL w Twojej aplikacji. W celu uzyskania więcej informacji,
-  zobacz rozdział dotyczący :doc:`Routingu </book/routing>`.
+  System trasowania ma o wiele więcej możliwości tworzenia elastycznej i rozbudowanej
+  struktury ścieżek dostępu w aplikacji. W celu poznania szczegółów przeczytaj rozdział
+  :doc:`Trasowanie</book/routing>`.
 
 Krok 2: Utwórz kontroler
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Kiedy URL taki jak ``/hello/Ryan`` jest obsługiwany przez aplikację, dopasowana jest
-trasa ``hello``, a kontroler ``AcmeHelloBundle:Hello:index`` jest wykonywany przez
-framework. Drugim krokiem procestu tworzenia strony jest utworzenie tego kontrolera.
+Kiedy adres URL, taki jak ``/hello/Ryan``, jest obsługiwany przez aplikację dopasowywana
+zostaje trasa ``hello`` i zostaje wykonany kontroler ``AcmeHelloBundle:Hello:index``.
+Drugim krokiem procedury tworzenia strony jest utworzenie tego własnie kontrolera.
 
-Kontroler - ``AcmeHelloBundle:Hello:index`` jest *logiczną* nazwą kontrolera i mapuje
-ona metodę ``indexAction`` klasy PHP o nazwie ``Acme\HelloBundle\Controller\Hello``.
-Zacznij od utworzenia tego pliku wewnątrz Twojego ``AcmeHelloBundle``::
+Łańcuch ``AcmeHelloBundle:Hello:index`` jest **logiczną nazwą** kontrolera i odwzorowuje
+metodę ``indexAction`` klasy PHP o nazwie ``Acme\HelloBundle\Controller\Hello``.
+Zacznij od utworzenia tego pliku wewnątrz ``AcmeHelloBundle``::
 
     // src/Acme/HelloBundle/Controller/HelloController.php
     namespace Acme\HelloBundle\Controller;
@@ -208,13 +221,14 @@ Zacznij od utworzenia tego pliku wewnątrz Twojego ``AcmeHelloBundle``::
     {
     }
 
-W rzeczywistości, kontroler to nic innego jak metoda PHP, którą Ty tworzysz,
-a Symfony ją wykonuje. To tutaj Twój kod używa informacje z żądania, aby zbudować
-i przygotować żądany zasób. Z wyjątkiem szczególnych przypadków, końcowy produkt
-kontrolera jest zawsze taki sam: obiekt ``Odpowiedzi`` Symfony2.
+W rzeczywistości, kontroler to nic innego jak metoda PHP, którą tworzysz a Symfony
+ją wykonuje. To tutaj kod uzyskuje informację z żądania HTTP aby zbudować
+i przygotować odpowiedź w postaci określonego zasobu. Z wyjątkiem kilku szczególnych
+przypadków, końcowy produkt produkt kontrolera jest zawsze taki sam: obiekt
+``Response`` Symfony2.
 
-Utwórz akcję ``indexAction``, którą Symfony uruchomi, kiedy trasa ``hello`` będzie
-dopasowana::
+Utwórzmy metodę ``indexAction``, którą wykona Symfony, gdu zostanie dopasowana trasa
+``hello``::
 
     // src/Acme/HelloBundle/Controller/HelloController.php
 
@@ -227,11 +241,13 @@ dopasowana::
         }
     }
 
-Kontroler jest prosty: tworzy nowy obiekt ``Response``, którego pierwszym argumentem
-jest treść będzie użyta w odpowiedzi (w tym przykładzie jest to niewielka strona HTML).
+Kontroler ten jest prosty: tworzy nowy obiekt ``Response``, którego pierwszym argumentem
+jest treść, która będzie użyta w odpowiedzi (w tym przykładzie jest to niewielka
+strona HTML).
 
-Gratulacje! Po utworzeniu wyłącznie trasy oraz kontrolera, masz już w pełni funkcjonalną
-stronę. Jeśli ustawiłeś wszystko poprawnie, Twoja aplikacja powinna Cię pozdrowić:
+Gratulacje! Jedynie po utworzeniu trasy i kontrolera masz już funkcjonującą stronę.
+Jeżeli skonfigurowałeś wszystko prawidłowo, to bedziesz mógł wywołać swoja aplikację
+w ten sposób:
 
 .. code-block:: text
 
@@ -239,37 +255,39 @@ stronę. Jeśli ustawiłeś wszystko poprawnie, Twoja aplikacja powinna Cię poz
 
 .. tip::
 
-    Możesz również zobaczyć swoją aplikację w środowisku "prod" (produkcyjnym) :ref:`środowiska <environments-summary>`
-    odwiedzając:
+    Możesz również zobaczyć swoją aplikację w :ref:`środowisku<environments-summary>`
+    "prod" (produkcyjnym) odwiedzając:
 
     .. code-block:: text
 
         http://localhost/app.php/hello/Ryan
 
-    Jeśli otrzymujesz błąd, prawdopodobnie musisz wyczyścić cache za pomocą komendy:
+    Jeśli otrzymujesz błąd, prawdopodobnie musisz wyczyścić pamięć podręczną za
+    pomocą polecenia:
 
     .. code-block:: bash
 
         php app/console cache:clear --env=prod --no-debug
 
-Opcjonalnym, lecz częstym, trzecim krokiem procesu tworzenia strony jest utworzenie szablonu.
+Opcjonalnie, ale zazwyczaj, wykonywany jest trzeci krok - jest nim utworzenie szablonu.
 
 .. note::
 
-   Kontrolery są głównym punktem wejścia Twojego kodu oraz kluczowym składnikiem
-   podczas tworzenia stron. Więcej informacji można znaleźć w rozdziale :doc:`Kontroler </book/controller>`,
+   Kontrolery są głównym punktem wejścia do kodu oraz kluczowym składnikiem
+   podczas tworzenia stron. Więcej informacji można znaleźć w rozdziale
+   :doc:`Kontroler</book/controller>`,
 
-Opcjonalny Krok 3: Utwórz szablon
+Opcjonalny krok 3: Utwórz szablon
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Szablon pozwala Ci przenieść całą warstwę prezentacji (np. kod HTML) do oddzielnego pliku
-i ponownie wykorzystywać różne części układu strony. Zamiast pisać kod HTML wewnątrz
-kontrolera, wyrenderuj szablon:
+Szablony umożliwiają przeniesienie całej prezentacji (czyli kodu HTML) do oddzielnego
+pliku i wielokrotne wykorzystywania fragmentół układu strony. Zamiast pisać kod
+HTML wewnątrz kontrolera, należy wygenerować szablon:
 
 .. code-block:: php
-    :linenos:
+   :linenos:
 
-    // src/Acme/HelloBundle/Controller/HelloController.php
+   // src/Acme/HelloBundle/Controller/HelloController.php
     namespace Acme\HelloBundle\Controller;
 
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -278,43 +296,48 @@ kontrolera, wyrenderuj szablon:
     {
         public function indexAction($name)
         {
-            return $this->render('AcmeHelloBundle:Hello:index.html.twig', array('name' => $name));
+            return $this->render(
+                'AcmeHelloBundle:Hello:index.html.twig',
+                array('name' => $name)
+            );
 
-            // render a PHP template instead
-            // return $this->render('AcmeHelloBundle:Hello:index.html.php', array('name' => $name));
+            // renderowanie szablonu PHP zamiast
+            // return $this->render(
+            //     'AcmeHelloBundle:Hello:index.html.php',
+            //     array('name' => $name)
+            // );
         }
-    }
+    } 
 
 .. note::
 
-   Aby móc używać metody ``render()``, Twój kontroler musi dziedziczyć klasę
-   ``Symfony\Bundle\FrameworkBundle\Controller\Controller`` (API
-   docs: :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`),
-   która dodaje skróty do częstych zadań wykonywanych w kontrolerach. Jest to
-   zastosowane w powyższym przykładzie poprzez dodanie wyrażenia ``use`` w 4
-   linii, a następnie rozszerzenia ``Controller`` w linii 6.
+   Aby można używać metodę ``render()``, kontroler musi rozszerzać klasę
+   ``Symfony\Bundle\FrameworkBundle\Controller\Controller`` (Dokumentacja API
+   :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`),
+   która dodaje skróty do typowych zadań wykonywanych wewnąrz kontrolera.
+   W powyższym przykładzie zostało to wykonane przez dodanie wyrażenia ``use``
+   linii 4, a następnie ``extends Controller`` w linii 6.
 
-Metoda ``render()`` tworzy nową ``Odpowiedź`` (ang. ``Response``) wypełnioną
-zawartością danego, wyrenderowanego szablonu. Podobnie jak inny kontroler,
-ostatecznie zwróci on obiekt ``Response``.
+Metoda ``render()`` tworzy obiekt ``Response`` wypełniony zawartością przetworzonego
+szablonu. Jak każdy kontroler, zwróci ona ostatecznie obiekt ``Response``.
 
-Zauważ, że są dwa różne przykłady renderowania szablonów. Domyślnie Symfony2
-wspiera dwa różne języki szablonów: klasyczne szablony PHP oraz zwięzłe, lecz
-potężne szablony `Twig`_. Nie przejmuj się - możesz wybrać jeden, lub nawet
+Proszę zwrócić uwagę, że są dwa różne przykłady przetwarzania szablonów. Domyślnie
+Symfony2 wspiera dwa różne języki szablonów: klasyczne szablony PHP oraz zwięzłe, lecz
+potężne szablonowanie `Twig`_. Nie przejmuj się - możesz wybrać jeden, lub nawet
 oba z nich w tym samym projekcie.
 
-Kontroler renderuje szablon ``AcmeHelloBundle:Hello:index.html.twig``, który
-używa następującej konwencji nazewnictwa:
+Kontroler renderuje szablon ``AcmeHelloBundle:Hello:index.html.twig`` używając
+następującej konwencji nazewniczej:
 
-    **NazwaBundle**:**NazwaKontrolera**:**NazwaSzablonu**
+    **NazwaPakietu**:**NazwaKontrolera**:**NazwaSzablonu**
 
-To jest *logiczna* nazwa szablonu, który jest zmapowany do fizycznej lokacji
-używając następującej konwencji:
+Jest to *logiczna nazwa* szablonu odwzorowana na fizyczną lokację, zgodnie z następującą
+konwencją:
 
-    **/path/to/NazwaBundle**/Resources/views/**NazwaKontrolera**/**NazwaSzablonu**
+    /ścieżka/do/**NazwaPakietu**/Resources/views/**NazwaKontrolera**/**NazwaSzablonu**
 
-W tym przypadku, ``AcmeHelloBundle`` jest nazwą Bundle, ``Hello`` to kontroler, a
-``index.html.twig`` jest szablonem:
+W tym przypadku, ``AcmeHelloBundle`` jest nazwą pakietu, ``Hello`` to kontroler, a
+``index.html.twig`` jest nazwą szablonu:
 
 .. configuration-block::
 
@@ -335,22 +358,25 @@ W tym przypadku, ``AcmeHelloBundle`` jest nazwą Bundle, ``Hello`` to kontroler,
 
         Hello <?php echo $view->escape($name) ?>!
 
-Przeanalizujmy szablon Twig krok po kroku:
+Omówmy ten kod szablon Twig linia po linii:
 
-* *linia 2*: Znacznik ``extends`` definiuje szablon rodzica. Szablon wyraźnie
-  definiuje plik układu strony, wewnątrz którego ma być on umieszczony.
+* *linia 2*: Literał ``extends`` określa szablon nadrzędny. Wskazywany jest tu
+  jawnie plik układu strony, w którym będzie umieszczony szablon
 
-* *linia 4*: Znacznik ``block`` mówi, że wszystko wewnątrz szablonu powinno zostać
-  umieszczone wewnątrz bloku ``body``. Jak się później przekonasz, to szablon-rodzic
-  (``base.html.twig``) jest odpowiedzialny za ostatecznie wyrenderowanie bloku ``body``.
+* *linia 4*: Literał ``block`` wskazuje, że całe wnętrze powinno zostać umieszczone
+  w bloku o nazwie ``body``. Jak się później przekonasz, to szablon nadrzędny
+  (*base.html.twig*) jest odpowiedzialny za ostateczne wygenerowanie bloku o nazwie
+  ``body``.
 
-Szablon nadrzędny ``::base.html.twig`` nie posiada w swojej nazwie zarówno **NazwaBundle**,
-jak i **NazwaKontrolera** (stąd podwójny dwukropek (``::``) na początku). Oznacza to, że
-szablon żyje na zewnątrz bundle, wewnątrz katalogu ``app``:
+Szablon nadrzędny ``::base.html.twig`` nie posiada w swojej nazwie oznaczeń
+**NazwaPakietu**, jak i **NazwaKontrolera** (stąd podwójny dwukropek (``::``)
+na początku). Oznacza to, że plik szablonu znajduje się na zewnątrz pakietów,
+wewnątrz katalogu ``app``:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {# app/Resources/views/base.html.twig #}
         <!DOCTYPE html>
@@ -369,62 +395,61 @@ szablon żyje na zewnątrz bundle, wewnątrz katalogu ``app``:
 
     .. code-block:: php
 
-        <!-- app/Resources/views/base.html.php -->
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                <title><?php $view['slots']->output('title', 'Welcome!') ?></title>
-                <?php $view['slots']->output('stylesheets') ?>
-                <link rel="shortcut icon" href="<?php echo $view['assets']->getUrl('favicon.ico') ?>" />
-            </head>
-            <body>
-                <?php $view['slots']->output('_content') ?>
-                <?php $view['slots']->output('stylesheets') ?>
-            </body>
-        </html>
+       <!-- app/Resources/views/base.html.php -->
+       <!DOCTYPE html>
+       <html>
+         <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title><?php $view['slots']->output('title', 'Welcome!') ?></title>
+            <?php $view['slots']->output('stylesheets') ?>
+            <link rel="shortcut icon" href="<?php echo $view['assets']->getUrl('favicon.ico') ?>" />
+          </head>
+          <body>
+            <?php $view['slots']->output('_content') ?>
+            <?php $view['slots']->output('stylesheets') ?>
+          </body>
+       </html>
 
-Podstawowy plik szablonu definiuje układ strony HTML i renderuje blok ``body``, który
-zdefiniowałeś w szablonie ``index.html.twig``. W przypadku, gdy nie zdefiniujesz bloku
-``title`` w szablonie-dziecku, domyślnie zwraca on "Welcome!".
+Plik podstawowego szablonu okresła układ strony HTML i renderuje blok ``body``, który
+został zdefiniowany w szablonie ``index.html.twig``. Ponieważ w szablonie potomnym
+nie został określony blok ``title``, to domyślnie treścią tego bloku będzie "Welcome!".
 
-Szablony to potężny sposób renderowania i organizacji treści dla Twojej strony.
-Szablon może wyrenderować wszystko, od znaczników HTML do kodu CSS, czy cokolwiek
-innego, co kontroler potrzebuje zwracać.
+Szablony są zaawamsowanym sposobem renderowania i organizowania treści dla strony.
+Szablon może przetwatrzać wszystko, od znaczników HTML po kod CSS, czy cokolwiek
+co może zwrócić kontroler.
 
-W cyklu życia obsługi żądania, silnik szablonów jest po prostu dodatkowym narzędziem.
-Przypomnij sobie, że celem każdego kontrolera jest zwrócić obiekt ``Response``.
-Szablony są potężnym, lecz opcjonalnym narzędziem do tworzenia treści dla
+W cyklu przetwarzania żądania, silnik szablonów jest po prostu dodatkowym narzędziem.
+Przypomnijmy, że celem każdego kontrolera jest zwrócić obiekt ``Response``.
+Szablony są silnym, ale też opcjonalnym narzędziem do tworzenia treści dla
 obiektu ``Response``.
 
 .. index::
-   single: Struktura katalogów
+   single: struktura katalogów
 
 Struktura katalogów
 -------------------
 
-Już po kilku krótkich akapitach rozumiesz filozofię tworzenia i renderowania stron
-w Symfony2. Zobaczyłeś również jak projekty Symfony2 są zbudowane i zorganizowane.
-Na koniec tej sekcji będziesz wiedział gdzie znaleźć i umieścić różne typy
-plików, oraz dlaczego.
+Po przeczytaniu tych kilku krótkich podrozdziałów zapoznałeś się ze sposobem tworzenia
+i generowania stron w Symfony2. Zobaczyłeś też jak projekty Symfony2 są strukturyzowane
+i organizowane. W dalszej części rozdziału poznasz gdzie umieszczać pliki i dlaczego tam.
 
-Pomimo całkowitej elastyczności, domyślnie każda :term:`aplikacja` symfony
-ma tą samą podstawę oraz zalecaną strukturę katalogów:
+Chociaż framework Symfony jest bardzo elastyczny, to jednak każda jego :term:`aplikacja`
+ma taką samą podstawową, zalecaną strukturę katalogową:
 
-* ``app/``: Ten katalog zawiera konfigurację aplikacji;
+* ``app/``: zawiera konfigurację aplikacji;
 
-* ``src/``: Cały kod PHP projektu przechowywany jest w tym katalogu;
+* ``src/``: w tym katalogu zawarty jest cały kod PHP projektu;
 
-* ``vendor/``: Wszelkie dodatkowe biblioteki umieszczone są tutaj w celu zachowania konwencji;
+* ``vendor/``: zgodnie z konwencja, w tym katalogu umieszczane są jakiekolwiek biblioteki dostawców;
 
-* ``web/``: To jest główny katalog strony (web root), który zawiera wszystkie dostępne publicznie pliki;
+* ``web/``: jest to główny katalog internetowy, zawierający wszystkie publicznie dostępne pliki.
 
-Katalog Web
+Katalog web
 ~~~~~~~~~~~
 
-Katalog web root jest głównym katalogiem wszystkich publicznych i statycznych
-plików, włączając w to obrazki, arkusze stylów oraz pliki JavaScript. Tutaj
-również znajduje się :term:`front kontroler`::
+Katalog główny ``web`` jest miejscem dla wszystkich publicznych i statycznych plików,
+w tym dla obrazów, arkuszy stylów i plików JavaScript. Jest to również miejsce
+lokalizacji każdego :term:`kontrolera wejścia<kontroler wejścia>`::
 
     // web/app.php
     require_once __DIR__.'/../app/bootstrap.php.cache';
@@ -436,118 +461,132 @@ również znajduje się :term:`front kontroler`::
     $kernel->loadClassCache();
     $kernel->handle(Request::createFromGlobals())->send();
 
-Plik front kontrolera (w tym przypadku ``app.php``) jest właściwym plikiem PHP,
-który jest wykonywany przy każdym użyciu aplikacji Symfony2, a jego zadaniem
-jest użyć klasy Jądra (ang. Kernel) ``AppKernel``, aby wykonać rozruch aplikacji.
+Plik kontrolera wejścia (w tym przykładzie ``app.php``) jest rzeczywistym plikiem
+PHP, który jest wykonywany podczas wywołania aplikacji Symfony2, a jego zadaniem
+jest wczytanie klas jądra ``AppKernel`` w celu przeprowadzenia rozruchu aplikacji.
 
 .. tip::
 
-    Posiadanie front kontrolera oznacza różne i bardziej elastyczne URLe niż te
-    używane w typowej aplikacji PHP. Wykorzystując front kontroler, URLe formatowane
-    są w następujący sposób:
+    Zastosowanie kontrolera wejściowego umożliwa używania innych i bardziej elastycznych
+    adresów URL, niż te w zwykłych aplikacjach ze zwykłym PHP. Przy zastosowaniu
+    kontrolera wejścia adresy URL są formatowane w następujący sposób:
 
     .. code-block:: text
 
         http://localhost/app.php/hello/Ryan
 
-    Wykonywany jest front kontroler ``app.php``, a "wewnętrzny:" URL ``/hello/Ryan``
-    jest trasowany wewnętrzenie przy użyciu konfiguracji routingu.
-    Dzięki zastosowaniu reguł ``mod_rewrite`` serwera Apache, możesz wymusić, aby plik
-    ``app.php`` był uruchamiany bez konieczności podawania jego nazwy w adresie URL:
+    Kontroler wejścia ``app.php`` jest wykonywany również "wewnętrznie": adres URL
+    ``/hello/Ryan`` jest kierowany wewnętrznie przy użyciu konfiguracji trasowania.
+    Stosując regułę ``mod_rewrite`` Apache można wymusić aby plik ``app.php`` był
+    wykonywany bez potrzeby specyfikowania go w adresie URL:
 
     .. code-block:: text
 
         http://localhost/hello/Ryan
 
-Pomimo, że front kontrolery są niezbędne w obsłudze każdego żądania, bardzo rzadko
-będziesz potrzebował je modyfikować, czy nawet myśleć o nich. Wspomnimy o nich
-pokrótce w sekcji `Środowiska`_.
+Wprawdzie kontrolery wejściowe są niezbędne w obsłudze każdego żądania, to nie ma
+potrzeby ich modyfikowania lub nawet zaglądania do nich. Powrócimy do tego tematu
+w rozdziale ":ref:`environments-summary`".
 
-Katalog aplikacji (``app``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Katalog aplikacji (app)
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Jak mogłeś zobaczyć we front kontrolerze, klasa ``AppKernel`` jest głównym punktem
-wejścia aplikacji i jest odpowiedzialna za całą konfigurację. Jako taki,
-jest on przechowywany w katalogu ``app/``.
+Jak mogłeś zobaczyć w kodzie kontrolera wejścia klasa ``AppKernel`` jest głównym
+punktem wejścia do aplikacji i jest odpowiedzialna za całą konfigurację. Jako taka,
+jest ona przechowywana w katalogu ``app/``.
 
-Ta klasa musi zawierać dwie metody, które definiują wszystko, co Symfony potrzebuje
-wiedzieć o Twojej aplikacji. Nie musisz nawet martwić się o te metody kiedy
-zaczynasz - Symfony uzupełni je za Ciebie odpowiednimi wartościami domyślnymi.
+Klasa ta musi implemetować dwie metody definiują wszystko, co Symfony potrzebuje
+wiedzieć o aplikacji. Nawet nie trzeba się martwić o te metody, gdy się rozpoczyna
+pracę z Symfony - kod jądra konstruuje je z rozsądnymi wartościami domyślnymi.
 
-* ``registerBundles()``: Zwraca tablicę wszystkich bundli potrzebnych do uruchomienia
-  aplikacji (zobacz :ref:`page-creation-bundles`);
+* ``registerBundles()``: zwraca tablicę wszystkich pakietów niezbędnych do uruchomienia
+  aplikacji. Pakiet jest czymś więcej niż tylko katalogiem przechowującym wszystko
+  co wiąże sie z określoną funkcjonalnością, włączając w to klasy PHP, konfiguracje
+  a nawet arkusze stylów i pliki Javascript (zobacz rozdział ":ref:`page-creation-bundles`");
 
-* ``registerContainerConfiguration()``: Ładuje główny plik konfiguracji aplikacji
-  (zobacz dział `Konfiguracja aplikacji`_).
+* ``registerContainerConfiguration()``: ładuje główny plik konfiguracji zasobów
+  aplikacji (zobacz rozdział ":ref:`application-configuration`). 
 
-W codziennej pracy w większości będziesz używał katalogu ``app/`` do modyfikacji
-konfiguracji, oraz plików routingu w katalogu ``app/config`` (zobacz `Konfiguracja aplikacji`_).
-Katalog ten zawiera również katalog cache (``app/cache``), katalog logów (``app/logs``),
-a także katalog dla plików zasobów aplikacji, takich jak szablony (``app/Resources``).
-O każdym z nich dowiesz się więcej w kolejnych rozdziałach.
+W miarę zaangażowania się w programowanie aplikacji Symfony2 będziesz coraz częściej
+wykorzystywał katalog ``app/`` do modyfikowania konfiguracji i plików trasowania
+w katalogu ``app/config/`` (zobacz rozdział Konfiguracja aplikacji).
+Katalog aplikacji zawiera również katalog pamięci podręcznej (``app/cache``),
+katalog dziennika (``app/logs``) oraz katalog dla plików zasobów na poziomie
+aplikacji, takich jak szablony (``app/Resources``). Dowiesz się więcej o każdym
+z tych podkatalogów w dalszej części rozdziału.
 
 .. _autoloading-introduction-sidebar:
 
-.. sidebar:: Autoloading
+.. sidebar:: Automatyczne ładowanie plików
 
-    Kiedy Symfony jest uruchamiany, dołączany jest specjalny plik - ``app/autoload.php``.
-    Ten plik odpowiedzialny jest za konfigurację autoloadera, który dołączy pliki
-    Twojej aplikacji z katalogu ``src/`` oraz dodatkowe biblioteki z katalogu ``vendor/``.
+    Podczas ładowania Symfony dołączany jest specjalny plik ``app/autoload.php``.
+    Plik ten odpowiedzialny jest za konfigurację *autoloadera*, który będzie automatycznie
+    ładował pliki aplikacji z katalogu ``src/`` oraz dodatkowe biblioteki z katalogu
+    ``vendor/``.
 
     Dzięki autoloaderowi, nigdy nie musisz martwić się o używanie wyrażeń ``include``
-    czy ``require``. Zamiast tego, Symfony2 używa przestrzeni nazw klasy do określenia
-    jej lokalizacji i automatycznie dołącza plik, kiedy potrzebujesz zawartej w nim klasy.
+    czy ``require``. Zamiast tego, Symfony2 wykorzystuje przestrzeń nazw klasy do
+    określenia lokalizacji pliku i automatycznego dołączenia go, kiedy zachodzi
+    potrzeba użycia danej klasy.
 
-    Autoloader jest domyślnie skonfigurowany aby szukać Twoich klas PHP w katalogu ``src/``.
-    Aby autoloading działał, nazwa klasy oraz ścieżka do pliku powinny mieć tą samą formę:
+    Autoloader jest domyślnie skonfigurowany wyszukiwać klasy PHP w katalogu ``src/``.
+    Aby to działało, nazwy klas i ścieżki do plików muszą być tworzone wg. poniższego
+    wzorca:
 
     .. code-block:: text
 
-        Nazwa klasy:
+        **Nazwa klasy**:
+        
             Acme\HelloBundle\Controller\HelloController
-        Ścieżka:
+        
+        **Ścieżka**:
+        
             src/Acme/HelloBundle/Controller/HelloController.php
 
-    Zwykle jedyny przypadek, kiedy musisz martwić się o plik ``app/autoload.php`` jest wtedy,
-    kiedy dołączasz zewnętrzne biblioteki w katalogu ``vendor/``. Aby dowiedzieć się więcej
-    o autoloadingu, zobacz :doc:`Jak dołączać klasy </components/class_loader>`.
+    Zazwyczaj, tylko czasami trzeba się martwić o plik ``app/autoload.php``.
+    Ma to miejsce, gdy dołącza się nową bibliotekę niezależnego dostawcy z katalogu
+    ``vendor/``. Więcej informacji o automatycznym ładowaniu znajdziesz w artykule
+    :doc:`Jak automatycznie ładować klasy </components/class_loader>`.
 
 Katalog źródeł (``src``)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Katalog ``src/`` zawiera po prostu cały właściwy kod (PHP, szablony, pliki konfiguracyjne,
-arkusze stylów, itd.), który obsługuje *Twoją* aplikację.
-W trakcie rozwoju projektu, zdecydowana większość Twojej pracy będzie wykonana wewnątrz
-jednego lub więcej bundli, które utworzysz w tym katalogu.
+Katalog ``src/`` zawiera po prostu cały właściwy kod (PHP, szablony, pliki
+konfiguracyjne, arkusze stylów, itd.), który obsługuje aplikację.
+W trakcie rozwoju projektu, zdecydowana większość pracy będzie wykonywana wewnątrz
+jednego lub więcej pakietów, które zostaną utworzone w tym katalogu.
 
-Lecz co właściwie oznacza termin :term:`bundle`?
+Lecz co właściwie oznacza termin :term:`pakiet`?
 
 .. _page-creation-bundles:
 
-System Bundli
--------------
+System pakietów
+---------------
 
-Bundle jest podobny do pluginów czy podobnego oprogramowania, jednakże jest od nich znacznie lepszy.
-Kluczową różnicą jest to, że *wszystko* jest bundlem w Symfony2, włączając w to
-rdzenną funkcjonalność frameworka oraz kod napisany dla Twojej aplikacji.
-Bundle jest typem pierwszoklasowym w Symfony2. Daje Ci to elastyczność
-użycia wbudowanych funkcji spakowanych w bundle osób trzecich, lub możliwość
-rozprowadzania swoich własnych bundli. Ułatwia to wybierać które funkcje włączyć
-w Twojej aplikacji, oraz optymalizować je na swój własny sposób.
+Pakiet (*ang. bundle*) jest podobny do wtyczki w innym oprogramowaniu, ale jest
+czymś lepszym. Kluczową różnicą jest to, że w Symfony wszystko jest jakimś pakietem,
+włączając w to funkcjonalności rdzenia frameworka i kod napisany dla kazdej aplikacji.
+Pakiety, to w Symfony2 obywatel pierwszej klasy. Daje to elastyczność w wykorzystaniu
+zabudowanych funkcjonalności, pakowanych w dodatkowe pakiety lub w tworzeniu dystrybucji
+własnych pakietów. Sprawia, że łatwo jest wybrać funkcjonalności udostępniane w aplikacji
+i zoptymalizować je według potrzeb.
 
 .. note::
 
-   Podczas gdy tutaj nauczysz się podstaw, w cookbook znajduje się cały rozdział
-   poświęcony organizacji i najlepszym praktykom podczas korzystana z :doc:`bundli</cookbook/bundles/best_practises>`.
+   Podczas gdy tutaj nauczysz się podstaw, w Receptariuszu znajdziesz cały rozdział
+   poświęcony organizacji i najlepszym praktykom związanym z korzystana
+   z :doc:`pakietów</cookbook/bundles/best_practises>`.
 
-Bundle jest po prostu uporządkowanym zbiorem plików wewnątrz katalogu, który
-implementuje pojedynczą funkcję. Możesz utworzyć ``BlogBundle``, ``ForumBundle``
-czy bundle do zarządzania użytkownikami (wiele z nich już istnieje jako bundle
-open source). Każdy katalog posiada wszystko związane z daną funkcją, włączając w
-to pliki PHP, szablony, arkusze stylów, JavaScript, testy i całą resztę.
-Każdy aspekt danej funkcji zawarty jest w bundle, jak również każda funkcja żyje w bundle.
+Pakiet jest ustrukturyzowanym zbiorem plików wewnątrz katalogu, który
+implementuje pojedynczą funkcjonalność. Możesz utworzyć ``BlogBundle``, ``ForumBundle``
+czy pakiet do zarządzania użytkownikami (wiele z nich już istnieje i jest dystrubowane
+jako pakiety o otwartym kodzie). Każdy katalog pakietu zawiera wszystko co związane
+jest z daną funkcjonalnościa, włączając w to pliki PHP, szablony, arkusze stylów,
+JavaScript, testy i całą resztę. Każdy aspekt danej funkcjonalności zawarty jest
+w pakiecie, jak również każda funkcjonalność przynależy do jakiegośc pakietu.
 
-Aplikacja składa się z bundli zdefiniowanych w metodzie ``registerBundles()`` klasy ``AppKernel``::
+Aplikacja składa się z pakietów zdefiniowanych w metodzie ``registerBundles()``
+klasy ``AppKernel``::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -574,31 +613,32 @@ Aplikacja składa się z bundli zdefiniowanych w metodzie ``registerBundles()`` 
         return $bundles;
     }
 
-Za pomocą metody ``registerBundles()`` masz całkowitą kontrolę nad tym, które bundle
-będą używane przez Twoją aplikacją (włączając w to rdzenne bundle Symfony).
+Z pomocą metody ``registerBundles()`` ma się całkowitą kontrolę nad tym, które
+pakiety będą używane przez aplikacją (włączając w to rdzenne pakiety Symfony).
 
 .. tip::
 
-   Bundle może znajdować się *wszędzie* dopóty, dopóki może być automatycznie ładowany
-   (przez autoloader skonfigurowany w ``app/autoload.php``).
+   Pakiety mogą być zlokalizowane gdziekolwiek o ile mogą być z tego miejsca
+   ładowane automatycznie (poprzez konfigurację autoloadera ``app/autoload.php``).
 
-Tworzenie Bundle
+Tworzenie pakietu
 ~~~~~~~~~~~~~~~~~
 
-Symfony Standard Edition przychodzi z poręcznym zadaniem, które tworzy w pełni funkcjonalny
-bundle za Ciebie. Oczywiście tworzenie bundle ręcznie jest również bardzo proste.
+Dystrybucja Symfony Standard Edition dostarczana jest z poręcznym zadaniem
+tworzącym dla w pełni funkcjonalny pakiet. Własnoręczne utworzenie pakietu jest
+dość proste.
 
-Aby pokazać Ci jak prosty jest system bundli, utwórz nowy bundle o nazwie ``AcmeTestBundle``
-i włącz go.
+Aby pokazać jakie to proste, utworzymy nowy pakiet o nazwie ``AcmeTestBundle``
+i go udostępnimy.
 
 .. tip::
 
-    Część ``Acme`` jest po prostu przykładową nazwą, która powinna zostać zastąpiona
-    przez unikalną nazwę, która reprezentuje Ciebie lub Twoją organizację (np. ``ABCTestBundle``)
-    dla firmy o nazwie ``ABC``).
+    Fraza ``Acme`` to tylko atrapa. Nazwa ta powinna być zastąpiona przez nazwę
+    jakiegoś "dostawcy", która wskazuje na Ciebie lub Twoją organizację (np.
+    ``ABCTestBundle`` dla przedsiębiorstwa o nazwie ``ABC``).
 
-Zacznij od utworzenia katalogu ``src/Acme/TestBundle/`` i dodania nowego pliku o nazwie
-``AcmeTestBundle.php``::
+Zaczniemy od utworzenia katalogu ``src/Acme/TestBundle/`` i dodania w nim pliku
+o nazwie ``AcmeTestBundle.php``::
 
     // src/Acme/TestBundle/AcmeTestBundle.php
     namespace Acme\TestBundle;
@@ -611,15 +651,15 @@ Zacznij od utworzenia katalogu ``src/Acme/TestBundle/`` i dodania nowego pliku o
 
 .. tip::
 
-   Nazwa ``AcmeTestBundle`` podąża za standardem :ref:`Konwencji nazewnictwa bundli<bundles-naming-conventions>`.
-   Możesz również zdecydować, by skrócić nazwę bundla do prostego ``TestBundle``
-   nazywając tą klasę ``TestBundle`` (i nazywając plik ``TestBundle.php``).
+   Nazwa ``AcmeTestBundle`` zgodna jest ze standardem :ref:`konwencji nazewniczej
+   pakietów<bundles-naming-conventions>`. Można również posłużyć się nazwą krótszą,
+   po prostu ``TestBundle`` nazywając klasę ``TestBundle`` (a plik nazwą ``TestBundle.php``).
 
-Ta pusta klasa jest jedyną rzeczą, jaką musisz zrobić, by utworzyć bundle. Pomimo, iż
-jest całkowicie pusta, jest ona w pełni skuteczna i może zostać użyta do dostosowania
-zachowań bundla.
+Ta pusta klasa jest tylko częścią tego co jest potrzebne do utworzenia pakietu.
+Chociaż często nawet pusta klasa jest potrzebna i może być wykorzystana do dostosowania
+zachowań pakietu.
 
-Teraz, kiedy już utworzyłeś bundle, włącz za pomocą klasy ``AppKernel``::
+Teraz, kiedy już został stworzony pakiet, trzeba go udostępnić za pomocą klasy ``AppKernel``::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -635,66 +675,70 @@ Teraz, kiedy już utworzyłeś bundle, włącz za pomocą klasy ``AppKernel``::
         return $bundles;
     }
 
-Pomimo, że jeszcze nic on nie robi, ``AcmeTestBundle`` jest już gotowy do użycia.
+Pakiet ``AcmeTestBundle`` choć jeszcze nic nie robi, jest już gotowy do użycia.
 
-Tak łatwo jak to, Symfony dostarcza również interfejs linii poleceń do
-generowania podstawowego szkieletu bundle:
+Symfony udostępnia również interfejs linii poleceń dla wygenerowania podstawowego
+szkieletu pakietu:
 
 .. code-block:: bash
 
     php app/console generate:bundle --namespace=Acme/TestBundle
 
-Szkielet bundla generowany jest wraz z podstawowym kotrolerem, szablonem i
-zasobem routingu, który może być dostosowywany do Twoich potrzeb.
-Więcej o linii poleceń Symfony2 dowiesz się później.
+Szkielet pakietu generowany jest wraz z podstawowym kontrolerem, szablonem oraz
+zasobem trasowania, które można dostosować. Dowiesz się później więcej o narzędziu
+linii poleceń Symfony2.
 
 .. tip::
 
-   Za każdym razem, kiedy tworzysz nowy bundle lub używasz bundle osób trzecich,
-   upewnij się, że został on włączony w ``registerBundles()``. Kiedy używasz
-   komendy ``generate:bundle``, to wszystko jest zrobione za Ciebie.
+   Ilekroć tworzysz nowy pakiet lub stosujesz pakiet niezależnego dostawcy,
+   zawsze upewnij się, że pakiet ten został udostępniony w ``registerBundles()``.
+   Podczas użycia polecenia konsoli ``generate:bundle`` jest to robione za Ciebie.
 
-Struktura katalogów bundli
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Struktura katalogowa pakietów
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Struktura katalogów bundla jest prosta i elastyczna. Domyślnie system bundli
-podąża za zbiorem konwencji, które pomagają utrzymać kod zwarty pomiędzy
-wszystkimi bundlami Symfony2. Spójrz na ``AcmeHelloBundle``, zawiera on
-kilka najczęściej wykorzystywanych elementów bundla:
+Struktura katalogowa pakietu jest prosta i elastyczna. Domyślnie system pakietów
+rozumie zbiór konwencji, które pomagają utrzymać zachować spójność kodu pomiędzy
+wszystkimi pakietami Symfony2. Spójrz na ``AcmeHelloBundle``, zawiera on
+kilka najczęściej wykorzystywanych elementów pakietu:
 
-* ``Controller/`` zawiera kontrolery bundla (np. ``HelloController.php``);
+* ``Controller/`` zawiera kontrolery pakietu (np. ``HelloController.php``);
 
 * ``Resources/config/`` przechowuje konfigurację, włączając w to konfigurację
-  routingu (np. ``routing.yml``);
+  trasowania (np. ``routing.yml``);
 
 * ``Resources/views/`` zawiera szablony uporządkowane wg nazw kontrolerów (np.
   ``Hello/index.html.twig``);
 
-* ``Resources/public/`` przechowuje obrazki, arkusze stylów, itd. oraz jest kopiowany
-  lub linkowany symbolicznie do katalogu ``web/`` projektu poprzez komendę
-  ``assets:install`` w konsoli.
+* ``Resources/public/`` przechowuje obrazy, arkusze stylów, itd. oraz jest kopiowany
+  lub dowiązywany symbolicznie do katalogu ``web/`` projektu poprzez polecenie
+  konsoli ``assets:install`;
 
-* ``Tests/`` Zawiera wszystkie testy dla bundla.
+* ``Tests/`` zawiera wszystkie testy dla pakietu.
 
-Bundle może być tak mały czy duży, jak funkcja, którą on implementuje. Zawiera on
-tylko te pliki, które potrzebujesz - i nic więcej.
+Pakiet może być mały lub duży, w zależności od implementowanej funkcjonalności.
+Zawiera on tylko niezbędne pliki i nic więcej.
 
-W miarę jak poruszasz się po książce, nauczysz się wstawiać obiekty do bazy danych,
-tworzyć i walidować formularze, tworzyć tłumaczenia dla Twojej aplikacji, pisać testy
-i wiele innych. Każdy z tych elementów ma swoje miejsce i rolę w bundlu.
+W miarę przemieszczania się po podręczniku, dowiesz się jak utrzymywać obiekty w
+bazie danych, tworzyć i walidować formularze, tworzyć tłumaczenia swoich aplikacji,
+pisać testy i wiele więcej. Każde z tych tematów ma swoje miejsce i rolę w systemie
+pakietów.
+
+.. _application-configuration:
 
 Konfiguracja aplikacji
 ----------------------
 
-Aplikacja składa się z kolekcji bundli reprezentujących wszystkie funkcje
-i zdolności Twojej aplikacji. Każdy bundle może być dostosowany poprzez
-pliki konfiguracyjne napisane w YAML, XML lub PHP. Domyślnie, główny plik
-konfiguracyjny znajduje się w katalogu ``app/config/`` i jest nazwany odpowiednio
-``config.yml``, ``config.xml`` lub ``config.php`` zależnie od tego, który format preferujesz:
+Aplikacja składa się z kolekcji pakietów reprezentujących wszystkie funkcjonalności
+i możliwości aplikacji. Każdy pakiet może być dostosowany poprzez pliki konfiguracyjne
+napisane w formacie YAML, XML lub PHP. Główny plik konfiguracyjny domyślnie zlokalizowany
+jest w katalogu ``app/config/`` i nosi nazwę albo ``config.yml``, albo ``config.xml``
+albo ``config.php`` w zależności od wybranego formatu:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         imports:
@@ -715,6 +759,7 @@ konfiguracyjny znajduje się w katalogu ``app/config/`` i jest nazwany odpowiedn
         # ...
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <imports>
@@ -733,6 +778,7 @@ konfiguracyjny znajduje się w katalogu ``app/config/`` i jest nazwany odpowiedn
         <!-- ... -->
 
     .. code-block:: php
+       :linenos:
 
         $this->import('parameters.yml');
         $this->import('security.yml');
@@ -755,52 +801,58 @@ konfiguracyjny znajduje się w katalogu ``app/config/`` i jest nazwany odpowiedn
 
 .. note::
 
-   O tym jak ładować każdy plik/format nauczysz się dokładniej w następnym dziale
-   `Środowiska`_.
+   O tym jak załadować każdy plik (format) nauczysz się dokładniej w następnym
+   rozdziale ":ref:`environments-summary`".
 
-Każa główna pozycja jak ``framework`` czy ``twig`` definiują konfigurację dla
-pojedynczego bundla. Dla przykładu, klucz ``framework`` definiuje konfigurację
-dla rdzennego ``FrameworkBundle`` Symfony i ładuje konfigurację routingu, szablonów oraz
-pozostałych systemów rdzenia.
+Każdy zapis najwyższego poziomu, na takim jak ``framework`` lub ``twig`` określa
+konfigurację dla danego pakietu. Na przykład, klucz ``framework`` określa konfigurację
+rdzenia Symfony ``FrameworkBundle`` i dołacza konfigurację dla trasowania, szablonowania
+i innych systemów rdzenia.
 
-Na chwilę obecną nie martw się o szczegółowe opcje konfiguracji w każdej sekcji.
-Plik konfiguracyjny ładuje się z rozsądnymi wartościami domyślnymi. W miarę dalszego
-czytania oraz odkrywana każdej części Symfony2, nauczysz się więcej o szczegółowych
-opcjach konfiguracji każdej funkcji.
+Na razie nie martw się opcjami określonej konfiguracji w każdej sekcji. Konfiguracja
+wypełniana jest wartościami domyślnymi, umożliwiającymi działanie aplikacji.
+Gdy przeczytasz więcej i poznasz każdy komponet Symfony2, to nauczysz się też
+określonych opcji konfiguracyjnych dla każdej funkcjonalności.
 
 .. sidebar:: Formaty konfiguracji
 
-    Przez wszystkie rozdziały, wszystkie przykłady konfiguracji będą pokazane
-    we wszystkich trzech formatach (YAML, XML i PHP). Każdy z nich ma swoje wady
-    i zalety. Decyzja, który z nich wybrać, należy do Ciebie:
+    W wszystkich rozdziałach przykłady konfiguracji są wyświetlane dla wszystkich
+    trzech formatów (YAML, XML i PHP). Każdy z tych formatów ma swoje zalety i wady. Wybór któregoś z nich zależy tylko od Ciebie:
 
-    * *YAML*: Prosty, przejrzysty i czytelny;
+    * *YAML*: prosty, przejrzysty i czytelny;
 
-    * *XML*: Czasami potężniejszy niż YAML i wspiera autouzupełnianie środowisk IDE.
+    * *XML*: czasami mocniejszy niż YAML i obsługuje autouzupełnianie środowisk IDE.
 
-    * *PHP*: Najbardziej potężny, lecz najmniej czytelny ze standardowych formatów konfiguracji.
+    * *PHP*: bardzo mocny, lecz mniej czytelny niż inne standardowe formaty konfiguracji.
 
 Zrzut domyślnej konfiguracji
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. versionadded:: 2.1
-    Polecenie ``config:dump-reference`` zostało dodane w Symfony 2.1
+    W Symfony 2.1 zostało dodane polecenie ``config:dump-reference``  
 
-Możesz zrzucić domyślną konfigurację bundla w yaml do konsoli używając polecenia
-``config:dump-reference``. Oto przykład zrzutu domyślnej konfiguracji FrameworkBundle:
+Można zrzucić domyślną konfigurację pakietu w formacie yaml do konsoli używając
+polecenia ``config:dump-reference``. Oto przykład zrzutu domyślnej konfiguracji
+FrameworkBundle:
 
 .. code-block:: text
 
     app/console config:dump-reference FrameworkBundle
 
+Może również zostać użyty alias rozszerzenia (klucz konfiguracyjny):
+
+.. code-block:: text
+
+    app/console config:dump-reference framework
+
 .. note::
 
-    Zobacz artykuł w cookbook: :doc:`H`How to expose a Semantic Configuration for
-    a Bundle</cookbook/bundles/extension>` aby uzyskać więcej informacji nt. dodawania
-    konfiguracji do Twojego bundla.
+    Przczytaj artykuł :doc:`How to expose a Semantic Configuration for
+    a Bundle</cookbook/bundles/extension>` aby uzyskać więcej informacji o
+    dodawaniu konfiguracji do pakietu.
 
 .. index::
-   single: Środowiska; Wprowadzenie
+   single: środowiska; wprowadzenie
 
 .. _environments-summary:
 
@@ -808,60 +860,61 @@ Możesz zrzucić domyślną konfigurację bundla w yaml do konsoli używając po
 ----------
 
 Aplikacja może być uruchomiona w różnych środowiskach. Różne środowiska
-dzielą ten sam kod PHP (oprócz front kontrolera), lecz używają różnej konfiguracji.
-Dla przykładu, środowisko ``dev`` będzie logował ostrzeżenia i błędy, podczas gdy
-środowisko ``prod`` będzie logował wyłącznie błędy. Niektóre pliki są
-tworzone ponownie podczas każdego żądania w środowisku ``dev`` (dla wygody deweloperów),
-zaś w środowisku ``prod`` są cache'owane. Wszystkie środowiska żyją razem na
-tej samej maszynie i uruchamiają tą samą aplikację.
+dzielą ten sam kod PHP (oprócz kontrolera wejścia), lecz używają różnej konfiguracji.
+Dla przykładu, środowisko ``dev`` będzie rejestrował ostrzeżenia i błędy, podczas gdy
+środowisko ``prod`` będzie rejestrował wyłącznie błędy. Niektóre pliki są
+tworzone ponownie przy każdym żądaniu w środowisku ``dev`` (dla wygody programisty),
+zaś w środowisku ``prod`` są buforowane. Wszystkie środowiska działają razem na
+tym samym komputerze i uruchamiają tą samą aplikację.
 
-Projekt Symfony2 generalnie ma początek z trzeba środowiskami (``dev`, ``test`` i ``prod``),
-jednakże tworzenie nowych środowisk jest proste. Możesz łatwo zobaczyć swoją aplikację w różnych
-środowiskach zmieniając front kontroler w przeglądarce. Aby ujrzeć aplikację
-w środowisku ``dev``, uruchom aplikację przez deweloperski front kontroler:
+Projekt Symfony2 zazwyczaj rozpoczyna się z trzema środowiskami (``dev`, ``test``
+i ``prod``), jednakże tworzenie nowych środowisk jest proste. Możesz łatwo przegladać
+swoją aplikację w różnych środowiskach zmieniając kontroler wejścia w żądaniu HTTP.
+Aby obejrzeć aplikację w środowisku ``dev``, trzeba uzyskać dostęp do aplikacji poprzez
+programistyczny kontroler wejścia:
 
 .. code-block:: text
 
     http://localhost/app_dev.php/hello/Ryan
 
-Jeśli chcesz zobaczyć jak Twoja aplikacja zachowa się w środowisku produkcyjnym,
-wywołaj front kontroler ``prod``:
+Jeśli chce się zobaczyć jak aplikacja zachowa się w środowisku produkcyjnym,
+trzeba wywołać zamiast tego kontroler wejścia ``prod``:
 
 .. code-block:: text
 
     http://localhost/app.php/hello/Ryan
 
-Ponieważ środowisko ``prod`` jest optymalizowane pod względem szybkości; konfiguracja,
-routing i szablony Twig są kompilowane do postaci klas PHP i cache'owane.
-Aby zobaczyć zmiany w środowisku ``prod``, musisz wyczyścić zcache'owane pliki
-i pozwolić im wygenerować się od nowa::
+Ponieważ środowisko ``prod`` jest zoptymalizowane pod względem szybkości, to konfiguracja
+trasowanie i szablony Twiga są kompilowane do postaci klas PHP i buforowane.
+Podczas zmiany widoków w środowisku ``prod`` zachodzi potrzeba wyczyszczenia
+pamieci podręcznej i ponownego przebudowania plików::
 
     php app/console cache:clear --env=prod --no-debug
 
 .. note::
 
-   Jeśli otworzysz plik ``web/app.php``, zobaczysz, że jest on skonfigurowany specjalnie,
-   aby używać środowiska ``prod``::
+   Jeśli otworzysz plik ``web/app.php``, zobaczysz, że jest on skonfigurowany specjalnie
+   do uzywania środowiska ``prod``::
 
        $kernel = new AppKernel('prod', false);
 
-   Możesz utworzyć nowy front kontroler dla nowego środowiska kopiując ten plik
+   Można utworzyć nowy kontroler wejścia dla nowego środowiska kopiując ten plik
    i zmieniając wartość ``prod`` na inną.
 
 .. note::
 
-    Środowisko ``test`` jest używane podczas uruchamiania zautomatyzowanych testów
-    i nie jest dostępny bezpośrednio z przeglądarki. Po więcej informacji zobacz rozdział
-    :doc:`Testowanie</book/testing>`.
+    Środowisko ``test`` jest używane podczas uruchamiania automatycznych testów
+    i nie jest dostępne bezpośrednio z przeglądarki. Przeczytaj rozdział
+    :doc:`"Testowanie"</book/testing>` w celu poznania szczegółów.
 
 .. index::
-   single: Środowiska; Konfiguracja
+   pair: środowiska; konfiguracja
 
 Konfiguracja środowiska
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Klasa ``AppKernel`` jest odpowiedzialna za właściwe ładowanie wybranego przez Ciebie
-pliku konfiguracyjnego::
+Klasa ``AppKernel`` jest odpowiedzialna za faktyczne załadowanie pliku konfiguracyjnego
+wybranego środowiska::
 
     // app/AppKernel.php
     public function registerContainerConfiguration(LoaderInterface $loader)
@@ -870,13 +923,14 @@ pliku konfiguracyjnego::
     }
 
 Wiesz już, że rozszerzenie ``.yml`` może być zamienione na ``.xml`` lub ``.php``,
-jeśli preferujesz używać HML lub PHP do pisania Twojej konfiguracji.
-Zauważ również, że każde środowisko ładuje swój własny plik konfiguracyjny. Zwróćmy
-uwagę na plik konfiguracyjny środowiska ``dev``.
+jeśli preferuje się używanie HML lub PHP do tworzenia konfiguracji.
+Proszę też zwrócić uwagę, że każde środowisko ładuje swój własny plik konfiguracyjny.
+Przyjrzyjmy się plikowi konfiguracyjnemu środowiska ``dev``.
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config_dev.yml
         imports:
@@ -889,6 +943,7 @@ uwagę na plik konfiguracyjny środowiska ``dev``.
         # ...
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config_dev.xml -->
         <imports>
@@ -903,6 +958,7 @@ uwagę na plik konfiguracyjny środowiska ``dev``.
         <!-- ... -->
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config_dev.php
         $loader->import('config.php');
@@ -916,43 +972,45 @@ uwagę na plik konfiguracyjny środowiska ``dev``.
 
 Klucz ``imports`` jest podobny do wyrażenia ``include`` w PHP i gwarantuje,
 że główny plik konfiguracji (``config.yml``) jest ładowany jako pierwszy.
-Pozostała część pliku podkręca domyślną konfigurację o zwiększone logowanie
-i inne ustawienia sprzyjające środowisku deweloperskiemu.
+Reszta pliku dostosowuje konfigurację poprzez zapisy z wcięciem zawierające
+ustawienia sprzyjające środowisku programistycznemu.
 
-Oba środowiska ``prod`` i ``test`` działają wg tego samego modelu: każde środowisko
+Oba środowiska ``prod`` i ``test`` działają wg tego samego wzorca: każde środowisko
 importuje podstawowy plik konfiguracyjny i modyfikuje jego wartości konfiguracyjne,
-aby dopasować je do potrzeb danego środowiska. To tylko konwencja, lecz pozwala to na
-ponowne wykorzystanie większości Twojej konfiguracji i dostosowywania tylko niektórych jej części
-pomiędzy środowiskami.
+aby dopasować je do potrzeb danego środowiska. To tylko konwencja, lecz pozwala na
+ponowne wykorzystanie większości zapisów konfiguracji i dostosowywania tylko niektórych
+jej części pomiędzy środowiskami.
 
 Podsumowanie
 ------------
 
-Gratulacje! Poznałeś już każdy fundamentalny aspekt Symfony2 i szczęśliwie odkryłeś
-jak łatwe i elastyczne może ono być. Pomimo, iż przed nami jest jeszcze *wiele* funkcji,
-upewnij się, by mieć poniższe elementy podstaw w swojej pamięci:
+Gratulacje! Zapoznałeś się z każdym podstawowym aspektem Symfony2 i mamy nadzieję,
+że odkryłeś, jak jest on łatwy i elastyczny. Choć istnieje jeszcze wiele tematów
+do omówienia, należy tu zapamietać następujące kwestie:
 
-* tworzenie strony to trzyetapowy proces dotyczący **trasy** (ang. **route**),
+* tworzenie strony jest trzyetapowym procesem obejmujacym stworzenie **trasy**,
   **kontrolera** i (opcjonalnie) **szablonu**;
 
-* każdy projekt zawiera kilka głównych katalogów: ``web/`` (pliki statyczne i front
-  kontrolery), ``app/`` (konfiguracja), ``src/`` (Twoje bundle), oraz ``vendor/``
-  (kod osób trzecich) (jest jeszcze katalog ``bin/``, który używany jest w celu aktualizacji
-  bibliotek osób trzecich);
+* każdy projekt zawiera kilka głównych katalogów: ``web/`` (pliki statyczne i kontroler
+  wejścia), ``app/`` (konfiguracja), ``src/`` (Twoje pakiety), oraz ``vendor/``
+  (kod osób trzecich); jest tam jeszcze katalog ``bin/``, który używany jest do
+  aktualizacji bibliotek dostawców);
 
-* każda funkcja w Symfony2 (włączając to rdzeń frameworka Symfony2) zorganizowana jest
-  w *bundle*, który jest uporządkowanym zbiorem plików dla tej funkcji;
+* każda funkcjonalność w Symfony2 (włączając to rdzeń frameworka Symfony2) zorganizowana
+  jest w **pakiet**, który jest uporządkowanym zbiorem plików dla tej funkcjonalności;
 
-* **konfiguracja** każdego bundla znajduje się w katalogu ``app/config`` i może być
-  określona w YAML, XML lub PHP;
+* **plik konfiguracykny** każdego pakietu znajduje się w katalogu ``app/config``
+  i może mieć format YAML, XML lub PHP;
 
-* każde **środowisko** jest dostępne przez różny front kontroler (np. ``app.php`` i
+* każde **środowisko** jest dostępne przez kontroler wejścia (np. ``app.php`` i
   ``app_dev.php``) i wczytuje oddzielny plik konfiguracji.
 
-Od teraz, każdy rodział będzie przedstawiał Ci coraz bardziej i bardziej potężne
-narzędzia i zaawansowane koncepcje. Czym więcej wiesz o Symfony2, tym więcej docenisz
-elastyczność jego architektury i moc, jaką Ci daje do szybkiego tworzenia aplikacji.
+Z tego miejsca, kazdy następny rozdział wprowadzi Cie w coraz to bardziej zaawansowane
+tematy. Im więcej będziesz wiedział o Symfony2, to tym bardziej będziesz doceniał
+elastyczność jego architektury i możliwości szybkiego tworzenia aplikacji.
 
 .. _`Twig`: http://twig.sensiolabs.org
 .. _`third-party bundles`: http://symfony2bundles.org/
 .. _`Symfony Standard Edition`: http://symfony.com/download
+.. _`Apache's DirectoryIndex`: http://httpd.apache.org/docs/2.0/mod/mod_dir.html
+.. _`Nginx HttpCoreModule`: http://wiki.nginx.org/HttpCoreModule#location
