@@ -1,39 +1,57 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 .. index::
    single: Routing
 
-Routing
-=======
+Trasowanie
+==========
 
-Piękne URL-e to absolutna konieczność dla każdej poważnej aplikacji internetowej.
-Oznacza to porzucenie brzydkich adresów jak ``index.php?article_id=57``
-na rzecz czegoś takiego jak ``/read/intro-to-symfony``.
+Piękne (przyjazne) adresy URL to absolutna konieczność dla każdej poważnej aplikacji
+internetowej. Oznacza to porzucenie "brzydkich" (nieprzyjaznych) adresów, takich
+jak ``index.php?article_id=57`` na rzecz czegoś takiego jak ``/read/intro-to-symfony``.
 
-Jeszcze ważniejsza jest elastyczność. Co, jeśli musisz zmienić URL strony
-z ``/blog`` na ``/news``? Jak dużo linków musiałbyś odnaleźć i poprawić,
-aby dokonać takiej zmiany? Jeśli używasz routera Symfony, taka zmiana jest
-banalnie prosta.
+Jeszcze ważniejsza jest elastyczność. Co, jeśli musi się zmienić adres URL strony
+z ``/blog`` na ``/news``? Ile odnośników trzeba odnaleźć i poprawić,
+aby dokonać takiej zmiany? Jeśli korzysta się z mechanizmu trasowania Symfony,
+taka zmiana jest bardzo prosta.
 
-Router Symfony2 pozwala Ci definiować kreatywne URL-e, które prowadzą do różnych
-miejsc w Twojej aplikacji. Na końcu tego rozdziału będziesz umiał:
+Mechanizm trasowania Symfony2 pozwala na dynamiczne określanie adresów URL (ściślej
+tzw. ścieżek dostępu, zawartych w adresie URL żądania HTTP) odwzorowywanych dla
+różnych obszarów aplikacji. Pod koniec tego rozdziału, będziesz w stanie:
 
-* Tworzyć kompleksowe trasy mapujące do kontrolerów
-* Generować URL-e wewnątrz szablonów i kontrolerów
-* Wczytywać zasoby routingu z bundli (lub skądkolwiek indziej)
-* Debugować swoje trasy
+* tworzyć złożone trasy odwzorowujące kontrolery;
+* generować adresy URL wewnątrz szablonów i kontrolerów;
+* ładować zasoby trasowania z pakietów (lub z czegokolwiek innego);
+* debugować swoje trasowania.
+
+.. note::
+   
+   W tym rozdziale, często użyte będzie pojęcie *adres URL* w znaczeniu
+   *ścieżka dostępu do zasobu jako część adresu URL* gdyż tak jest to potraktowane
+   w oryginale. Z kontekstu będzie łatwo wynikać, czy chodzi o pełny adres URL,
+   czy też tylko o ścieżkę dostępu do zasobu (jako część adresu URL). Jeżeli nie
+   rozumiesz dobrze pojęcia "adres URL", to polecam  przeczytanie artykułu
+   `Uniform Resource Locator`_ zanim zaczniesz dalej czytać niniejszy dokument.
+   Koniecznie przeczytaj też rozdział :dok:`Podstawy Symfony 2 i HTTP<book/http_fundamentals>`
+   (przyp. tłumacza).
+
 
 .. index::
-   single: Routing; Podstawy
+   single: trasowanie; podstawy
 
-Routing w akcji
----------------
+Działanie trasowania
+--------------------
 
-*Trasa* łączy wzorzec URL z kontrolerem. Na przykład, załóżmy, że chcesz dopasować
-URL jak ``/blog/moj-post`` czy ``/blog/wszystko-o-symfony`` i wysłać go do kontrolera,
-który może odnaleźć i wyświetlić dany wpis bloga. Ustawienie trasy jest banalne:
+**Trasa** (*ang. route*) jest mapą z adresu URL do kontrolera. Na przykład, załóżmy,
+że chcemy dopasować adres URL jak ``/blog/moj-post`` czy ``/blog/wszystko-o-symfony``
+i wysłać go do kontrolera, który może odnaleźć i wyświetlić dany wpis blogu. Trasa
+jest prosta:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/routing.yml
         blog_show:
@@ -41,6 +59,7 @@ który może odnaleźć i wyświetlić dany wpis bloga. Ustawienie trasy jest ba
             defaults:  { _controller: AcmeBlogBundle:Blog:show }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/routing.xml -->
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -54,6 +73,7 @@ który może odnaleźć i wyświetlić dany wpis bloga. Ustawienie trasy jest ba
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/routing.php
         use Symfony\Component\Routing\RouteCollection;
@@ -67,16 +87,18 @@ który może odnaleźć i wyświetlić dany wpis bloga. Ustawienie trasy jest ba
         return $collection;
 
 Wzorzec zdefiniowany w trasie ``blog_show`` działa jak ``/blog/*``, gdzie
-wieloznaczny jest parametr ``slug``. Dla adresu URL ``/blog/moj-post`` zmienna
-``slug`` przybierze wartość ``moj-post``, która jest dostępna dla Ciebie z poziomu
+znak wieloznaczny (``*``) otrzymuje nazwę ``slug``. Dla adresu URL ``/blog/moj-post``
+zmienna ``slug`` przybierze wartość ``moj-post``, która jest dostępna z poziomu
 kontrolera (czytaj dalej).
 
-Parametr ``_controller`` jest specjalną wartością, która mówi Symfony który kontroler
-powinien być uruchomiony, kiedy URL zostanie dopasowany do tej trasy. Ciąg ``_controller``
-jest nazywany :ref:`logical name<controller-string-syntax>`. Stosuje on wzorzec, który
-określa konkretną klasę PHP oraz metodę:
+Parametr ``_controller`` jest specjalnym kluczem, który informuje Symfony jaki kontroler
+powinien być uruchomiony, kiedy adres URL zostanie dopasowany do wzorca trasy.
+Wartością ``_controller`` jest ciąg znakowy określający
+:ref:`nazwę logiczną<controller-string-syntax>`. Ma to zastosowanie do wzorców,
+które wskazują określa klasę i metodę PHP:
 
 .. code-block:: php
+   :linenos:
 
     // src/Acme/BlogBundle/Controller/BlogController.php
 
@@ -95,67 +117,67 @@ określa konkretną klasę PHP oraz metodę:
         }
     }
 
-Gratulacje! Właśnie utworzyłeś swoją pierwszą trasę i połączyłeś ją z kontrolerem.
-Teraz, kiedy odwiedzisz ``/blog/moj-post``, zostanie uruchomiony kontroler ``showAction``,
-a zmienna ``$slug`` przyjmie wartość ``moj-post``.
+W tym kodzie właśnie utworzyliśmy naszą pierwszą trasę i połączyliśmy ją z kontrolerem.
+Teraz, kiedy odwiedzi się ``/blog/moj-post``, zostanie uruchomiony kontroler
+``showAction``, a zmienna ``$slug`` przyjmie wartość ``moj-post``.
 
-To jest właśnie zadanie routera Symfony2: zmapować URL żądania do kontrolera.
-Po drodze nauczysz się wielu trików, które sprawiają, że mapowanie nawet najbardziej
-złożonych URL-i staje się łatwe.
+To jest właśnie zadanie mechanizmu trasowania Symfony2: odwzorować adres URL żądania
+na kontroler. W dalszej części artykułu podanych jest  wiele sztuczek, które sprawiają,
+że odwzorowanie nawet najbardziej skomplikowanych adresó URL staje się łatwe.
 
-.. versionadded:: 2.1
-
-    W Symfony2.1, komponent Routing obsługuje również wartości Unicode, takie
-    jak np.: /Жени/
 
 .. index::
-   single: Routing; Pod maską
+   single: trasowanie; mechanizm
 
-Routing: Pod maską
------------------------
+Trasowanie - pod maską
+----------------------
 
-Kiedy do Twojej aplikacji wysłane jest żądanie, zawiera ono adres do dokładnego
-"zasobu", który klient żąda. Ten adres nazywany jest URL (lub URI) i może być
-nim ``/kontakt``, ``/blog/informacje`` lub cokolwiek innego. Weźmy za przykład
-poniższe żądanie HTTP:
+Kiedy do aplikacji wysłane jest żądanie, zawiera ono dokładny adres do
+"zasobu", który klient żąda. Ten adres nazywany jest adresem URL (lub adresem URI)
+i może być nim ``/kontakt``, ``/blog/informacje`` lub cokolwiek innego. Weźmy za
+przykład poniższe żądanie HTTP:
 
 .. code-block:: text
 
     GET /blog/moj-post
 
-Zadaniem systemu routingu Symfony2 jest parsować ten URL i określić, który
-kontroler powinien zostać uruchomiony. Cały proces wygląda mniej więcej tak:
+Zadaniem mechanizmu trasowania Symfony2 jest przetworzenie tego adresu URL
+i określenie, który kontroler powinien zostać uruchomiony. Cały proces wygląda
+mniej więcej tak:
 
-#. Żądanie jest przetwarzane przez front kontroler Symfony2 (np. ``app.php``);
+#. Żądanie zostaje obsłużone przez kontroler wejścia Symfony2 (np. ``app.php``);
 
-#. Rdzeń Symfony2 (np. Kernel) odpytuje router dla danego żądania;
+#. Rdzeń Symfony2 (czyli :term:`Kernel`) odpytuje mechaniz trasowania o treść żądania;
 
-#. Router dopasowuje przychodzący URL do konkretnej trasy i zwraca informacje o tej właśnie
-   trasie, włączając w to kontroler, który powinien zostać uruchomiony;
+#. Mechanizm trasowania dopasowuje przychodzący adres URL do konkretnej trasy i zwraca
+   informacje o trasie, łącznie z nazwą kontrolera, który powinien zostać uruchomiony;
 
-#. Kernel (Jądro) Symfony2 uruchamia kontroler, który ostatecznie zwraca obiekt
-   ``Response``.
+#. Rdzeń Symfony2 wykonuje kontroler, który ostatecznie zwraca obiekt ``Response``.
 
 .. figure:: /images/request-flow.png
    :align: center
-   :alt: Przepływ żądania Symfony2
+   :alt: Przepływ żądania w Symfony2
 
-   Warstwa routingu jest narzędziem, które tłumaczy przychodzące URL-e na określony
-   kontroler do wykonania.
+Warstwa trasowania jest narzędziem, które tłumaczy przychodzący adres URL na określony
+kontroler jaki ma być wykonany.
 
 .. index::
-   single: Routing; Tworzenie tras
+   single: trasowanie; tworzenie tras
+
+.. _creating-routes:
 
 Tworzenie tras
 --------------
 
-Symfony wczytuje wszystkie trasy dla Twojej aplikacji z pojedynczego pliku konfiguracyjnego
-routingu. Ten plik to zazwyczaj ``app/config/routing.yml``, jednakże może on być skonfigurowany
-w dowolny sposób (włączając w to plik XML czy PHP) przez plik konfiguracyjny aplikacji:
+Symfony wczytuje wszystkie trasy dla aplikacji z pojedynczego pliku trasowania.
+Ten plik to zazwyczaj ``app/config/routing.yml``, jednakże można
+skonfigurować inny plik (nawet w formacie XML zy PHP) za pośrednictwem pliku
+konfiguracyjnego aplikacji:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         framework:
@@ -163,6 +185,7 @@ w dowolny sposób (włączając w to plik XML czy PHP) przez plik konfiguracyjny
             router:        { resource: "%kernel.root_dir%/config/routing.yml" }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <framework:config ...>
@@ -171,6 +194,7 @@ w dowolny sposób (włączając w to plik XML czy PHP) przez plik konfiguracyjny
         </framework:config>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('framework', array(
@@ -181,25 +205,28 @@ w dowolny sposób (włączając w to plik XML czy PHP) przez plik konfiguracyjny
 .. tip::
 
     Nawet, jeśli wszystkie trasy są wczytywane z pojedynczego pliku, dobrą praktyką
-    jest dołączać dodatkowe dane routingu z innych plików. Zobacz :ref:`routing-include-external-resources`
-    w celu uzyskania więcej informacji.
+    jest dołączać dodatkowe zasoby trasowania z innych plików.
+    Zobacz do rozdiału :ref:`routing-include-external-resources` w celu poznania
+    szczegółów.
 
 Podstawowa konfiguracja trasy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Definiowanie tras jest proste, a typowa aplikacja będzie posiadała mnóstwo tras.
-Podstawowa trasa składa się z dwóch części: ``wzoru`` do dopasowania oraz z tablicy
-``defaults`` przechowującej wartości domyślne:
+Definiowanie tras jest proste, a typowa aplikacja będzie posiadała wiele tras.
+Podstawowa trasa składa się z dwóch części: ``pattern`` (wzorca do dopasowania)
+oraz z tablicy ``defaults`` przechowującej wartości domyślne:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         _welcome:
             pattern:   /
             defaults:  { _controller: AcmeDemoBundle:Main:homepage }
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -213,7 +240,8 @@ Podstawowa trasa składa się z dwóch części: ``wzoru`` do dopasowania oraz z
 
         </routes>
 
-    ..  code-block:: php
+    .. code-block:: php
+       :linenos:
 
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
@@ -225,29 +253,32 @@ Podstawowa trasa składa się z dwóch części: ``wzoru`` do dopasowania oraz z
 
         return $collection;
 
-Ta trasa pasuje do strony głównej (``/``) i prowadzi do kontrolera ``AcmeDemoBundle:Main:homepage``.
-Ciąg ``_controller`` jest zamieniany na nazwę odpowiedniej funkcji PHP, która następnie
-zostaje uruchomiona. Ten proces będzie pokrótce wyjaśniony w sekcji :ref:`controller-string-syntax`.
+Ta trasa dopasowuje do stronę główną aplikacji (``/``) i odwzorowuje kontroler
+``AcmeDemoBundle:Main:homepage``. Ciąć znakowy ``_controller`` jest zamieniany
+na nazwę odpowiedniej funkcji PHP, która następnie zostaje wykonana.
+Ten proces będzie wyjaśniony w sekcji :ref:`controller-string-syntax`.
 
 .. index::
-   single: Routing; Parametry
+   single: trasowanie; parametry
 
-Routing z parametrami
-~~~~~~~~~~~~~~~~~~~~~
+Trasowanie z wieloznacznikami
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Oczywiście system routingu wspiera o wiele więcej ciekawych tras. Wiele
-z nich będzie posiadało jeden lub więcej parametrów (symboli zastępczych, ang. placeholder) jako
-"wieloznacznik" (ang. wildcard):
+Mechanizm trasowania obsługuje również trasy z wieloznacznikami.
+Do określenia wielu tras można wykorzystać jedno lub więcej
+"wyrażeń wieloznacznych" zwanych wieloznacznikami (*ang. placeholders*):
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         blog_show:
             pattern:   /blog/{slug}
             defaults:  { _controller: AcmeBlogBundle:Blog:show }
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -261,7 +292,8 @@ z nich będzie posiadało jeden lub więcej parametrów (symboli zastępczych, a
         </routes>
 
     .. code-block:: php
-
+       :linenos:
+       
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
 
@@ -273,30 +305,35 @@ z nich będzie posiadało jeden lub więcej parametrów (symboli zastępczych, a
         return $collection;
 
 Wzorzec będzie pasował do wszystkiego, co wygląda jak ``/blog/*``. Co więcej,
-wartość przypisana do parametru ``{slug}`` będzie dostępna wewnątrz Twojego
-kontrolera. Innymi słowy, jeśli URL wygląda tak: ``/blog/hello-world``,
-to zmienna ``$slug`` z wartością ``hello-world`` będzie dostępna dla kontrolera.
-Może być to użyte np. do pobrania wpisu bloga, który pasuje do tego ciągu.
+wartość przypisana do parametru ``{slug}`` będzie dostępna wewnątrz kontrolera.
+Innymi słowy, jeśli adres URL wygląda tak: ``/blog/hello-world``,
+to zmienna ``$slug`` z wartością ``hello-world`` będzie dostępna w kontrolerze.
+Może być to użyte np. do pobrania wpisu na blogu, którego adres pasuje do tego
+ciągu znakowego.
 
-Ten wzorzec jednakże *nie* będzie pasował do samego ``/blog``. Dzieje się tak,
-ponieważ domyślnie wszystkie parametry są wymagane. Może być to zmienione poprzez
-dodanie domyślnej wartości tego parametru do tablicy ``defaults``.
+Ten wzorzec jednakże nie będzie pasował do samego ``/blog``. Dzieje się tak,
+ponieważ domyślnie wymagane jest okreśłenie wszystkich wieloznaczników.
+Może być to zmienione poprzez dodanie do tablicy ``defaults`` następnej wartości
+wieloznacznika.
 
-Wymagane oraz opcjonalne parametry
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Aby uczynić to bardziej ekscytującym, dodaj nową trasę, która wyświetla
-listę wszystkich dostępnych wpisów bloga:
+Wieloznaczniki obowiązkowe i opcjonalne
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Aby było ciekawiej, dodamy nową trasę wyświetlającą listę wszystkich dostępnych
+wpisów na blogu wymyślonej aplikacji blogowej:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         blog:
             pattern:   /blog
             defaults:  { _controller: AcmeBlogBundle:Blog:index }
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -310,6 +347,7 @@ listę wszystkich dostępnych wpisów bloga:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
@@ -322,19 +360,22 @@ listę wszystkich dostępnych wpisów bloga:
         return $collection;
 
 Jak dotąd, ta trasa jest tak prosta, jak to tylko możliwe - nie zawiera
-żadnych placeholderów i pasuje tylko do jednego URL ``/blog``. Ale co, jeśli
-chcesz, aby ta trasa obsługiwała paginację, gdzie ``/blog/2`` wyświetla drugą
-stronę wpisów bloga? Zmień tą trasę, aby posiadała nowy parameter ``{page}``:
+żadnych wieloznaczników i pasuje tylko do jednego adresu URL ``/blog``. Ale co,
+jeśli chce się, aby ta trasa obsługiwała stronicowanie, gdzie ``/blog/2``
+wyświetlałby  drugą stronę wpisów blogu? Zmieńmy tą trasę, tak aby posiadała nowy
+parameter ``{page}``:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         blog:
             pattern:   /blog/{page}
             defaults:  { _controller: AcmeBlogBundle:Blog:index }
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -348,6 +389,7 @@ stronę wpisów bloga? Zmień tą trasę, aby posiadała nowy parameter ``{page}
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
@@ -359,25 +401,28 @@ stronę wpisów bloga? Zmień tą trasę, aby posiadała nowy parameter ``{page}
 
         return $collection;
 
-Podobnie jak poprzedni parameter ``{slug``, wartość pasująca do ``{page}``
-będzie dostępna dla Twojego kontrolera. Ta wartość może być użyta do określenia,
-którą część postów bloga wyświetlić dla danej strony.
+Podobnie jak poprzedni wieloznacznik ``{slug}``, wartość pasująca do ``{page}``
+będzie też dostępna dla kontrolera. Ta wartość może być użyta do określenia,
+którą część wpisu na blogu wyświetlić dla danej strony.
 
-Ale chwileczkę! Ponieważ parametry są domyślnie wymagane, ta trasa już nie będzie
-pasować do adresu ``/blog``. Ponadto, aby zobaczyć stronę 1 bloga, musisz
-wejść pod URL ``/blog/1``! Jako, że nie jest to właściwe zachowanie
-dla aplikacji internetowej, zmodyfikuj trasę tak, aby parametr ``{page}``
-był opcjonalny. Można tego dokonać dołączając kolekcję ``defaults``:
+Ale chwileczkę! Ponieważ wieloznaczniki są domyślnie wymagane, ta trasa już nie będzie
+pasować do adresu ``/blog``. Ponadto, aby zobaczyć stronę 1 blogu, trzeba użyć
+adresu URL ``/blog/1``. Ponieważ nie jest to dobry sposób dla bardziej złożonej
+aplikacji internetowej, to zmodyfikujemy trasę tak aby wileoznacznik ``{page}``
+był opcjonalny. Można tego dokonać dołączając do tablicy ``defaults``, taki oto
+zapis:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         blog:
             pattern:   /blog/{page}
             defaults:  { _controller: AcmeBlogBundle:Blog:index, page: 1 }
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -392,6 +437,7 @@ był opcjonalny. Można tego dokonać dołączając kolekcję ``defaults``:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
@@ -405,9 +451,9 @@ był opcjonalny. Można tego dokonać dołączając kolekcję ``defaults``:
         return $collection;
 
 Po dodaniu ``page`` do tablicy ``defaults``, wieloznacznik ``{page}`` już nie jest
-wymagany. URL ``/blog`` będzie teraz pasował do tej trasy, a wartość parametru
-``page`` będzie ustawiona na ``1``. URL ``/blog/2`` również będzie pasować,
-dając parametrowi ``page`` wartość ``2``. Idelanie.
+wymagany. Adres URL ``/blog`` będzie teraz pasował do tej trasy, a wartość wieloznacznika
+``page`` zosytanie ustawiona na ``1``. Adres URL ``/blog/2`` również będzie pasować,
+dając wieloznacznikowi ``page`` wartość ``2``.
 
 +---------+------------+
 | /blog   | {page} = 1 |
@@ -418,16 +464,17 @@ dając parametrowi ``page`` wartość ``2``. Idelanie.
 +---------+------------+
 
 .. index::
-   single: Routing; Wymagania
+   single: trasowanie; wymagania
 
 Dodawanie wymagań
 ~~~~~~~~~~~~~~~~~
 
-Spójrz na utworzone przez nas wcześniej trasy:
+Spójrzmy na utworzone przez nas wcześniej trasy:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         blog:
             pattern:   /blog/{page}
@@ -438,6 +485,7 @@ Spójrz na utworzone przez nas wcześniej trasy:
             defaults:  { _controller: AcmeBlogBundle:Blog:show }
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -456,6 +504,7 @@ Spójrz na utworzone przez nas wcześniej trasy:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
@@ -472,11 +521,12 @@ Spójrz na utworzone przez nas wcześniej trasy:
 
         return $collection;
 
-Widzisz problem? Zauważ, że obie trasy mają wzory, do których pasują adresy
-URL takie jak ``/blog/*``. Router Symfony2 zawsze będzie wybierał **pierwszą**
-trasę, którą znajdzie. Innymi słowy, trasa ``blog_show`` nigdy nie będzie pasować.
-Ponadto, URL jak ``/blog/my-blog-post`` będzie pasował do pierwszej trasy
-(``blog``) i zwracał bezsensowną wartość ``my-blog-post`` do parametru ``{page}``.
+Czy nie występuje tu jakiś problem? Prosze zauważyć, że obie trasy mają wzorce,
+do których pasują adresy URL takie jak ``/blog/*``. Mechanizm trasowania Symfony2
+zawsze będzie wybierał **pierwszą** trasę, którą znajdzie. Innymi słowy, trasa
+``blog_show`` nigdy nie zostanie dopasowana. Ponadto adres URL taki jak
+``/blog/my-blog-post`` będzie pasował do pierwszej trasy (``blog``) i zwracał
+bezsensowną wartość ``my-blog-post`` dla wieloznacznika ``{page}``.
 
 +--------------------+-------+-----------------------+
 | URL                | route | parameters            |
@@ -486,15 +536,16 @@ Ponadto, URL jak ``/blog/my-blog-post`` będzie pasował do pierwszej trasy
 | /blog/my-blog-post | blog  | {page} = my-blog-post |
 +--------------------+-------+-----------------------+
 
-Rozwiązaniem tego problemu jest dodanie do trasy *wymagań*. Trasy w tym przypadku
-będą działały idealnie, jeśli wzorzec ``/blog/{page}`` będzie pasował *wyłącznie*
-do URL-i, w których parameter ``{page}`` jest typu integer. Na szczęście,
-wymagania w postaci wyrażeń regularnych mogą być łatwo dodane dla każdego parametru.
-Na przykład:
+Rozwiązaniem tego problemu jest dodanie do trasy **wymagań** (parametru ``requirements``).
+Trasy w tym przypadku będą działały idealnie, jeśli wzorzec ``/blog/{page}`` będzie
+pasował *wyłącznie* do adresów URL, w których wieloznacznik ``{page}`` jest typu
+integer. Na szczęście można dodawać wyrażenie regularne do każdego parametru, w tym
+do parametru ``requirements``. Na przykład:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         blog:
             pattern:   /blog/{page}
@@ -503,6 +554,7 @@ Na przykład:
                 page:  \d+
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -518,6 +570,7 @@ Na przykład:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
@@ -532,12 +585,13 @@ Na przykład:
 
         return $collection;
 
-Wzorzec wymagany ``\d+`` jest wyrażeniem regularnym, który mówi nam, że wartość
-parametru ``{page}`` może zawierać wyłącznie cyfry. Ścieżka ``blog`` wciąż będzie
-pasować do URL jak ``/blog/2`` (ponieważ 2 jest liczbą), ale nie będzie już pasować
-do URL takich jak ``/blog/my-blog-post`` (ponieważ ``my-blog-post`` *nie* jest liczbą).
+Wymaganie ``\d+`` jest wyrażeniem regularnym, które dopuszcza jako wartość wieloznacznika
+``{page}`` wyłącznie cyfry. Trasa ``blog`` wciąż będzie pasować do URL jak ``/blog/2``
+(ponieważ 2 jest liczbą), ale nie będzie już pasować do adresu URL takiego jak
+``/blog/my-blog-post`` (ponieważ ``my-blog-post`` nie jest liczbą).
 
-W efekcie końcowym, URL ``/blog/my-blog-post`` będzie odpowiednio pasować do trasy ``blog_show``.
+W efekcie końcowym adres URL ``/blog/my-blog-post`` będzie odpowiednio pasować do
+trasy ``blog_show``.
 
 +--------------------+-----------+-----------------------+
 | URL                | route     | parameters            |
@@ -549,19 +603,20 @@ W efekcie końcowym, URL ``/blog/my-blog-post`` będzie odpowiednio pasować do 
 
 .. sidebar:: Wcześniejsze trasy zawsze wygrywają
 
-    Znaczy to tyle, że kolejność ścieżek jest bardzo istotna. Jeśli trasa
-    ``blog_show`` jest umieszczona nad trasą ``blog``, URL ``/blog/2`` będzie
-    pasować do ``blog_show``, zamiast do ``blog``, ponieważ parametr ``{slug}``
+    Znaczy to tyle, że kolejność tras jest bardzo istotna. Jeśli trasa
+    ``blog_show`` jest umieszczona nad trasą ``blog``, adres URL ``/blog/2`` będzie
+    pasować do ``blog_show``, zamiast do ``blog``, ponieważ wieloznacznik ``{slug}``
     ścieżki ``blog_show`` nie ma żadnych wymagań. Stosując odpowiednią kolejność
-    oraz mądre wymagania, możesz osiągnąć niemal wszystko.
+    oraz sprytne wymagania, można osiągnąć niemal wszystko.
 
-Ponieważ wymagania parametrów są wyrażeniami regularnymi, kompleksowość i elastyczność
-każdego z wymagań należy całkowicie do Ciebie. Załóżmy, że strona główna Twojej
-aplikacji jest dostępna w dwóch różnych językach, zależnie od adresu URL:
+Ponieważ parametr ``requirements`` jest wyrażeniem regularnym, kompleksowość i
+elastyczność każdego z wymagań zależy całkowicie od programisty. Załóżmy, że
+strona główna aplikacji jest dostępna w dwóch różnych językach, zależnie od adresu URL:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         homepage:
             pattern:   /{culture}
@@ -570,6 +625,7 @@ aplikacji jest dostępna w dwóch różnych językach, zależnie od adresu URL:
                 culture:  en|fr
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -585,6 +641,7 @@ aplikacji jest dostępna w dwóch różnych językach, zależnie od adresu URL:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
@@ -599,7 +656,7 @@ aplikacji jest dostępna w dwóch różnych językach, zależnie od adresu URL:
 
         return $collection;
 
-Dla nadchodzącego żądania, parametr ``{culture}`` jest dopasowany do wyrażenia
+Część adresu URL ``{culture}`` w przychodzącym żądaniu jest dopasowywana do wyrażenia
 regularnego ``(en|fr)``.
 
 +-----+---------------------------+
@@ -613,20 +670,21 @@ regularnego ``(en|fr)``.
 +-----+---------------------------+
 
 .. index::
-   single: Routing; Wymagania metod
+   single: trasowanie; wymagania metody HTTP
 
-Dodawanie wymagań metod HTTP
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dodawanie wymagania dotyczącego metody HTTP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Oprócz adresu URL, możesz również dopasować *metodę* nadchodzącego żądania
-(np. GET, HEAD, POST, PUT, DELETE). Przypuśćmy, że masz formularz kontaktowy
+Oprócz adresu URL, można również dopasować metodę przychodzącego żądania
+(tj. GET, HEAD, POST, PUT, DELETE). Załóżmy, że mamy formularz kontaktowy
 z dwoma kontrolerami - jeden do wyświetlania formularza (dla żądania GET),
-a drugi do przetwarzania formularza, gdy jest on wysłany (podczas żądania POST).
-Można to osiągnąć poprzez następującą konfigurację routingu:
+a drugi do przetwarzania formularza, gdy zostanie on zgłoszony (z metodą POST).
+Można to osiągnąć poprzez następującą konfigurację trasowania:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         contact:
             pattern:  /contact
@@ -641,6 +699,7 @@ Można to osiągnąć poprzez następującą konfigurację routingu:
                 _method:  POST
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -660,6 +719,7 @@ Można to osiągnąć poprzez następującą konfigurację routingu:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
@@ -679,33 +739,54 @@ Można to osiągnąć poprzez następującą konfigurację routingu:
 
         return $collection;
 
+.. versionadded:: 2.2
+    W Symfony2.2 została dodana opcja ``methods``. Użycie  ``_method`` wymagane
+    jest tylko w starszych wersjach.
+
 Pomimo faktu, iż te dwie trasy mają identyczne wzorce (``/contact``), pierwsza
 z nich będzie pasować tylko do żądań GET, a druga tylko do żądań POST. Oznacza to,
-że możesz wyświetlać i wysyłać formularz poprzez ten sam URL, jednocześnie wykorzystując
-do tego oddzielne kontrolery do tych dwóch akcji.
+że można wyświetlać i zgłosić formularz poprzez ten sam adres URL, jednocześnie
+wykorzystując do tego oddzielne kontrolery dla tych dwóch różnych akcji.
 
 .. note::
-    Jeśli nie podano wymagań dla ``_method``, trasa będzie pasować do *wszystkich* metod HTTP.
+    Jeśli nie zostanie podane wymaganie dla ``_method``, trasa będzie pasować do
+    wszystkich metod HTTP.
 
-Podobnie jak inne wymagania, parametrr ``_method`` jest parsowany jako wyrażenie regularne.
-Aby dopasować żądania ``GET`` *albo* ``POST``, możesz użyć ``GET|POST``.
+Podobnie jak inne wymagania, parametrr ``_method`` jest przetwarzany jako wyrażenie
+regularne. Aby dopasować żądania ``GET`` albo ``POST``, można użyć ``GET|POST``.
 
 .. index::
-   single: Routing; Zzawansowany przykład
-   single: Routing; parametr _format
+   single: trasowanie; host
+   
+.. _adding-host
+   
+Dodawanie hosta
+~~~~~~~~~~~~~~~
+
+.. versionadded:: 2.2
+    W Symfony 2.2 dodano obsługe dopasowania hosta
+
+Można również dopasowywać nagłówek HTTP `Host`_ przychodzącego żądania. Więcej
+informacji można uzyskać a artykule :doc:`/components/routing/hostname_pattern`
+w dokumentacji komponentu Routing.
+
+.. index::
+   single: Routing; Advanced example
+   single: Routing; _format parameter
 
 .. _advanced-routing-example:
 
-Zaawansowany przykład routingu
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Przykład zaawansowanego trasowania
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Na chwilę obecną masz do dyspozycji wszystko, co potrzebujesz, aby utworzyć
-potężną strukturę routingu w Symfony. Poniższy przykład obrazuje jak elastyczny
-może być system routingu:
+W tym momencie mamy wszystko, co potrzebne jest do stworzenia pełno wartościowej
+struktury trasowania w Symfony. Oto przykład tego, jak elastyczny może być system
+trasowania:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         article_show:
           pattern:  /articles/{culture}/{year}/{title}.{_format}
@@ -716,6 +797,7 @@ może być system routingu:
               year:     \d+
 
     .. code-block:: xml
+       :linenos:
 
         <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -733,6 +815,7 @@ może być system routingu:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         use Symfony\Component\Routing\RouteCollection;
         use Symfony\Component\Routing\Route;
@@ -749,10 +832,10 @@ może być system routingu:
 
         return $collection;
 
-Jak widisz, ta trasa będzie pasować tylko wtedy, kiedy parametr ``{culture}``
-adresu URL będzie równy ``en`` lub ``fr``, a ``{year}`` jest liczbą. Ponadto
-ta trasa pokazuje, jak możesz wykorzystać kropkę pomiędzy parametrami zamiast ukośnika.
-Adresy URL pasujące do tej trasy mogą wyglądać np. tak:
+Jak widać, ta trasa będzie pasować tylko wtedy, kiedy wieloznacznik ``{culture}``
+w adresie URL będzie równy ``en`` lub ``fr``, a ``{year}`` jest liczbą. Ponadto
+ta trasa pokazuje, jak można wykorzystać kropkę pomiędzy wieloznacznikami zamiast
+ukośnika. Adresy URL pasujące do tej trasy mogą wyglądać np. tak:
 
 * ``/articles/en/2010/my-post``
 * ``/articles/fr/2010/my-post.rss``
@@ -761,56 +844,64 @@ Adresy URL pasujące do tej trasy mogą wyglądać np. tak:
 
 .. sidebar:: Specjalny parametr ``_format``
 
-    Ten przykład prezentuje również specjalny parametr routingu ``_format``.
-    Stosując ten parametr, dopasowany element staje się "formatem żądania"
-    obiektu ``Request``. Ostatecznie format żądania jest używany do takich
-    rzeczy jak ustawienie nagłówka ``Content-Type`` odpowiedzi (np. format żądania
-    ``json`` jest zmieniany na ``Content-Type`` równy ``application/json``).
-    Może być on również wykorzystany w kontrolerze do renderowania różnych
-    szablonów dla każdej wartości parametru ``_format``. Jest on bardzo dobry
-    sposób do renderowania tej samej treści w różnych formatach.
+    Powyższy przykład pokazuje również specjalny parametr trasowania ``_format``.
+    Przy zastosowaniu tego parametru dopasowaną wartością może być "format żądania"
+    obiektu Request. Ostatecznie format żądania służy do takich rzeczy jak ustawienie
+    nagłówka ``Content-Type`` odpowiedzi (np. żądany format json tłumaczony jest na
+    ``Content-Type application/json``). W kontrolerze do renderowania może być
+    również stosowany inny szablon dla każdej wartości ``_format``.
+    Parametr ``_format`` jest bardzo skutecznym sposobem na renderowanie tej samej
+    treści w różnych formatach.
 
-Specjalne parametry routingu
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. note::
+   
+   Czasami można chcieć, aby niektóre części tras były konfigurowalne globalnie.
+   Symfony 2.1 umożliwia zrobienie tego przez wykorzystanie parametrów poziomu
+   kontenera usług. Więcej na ten temat można sie dowiedzieć w artykule
+   ":doc:`Jak stosować parametry kontenera usług w trasowaniu</cookbook/routing/service_container_parameters>`".
+   
+   
 
-Jak mogłeś się przekonać, każdy parametr routingu, czy też wartość domyślna, mogą być
-również dostępne jako argument metody kontrolera. Dodatkowo, istnieją jeszcze trzy specjalne
-parametry: każdy z nich dodaje unikatową część funkcjonalności do Twojej aplikacji:
+Specjalne parametry trasowania
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* ``_controller``: Jak już wiesz, ten parametr jest używany do określenia kontrolera,
-  który ma być wykonany, kiedy trasa jest dopasowana;
+Jak mogliśmy sie przekonać, każda wartość parametr trasowania jest dostępna jako
+argument w metododzie kontrolera. Dodatkowo istnieją jeszcze trzy specjalne
+parametry - każdy z nich dodaje unikatową cząstkę funkcjonalności do aplikacji:
 
-* ``_format``: Używany do ustawienia formatu żądania (:ref:`read more<book-routing-format-param>`);
+* ``_controller``: określa który kontroler ma zostać użyty gdy trasa zostanie dopasowana;
 
-* ``_locale``: Używany do ustawienia języka żądania (:ref:`read more<book-translation-locale-url>`);
+* ``_format``: służy do ustawienia formatu żądania (:ref:`czytaj więcej<book-routing-format-param>`);
+
+* ``_locale``: służy do ustawienia języka sesji (:ref:`czytaj więcej<book-translation-locale-url>`).
 
 .. tip::
 
-    Jeśli używasz parametru ``_locale``, jego wartość będzie również przechowywana
-    w sesji, dzięki czemu kolejne żądania będą zawierać tą samą wartość.
+    Jeśli używa się parametru ``_locale``, jego wartość będzie również przechowywana
+    w sesji, dzięki czemu dla kolejnych żądań będą stosowane te same ustawinia
+    regionalne.
 
 .. index::
-   single: Routing; Kontrolery
-   single: Controller; Format nazewnictwa ciągów
+   single: trasowanie; kontrolery
+   single: kontroler; format łańcucha nazewniczego
 
 .. _controller-string-syntax:
 
-Wzór nazewnictwa Kontrolerów
-----------------------------
+Wzorzec nazwy kontrolera
+------------------------
 
-Każda trasa musi posiadać parametr ``_controller``, który mówi Symfony,
+Każda trasa musi posiadać parametr ``_controller``, który informuje Symfony,
 który kontroler powinien zostać uruchomiony, gdy trasa zostanie dopasowana.
-Ten parametr wykorzystuje ciąg w postaci prostego wzoru nazywanego *logiczna
-nazwa kontrolera*, który Symfony dopasowuje do konkretnej metody PHP oraz klasy.
-Ten wzór składa się z trzech części, każda z nich oddzielona jest dwukropkiem:
+Ten parametr używa prostego wzorca zwanego *logiczną nazwa kontrolera*, który
+Symfony dopasowuje do nazwy konkretnej metody i klasy PHP.
+Wzorzec ten składa się z trzech części, każda z nich oddzielona jest dwukropkiem:
 
-    **bundle**:**kontroler**:**akcja**
+    **pakiet**:**kontroler**:**akcja**
 
 Na przykład, wartość ``AcmeBlogBundle:Blog:show`` parametru ``_controller_`` oznacza:
-For example, a ``_controller`` value of ``AcmeBlogBundle:Blog:show`` means:
 
 +----------------+------------------+--------------+
-| Bundle         | Klasa kontrolera | Nazwa metody |
+| Pakiet         | Klasa kontrolera | Nazwa metody |
 +================+==================+==============+
 | AcmeBlogBundle | BlogController   | showAction   |
 +----------------+------------------+--------------+
@@ -818,6 +909,7 @@ For example, a ``_controller`` value of ``AcmeBlogBundle:Blog:show`` means:
 Kontroler może wyglądać np. tak:
 
 .. code-block:: php
+   :linenos:
 
     // src/Acme/BlogBundle/Controller/BlogController.php
 
@@ -832,25 +924,26 @@ Kontroler może wyglądać np. tak:
         }
     }
 
-Zauważ, że Symfony dodaje ciąg ``Controller`` do nazwy klasy (``Blog`` => ``BlogController``)
-oraz ciąg ``Action`` do nazwy metody (``show`` => ``showAction``).
+Prowszę zauważyć, że Symfony dodaje ciąg ``Controller`` do nazwy klasy (``Blog``
+=> ``BlogController``) oraz ciąg ``Action`` do nazwy metody (``show`` => ``showAction``).
 
-Możesz również odwołać się do tego kontrolera poprzez pełną nazwę klasy oraz metody:
-``Acme\BlogBundle\Controller\BlogController::showAction``. Jeśli
-będziesz przestrzegał kilka prostych konwencji, logiczna nazwa kontrolera jest
-bardziej zwięzła i posiada większą elastyczność.
+Można również odnieść się do kontrolera używając w pełni kwalifikowanej nazwy klasy
+oraz metody:
+``Acme\BlogBundle\Controller\BlogController::showAction``.
+Jeśli przestrzega się kilku prostych konwencji, logiczna nazwa kontrolera jest
+bardziej zwięzła i pozwala na większą elastyczność.
 
 .. note::
 
-   Oprócz używania logicznej nazwy oraz pełnej nazwy klasy, Symfony dostarcza
-   trzeci sposób odwoływania się do kontrolera. Ta metoda używa tylko jednego
-   dwukropka jako separatora (np. ``service_name:indexAction``) i odwołuje się
-   do kontrolera jako usługi (patrz :doc:`/cookbook/controller/service`).
+   Oprócz używania logicznej nazwy oraz w pełni kwalifikowanej nazwy klasy,
+   Symfony dostarcza trzeci sposób odwoływania się do kontrolera. Tą metoda używa
+   tylko jednego dwukropka jako separatora (np. ``service_name:indexAction``)
+   i odwołuje się do kontrolera jako usługi (patrz :doc:`/cookbook/controller/service`).
 
-Parametry adresów oraz argumenty kontrolerów
---------------------------------------------
+Parametry trasy a argumenty kontrolera
+--------------------------------------
 
-Parametry adresów (np. ``{slug}``) są szczególnie ważne, ponieważ każdy z nich
+Parametry trasy (np. ``{slug}``) są szczególnie ważne, ponieważ każdy z nich
 jest dostępny jako argument metody kontrolera:
 
 .. code-block:: php
@@ -860,13 +953,15 @@ jest dostępny jako argument metody kontrolera:
       // ...
     }
 
-W rzeczywistości, cała kolekcja ``defaults``jest scalana z wartościami parametrów tak,
-aby utworzyć prostą tablicę. Każdy klucz tej tablicy jest dostępny jako argument kontrolera.
+W rzeczywistości, cała kolekcja ``defaults``jest scalana z wartościami parametrów
+w jedną pojedynczą tablicę. Każdy klucz tej tablicy jest dostępny jako argument
+kontrolera.
 
-Innymi słowy, dla kazdego argumentu metody Twojego kontrolera, Symfony szuka parametru
-o nazwie takiej samej jak argument i przypisuje jego wartość do tego argumentu. W poniższym
-bardziej zaawansowanym przykładzie, dowolna kombinacja (o dowolnej kolejności) poniższych
-zmiennych może być użyta jako argumenty metody ``showAction()``:
+Innymi słowy, dla każdego argumentu metody kontrolera, Symfony szuka parametru
+o nazwie takiej samej jak argument i przypisuje jego wartość do tego argumentu.
+W powyżej rezentowanym zaawansowanym przykładzie, dowolna kombinacja (o dowolnej
+kolejności) nastęþujacych zmiennych może być użyta jako argumenty metody
+``showAction()``:
 
 * ``$culture``
 * ``$year``
@@ -874,8 +969,8 @@ zmiennych może być użyta jako argumenty metody ``showAction()``:
 * ``$_format``
 * ``$_controller``
 
-Jako, że parametry oraz kolekcja ``defaults`` są łączone razem, nawet zmienna
-``$_controller`` jest dostępna. Po więcej informacji zasięgnij do
+Ponieważ wieloznaczniki i kolekcja ``defaults`` są łączone razem, nawet zmienna
+``$_controller`` jest dostępna. Więcej szczegółów jest omówionych w rozdziale
 :ref:`route-parameters-controller-arguments`.
 
 .. tip::
@@ -884,27 +979,30 @@ Jako, że parametry oraz kolekcja ``defaults`` są łączone razem, nawet zmienn
     nazwę trasy, która została dopasowana.
 
 .. index::
-   single: Routing; Importowanie zasobów routingu
+   single: trasowanie; dołącznie zewnętrznych zasobów
 
 .. _routing-include-external-resources:
 
-Importowanie zewnętrznych zasobów routingu
+Dołączanie zewnętrznych zasobów trasowania
 ------------------------------------------
 
-Wszystkie trasy są ładowane poprzez prosty plik konfiguracyjny - zazwyczaj ``app/config/routing.yml``
-(patrz `Tworzenie tras`_ ponizej). Jednakże najczęściej będziesz potrzebował ładować trasy
-z innych miejsc, takich jak plik routingu z paczki (bundla). Można tego dokonać poprzez "importowanie"
+Wszystkie trasy są ładowane z pojedyńczego pliku konfiguracyjnego - zazwyczaj
+``app/config/routing.yml`` (czytaj rozdział :ref:`creating-routes`).
+Często jednak zachodzi potrzeba ładowania trasy z innych miejsc, takich jak plik
+trasowania umieszczonego w pakiecie. Można tego dokonać poprzez "importowanie"
 tego pliku:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/routing.yml
         acme_hello:
             resource: "@AcmeHelloBundle/Resources/config/routing.yml"
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/routing.xml -->
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -917,6 +1015,7 @@ tego pliku:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/routing.php
         use Symfony\Component\Routing\RouteCollection;
@@ -929,15 +1028,16 @@ tego pliku:
 .. note::
 
    Podczas importowania zasobów YAML, klucz (np. ``acme_hello``) jest bez znaczenia.
-   Po prostu upewnij się, że jest unikatowy, przez co żadna inna linia nie nadpisze go.
+   Wystarczy się upewnić, że jest on unikalny, przez co żadna inna linia nie nadpisze go.
 
-Klucz ``resource`` wczytuje podany zasób routingu. W tym przypadku zasobem jest
-pełna ścieżka do pliku, gdzie skrót ``@AcmeHelloBundle`` zwraca ścieżkę do danej paczki.
-Importowany plik może wyglądać na przykład tak:
+Klucz ``resource`` wczytuje podany zasób trasowania. W tym przypadku zasobem jest
+pełna ścieżka do pliku, gdzie skrót ``@AcmeHelloBundle`` przekształacany jest 
+ścieżke do pakietu. Importowany plik może wyglądać na przykład tak:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/HelloBundle/Resources/config/routing.yml
        acme_hello:
@@ -945,6 +1045,7 @@ Importowany plik może wyglądać na przykład tak:
             defaults: { _controller: AcmeHelloBundle:Hello:index }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/HelloBundle/Resources/config/routing.xml -->
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -959,6 +1060,7 @@ Importowany plik może wyglądać na przykład tak:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         // src/Acme/HelloBundle/Resources/config/routing.php
         use Symfony\Component\Routing\RouteCollection;
@@ -971,19 +1073,20 @@ Importowany plik może wyglądać na przykład tak:
 
         return $collection;
 
-Adresy z tego pliku są parsowane i ładowane w ten sam sposób, jak główny plik
-routingu.
+Trasy z tego pliku są przetwarzane i ładowane w ten sam sposób, jak główny plik
+trasowania.
 
-Prefiksowanie importowanych tras
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Przedrostki dla importowanych tras
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Możesz również chcieć dołączać "prefix" do importowanych adresów. Na przykład, załóżmy,
-że chcesz, aby trasa ``acme_hello`` miała ostateczny wzór ``/admin/hello/{name}``, zamiast
+Można również zapewnić "przedrostek" dla importowanych tras. Na przykład załóżmy,
+że trasa ``acme_hello`` ma ostateczny wzorzec ``/admin/hello/{name}``, zamiast
 prostego ``/hello/{name}``:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/routing.yml
         acme_hello:
@@ -991,6 +1094,7 @@ prostego ``/hello/{name}``:
             prefix:   /admin
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/routing.xml -->
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -1003,6 +1107,7 @@ prostego ``/hello/{name}``:
         </routes>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/routing.php
         use Symfony\Component\Routing\RouteCollection;
@@ -1012,27 +1117,26 @@ prostego ``/hello/{name}``:
 
         return $collection;
 
-Ciąg ``/admin`` będzie teraz poprzedzał wzór każdej trasy ładowanej z naszego
-nowego zasobu routingu.
+Ciąg ``/admin`` będzie teraz poprzedzał wzorzec każdej trasy ładowanej z nowego
+zasobu trasowania.
 
 .. index::
-   single: Routing; Debugowanie
+   single: trasowanie; debugowanie
 
-Wizualizowanie i debugowanie adresów
-------------------------------------
+Wizualizowanie i debugowanie tras
+---------------------------------
 
 Dodając i dostosowując adresy, pomocna może okazać się możliwość wizualizacji
-oraz uzyskania szczegółowej informacji na temat Twoich tras. Świetnym sposobem,
-aby zobaczyć każdy adres Twojej aplikacji jest użycie polecenia ``router:debug``.
-Uruchom do polecenie poprzez wpisanie go w linii poleceń w głównym katalogu
-Twojego projektu, tak jak poniżej:
+oraz uzyskania szczegółowej informacji o trasach. Dobrym sposobem,
+na zobaczenie każdego adresu aplikacji jest użycie polecenia ``router:debug``.
+Polecenie należy wykonać głównym katalogu projektu, tak jak poniżej:
 
 .. code-block:: bash
 
     php app/console router:debug
 
-To polecenie wyświetli na ekranie pomocną listę *wszystkich* skonfigurowanych
-adresów w Twojej aplikacji:
+Polecenie to wyświetli na ekranie listę wszystkich skonfigurowanych
+tras aplikacji:
 
 .. code-block:: text
 
@@ -1043,24 +1147,36 @@ adresów w Twojej aplikacji:
     blog                  ANY       /blog/{page}
     blog_show             ANY       /blog/{slug}
 
-Możesz również uzyskać dokładne informacje o pojedynczym adresie, dołączając
-jego nazwę do powyższego polecenia:
+Można również uzyskać szczegółowe informacje o pojedynczej trasie, dołączając
+jej nazwę do powyższego polecenia:
 
 .. code-block:: bash
 
     php app/console router:debug article_show
+    
+.. versionadded:: 2.1
+    W Symfony 2.1 dodano obsługe polecenia ``router:match``.
+
+Można sprawdzić czy trasa pasuje do ścieżki posługując się poleceniem konsoli ``router:match``:
+
+.. code-block:: bash
+
+    $ php app/console router:match /articles/en/2012/article.rss
+    Route "article_show" matches
 
 .. index::
-   single: Routing; Generowanie adresów URL
+   single: trasowanie; generowanie adresów URL
 
 Generowanie adresów URL
 -----------------------
 
-System routingu powinien również być używany do generowania URL-i. W rzeczywistości,
-routing jest systemem dwukierunkowym: mapuje URL do kontrolera i parametrów, oraz
-trasę i parametry z powrotem do URL. Metody :method:`Symfony\\Component\\Routing\\Router::match`
-oraz :method:`Symfony\\Component\\Routing\\Router::generate` wykorzystują ten
-dwukierunkowy system. Spójrz na poniższy przykład wykorzystujący wcześniejszą trasę
+System trasowania powinien również być używany do generowania adresów URL.
+W rzeczywistości, trasowanie jest systemem dwukierunkowym: odwzorowuje adres URL
+na kontroler (i parametry), oraz z powrotem trasę (i parametry) na adres URL.
+Ten dwukierunkowy system tworzony jest przez metody
+:method:`Symfony\\Component\\Routing\\Router::match` oraz
+:method:`Symfony\\Component\\Routing\\Router::generate`.
+Przyjrzyjmy się poniższemu przykładowi wykorzystującemu wcześniejszą trasę
 ``blog_show``::
 
     $params = $router->match('/blog/my-blog-post');
@@ -1069,9 +1185,9 @@ dwukierunkowy system. Spójrz na poniższy przykład wykorzystujący wcześniejs
     $uri = $router->generate('blog_show', array('slug' => 'my-blog-post'));
     // /blog/my-blog-post
 
-Aby wygenerować URL, musisz określić nazwę trasy (np. ``blog_show``) oraz wszystkie
-parametry (np. ``slug = my-blog-post``) użyte we wzorze tego adresu. Dzięki tym informacjom,
-każdy URL moze być łatwo wygenerowany:
+Aby wygenerować adres URL, musi się określić nazwę trasy (np. ``blog_show``) oraz
+wszystkie wieloznaczniki (np. ``slug = my-blog-post``) użyte we wzorcu tej trasy.
+Z tej informacji można wygenerować łatwo każdy adres URL:
 
 .. code-block:: php
 
@@ -1085,28 +1201,29 @@ każdy URL moze być łatwo wygenerowany:
         }
     }
 
-W kolejnej sekcji nauczysz się jak generować URL-e w szablonach.
+W kolejnym rozdziale poznasz jak generować adresy URL w szablonach.
 
 .. tip::
 
-    Jeśli frontend Twojej aplikacji wykorzystuje żądania AJAX, możesz chcieć
-    mieć możliwość generowania URL-i w JavaScript na podstawie konfiguracji routingu.
-    Używając `FOSJsRoutingBundle`_, mozesz robić dokładnie tak:
+    Jeśli fronton aplikacji wykorzystuje żądania AJAX, można generować adresy  URL
+    w JavaScript na podstawie konfiguracji trasowania. Używając
+    `FOSJsRoutingBundle`_, można to zrobić dokładnie tak:
 
     .. code-block:: javascript
 
         var url = Routing.generate('blog_show', { "slug": 'my-blog-post'});
 
-    Po więcej informacji zasięgnij do dokumentacji tej paczki.
+    Więcej informacji mozna znaleźć w dokumentacji tego pakietu.
 
 .. index::
-   single: Routing; Adresy absolutne
+   single: trasowanie; bezwględne adresy URL
 
-Generowanie adresów absolutnych
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generowanie bezwzględnych adresów URL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Domyślnie router generuje relatywne adresy URL (np. ``/blog``). Aby wygenerować
-absolutny URL, po prostu przekaż ``true`` jako trzeci argument metody ``generate()``:
+Domyślnie mechanizm trasowania generuje względne adresy URL (np. ``/blog``).
+Aby wygenerować bezwzględne adresy URL, trzeba przekazać ``true`` jako trzeci
+argument metody ``generate()``:
 
 .. code-block:: php
 
@@ -1115,10 +1232,10 @@ absolutny URL, po prostu przekaż ``true`` jako trzeci argument metody ``generat
 
 .. note::
 
-    Host używany podczas generowania aboslutnego URL jest hostem dla aktualnego
-    obiektu ``Request`` (żądania). Jest on wykrywany automatycznie na podstawie informacji
-    o serwerze dostarczanych przez PHP. Podczas generowania absolutnych URL-i dla
-    skryptów uruchamianych z linii poleceń, musisz ręcznie podawać żądany
+    Host używany podczas generowania bezwzględnego adresu URL jest hostem dla aktualnego
+    obiektu ``Request``. Jest to wykrywane automatycznie na podstawie informacji
+    o serwerze dostarczanych przez PHP. Podczas generowania bezwzglednych adresów
+    URL dla skryptów uruchamianych z linii poleceń trzeba ręcznie podawać właściwy
     host dla obiektu ``Request``:
 
     .. code-block:: php
@@ -1126,49 +1243,59 @@ absolutny URL, po prostu przekaż ``true`` jako trzeci argument metody ``generat
         $request->headers->set('HOST', 'www.example.com');
 
 .. index::
-   single: Routing; Generowanie URL-i wewnątrz szablonów
+   single: trasowanie; generowanie adresów URL wewnątrz szablonów
 
-Generowanie URL-i z QueryStrings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generowanie adresów URL z łańcuchem zapytania
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Metoda ``generate`` wykorzystuje tablicę parametrów aby wygenerować URI.
-Jednakże, jeśli podasz kilka dodatkowych, będą one dodane do URL jako query string (parametry GET)::
+Metoda ``generate`` pobiera tablicę wartości wieloznacznych dla generowania adresu
+URI. Lecz jeśli przekaże się dodatkowe elementy tej tablicy, to zostaną one dodane
+do adresu URI jako `łańcuch zapytania`_::
 
     $router->generate('blog', array('page' => 2, 'category' => 'Symfony'));
     // /blog/2?category=Symfony
 
-Generowanie URL-i wewnątrz szablonów
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Najczęściej wykorzystywanym miejscem do generowanie URL-i wewnątrz szablonów są
-linki pomiedzy stronami Twojej aplikacji. Jest to dokonywane tak samo jak powyżej,
-lecz za pomocą funkcji helpera szablonu:
+.. index::
+   single: trasowanie; generowanie adresów URL wewnątrz szablonów
+
+
+Generowanie adresów URL wewnątrz szablonów
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Najczęściej wykorzystywanym miejscem do generowania adresów URL wewnątrz szablonów
+są odnośniki pomiędzy stronami aplikacji. Odbywa sie to tak samo jak opisano wcześniej,
+lecz za pomocą funkcji pomocniczej szablonu:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         <a href="{{ path('blog_show', { 'slug': 'my-blog-post' }) }}">
           Przeczytaj ten post bloga.
         </a>
 
     .. code-block:: php
+       :linenos:
 
         <a href="<?php echo $view['router']->generate('blog_show', array('slug' => 'my-blog-post')) ?>">
             Przeczytaj ten post bloga.
         </a>
 
-Można generować również absolutne adresy URL.
+Można generować również bezwzględne adresy URL.
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         <a href="{{ url('blog_show', { 'slug': 'my-blog-post' }) }}">
           Przeczytaj ten post bloga.
         </a>
 
     .. code-block:: php
+       :linenos:
 
         <a href="<?php echo $view['router']->generate('blog_show', array('slug' => 'my-blog-post'), true) ?>">
             Przeczytaj ten post bloga.
@@ -1177,15 +1304,18 @@ Można generować również absolutne adresy URL.
 Podsumowanie
 ------------
 
-Routing to system mapowania URL-i przychodzących żądań do funkcji kontrolera,
-który ma być wywołany do przetworzenia żądania. Pozwala to zarówno na określanie
-ładnych URL-i, a także oddziela funkcjonalność Twojej aplikacji od tych URL-i.
-Routing jest dwukierunkowym mechanizmem, co oznacza, że może być również wykorzystywany
-do generowania adresów URL.
+Trasowanie to system odwzorowania adresu URL przychodzącego żądania na funkcję kontrolera,
+który ma być wywołany w celu przetworzenia żądania. Pozwala to zarówno na określanie
+ładnych adresów URL, jak i oddzielenia funkcjonalności aplikacji od od struktury
+adresów URL. Trasowanie jest dwukierunkowym mechanizmem, co oznacza, że może być
+również wykorzystywany do generowania adresów URL.
 
-Dowiedz się więcej z Cookbook'a
-------------------------------
+Dowiedz się więcej w Receptariuszu
+----------------------------------
 
 * :doc:`/cookbook/routing/scheme`
 
 .. _`FOSJsRoutingBundle`: https://github.com/FriendsOfSymfony/FOSJsRoutingBundle
+.. _`Uniform Resource Locator`: http://pl.wikipedia.org/wiki/Uniform_Resource_Locator
+.. _`Host`: http://pl.wikipedia.org/wiki/Lista_nag%C5%82%C3%B3wk%C3%B3w_HTTP
+.. _`łańcuch zapytania`: http://pl.wikipedia.org/wiki/URI
