@@ -1,30 +1,37 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 .. index::
    single: Walidacja
 
 Walidacja
 =========
 
-Walidacja to bardzo częste zadanie w aplikacjach webowych. Dane wprowadzone
-do formularzy muszą być walidowane. Powinny one być walidowane jeszcze przed
-zapisaniem ich do bazy danych czy przekazaniem ich do usługi web (ang. web service).
+Dane wprowadzone do formularzy wymagają weryfikacji. Dane wymagają również sprawdzenia
+przed ich zapisem do bazy danych lub przekazaniem do serwisu internetowego.
+Lecz nie chodzi tu tylko o prostą weryfikację danych. W tworzeniu aplikacji internetowych,
+niezbędne jest wykazanie, że dane wprowadzane do aplikacji prowadzą do właściwych
+wyników - to jest właśnie **walidacja**. `Walidacja`_ jest niezbędnym elementem
+prawie wszystkich współczesnych procesów wytwórczych.  
 
-Symfony2 dostarcza komponent `Validator`_, dzięki któremu to zadanie jest łatwe i zrozumiałe.
-Ten komponen oparty jest o `specyfikację JSR303 Bean Validation`_. Co? Specyfikacja Java
-w PHP? Dobrze słyszysz, lecz nie jest to takie złe, jak to brzmi. Spójrzmy jak to może być
-użyte w PHP.
+Symfony2 dostarcza komponent `Validator`_, dzięki któremu to zadanie jest łatwe
+ i zrozumiałe. Komponent ten oparty jest o `specyfikację JSR303 Bean Validation`_.
+ Co? Specyfikacja Java w PHP? Nie przesłyszałeś się, lecz nie jest to takie złe,
+ jakby sie mogło wydawać. Przyjrzyjmy się w jaki sposób może to być użyte w PHP.
 
 .. index:
-   single: Walidacja; Podstawy
+   single: walidacja; podstawy
 
 Podstawy walidacji
 ------------------
 
-Najlepszą drogą do zrozumienia walidacji jest zobaczyć to w akcji. Aby zacząć,
-załóżmy, że utworzyłeś zwykły obiekt PHP, który musisz użyć gdzieś w swojej
-aplikacji:
+Najlepszą sposobem do zrozumienia walidacji jest zobaczenie jej w działaniu.
+Aby zacząć, załóżmy, że utworzyliśmy zwykły obiekt PHP, który musi się użyć gdzieś
+w swojej aplikacji:
 
 .. code-block:: php
-
+   :linenos:
+   
     // src/Acme/BlogBundle/Entity/Author.php
     namespace Acme\BlogBundle\Entity;
 
@@ -33,19 +40,20 @@ aplikacji:
         public $name;
     }
 
-Jak dotąd, jest to tylko zwyczajna klasa, która robi coś w Twojej aplikacji.
-Celem walidacji jest powiedzieć Ci, czy zawartość obiektu jest prawidłowa.
-Aby to działało, będziesz musiał skonfigurować listę zasad
-(zwanych :ref:`constraints<validation-constraints>`), które obiekt musi spełniać,
-aby przejść walidację. Te zasady mogą być określone przez wiele różnych
-formatów (YAML, XML, adnotacje, czy PHP).
+Jak dotąd, jest to tylko zwyczajna klasa, która robi coś w aplikacji.
+Celem walidacji jest sprawdzenie, czy zawartość obiektu jest prawidłowa.
+Aby to działało, trzeba skonfigurować listę reguł (zwanych
+ :ref:`**ograniczeniami**, *ang. constraints*<validation-constraints>`),
+ które obiekt musi spełniać, aby przejść walidację. Reguły te mogą być określone
+ w wielu różnych formatach (YAML, XML, adnotacje, czy PHP).
 
 Na przykład, aby zagwarantować, że właściwość ``$name`` nie jest pusta,
-dodaj poniższe:
+trzeba dodać następujący kod:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/BlogBundle/Resources/config/validation.yml
         Acme\BlogBundle\Entity\Author:
@@ -54,6 +62,7 @@ dodaj poniższe:
                     - NotBlank: ~
 
     .. code-block:: php-annotations
+       :linenos:
 
         // src/Acme/BlogBundle/Entity/Author.php
         use Symfony\Component\Validator\Constraints as Assert;
@@ -67,6 +76,7 @@ dodaj poniższe:
         }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -82,6 +92,7 @@ dodaj poniższe:
         </constraint-mapping>
 
     .. code-block:: php
+       :linenos:
 
         // src/Acme/BlogBundle/Entity/Author.php
 
@@ -100,22 +111,23 @@ dodaj poniższe:
 
 .. tip::
 
-    Właściwości protected i private również mogą być walidowane, zarówno jak "gettery"
-    (zobacz `validator-constraint-targets`).
+    Właściwości chronione i prywatne mogą być również walidowane, podobnie jak
+    metody akcesorów („getter") – zobacz :ref:`validator-constraint-targets`.
 
 .. index::
-   single: Walidacja; Używanie walidatorów
+   single: walidacja; używanie walidatorów
 
 Używanie usługi ``Validator``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Dalej, aby w końcu walidować obiekt ``Author`` użyj metody ``validate`` z usługi
-``validator`` (klasa :class:`Symfony\\Component\\Validator\\Validator`).
-Zadanie ``validator`` jest proste: czytać reguły klasy i weryfikować, czy dane
-znajdujące się w obiekcie spełniają te reguły. Jeśli walidacja się nie powiedzie,
-zwracana jest tablica błędów. Spójrz na poniższy przykład z kontrolera:
+Następnie, aby faktycznie walidować obiekt ``Author`` trzeba użyć metodę ``validate``
+z usługi ``validator`` (klasy :class:`Symfony\\Component\\Validator\\Validator`).
+Zadanie ``validator`` jest proste: odczytać ograniczenia i sprawdzić, czy dane
+znajdujące się w obiekcie spełniają te ograniczenia. Jeśli walidacja się nie powiedzie,
+zwracana jest tablica błędów. Rozpatrzmy poniższy przykład z wnetrza kontrolera:
 
 .. code-block:: php
+   :linenos:
 
     use Symfony\Component\HttpFoundation\Response;
     use Acme\BlogBundle\Entity\Author;
@@ -136,26 +148,27 @@ zwracana jest tablica błędów. Spójrz na poniższy przykład z kontrolera:
         }
     }
 
-Jeśli właściwość ``$name`` jest pusta, ujrzysz poniższy komunikat błędu
+Jeśli właściwość ``$name`` jest pusta, to można zobaczyć poniższy komunikat błędu:
 
 .. code-block:: text
 
     Acme\BlogBundle\Author.name:
-        Ta wartość nie może być pusta
+        This value should not be blank
 
-Jeśli wstawisz jakąś wartość do właściwości ``$name``, pojawi się komunikat o
+Jeśli wstawi się jakąś wartość do właściwości ``$name``, pojawi się komunikat o
 sukcesie.
 
 .. tip::
 
-    Przez większość czasu nie będziesz operował bezpośrednio z usługą
-    ``validator`` czy musiał martwić się o wyświetlaniu błędów. Większość
-    czasu będziesz używał walidacji pośrednio podczas obsługiwania danych
-    wysłanego formularza. Po więcej informacji zobacz :ref:`book-validation-forms`.
+    Przeważnie nie trzeba korzystać bezpośrednio z usługi ``validator`` czy martwić
+    się o wyświetlanie błędów. Zwykle  używa się walidację pośrednio podczas obsługiwania
+    danych zgłaszanych w formularzu. Więcej informacji można znaleść w rozdziale
+    :ref:`book-validation-forms`.
 
-Możesz również podać kolekcję błędów do szablonu.
+Możesz również przekazać kolekcję błędów do szablonu.
 
 .. code-block:: php
+   :linenos:
 
     if (count($errors) > 0) {
         return $this->render('AcmeBlogBundle:Author:validate.html.twig', array(
@@ -165,11 +178,12 @@ Możesz również podać kolekcję błędów do szablonu.
         // ...
     }
 
-Wewnątrz szablonu, możesz wyświetlić listę błędów dokładnie tak, jak potrzebujesz:
+Jeśli zachodzi taka potrzeba, to można w szablonie wyprowadzić listę błędów:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {# src/Acme/BlogBundle/Resources/views/Author/validate.html.twig #}
 
@@ -181,6 +195,7 @@ Wewnątrz szablonu, możesz wyświetlić listę błędów dokładnie tak, jak po
         </ul>
 
     .. code-block:: html+php
+       :linenos:
 
         <!-- src/Acme/BlogBundle/Resources/views/Author/validate.html.php -->
 
@@ -193,24 +208,24 @@ Wewnątrz szablonu, możesz wyświetlić listę błędów dokładnie tak, jak po
 
 .. note::
 
-    Każdy błąd walidacji (zwany "naruszeniem zasad") reprezentowany jest przez obiekt
-    :class:`Symfony\\Component\\Validator\\ConstraintViolation`.
+    Każdy błąd walidacji (zwany "naruszeniem ograniczeń") reprezentowany jest przez
+    obiekt :class:`Symfony\\Component\\Validator\\ConstraintViolation`.
 
 .. index::
-   single: Walidacja; Walidacja formularzy
+   single: walidacja; walidacja formularzy
 
 .. _book-validation-forms:
 
-Walidacja i formularze
+Walidacja a formularze
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Usługa ``validator`` może być użyta kiedykolwiek do walidacji jakiegokolwiek obiektu.
-Jednakże w rzeczywistości będziesz najczęściej używał walidatorów pośrednio,
+Usługa ``validator`` może być użyta do walidacji dowolnego obiektu w dowolnym momencie.
+Jednakże w rzeczywistości najczęściej używa się walidatorów pośrednio,
 podczas pracy z formularzami. Biblioteka formularzy Symfony używa usługi ``validator``
-wewnętrznie, aby walidować obiekt formularza po tym, jak wartości zostały wysłane
-i powiązane. Naruszenia zasad obiektu są konwertowane do obiektu ``FieldError``,
-który może być łatwo wyświetlany wraz z formularzem. Typowy przebieg wysłania formularza
-wygląda jak ten wycinek z kontrolera::
+wewnętrznie do sprawdzenia odnośnego obiektu formularza po tym, jak wartości zostaną
+zgłoszone i powiązane. Naruszenia ograniczeń dla obiektu są konwertowane do obiektu
+``FieldError``, który może być łatwo wyświetlany wraz z formularzem. Typowa procedura
+wysłania formularza z poziomu kontrolera wyglada następująco::
 
     use Acme\BlogBundle\Entity\Author;
     use Acme\BlogBundle\Form\AuthorType;
@@ -239,31 +254,33 @@ wygląda jak ten wycinek z kontrolera::
 
 .. note::
 
-    W tym przykładzie użyto klasy formularza ``AuthorType``, która nie jest
+    W tym przykładzie użyto klasę formularza ``AuthorType``, która nie jest
     tutaj pokazana.
 
-W celu uzyskania więcej informacji zobacz rozdział :doc:`Formularze</book/forms>`.
+W celu uzyskania więcej informacji zobacz do rozdziału :doc:`Formularze</book/forms>`.
 
 .. index::
-   pair: Walidacja; Konfiguracja
+   pair: walidacja; konfiguracja
 
 .. _book-validation-configuration:
 
 Konfiguracja
--------------
+------------
 
-Walidator Symfony2 jest domyślnie włączony, jednakże musisz również włączyć
-adnotacje, jeśli używasz metodę adnotacji do określania swoich reguł:
+Walidator Symfony2 jest domyślnie włączony, jednak gdy chce się stosować metodę
+adnotacji, to należy określić to w ograniczeniach:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         framework:
             validation: { enable_annotations: true }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <framework:config>
@@ -271,6 +288,7 @@ adnotacje, jeśli używasz metodę adnotacji do określania swoich reguł:
         </framework:config>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('framework', array('validation' => array(
@@ -278,63 +296,67 @@ adnotacje, jeśli używasz metodę adnotacji do określania swoich reguł:
         )));
 
 .. index::
-   single: Walidacja; Reguły
+   single: walidacja; ograniczenia
+   pair: walidacja; asercje
 
 .. _validation-constraints:
 
-Reguły
-------
+Ograniczenia
+------------
 
-``Walidator`` jest zaprojektowany do walidacji obiektów pod względem reguł
-(ang. ``constraints``).
-Aby walidować obiekt, zmapuj jedną lub więcej reguł do jego klasy i przekaż go
-do usługi ``validator``.
+Usługa ``validator`` jest zaprojektowana do weryfikacji obiektów w oparciu
+o **ograniczenia** (*ang. ``constraints``*). W celu walidacji obiektu trzeba tylko
+odwzorować jedno lub więcej ograniczeń na tą klasę  i następnie przekazać to do
+usługi ``validator``.
 
-Za kulisami, reguła to prosty obiekt PHP będący stanowczym wyrażeniem.
-W prawdziwym życiu, regułą może być: "Ciasto nie może być spalone". W Symfony2,
-reguły są podobne: muszą być twierdzeniami, których warunkiem jest logiczna prawda
-(ang. true). Pod względem wartości, reguła powie Ci, czy ta wartość spełnia
-postawione przez Ciebie warunki, czy nie.
+Ograniczenie to prosty obiekt PHP, który wykonuje wyrażenie asercyjne (*ang.
+assertive statement*). `Asercja`_ w programowaniu, to wyrażenie lub metoda pozwalająca
+sprawdzić  prawdziwość twierdzeń dokonanych odnośnie jakichś aspektów systemu lub
+jego elementów. W prawdziwym życiu, takim twierdzeniem może być zdanie: "Ciasto
+nie może być spalone". W Symfony2, ograniczenia są podobne: są to twierdzenia
+(asercje), że warunek jest spełniony.
 
-Wspierane reguły
-~~~~~~~~~~~~~~~~
+Obsługiwane ograniczenia
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-Symfony2 zawiera bardzo dużo najbardziej potrzebnych reguł:
+Pakiety Symfony2 udostępniają większość z powszechnie używanych ograniczeń:
 
 .. include:: /reference/constraints/map.rst.inc
 
-Możesz również stworzyć własne reguły. Ten temat jest szerzej omówiony
-w artykule ":doc:`/cookbook/validation/custom_constraint`" cookbooka.
+Można również stworzyć własne reguły. Ten temat jest szerzej omówiony
+w artykule ":doc:`/cookbook/validation/custom_constraint`".
 
 .. index::
-   single: Walidacja; Konfiguracja reguł
+   single: walidacja; konfiguracja
 
 .. _book-validation-constraint-configuration:
 
-Konfiguracja reguł
-~~~~~~~~~~~~~~~~~~
+Konfiguracja ograniczeń
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Niektóre reguły, takie jak :doc:`NotBlank</reference/constraints/NotBlank>,
+Niektóre ograniczenia, takie jak :doc:`NotBlank</reference/constraints/NotBlank>,
 są proste, podczas gdy inne, jak np. :doc:`Choice</reference/constraints/Choice>
-mają kilka dostępnych opcji konfiguracji. Przyjmując, że klasa ``Autor`` ma pole
-``płeć``, które może przyjmować wartość "kobieta" lub "mężczyzna":
+mają kilka dostępnych opcji konfiguracji. Załóżmy, że klasa ``Author`` ma właściwość
+``gender``, które może przyjmować wartość "kobieta" lub "mężczyzna":
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/BlogBundle/Resources/config/validation.yml
-        Acme\BlogBundle\Entity\Autor:
+        Acme\BlogBundle\Entity\Author:
             properties:
-                plec:
+                gender:
                     - Choice: { choices: [mężczyzna, kobieta], message: Wybierz płeć. }
 
     .. code-block:: php-annotations
+       :linenos:
 
-        // src/Acme/BlogBundle/Entity/Autor.php
+        // src/Acme/BlogBundle/Entity/Author.php
         use Symfony\Component\Validator\Constraints as Assert;
 
-        class Autor
+        class Author
         {
             /**
              * @Assert\Choice(
@@ -342,10 +364,11 @@ mają kilka dostępnych opcji konfiguracji. Przyjmując, że klasa ``Autor`` ma 
              *     message = "Wybierz płeć."
              * )
              */
-            public $plec;
+            public $gender;
         }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -353,8 +376,8 @@ mają kilka dostępnych opcji konfiguracji. Przyjmując, że klasa ``Autor`` ma 
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
 
-            <class name="Acme\BlogBundle\Entity\Autor">
-                <property name="plec">
+            <class name="Acme\BlogBundle\Entity\Author">
+                <property name="gender">
                     <constraint name="Choice">
                         <option name="choices">
                             <value>mężczyzna</value>
@@ -368,42 +391,45 @@ mają kilka dostępnych opcji konfiguracji. Przyjmując, że klasa ``Autor`` ma 
 
     .. code-block:: php
 
-        // src/Acme/BlogBundle/Entity/Autor.php
+        // src/Acme/BlogBundle/Entity/Author.php
         use Symfony\Component\Validator\Mapping\ClassMetadata;
         use Symfony\Component\Validator\Constraints\NotBlank;
 
-        class Autor
+        class Author
         {
-            public $plec;
+            public $gender;
 
             public static function loadValidatorMetadata(ClassMetadata $metadata)
             {
-                $metadata->addPropertyConstraint('plec', new Choice(array(
+                $metadata->addPropertyConstraint('gender', new Choice(array(
                     'choices' => array('mężczyzna', 'kobieta'),
                     'message' => 'Wybierz płeć.',
                 )));
             }
         }
 
-.. _domyślne-opcje-walidacji:
+.. _validation-default-option:
 
-Opcje zawsze mogą być przekazane do reguły w postaci tablicy. Jednakże niektóre
-reguły pozwalają Ci podać *domyślną* wartość zamiast tablicy. W przypadku reguły
-``Choice``, opcja ``choices`` może być w ten sposób określona.
+Opcje ograniczeń mogą być również przekazywane w tablicy. Niektóre ograniczenia
+pozwalają także przekazać wartość "domyślną" opcji zamiast tablicy.
+W przypadku ograniczenia ``Choice`` opcje ``choices`` może zostać określona
+w ten sposób.
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/BlogBundle/Resources/config/validation.yml
-        Acme\BlogBundle\Entity\Autor:
+        Acme\BlogBundle\Entity\Author:
             properties:
-                plec:
+                gender:
                     - Choice: [mężczyzna, kobieta]
 
     .. code-block:: php-annotations
+       :linenos:
 
-        // src/Acme/BlogBundle/Entity/Authr.php
+        // src/Acme/BlogBundle/Entity/Author.php
         use Symfony\Component\Validator\Constraints as Assert;
 
         class Autor
@@ -411,10 +437,11 @@ reguły pozwalają Ci podać *domyślną* wartość zamiast tablicy. W przypadku
             /**
              * @Assert\Choice({"mężczyzna", "kobieta"})
              */
-            protected $plec;
+            protected $gender;
         }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -423,7 +450,7 @@ reguły pozwalają Ci podać *domyślną* wartość zamiast tablicy. W przypadku
             xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
 
             <class name="Acme\BlogBundle\Entity\Author">
-                <property name="plec">
+                <property name="gender">
                     <constraint name="Choice">
                         <value>mężczyzna</value>
                         <value>kobieta</value>
@@ -440,127 +467,154 @@ reguły pozwalają Ci podać *domyślną* wartość zamiast tablicy. W przypadku
 
         class Author
         {
-            protected $plec;
+            protected $gender;
 
             public static function loadValidatorMetadata(ClassMetadata $metadata)
             {
-                $metadata->addPropertyConstraint('plec', new Choice(array('mężczyzna', 'kobieta')));
+                $metadata->addPropertyConstraint('gender', new Choice(array('mężczyzna', 'kobieta')));
             }
         }
 
-Ma to jedynie na celu ułatwienie i przyspieszenie konfiguracji najczęściej używanych opcji reguł.
+Ma to jedynie na celu ułatwienie i przyspieszenie konfiguracji najczęściej
+używanych opcji ograniczeń.
 
-Jeśli nie jesteś pewien jak określić daną opcję, sprawdź dokumentację API dla reguł lub
-zrób to bezpiecznie zawsze podając tablicę opcji (pierwsza metoda pokazana powyżej).
+Jeśli czasem nie będziesz pewien jak określić opcję, sprawdź dokumentację API
+dla ograniczeń lub postępuj bezpiecznie przekazując w tablicy opcji (pierwsza
+powyżej pokazana metoda).
+
+
+Tłumaczenie komunikatów ograniczeń
+----------------------------------
+
+Pełną informację o tłumaczeniu komunikatów ograniczeń znajdziesz w dokumencie
+:ref:`book-translation-constraint-messages`.
+
 
 .. index::
-   single: Walidacja; Targety reguł
+   single: walidacja; cele ograniczeń
+
 
 .. _validator-constraint-targets:
 
-Targety reguł
-----------
+Cele ograniczeń
+---------------
 
-Reguły mogą być zastosowane do właściwości klasy (np. ``imie``) lub do
-publicznej metody getter (np. ``getImie``). Pierwszy sposób jest najpowszechniejszy
-i najłatwiejszy w użyciu, lecz drugi wariant pozwala Ci na określenie bardziej
-złożonych reguł walidacji.
+Ograniczenia można stosować do właściwości klasy (np. ``name``) lub publicznych
+metod aksesorów (np.``getFullName``). Pierwsze zastosowanie jest najbardziej
+rozpowszechnione i łatwe w użyciu, lecz drugie pozwala określić bardziej złożone
+reguły walidacji.
 
 .. index::
-   single: Walidacja; Reguły właściwości
+   single: walidacja; właściwości ograniczeń
 
 .. _validation-property-target:
 
 Właściwości
 ~~~~~~~~~~~
 
-Walidacja właściwości klasy jest najbardziej podstawową techniką walidacji.
-Symfont2 pozwala Ci sprawdzać właściwości typu private, protected i public.
-Poniższy listing pokazuje jak skonfigurować właściwość ``$imie`` klasy ``Autor``,
-aby miała minimum 3 znaki.
+Walidacja właściwości klas jest dość rozpowszechnioną a techniką walidacji.
+Symfony2 pozwala sprawdzać prywatne, chronione i publiczne właściwości.
+Następujący listing pokazuje jak skonfigurować właściwość ``$firstName``
+klasy ``Author``, której wartość powinna mieć co najmniej 3 znaki.
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/BlogBundle/Resources/config/validation.yml
-        Acme\BlogBundle\Entity\Autor:
+        Acme\BlogBundle\Entity\Author:
             properties:
-                imie:
+                firstName:
                     - NotBlank: ~
-                    - MinLength: 3
+                    - Length:
+                        min: 3
 
     .. code-block:: php-annotations
+       :linenos:
 
-        // Acme/BlogBundle/Entity/Autor.php
+        // Acme/BlogBundle/Entity/Author.php
+
+        // ...
         use Symfony\Component\Validator\Constraints as Assert;
 
-        class Autor
+        class Author
         {
             /**
              * @Assert\NotBlank()
-             * @Assert\MinLength(3)
+             * @Assert\Length(min = "3")
              */
-            private $imie;
+            private $firstName;
         }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
-        <class name="Acme\BlogBundle\Entity\Autor">
-            <property name="imie">
+        <class name="Acme\BlogBundle\Entity\Author">
+            <property name="firstName">
                 <constraint name="NotBlank" />
-                <constraint name="MinLength">3</constraint>
+                <constraint name="Length">
+                    <option name="min">3</option>
+                </constraint>
             </property>
         </class>
 
     .. code-block:: php
+       :linenos:
 
-        // src/Acme/BlogBundle/Entity/Autor.php
+        // src/Acme/BlogBundle/Entity/Author.php
+
+        // ...
         use Symfony\Component\Validator\Mapping\ClassMetadata;
         use Symfony\Component\Validator\Constraints\NotBlank;
-        use Symfony\Component\Validator\Constraints\MinLength;
+        use Symfony\Component\Validator\Constraints\Length;
 
-        class Autor
+        class Author
         {
-            private $imie;
+            private $firstName;
 
             public static function loadValidatorMetadata(ClassMetadata $metadata)
             {
-                $metadata->addPropertyConstraint('imie', new NotBlank());
-                $metadata->addPropertyConstraint('imie', new MinLength(3));
+                $metadata->addPropertyConstraint('firstName', new NotBlank());
+                $metadata->addPropertyConstraint(
+                    'firstName',
+                    new Length(array("min" => 3)));
             }
         }
 
 .. index::
-   single: Walidacja; Reguły getterów
+   single: walidacja; ograniczenia dla akcesorów
+   pair: walidacja; akcesory
 
-Gettery
-~~~~~~~
+Metody akcesory
+~~~~~~~~~~~~~~~
 
-Reguły mogą być również używane do zwracania wartości przez daną metodę.
-Symfony2 pozwala Ci dodać regułę do jakiejkolwiek publicznej metody, której
-nazwa zaczyna się od "get" lub "is". W tym przewodniku, oba z tych typów metod
-są uznawane za gettery.
+Ograniczenia mogą również być stosowane do zwrócenia wartości metody.
+Symfony2 umożliwia dodanie ograniczenia do jakiejkolwiek publicznej metody,
+której nazwa zaczyna się od "get" lub "is". W typ podręczniku oba takie typy
+metod określane są jako akcesory (get i is) (*ang. getters, issers*).
 
-Zaletą tej techniki jest to, że pozwala Ci walidować Twój obiekt dynamicznie.
-Na przykład, załóżmy że chcesz się upewnić, że wartość pola z hasłem nie jest
-taka sama, jak imię użytkownika (z powodów bezpieczeństwa). Możesz zrobić to
-tworząc metodę ``isPasswordLegal`` i wtedy zmapować, że metoda musi zwracać ``true``:
+Zaletą tej techniki jest to, że pozwala dynamicznie walidować obiekt. Przykładowo
+załóżmy, że chcemy się upewnić, że pole hasła nie zgadza się z imieniem użytkownika
+(w celach bezpieczeństwa). Można to uczynić przez stworzenie metody ``isPasswordLegal``
+i następnie zrobić załóżenie, że metoda ta musi zwrócić ``true``:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/BlogBundle/Resources/config/validation.yml
-        Acme\BlogBundle\Entity\Autor:
+        Acme\BlogBundle\Entity\Author:
             getters:
                 passwordLegal:
                     - "True": { message: "Hasło nie może być takie samo jak Twoje imię" }
 
     .. code-block:: php-annotations
+       :linenos:
 
-        // src/Acme/BlogBundle/Entity/Autor.php
+        // src/Acme/BlogBundle/Entity/Author.php
         use Symfony\Component\Validator\Constraints as Assert;
 
         class Autor
@@ -570,14 +624,15 @@ tworząc metodę ``isPasswordLegal`` i wtedy zmapować, że metoda musi zwracać
              */
             public function isPasswordLegal()
             {
-                // return true or false
+                // zwraca true lub false
             }
         }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
-        <class name="Acme\BlogBundle\Entity\Autor">
+        <class name="Acme\BlogBundle\Entity\Author">
             <getter property="passwordLegal">
                 <constraint name="True">
                     <option name="message">Hasło nie może być takie samo jak Twoje imię</option>
@@ -587,11 +642,11 @@ tworząc metodę ``isPasswordLegal`` i wtedy zmapować, że metoda musi zwracać
 
     .. code-block:: php
 
-        // src/Acme/BlogBundle/Entity/Autor.php
+        // src/Acme/BlogBundle/Entity/Author.php
         use Symfony\Component\Validator\Mapping\ClassMetadata;
         use Symfony\Component\Validator\Constraints\True;
 
-        class Autor
+        class Author
         {
             public static function loadValidatorMetadata(ClassMetadata $metadata)
             {
@@ -601,7 +656,7 @@ tworząc metodę ``isPasswordLegal`` i wtedy zmapować, że metoda musi zwracać
             }
         }
 
-Teraz utwórz metodę ``isPasswordLegal`` i zastosuj w niej logikę, którą potrzebujesz::
+Teraz utwórzmy metodę ``isPasswordLegal()`` i dołączmy potrzebną logikę::
 
     public function isPasswordLegal()
     {
@@ -610,38 +665,39 @@ Teraz utwórz metodę ``isPasswordLegal`` i zastosuj w niej logikę, którą pot
 
 .. note::
 
-    Bystrzejsi spośród Was na pewno zauważyli, że prefiks gettera ("get" lub "is")
-    został pominięty w mapowaniu. To pozwala Ci na późniejsze używanie reguły
-    dla właściwości o innej nazwie bez zmiany logiki walidacji.
+    Niektórzy z czytelników mogli zauważyć, że przedrostek akcesora ("get" lub "is")
+    jest pomijany w odwzorowaniu. Pozwala to później przenieść ograniczenie do
+    właściwości o tej samej nazwie (lub odwrotnie) bez zmiany logiki walidacji.
 
 .. _validation-class-target:
 
 Klasy
 ~~~~~
 
-Niektóre reguły dotyczą całej klasy podczas walidacji. Np. reguła
-:doc:`Callback</reference/constraints/Callback>` jest ogólną regułą stosowaną
-dla klasy. Podczas gdy klasa jest walidowana, metody określone
-w regule są łatwo wykonywane, dzięki czemu każdy może dołożyć więcej swoich własnych
-reguł.
+Niektóre ograniczenia mogą być zastosowanie do walidacji całej klasy. Na przykład,
+ograniczenie :doc:`*Callback*</reference/constraints/Callback>` jest ogólnym
+ograniczeniem stosowanym do całej klasy. Podczas walidacji klasy, wykonywane
+są metody określone przez ograniczenie, więc każda może dostarczyć niestandardowej
+walidacji.
 
 .. _book-validation-validation-groups:
 
 Grupy walidacji
 ---------------
 
-Jak dotąd, nauczyłeś się jak dodać reguły do klasy i sprawdzić, czy klasa spełnia
-wszystkie ze zdefiniowanych reguł. Jednakże w niektórych przypadkach będziesz
-musiał walidować obiekt dla tylko *niektórych* reguł klasy. Aby to zrobić, możesz
-zorganizować każdą regułę w jedną lub więcej "grup walidacji", a następnie zastosować
-walidację dla wyłącznie jednej grupy reguł.
+Dotychczas byliśmy w stanie dodać ograniczenia do klasy i zapytać, czy klasa spełnia
+wszystkie określone ograniczenia. Jednak w niektórych przypadkach zachodzi potrzeba
+potwierdzenia tylko niektórych z tych ograniczeń w klasie. Aby to wykonać, trzeba
+zorganizować każde z ograniczeń w jednej lub więcej "grup walidacyjnych" i następnie
+zastosować walidację tylko na jednej z takich grup.
 
-Na przykład, załóżmy że masz klasę ``User``, która jest używana zarówno kiedy
-użytkownik się rejestruje, a także kiedy później edytuje swoje dane kontaktowe:
+Przykładowo załóżmy, że mamy klasę User, która jest stosowana zarówno podczas
+rejestracji użytkownika jak i podczas aktualizowania jego informacji kontaktowych:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/BlogBundle/Resources/config/validation.yml
         Acme\BlogBundle\Entity\User:
@@ -655,6 +711,7 @@ użytkownik się rejestruje, a także kiedy później edytuje swoje dane kontakt
                     - MinLength: 2
 
     .. code-block:: php-annotations
+       :linenos:
 
         // src/Acme/BlogBundle/Entity/User.php
         namespace Acme\BlogBundle\Entity;
@@ -682,6 +739,7 @@ użytkownik się rejestruje, a także kiedy później edytuje swoje dane kontakt
         }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
         <class name="Acme\BlogBundle\Entity\User">
@@ -711,6 +769,7 @@ użytkownik się rejestruje, a także kiedy później edytuje swoje dane kontakt
         </class>
 
     .. code-block:: php
+       :linenos:
 
         // src/Acme/BlogBundle/Entity/User.php
         namespace Acme\BlogBundle\Entity;
@@ -740,81 +799,89 @@ użytkownik się rejestruje, a także kiedy później edytuje swoje dane kontakt
             }
         }
 
-Przy takiej konfiguracji, mamy tutaj dwie grupy walidacji:
+W tej konfiguracji są dwie grupy walidacyjne:
 
-* ``Default`` - zawiera reguły nieprzypisane do żadnej innej grupy;
+* ``Default`` - zawiera ograniczenia nieprzypisane do żadnej innej grupy;
 
-* ``registration`` - zawiera reguły wyłącznie dla pól ``email`` i ``password``.
+* ``registration`` - zawiera ograniczenia wyłącznie dla pól ``email`` i ``password``.
 
-Aby powiedzieć walidatorowi, aby używał konkretnej grupy, podaj jedną lub więcej
-nazw grup jako drugi argument metody ``validate()``::
+Aby poinstruować walidator o stosowaniu określonej grupy, trzeba przekazać jedną
+lub więcej nazw grup jako drugi argument metody ``validate()``::
 
     $errors = $validator->validate($author, array('registration'));
 
-Oczywiście zazwyczaj będziesz pracował z niebezpośrednią walidacją formularzy.
-Aby uzyskać więcej informacji jak używać grup walidacji dla formularzy, zobacz
+Oczywiście będziesz zazwyczaj używał walidacji pośrednio, poprzez bibliotekę formularzy.
+Więcej informacji o tym jak używać grup walidacyjnych w formularzach znajdziesz w rozdziale
 :ref:`book-forms-validation-groups`.
 
 .. index::
-   single: Walidacja; Walidacja zwykłych wartości
+   single: walidacja; walidacja wartości
+   single: walidacja; walidacja tablic
 
 .. _book-validation-raw-values:
 
 Walidacja wartości i tablic
 ---------------------------
 
-Jak dotąd, zobaczyłeś jak można walidować całe obiekty. Czasem jednak możesz
-chcieć walidować zwykłą wartość - np. aby zweryfikować, czy dany ciąg znaków
-jest poprawnym adresem email. Jest to również bardzo proste. Z poziomu kontrolera
-wygląda to tak::
+Dotąd widzieliśmy, jak można sprawdzać całe obiekty. Lecz czasami zachodzi potrzeba
+sprawdzenia tylko pojedynczej wartości – jak przykładowo w łańcuchu tekstowym, który
+powinien być prawidłowym adresem e-mail. W rzeczywistości jest to bardzo łatwe do
+zrobienia. Wewnątrz kontrolera wygląda to podobnie do tego::
 
-    // dpdaj to na początku klasy
     use Symfony\Component\Validator\Constraints\Email;
-    
+    // ...
+
     public function addEmailAction($email)
     {
         $emailConstraint = new Email();
-        // ustawiamy wszystkie opcje reuły
-        $emailConstraint->message = 'Niepoprawny adres email';
+        // wszystkie "opcje" ograniczeń mogą zostać ustawione w ten sposób
+        $emailConstraint->message = 'Invalid email address';
 
-        // używamy walidatora do sprawdzenia wartości
-        $errorList = $this->get('validator')->validateValue($email, $emailConstraint);
+        // użycie walidatora do walidacji walidacji wartości
+        $errorList = $this->get('validator')->validateValue(
+            $email,
+            $emailConstraint
+        );
 
         if (count($errorList) == 0) {
-            // adres email jest poprawny
+            // jest to prawidłowy adres email, zrobienie czegoś
         } else {
-            // to *nie* jest poprawny adres email
-            $errorMessage = $errorList[0]->getMessage()
-            
-            // obsługa błędu
+            // to nie jest prawidłowy adres email
+            $errorMessage = $errorList[0]->getMessage();
+
+            // ... zrobienie czegoś z błędem
         }
-        
+
         // ...
     }
 
-Podczas wywoływania metody ``validateValue`` walidatora, możesz przekazać wartość
-oraz obiekt reguły, który chcesz użyć do walidacji podanej wartości. Pełna lista
-dostępnych reguł jest dostępna w sekcji :doc:`constraints reference</reference/constraints>`.
+Wywołując w walidatorze metodę ``validateValue`` można przekazać tam surową wartość
+i obiekt ograniczenia, jakie chce się walidować. Pełną listę dostępnych ograniczeń,
+z pełną nazwą klasy dla każdego ograniczenia, znajdziesz w rozdziale
+ :doc:`Informacje o ograniczeniach</reference/constraints>`.
 
-Metoda ``validateValue`` zwraca obiekt :class:`Symfony\\Component\\Validator\\ConstraintViolationList`,
+Metoda ``validateValue`` zwraca obiekt
+:class:`Symfony\\Component\\Validator\\ConstraintViolationList`,
 który zachowuje się zupełnie jak tablica błędów. Każdy błąd w kolekcji jest obiektem
 :class:`Symfony\\Component\\Validator\\ConstraintViolation` który przechowuje
 komunikat błędu w swojej metodzie `getMessage`.
 
-Myśli końcowe
--------------
+Wnioski końcowe
+---------------
 
-``Walidator`` Symfony2 to potężne narzędzie, które może być wykorzystywane w celu
-zagwarantowania, że dane jakiegokolwiek obiektu są "poprawne". Cała moc
-walidacji leży w regułach, czyli zasadach, które możesz przypisać do właściwości
-lub getterów Twojego obiektu. Pomimo, iż najczęściej będziesz używał walidacji
-niebezpośrednio podczas używania formularzy, pamiętaj, że może ona być użyta
-gdziekolwiek w celu walidacji jakiegokolwiek obiektu.
+Usługa ``validator``Symfony2 jest zaawansowanym narzędziem, które można wykorzystać
+do zagwarantowania poprawności danych każdego obiektu. Siła walidacji bierze się
+z "ograniczeń", które są regułami jakie muszą spełniać właściwości lub metody
+akcesory w obiekcie. Najczęściej będziesz stosował framework walidacyjny pośrednio,
+podczas używania formularzy, pamiętając, że walidacja może być stosowana gdziekolwiek,
+w celu sprawdzenia poprawności danych dowolnego obiektu.
 
-Dowiedz się więcej z Cookbooka
-------------------------------
+Dowiedz się więcej w Receptariuszu
+----------------------------------
 
-* :doc:`/cookbook/validation/custom_constraint`
+* :doc:`Jak utworzyć własne ograniczenia walidacyjne</cookbook/validation/custom_constraint>`
 
-.. _Validator: https://github.com/symfony/Validator
-.. _JSR303 Bean Validation specification: http://jcp.org/en/jsr/detail?id=303
+.. _`Validator`: https://github.com/symfony/Validator
+.. _`JSR303 Bean Validation specification`: http://jcp.org/en/jsr/detail?id=303
+.. _`Walidacja`: http://pl.wikipedia.org/wiki/Walidacja_(technika)
+.. _`Asercja`: http://pl.wikipedia.org/wiki/Asercja_(informatyka)
