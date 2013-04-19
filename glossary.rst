@@ -41,12 +41,15 @@ Słownik
       nazw* - każdy pakiet Symfony dwa tworzy własna *przestrzeń nazw*.  
 
    kontroler wejścia
-   kontroler frontonowy
+   kontroler frontowy
       (*ang. front controller*)
       *Kontroler wejścia* jest krótkim skryptem PHP umieszczonym w katalogu
       sieciowym projektu (np. web). Zazwyczaj *wszystkie* żądania są
-      obsługiwane przez wykonanie jednego i tego samego kontrolera wejściowego,
-      którego zadaniem jest zainicjowaie aplikacji Symfony.
+      obsługiwane przez wykonanie jednego i tego samego kontrolera wejścia,
+      którego zadaniem jest zainicjowanie aplikacji Symfony. Jest to implementacja
+      wzorca projektowego *Front Controller*. W niektórych publikacjach [2]_ *front
+      controller* jest też tłumaczno jako *kontroler fasady*, lecz jest to mylące,
+      bo kojarzy się ze wzorcem projektowym *Facade* (*wzorzec Fasada*). 
 
    kontroler
       (*ang. controller*)
@@ -70,13 +73,13 @@ Słownik
       usług. Aplikacja posiadająca wiele oddzielnych usług nazywana jest
       aplikacją o `architekturze zorientowanej na usługi`_.
 
-   kontener usługi
+   kontener usług
       (*ang. service container*)
       *Kontroler usług*, zwany też *kontenerem DI* (*od. ang. Dependency
-      Injection Container*), jest specjalnym obiektem, który zarząda instancją
+      Injection Container*), jest specjalnym obiektem, który zarządza instancją
       usług wewnątrz aplikacji. Programista może *poinstruować* kontener usług
       (poprzez konfigurację) jak utworzyć usługi, zamiast tworzyć je bezpośrednio.
-      Kontener usłu zajmuje się leniwym tworzeniem instancji i wstrzykiwaniem
+      Kontener usłu zajmuje się opóżnionym tworzeniem instancji i wstrzykiwaniem
       zależnych usług. Zobacz do rozdziału :doc:`/book/service_container`.
         
    specyfikacja HTTP
@@ -155,4 +158,8 @@ Słownik
 .. _`HTTP 1.1 RFC`: http://www.w3.org/Protocols/rfc2616/rfc2616.html
 .. _`aplikacji internetowej`: http://pl.wikipedia.org/wiki/Aplikacja_(informatyka)
 .. _`YAML`: http://pl.wikipedia.org/wiki/YAML
-.. [1] W.Gajda "Symfony 2 od podstaw" Helion 2012
+
+.. rubric:: Przypisy
+
+.. [1] Włodzimierz Gajda "Symfony 2 od podstaw" Helion 2012
+.. [2] Matt Zandstra "PHP Obiekty, wzorce, narzędzia" wydanie III Helion 2011

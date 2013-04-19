@@ -112,7 +112,7 @@ trzeba dodać następujący kod:
 .. tip::
 
     Właściwości chronione i prywatne mogą być również walidowane, podobnie jak
-    metody akcesorów („getter") – zobacz :ref:`validator-constraint-targets`.
+    metody akcesorów (getery) – zobacz :ref:`validator-constraint-targets`.
 
 .. index::
    single: walidacja; używanie walidatorów
@@ -593,7 +593,7 @@ Metody akcesory
 Ograniczenia mogą również być stosowane do zwrócenia wartości metody.
 Symfony2 umożliwia dodanie ograniczenia do jakiejkolwiek publicznej metody,
 której nazwa zaczyna się od "get" lub "is". W typ podręczniku oba takie typy
-metod określane są jako akcesory (get i is) (*ang. getters, issers*).
+metod określane są jako akcesory (getery i isery) (*ang. getters, issers*).
 
 Zaletą tej techniki jest to, że pozwala dynamicznie walidować obiekt. Przykładowo
 załóżmy, że chcemy się upewnić, że pole hasła nie zgadza się z imieniem użytkownika
