@@ -1,25 +1,28 @@
+.. index::
+   single: API
+
 Stabilne API Symfony2
-=======================
+=====================
 
-Stabilne API Symfony2 jest podzbiorem wszystkich publicznych metod (komponentów oraz korowych bundli)
-w których możesz mieć pewność że:
+Stabilne API Symfony2 jest podzbiorem wszystkich publicznych metod (komponentów
+oraz rdzennych pakietów) które mają tą właściwość, że niezmienne są:
 
-* Przestrzenie nazw oraz nazwy klas się nie zmienią;
-* Nazwa metody się nie zmieni;
-* Deklaracja metody (argumenty oraz zwracana wartość) się nie zmieni;
-* Działanie metody się nie zmieni.
+* przestrzenie nazw oraz nazwy klas;
+* nazwy metody;
+* deklaracje metod (argumenty oraz zwracane wartości);
+* działania metod.
 
-Sama implementacja może się zmienić. Jedyną podstawą do zmiany stabilnego API jest bład w 
-kwestii bezpieczeństwa.
+Sama implementacja może się zmienić. Jedyną podstawą do zmiany stabilnego API
+jest bład w zakresie bezpieczeństwa.
 
-Stabilne API bazuje na białej liście, otagowanej tagiem `@api`. Dlatego też
-wszystko nie oznaczone tagiem nie jest częścią stabilnego API.
+Stabilne API oparte jest na białej liście oznakowanej znacznikiem `@api`. Dlatego
+też wszelki kod nie oznaczony tym znacznikiem nie jest częścią stabilnego API.
 
 .. tip::
 
-    Każde zewnętrzne bundle powinny także udostępniać swoje stabilne API.
+    Wszystkie pakiety osób trzecich również powinny udostępniać swoje stabilne API.
 
-Od Symfony 2.0, komponenty poniżej posiadają swoje publiczne API:
+Począwszy od Symfony 2.0, podane poniżej komponenty posiadają stabilne API:
 
 * BrowserKit
 * ClassLoader
