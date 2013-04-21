@@ -33,7 +33,7 @@ różnych obszarów aplikacji. Pod koniec tego rozdziału, będziesz w stanie:
    czy też tylko o ścieżkę dostępu do zasobu (jako część adresu URL). Jeżeli nie
    rozumiesz dobrze pojęcia "adres URL", to polecam  przeczytanie artykułu
    `Uniform Resource Locator`_ zanim zaczniesz dalej czytać niniejszy dokument.
-   Koniecznie przeczytaj też rozdział :dok:`Podstawy Symfony 2 i HTTP<book/http_fundamentals>`
+   Koniecznie przeczytaj też rozdział :doc:`Podstawy Symfony 2 i HTTP<book/http_fundamentals>`
    (przyp. tłumacza).
 
 
@@ -758,7 +758,7 @@ regularne. Aby dopasować żądania ``GET`` albo ``POST``, można użyć ``GET|P
 .. index::
    single: trasowanie; host
    
-.. _adding-host
+.. _adding-host:
    
 Dodawanie hosta
 ~~~~~~~~~~~~~~~
@@ -947,13 +947,14 @@ Parametry trasy (np. ``{slug}``) są szczególnie ważne, ponieważ każdy z nic
 jest dostępny jako argument metody kontrolera:
 
 .. code-block:: php
+   :linenos:
 
     public function showAction($slug)
     {
       // ...
     }
 
-W rzeczywistości, cała kolekcja ``defaults``jest scalana z wartościami parametrów
+W rzeczywistości, cała kolekcja ``defaults`` jest scalana z wartościami parametrów
 w jedną pojedynczą tablicę. Każdy klucz tej tablicy jest dostępny jako argument
 kontrolera.
 
