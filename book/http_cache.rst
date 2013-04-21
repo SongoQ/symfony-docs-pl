@@ -259,7 +259,7 @@ podręcznej i niebezpieczeństwach.
     witrynie, to zamień odwrotne proxy na Varnish.
 
     Więcej informacji o użyciu Varnish z Symfony2 znajdziesz w artykule
-    :doc:`How to use Varnish </cookbook/cache/varnish>`.
+    :doc:`Jak uzywać Varnish </cookbook/cache/varnish>`.
 
 .. note::
 

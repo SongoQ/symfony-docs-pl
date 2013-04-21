@@ -380,7 +380,7 @@ w formularzu odpowiednio wydrukowane komunikaty o błędach.
    zgłaszanie przez nią pustych pól).
 
 Walidacja jest bardzo zaawansowaną funkcjonalnością Symfony2 i opisana jest
-w rozdziale :doc:`dedicated chapter</book/validation>`.
+w rozdziale :doc:`validation`.
 
 .. index::
    single: formularze; grupy walidacyjne
@@ -934,14 +934,14 @@ można pobrać go z formularza::
 
     $task = $form->getData();
 
-Więcej informacji znajdziesz w rozdziale :doc:`Doctrine ORM</book/doctrine>`.
+Więcej informacji znajdziesz w rozdziale :doc:`doctrine`.
 
 Kluczowe jest zrozumienie, że gdy formularz jest związywany, to przesłane dane
 są natychmiast transferowane do wewnętrznego obiektu. Jeśli chce się utrwalać te
 dane, to po prostu trzeba utrwalić sam obiekt (który zawiera już przesłane dane).
 
 .. index::
-   single: formularze; formularze osadzoene
+   single: formularze; formularze osadzone
 
 Formularze osadzone
 -------------------
@@ -1571,7 +1571,7 @@ Jedynym brakującym jeszcze elementem jest walidacja. Zazwyczaj, gdy wywołuje s
 metodę ``$form->isValid()``, to obiekt zostaje sprawdzony przez renderowanie
 ograniczenia, które zastosowało się dla tej klasy. Jeśli formularz jest powiązany
 z obiektem (np. przez użycie opcji ``data_class`` lub przekazanie obiektu do formularza),
-jest to podejście najlepsze. Zobacz :doc:`/book/validation`
+jest to podejście najlepsze. Zobacz :doc:`validation`
 w celu poznania szczegółów.
 
 .. _form-option-constraints:

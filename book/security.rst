@@ -1274,8 +1274,7 @@ przechowywana w bazie danych.
 
 O ile chodzi o system bezpieczeństwa, to istnieje tylko wymóg stworzenia własnej
 klasy użytkownika implementującej interfejs :class:`Symfony\\Component\\Security\\Core\\User\\UserInterface`.
- Oznacza to, że pojęcie "użytkownika" jest wystarczające, tak długo, jak długo
- implementuje ten interfejs.
+Oznacza to, że pojęcie "użytkownika" jest wystarczające, tak długo, jak długo implementuje ten interfejs.
 
 .. versionadded:: 2.1
     W Symfony 2.1 usunięta została z interfejsu ``UserInterface`` metoda ``equals``.

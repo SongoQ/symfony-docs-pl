@@ -33,7 +33,7 @@ różnych obszarów aplikacji. Pod koniec tego rozdziału, będziesz w stanie:
    czy też tylko o ścieżkę dostępu do zasobu (jako część adresu URL). Jeżeli nie
    rozumiesz dobrze pojęcia "adres URL", to polecam  przeczytanie artykułu
    `Uniform Resource Locator`_ zanim zaczniesz dalej czytać niniejszy dokument.
-   Koniecznie przeczytaj też rozdział :doc:`Podstawy Symfony 2 i HTTP<book/http_fundamentals>`
+   Koniecznie przeczytaj też rozdział :doc:`http_fundamentals`
    (przyp. tłumacza).
 
 

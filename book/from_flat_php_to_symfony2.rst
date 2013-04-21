@@ -610,7 +610,7 @@ w Symfony2::
         }
     }
 
-Oba kontrolery są nadal lekkie. Każdy wykorzystuje bibliotekę :doc:`Doctrine ORM library</book/doctrine>`
+Oba kontrolery są nadal lekkie. Każdy wykorzystuje bibliotekę :doc:`doctrine`
 do pobierania obiektów z bazy danych oraz komponent ``Templating`` do wygenerowania
 szablonu i zwracania obiektu Response. Szablon wykazu wpisów na blogu jest teraz
 nieco prostszy:
@@ -715,7 +715,7 @@ od zwykłego PHP do Symfony2, ułatwiła nam życie:
 * Programista może cały wysiłek poświecić tworzeniu aplikacji. Nie musi on tworzyć
   ani utrzymywać narzędzi niskiego poziomu, takich jak
   :ref:`automatyczne ładowanie<autoloading-introduction-sidebar>`,
-  :doc:`trasowanie</book/routing>` czy renderowanie w :doc:`kontrolerach</book/controller>`;
+  :doc:`trasowanie<routing>` czy renderowanie w :doc:`kontrolerach<controller>`;
 
 * Symfony2 daje dostęp do otwartych narzędzi, takich jak Doctrine i komponentów
   szablonowania, bezpieczeństwa, formularzy, walidacji i tłumaczeń (by wymienić
@@ -724,14 +724,10 @@ od zwykłego PHP do Symfony2, ułatwiła nam życie:
 * Dzięki komponentowi ``Routing`` aplikacja posiada teraz **przyjazne, w pełni
   elastyczne adresy URL**;
 
-* Symfony2's HTTP-centric architecture gives you access to powerful tools
-  such as **HTTP caching** powered by **Symfony2's internal HTTP cache** or
-  more powerful tools such as `Varnish`_. This is covered in a later chapter
-  all about :doc:`caching</book/http_cache>`.
-  Architektura Symfony2 ukierunkowana na HTTP daje dostęp do zaawansowanych narzędzi,
+* Architektura Symfony2 ukierunkowana na HTTP daje dostęp do zaawansowanych narzędzi,
   takich jak buforowanie HTTP wspierane przez wewnętrzną pamięć podręczną HTTP
   Symfony2 lub bardziej zaawansowane narzędzia, takie jak ``Varnish``. Wszystko o
-  :doc:`buforowaniu</book/http_cache>` jest opisane w dalszej części podręcznika.
+  :doc:`buforowaniu<http_cache>` jest opisane w dalszej części podręcznika.
 
 Być może najważniejszym pożytkiem przy używaniu Symfony2 jest dostęp do całego
 zestawu wysokiej jakości narzędzi o otwartym kodzie, opracowanych przez społeczność
@@ -786,7 +782,7 @@ Odpowiedni szablon ``layout.html.twig`` jest równie prosty:
 
 Twig jest dobrze obsługiwany przez Symfony2, podobnie jak szablony PHP. Twig
 zostanie omówiony dokładniej w dalszej części podręcznika. Więcej informacji
-można znaleźć w rozdziale „:doc:`Szablonowanie</book/templating>`".
+można znaleźć w rozdziale ":doc:`templating`".
 
 Dowiedz się więcej w Receptariuszu
 ----------------------------------

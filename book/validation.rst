@@ -2,7 +2,7 @@
    :linenothreshold: 2
 
 .. index::
-   single: Walidacja
+   single: walidacja
 
 Walidacja
 =========
