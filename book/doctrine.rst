@@ -359,7 +359,7 @@ każdy z własnymi opcjami. Więcej informacji na ten temat można znaleźć w r
     słowa kluczowe SQL (takie jak ``group`` lub ``user``). Na przykład, jeżeli
     nazwa klasy encji, to ``Group``, to domyślnie nazwa tabeli przybierze nazwę
     ``group``, co powodować będzie błąd SQL w niektórych silnikach.
-    Zobacz rozdział ``Reserved SQL keywords``_ w dokumentacji Doctrine, w celu
+    Zobacz rozdział `Reserved SQL keywords`_ w dokumentacji Doctrine, w celu
     poznania sposobu prawidłowego sposobu rozwiązania konfliktu tych nazw.
     Ewentualnie, jeżeli ma się wolną rękę w wyborze schematu bazy danych,
     to wystarczy odwzorować inną nazwę tabeli lub kolumny. Zobacz do rozdziałów
@@ -367,7 +367,7 @@ każdy z własnymi opcjami. Więcej informacji na ten temat można znaleźć w r
 
 .. note::
 
-     W przypadku korzystania z innej biblioteki lub programu (np. Doxygen), które
+    W przypadku korzystania z innej biblioteki lub programu (np. Doxygen), które
     wykorzystują adnotacje, trzeba umieścić w klasie z adnotacją wyrażenie
     ``@IgnoreAnnotation``, aby wskazać, które adnotacje mają być ignorowane przez
     Symfony. Na przykład, aby uniknąć zrzucania wyjątku przez adnotację ``@fn``
@@ -776,7 +776,7 @@ oficjalnej dokumentacji Doctrine.
     Stosowanie parametrów zamiast bezpośredniego wprowadzania wartości w łańcuchu
     zapytania zapobiega atakom wstrzyknięcia SQL i powinno być zawsze stosowane.
     Jeśli używa się wielu parametrów, to można ustawić ich wartości naraz stosując
-    metodę ``setParameters()``:
+    metodę ``setParameters()``::
 
         ->setParameters(array(
             'price' => '19.99',
@@ -1633,5 +1633,5 @@ gdzie znajdują sie następujące artykuły:
 .. _`Mapping Types`: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html#doctrine-mapping-types
 .. _`Property Mapping`: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html#property-mapping
 .. _`Lifecycle Events`: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#lifecycle-events
-.. _`Reserved SQL keywords documentation`: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html#quoting-reserved-words
+.. _`Reserved SQL keywords`: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html#quoting-reserved-words
 .. _`Persistent classes`: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html#persistent-classes

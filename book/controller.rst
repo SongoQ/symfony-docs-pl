@@ -192,7 +192,7 @@ znaleźć w rozdziale :ref:`Wzorzec nazewniczy kontrolera<controller-string-synt
 .. tip::
 
     Możesz dowiedzieć się więcej o systemie trasowania w rozdziale
-    :doc:`Trasowanie</book/routing>`.
+    :doc:`routing`.
 
 .. index::
    single: kontroler; argumenty kontrolera
@@ -412,7 +412,7 @@ Jeśli chce się przekierować użytkownika do innej strony, należy użyć meto
     }
 
 Metoda ``generateUrl`` jest helperem generującym adres URL dla danej trasy.
-Więcej informacji można znaleźć w rozdziale :doc:`Trasowanie </book/routing>`.
+Więcej informacji można znaleźć w rozdziale :doc:`routing`.
 
 Domyślnie metoda ``redirect()`` realizuje przekierowanie 302 (tymczasowe, *ang. temporary*).
 Aby wykonać przekierowanie 301 (trwałe, *ang. permanent*), należy podać drugi argument::
@@ -513,7 +513,7 @@ W obu przypadkach, wyrenderowany zostanie szablon ``Resources/views/Hello/index.
 z pakietu ``AcmeHelloBundle``.
 
 Silnik szablonów Symfony jest szczegółowo wyjaśniony w rozdziale
-:doc:`Tworzenie  używanie szablonów</book/templating>`.
+:doc:`templating`.
 
 .. tip::
 
@@ -571,7 +571,7 @@ Aby wyświetlić listę wszstkich dostępnych usług, nalezy użyć polecenia ko
 
     php app/console container:debug
 
-Aby dowiedzieć się więcej, zobacz rozdział :doc:`/book/service_container`.
+Aby dowiedzieć się więcej, zobacz rozdział :doc:`service_container`.
 
 .. index::
    single: kontroler; zarządzanie stronami błędów

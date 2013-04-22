@@ -142,7 +142,7 @@ standardowej Symfony:
    
    W celu skonkretyzowania wersji trzeba zamienić ``2.1.x-dev`` na łańcuch odpowiadający
    najnowszej wersji Symfony (np. ``2.1.1-dev``). Dla poznania szczegółów przeczytaj
-   sytronę ``Symfony Installation``_.
+   sytronę `Symfony Installation`_.
 
 .. note::
    
@@ -327,7 +327,7 @@ Jeśli są jakieś problemy, rozwiąż je teraz, zanim przejdziesz dalej.
       
    Niektóre systemy nie obsługują polecenia ``chmod +a``, ale obsługują inne narzędzie
    o nazwie ``setfacl``. Możesz spróbować `włączyć obsługę ACL`_ na partycji i
-   zainstalować ``setfacl` (w Ubuntu jest on zainstalowany domyślnie), a następnie
+   zainstalować ``setfacl`` (w Ubuntu jest on zainstalowany domyślnie), a następnie
    uruchomić polecenia podobne do tych:
    
    .. code-block:: bash
@@ -441,6 +441,6 @@ zależności projektu.
 .. _`pobrania Composera`: http://getcomposer.org/download/
 .. _`Composer`: http://getcomposer.org/download/
 .. _`Installing and Configuring Symfony`: http://symfony.com/doc/current/book/installation.html
-.. _'Symfony Installation`: http://symfony.com/download
+.. _`Symfony Installation`: http://symfony.com/download
 .. _`Apache`: http://httpd.apache.org/docs/current/mod/core.html#documentroot
 .. _`Nginx`: http://wiki.nginx.org/Symfony

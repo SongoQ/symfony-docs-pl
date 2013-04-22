@@ -448,7 +448,7 @@ formularz logowania (np. ``/login``) i drugi obsługujący zgłoszenie formularz
 
 .. versionadded:: 2.1
     Od wersji Symfony 2.1 musi się mieć skonfigurowane trasy dla kluczy
-    ``login_path``, ``check_path`` i ``logout. Klucze te mogą być nazwami tras
+    ``login_path``, ``check_path`` i ``logout``. Klucze te mogą być nazwami tras
     (tak jak pokazano w tym przykładzie) lub adresami URL, które się znajdują w
     trasach dla nich skonfigurowanych.
 
@@ -1083,7 +1083,7 @@ Można również wybrać do zainstalowania i opcjonalnego stosowania pakiet
     }
 
 W celu poznania więcej informacji proszę się zapoznać z dokumentacja
-``JMSSecurityExtraBundle``_. Jeżeli stosuje się Symfony Standard Distribution,
+`JMSSecurityExtraBundle`_. Jeżeli stosuje się Symfony Standard Distribution,
 to ten pakiet jest dostępny domyślnie. Jeżeli nie, to pakiet ten można łatwo pobrać
 i zainstalować.
 
@@ -1273,10 +1273,8 @@ przechowywana w bazie danych.
     }
 
 O ile chodzi o system bezpieczeństwa, to istnieje tylko wymóg stworzenia własnej
-klasy użytkownika implementującej interfejs
-:class:`Symfony\\Component\\Security\\Core\\User\\UserInterface`.
- Oznacza to, że pojęcie "użytkownika" jest wystarczające, tak długo, jak długo
- implementuje ten interfejs.
+klasy użytkownika implementującej interfejs :class:`Symfony\\Component\\Security\\Core\\User\\UserInterface`.
+Oznacza to, że pojęcie "użytkownika" jest wystarczające, tak długo, jak długo implementuje ten interfejs.
 
 .. versionadded:: 2.1
     W Symfony 2.1 usunięta została z interfejsu ``UserInterface`` metoda ``equals``.
@@ -1286,7 +1284,7 @@ klasy użytkownika implementującej interfejs
     
 .. note::
 
-     Obiekt użytkownika zostanie serializowany i zapisany w sesji podczas przetwarzania
+    Obiekt użytkownika zostanie serializowany i zapisany w sesji podczas przetwarzania
     żądania, dlatego zaleca się , aby implementować `interfejs Serializable`_
     w swoim obiekcie. Jest to szczególnie ważne, gdy klasa ma klasę nadrzędną
     z prywatnymi własnościami.
@@ -1331,6 +1329,7 @@ Wraz z wprowadzeniem tego nowego dostawcy system uwierzytelniania spróbuje zał
 obiekt ``User`` z bazy danych, wykorzystując pole ``username`` tej klasy.
 
 .. note::
+
     :doc:`Jak załadować użytkowników systemu bezpieczeństwa z bazy danych
     (dostawca encji)</cookbook/security/entity_provider>`.
 
@@ -1467,8 +1466,7 @@ Innymi słowani, hasło zostało bardzo ukryte, tak więc zakodowane tak hasło 
 może być rozkodowane (tzn. nie można określić hasła z zakodowanego hasła).
 
 .. versionadded:: 2.2
-    As of Symfony 2.2 you can also use the  password encoders.
-    Od wersji Symfony 2.2 można równieź użyć enkodera haseł
+    Od wersji Symfony 2.2 można równieź użyć kodera haseł
     :ref:`PBKDF2<reference-security-pbkdf2>` i :ref:`BCrypt<reference-security-bcrypt>`.
 
 Ustalenie hasła zakodowanego
@@ -1613,7 +1611,7 @@ załadować użytkowników z pozostałych źródeł: od dostawców ``in_memory``
 .. tip::
 
     Jeśli nie masz powodów, aby oddzielać użytkowników ``in_memory`` od użytkowników
-    ``user_db`, to możesz dokonać połączenia obu źródeł w jednego dostawcę:
+    ``user_db``, to możesz dokonać połączenia obu źródeł w jednego dostawcę:
 
     .. configuration-block::
 

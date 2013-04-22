@@ -339,7 +339,7 @@ elastyczności w adresowaniu URL (co jeśli chce się zmienić ``blog.php`` na
 dołączać pewien zbiór plików rdzenia, tak aby bezpieczeństwo, połączenia z bazą
 danych i wyszukiwanie mogły być spójne.
 
-Znacznie lepszym rozwiązaniem jest użycie :term:`kontrolera wejsciowego` –
+Znacznie lepszym rozwiązaniem jest użycie :term:`kontrolera wejścia<kontroler wejścia>` –
 pojedynczego pliku PHP obsługującego każde żądanie kierowane do aplikacji.
 Na przykład:
 
@@ -408,7 +408,7 @@ są do funkcji (metody) kontrolera, który zwraca obiekt Response.
 
 Każda "strona" witryny jest zdefiniowana w pliku konfiguracji trasowania, który 
 odwzorowuje adresy URL na funkcje PHP. Zadaniem każdej takiej funkcji
-PHP, nazywanej :term:`kontrolerem`, jest wykorzystanie informacji z żądania
+PHP, nazywanej :term:`kontrolerem<kontroler>`, jest wykorzystanie informacji z żądania
 (wraz z wielu innymi narzędziami udostępnionymi w Symfony) dla utworzenia i
 zwrócenia obiektu ``Response``. Innymi słowami, kontroler jest tą częścią kodu,
 która interpretuje żądanie oraz tworzy i zwraca odpowiedź.
@@ -467,7 +467,7 @@ W pierwszej kolejności dodaj wpis dla ``/contact`` do pliku konfiguracji trasow
    jak XML lub PHP.
 
 Kiedy ktoś odwiedza stronę ``/contact``, to dopasowywana jest trasa i wykonywany
-jest określony kontroler. Jak można się dowiedzieć w rozdziale :doc:`routing chapter</book/routing>`,
+jest określony kontroler. Jak można się dowiedzieć w rozdziale :doc:`routing`,
 łańcuch ``AcmeDemoBundle:Main:contact`` jest skróconą składnią wskazującą metodę
 ``contactAction`` wewnątrz klasy o nazwie ``MainController``::
 
@@ -485,7 +485,7 @@ jest określony kontroler. Jak można się dowiedzieć w rozdziale :doc:`routing
 
 W tym prostym przykładzie kontroler tworzy obiekt :class:`Symfony\\Component\\HttpFoundation\\Response`
 z kodem HTML ``<h1>Contact us!</h1>``.
-W rozdziale :doc:`controller chapter</book/controller>`, dowiesz się jak kontroler
+W rozdziale :doc:`controller`, dowiesz się jak kontroler
 może przetwarzać szablony, umożliwiając by kod „warstwy prezentacji” (czyli cokolwiek,
 co napisane jest w HTML) był zapisany w oddzielnym pliku. Odciąża to kontroler,
 pozostawiając mu trudniejsze zadania: interakcję z bazą danych, obsługę przekazywanych
