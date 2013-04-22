@@ -316,7 +316,7 @@ HTML wewnątrz kontrolera, należy wygenerować szablon:
    :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`),
    która dodaje skróty do typowych zadań wykonywanych wewnąrz kontrolera.
    W powyższym przykładzie zostało to wykonane przez dodanie wyrażenia ``use``
-   linii 4, a następnie ``extends Controller`` w linii 6.
+   w linii 4, a następnie ``extends Controller`` w linii 6.
 
 Metoda ``render()`` tworzy obiekt ``Response`` wypełniony zawartością przetworzonego
 szablonu. Jak każdy kontroler, zwróci ona ostatecznie obiekt ``Response``.
@@ -410,7 +410,7 @@ wewnątrz katalogu ``app``:
           </body>
        </html>
 
-Plik podstawowego szablonu okresła układ strony HTML i renderuje blok ``body``, który
+Plik podstawowego szablonu określa układ strony HTML i renderuje blok ``body``, który
 został zdefiniowany w szablonie ``index.html.twig``. Ponieważ w szablonie potomnym
 nie został określony blok ``title``, to domyślnie treścią tego bloku będzie "Welcome!".
 
@@ -624,8 +624,8 @@ pakiety będą używane przez aplikacją (włączając w to rdzenne pakiety Symf
 Tworzenie pakietu
 ~~~~~~~~~~~~~~~~~
 
-Dystrybucja Symfony Standard Edition dostarczana jest z poręcznym zadaniem
-tworzącym dla w pełni funkcjonalny pakiet. Własnoręczne utworzenie pakietu jest
+Dystrybucja Symfony Standard Edition dostarczana jest z poręcznym narzędziem
+tworzącym w pełni funkcjonalny pakiet. Własnoręczne utworzenie pakietu jest
 dość proste.
 
 Aby pokazać jakie to proste, utworzymy nowy pakiet o nazwie ``AcmeTestBundle``
