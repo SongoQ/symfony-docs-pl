@@ -23,7 +23,7 @@ filozofii stojącej za Doctrine i zobaczysz jak można łatwo pracować z bazą 
 
     Można również utrwalić dane w `MongoDB`_ stosując bibliotekę Doctrine ODM.
     Więcej informacji na ten temat znajdziesz w dokumentacji
-    ":doc:`/bundles/DoctrineMongoDBBundle/index`".
+    ":doc:`DoctrineMongoDBBundle</bundles/DoctrineMongoDBBundle/index>`".
 
 Prosty przykład: "Produkty"
 ---------------------------
@@ -128,7 +128,7 @@ do utworzenia bazy danych:
     Częstym błędem, który popełniają nawet doświadczeni programiści jest rozpoczęcie
     projektu Symfony2 bez ustawienia domyślnych wartości ``charset`` i ``collation``
     dla swojej bazy danych, co skutkuje łacińskim porządkiem sortowania, który jest
-    domyślny dla większości systemów baz danych. Mogą nawet pamiętać, aby to zrobić
+    domyślny dla większości systemów baz danych. Mogą oni nawet pamiętać, aby to zrobić
     za pierwszym razem, ale zapominają że czynią to już po uruchomieniu dość popularnych
     poleceń w czasie programowania:
 
@@ -150,58 +150,53 @@ do utworzenia bazy danych:
         collation-server = utf8_general_ci
         character-set-server = utf8
 
-.. index::
-      pair: SQLite; stosowanie 
+.. note::
 
-Stosowanie SQLite
-~~~~~~~~~~~~~~~~~
+    Jeśli chcesz stosować bazę danych SQLite, musisz ustawić ścieżkę do pliku bazy
+    danych SQLite:
 
-Jeśli chcesz stosować bazę danych SQLite, musisz ustawić ścieżkę do pliku bazy
-danych SQLite:
+    .. configuration-block::
 
-.. configuration-block::
+        .. code-block:: yaml
+           :linenos:
 
-    .. code-block:: yaml
-       :linenos:
+            # app/config/config.yml
+            doctrine:
+                dbal:
+                    driver: pdo_sqlite
+                    path: "%kernel.root_dir%/sqlite.db"
+                    charset: UTF8
 
-        # app/config/config.yml
-        doctrine:
-            dbal:
-                driver: pdo_sqlite
-                path: "%kernel.root_dir%/sqlite.db"
-                charset: UTF8
+        .. code-block:: xml
+           :linenos:
 
-    .. code-block:: xml
-       :linenos:
+            <!-- app/config/config.xml -->
+            <doctrine:config
+                driver="pdo_sqlite"
+                path="%kernel.root_dir%/sqlite.db"
+                charset="UTF-8"
+            >
+                <!-- ... -->
+            </doctrine:config>
 
-        <!-- app/config/config.xml -->
-        <doctrine:config
-            driver="pdo_sqlite"
-            path="%kernel.root_dir%/sqlite.db"
-            charset="UTF-8"
-        >
-            <!-- ... -->
-        </doctrine:config>
+        .. code-block:: php
+           :linenos:
 
-    .. code-block:: php
-       :linenos:
-
-        // app/config/config.php
-        $container->loadFromExtension('doctrine', array(
-            'dbal' => array(
-                'driver'  => 'pdo_sqlite',
-                'path'    => '%kernel.root_dir%/sqlite.db',
-                'charset' => 'UTF-8',
-            ),
-        ));
-
+            // app/config/config.php
+            $container->loadFromExtension('doctrine', array(
+                'dbal' => array(
+                    'driver'  => 'pdo_sqlite',
+                    'path'    => '%kernel.root_dir%/sqlite.db',
+                    'charset' => 'UTF-8',
+                ),
+            ));
 
 Utworzenie klasy encji
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Załóżmy, że budujemy aplikację w której powinny być wyświetlane produkty. Nawet
 bez myślenia o Doctrine lub bazach danych wiesz już, że do reprezentowania produktów
-potrzebny jest obiekt ``Product``. Utworzymy tą klasę wewnątrz katalogu ``Entity``
+potrzebny jest obiekt ``Product``. Utworzymy taką klasę wewnątrz katalogu ``Entity``
 w ``AcmeStoreBundle``::
 
     // src/Acme/StoreBundle/Entity/Product.php
@@ -218,7 +213,7 @@ w ``AcmeStoreBundle``::
 
 Klasa ta, często nazywana "encją" (co oznacza podstawową klasę przechowującą dane),
 jest prosta i pomaga spełnić wymóg biznesowy prezentowania produktów w aplikacji.
-Klasa ta na razie nie może być utrwalona w bazie danych - jest to tylko prosta
+Na razie nie może ona być utrwalona w bazie danych - jest to tylko prosta
 klasa PHP.
 
 .. tip::
@@ -332,8 +327,8 @@ w kilku różnych formatach, włączając w to YAML, XML lub bezpośredni w klas
 .. note::
 
     W pakiecie można zdefiniować metadane tylko w jednorodnym formacie. Na przykład,
-    nie jest możliwe zmieszanie definicji w formacie YAML z adnotacjami w pliku
-    z definicją klasy encji PHP.
+    nie jest możliwe zmieszanie definicji w formacie YAML z adnotacjami umieszczonymi
+    w pliku PHP z definicją klasy encji.
 
 .. tip::
 
@@ -388,7 +383,7 @@ Wygenerowanie metod akcesorów
 Chociaż już Doctrine wie jak utrwalić obiekt ``Product`` w bazie danych, sama klasa
 nie jest jeszcze przydatna. Ponieważ ``Product`` jest zwykłą klasą PHP, to potrzeba
 utworzyć metody akcesorów pobierających i ustawiających (*ang. getter i setter*)
-(tj. ``getName()``, ``setName()``) w celu uzyskania dostępu do właściwości tego
+(tj. ``getName()`` i ``setName()``) w celu uzyskania dostępu do właściwości tego
 obiektu (gdyż właściwości te są chronione). Doctrine może utworzyć te akcesory
 w wyniku polecenia:
 
@@ -421,13 +416,13 @@ metod).
     Polecenie ``doctrine:generate:entities`` zabezpiecza kopię zapasową oryginalego
     pliku ``Product.php`` mianując ją nazwą ``Product.php~``. W niektórych przypadkach
     obecność tego pliku może powodować błąd "Cannot redeclare class". Można wówczas
-    ten plik bezpiecznie usunąć.
+    ten plik bezpiecznie usunąć. Można też wykorzystać opcję ``--no-backup`` aby
+    zapobiec generowaniu tych plików zapasowych.
 
     Proszę zauważyć, że nie musi się korzystać z powyższego polecenia.
-    Doctrine nie jest uzależniona od wygenerowania tego polecenia. Wystarczy
-    upewnić się, jak w zwykłej klasie PHP, czy wszystkie chronione właściwości
-    klasy mają swoje akcesory. Polecenie to zostało utworzone ponieważ używanie
-    Doctrine z linii poleceń jest popularne.
+    Doctrine tego nie wymaga. Wystarczy upewnić się, jak w zwykłej klasie PHP,
+    czy wszystkie chronione właściwości klasy mają swoje akcesory. Polecenie to
+    zostało utworzone ponieważ używanie Doctrine z linii poleceń jest popularne.
 
 Można wygenerować wszystkie znane encje pakietu (tj. wszystkie klasy PHP określone
 w informacji odwzorowania Doctrine) lub w całej przestrzeni nazw:
@@ -624,7 +619,7 @@ pobierania obiektu na podstawie różnych warunków::
     $product = $repository->findOneBy(array('name' => 'foo', 'price' => 19.99));
 
     // zapytanie o wszystkie produkty pasujace do określonej nazwy, posortowane wg. ceny
-    $product = $repository->findBy(
+    $products = $repository->findBy(
         array('name' => 'foo'),
         array('price' => 'ASC')
     );
@@ -1114,8 +1109,8 @@ tablicy ``category`` i kolumnie ``product.category_id`` oraz nowym kluczu zewnę
     bazy danych, przeczytaj artykuł
     :doc:`Doctrine migrations</bundles/DoctrineMigrationsBundle/index>`.
 
-Saving Related Entities
-~~~~~~~~~~~~~~~~~~~~~~~
+Zapisywanie związanych encji
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Teraz możemy zobaczyć jak działa nowy kod. Wyobraź sobie, że jesteś w kontrolerze::
 
@@ -1171,12 +1166,6 @@ a następnie uzyskać dostęp do powiązanego obiektu ``Category``::
         // ...
     }
 
-In this example, you first query for a ``Product`` object based on the product's
-``id``. This issues a query for *just* the product data and hydrates the
-``$product`` object with that data. Later, when you call ``$product->getCategory()->getName()``,
-Doctrine silently makes a second query to find the ``Category`` that's related
-to this ``Product``. It prepares the ``$category`` object and returns it to
-you.
 W tym przykładzie, najpierw zapytamy o obiekt ``Product`` w oparciu o ``id`` produktu.
 W tym celu sformujemy zapytanie tylko dla danych produktu i hydratów obiektu ``$product``
 z tymi danymi. Później, gdy wywołamy ``$product->getCategory()->getName()``,
@@ -1532,8 +1521,6 @@ Rozpatrzmy kilka przykładów:
 
 .. note::
 
-    There are a few more options not listed here. For more details, see
-    Doctrine's 
     Istnieje kilka innych opcji, tutaj nie wymienionych. Więcej szczegółów
     znajdziesz w artykule `Property Mapping`_ dokumentacji Doctrine.
 
@@ -1565,7 +1552,7 @@ Niektóre ważniejsze lub iteresujące zadania, to:
 
 * ``doctrine:ensure-production-settings`` - sprawdza, czy bieżące środowisko jest
   skutecznie skonfigurowane jako produkcyjne. Zawsze powinno być uruchamiane w
-  środowisku ``prod``::
+  środowisku ``prod``:
 
   .. code-block:: bash
 
