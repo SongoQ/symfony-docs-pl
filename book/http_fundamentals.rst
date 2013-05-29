@@ -379,7 +379,7 @@ Można to zrobić szybko i brzydko::
     $request = Request::createFromGlobals();
     $path = $request->getPathInfo(); // the URI path being requested
 
-    if (in_array($path, array('', '/'))) {
+    if (in_array($path, array('', '/')) {
         $response = new Response('Welcome to the homepage.');
     } elseif ($path == '/contact') {
         $response = new Response('Contact us');
@@ -478,13 +478,13 @@ jest określony kontroler. Jak można się dowiedzieć w rozdziale :doc:`routing
     {
         public function contactAction()
         {
-            return new Response('<h1>Contact us!</h1>');
+            return new Response('<h1>Kontakt z nami</h1>');
         }
     }
 
 
 W tym prostym przykładzie kontroler tworzy obiekt :class:`Symfony\\Component\\HttpFoundation\\Response`
-z kodem HTML ``<h1>Contact us!</h1>``.
+z kodem HTML ``<h1>Kontakt z nami</h1>``.
 W rozdziale :doc:`controller`, dowiesz się jak kontroler
 może przetwarzać szablony, umożliwiając by kod „warstwy prezentacji” (czyli cokolwiek,
 co napisane jest w HTML) był zapisany w oddzielnym pliku. Odciąża to kontroler,
