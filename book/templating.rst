@@ -712,9 +712,7 @@ do konfigurowania znaczników ``hinclude.js``:
     .. code-block:: jinja
        :linenos:
 
-        {{ render_hinclude(controller('...')) }}
-
-        {{ render_hinclude(url('...')) }}
+        {% render url('...') with {}, {'standalone': 'js'} %}
 
     .. code-block:: php
        :linenos:
@@ -1125,11 +1123,6 @@ jak i ``contact.css``.
 Zmienne globalne szablonu
 -------------------------
 
-During each request, Symfony2 will set a global template variable ``app``
-in both Twig and PHP template engines by default.  The ``app`` variable
-is a :class:`Symfony\\Bundle\\FrameworkBundle\\Templating\\GlobalVariables`
-instance which will give you access to some application specific variables
-automatically:
 Podczas każdego żądania Symfony2 ustawia domyślnie szablonową zmienną globalną ``app``,
 zarówno dla silnika szablonowego Twig jak i PHP. Zmienna ``app`` jest instancją
 :class:`Symfony\\Bundle\\FrameworkBundle\\Templating\\GlobalVariables`
@@ -1396,21 +1389,27 @@ przykład:
 
         Hello <?php echo $name ?>
 
-Wyobraźmy sobie, że użytkownik wprowadza następujący kod jako swoją nazwę::
+Wyobraźmy sobie, że użytkownik wprowadza następujący kod jako swoją nazwę:
 
-    <script>alert('hello!')</script>
+.. code-block:: text
+   
+   <script>alert('hello!')</script>
 
 Bez zastosownia jakiegokolwiek zabezpieczenia zmiennych, wynikowy szablon wyprowadzi
-kod wyskakującego okienka alertu JavaScript::
+kod wyskakującego okienka alertu JavaScript:
 
-    Hello <script>alert('hello!')</script>
+.. code-block:: html
+   
+   Hello <script>alert('hello!')</script>
 
 Choć wydaje się to nieszkodliwe, to jednak użytkownik taki może pójść dalej
 i wprowadzić kod JavaScript, który wykona szkodliwe działania.
 
 Rozwiązaniem problemu jest tzw. zabezpieczenie zmiennych (*ang. escaping*).
 Przy zabezpieczeniu zmiennych dane wyjściowe tego samego szablonu będą przetwarzane
-bezpiecznie, drukując na ekranie literalnie znacznik script::
+bezpiecznie, drukując na ekranie literalnie znacznik script:
+
+.. code-block:: html
 
     Hello &lt;script&gt;alert(&#39;helloe&#39;)&lt;/script&gt;
 
@@ -1430,10 +1429,13 @@ zabezpieczenie zmiennych obejmuje wyjściowy kod w formacie HTML.
 W niektórych przypadkach zachodzi potrzeba wyłączenia zabezpieczenia zmiennych,
 które są zaufane i zawierają znaczniki, które nie powinny być zamieniane na encje
 znakowe. Załóżmy, że użytkownicy grupy administratorów mogą pisać artykuły, które
-zawierają kod HTML. Domyślnie Twig będzie zabezpieczał ciało artykułu, zamieniając
-znaki charakterystyczne dla znaczników HTML na odpowiednie encje znakowe. Aby to
-normalnie przetworzyć (bez zamiany na encje), trzeba dodać filtr ``raw``:
-``{{ article.body | raw }}``.
+zawierają kod HTML. Domyślnie Twig będzie zabezpieczał ciało artykułu.
+
+Aby to normalnie przetworzyć (bez zamiany na encje), trzeba dodać filtr ``raw``:
+
+.. code-block:: jinja
+
+    {{ article.body|raw }}
 
 Można również wyłączyć zabezpieczenie zmiennych wewnątrz obszaru ``{% block %}``
 lub dla całego szablonu. Więcej informacji na ten temat można znaleźć w rozdziale
@@ -1445,7 +1447,9 @@ Zabezpieczenie zmiennych w PHP
 W szablonach PHP zabezpieczenie zmiennych nie jest automatyczne. Oznacza to, że
 jeśli trzeba zastosować zabezpieczenie zmiennych, to trzeba to uczynić samemu.
 Aby zastosować zabezpieczenie zmiennej należy użyć specjalnej metody widoku
-``escape()``::
+``escape()``:
+
+.. code-block:: html+php
 
     Hello <?php echo $view->escape($name) ?>
 
@@ -1474,44 +1478,10 @@ Debugowanie
 Gdy stosuje się PHP, można użyć ``var_dump()`` do szybkiego znalezienia wartości
 jakiejś przekazanej zmiennej. Jest tu użyteczne, na przykład wewnątrz kontrolera.
 To samo można uzyskać przy stosowaniu Twig poprzez wykorzystanie rozszerzenia Debug.
-Trzeba to włączyć w konfiguracji:
 
-.. configuration-block::
-
-    .. code-block:: yaml
-       :linenos:
-
-        # app/config/config.yml
-        services:
-            acme_hello.twig.extension.debug:
-                class:        Twig_Extension_Debug
-                tags:
-                     - { name: 'twig.extension' }
-
-    .. code-block:: xml
-       :linenos:
-
-        <!-- app/config/config.xml -->
-        <services>
-            <service id="acme_hello.twig.extension.debug" class="Twig_Extension_Debug">
-                <tag name="twig.extension" />
-            </service>
-        </services>
-
-    .. code-block:: php
-       :linenos:
-
-        // app/config/config.php
-        use Symfony\Component\DependencyInjection\Definition;
-
-        $definition = new Definition('Twig_Extension_Debug');
-        $definition->addTag('twig.extension');
-        $container->setDefinition('acme_hello.twig.extension.debug', $definition);
-
-Parametry szablonowe mogą być następnie zrzucane przy użyciu funkcji ``dump``:
+Parametry szablonu mogą być zrzucane przy użyciu funkcji ``dump``:
 
 .. code-block:: html+jinja
-   :linenos:
 
     {# src/Acme/ArticleBundle/Resources/views/Article/recentList.html.twig #}
     {{ dump(articles) }}
@@ -1521,6 +1491,8 @@ Parametry szablonowe mogą być następnie zrzucane przy użyciu funkcji ``dump`
             {{ article.title }}
         </a>
     {% endfor %}
+
+
 
 
 Zmienne będę zrzucane tylko gdy ustawienie ``debug`` Twiga (w ``config.yml``)
