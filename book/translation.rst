@@ -118,9 +118,9 @@ Załóżmy na przykład, że tłumaczymy prosty komunikat wewnątrz kontrolera::
 
     public function indexAction()
     {
-        $t = $this->get('translator')->trans('Symfony2 is great');
+        $translated = $this->get('translator')->trans('Symfony2 is great');
 
-        return new Response($t);
+        return new Response($translated);
     }
 
 Gdy wykonywany jest ten kod, to Symfony2 będzie próbowało przetłumaczyć komunikat
@@ -203,9 +203,9 @@ Czasem komunikat zwiera zmienną, która musi być tłumaczona::
 
     public function indexAction($name)
     {
-        $t = $this->get('translator')->trans('Hello '.$name);
+        $translated = $this->get('translator')->trans('Hello '.$name);
 
-        return new Response($t);
+        return new Response($translated);
     }
 
 Jednak utworzenie tłumaczenia tego łańcucha nie jest możliwe, gdyż translator
@@ -218,12 +218,12 @@ możliwej iteracji zmiennej ``$name``, można zamienić zmienną "wieloznaczniki
 
     public function indexAction($name)
     {
-        $t = $this->get('translator')->trans(
+        $translated = $this->get('translator')->trans(
             'Hello %name%',
             array('%name%' => $name)
         );
 
-        return new Response($t);
+        return new Response($translated);
     }
 
 Symfony2 będzie teraz wyszukiwać tłumaczenie dla surowego komunikatu (``Hello %name%``)
@@ -422,9 +422,9 @@ is great" lub "symfony2.great" w języku polskimi (czyli ``pl_PL``).
     Przykład ten ilustruje dwie różne filozofie podczas tworzenia komunikatów,
     które mają być przetłumaczone::
 
-        $t = $translator->trans('Symfony2 is great');
+        $translated = $translator->trans('Symfony2 is great');
 
-        $t = $translator->trans('symfony2.great');
+        $translated = $translator->trans('symfony2.great');
 
     W pierwszej metodzie komunikaty są pisane w języku domyślnego ustawienia
     regionalnego (w tym przypadku angielski). Treść komunikatu jest stosowana
@@ -699,7 +699,7 @@ których trzba wykonać lub wykonało się taką czynność - **komunikatami plu
 Aby przetłumaczyć komunikaty pluralizowane trzeba użyć metody 
 :method:`Symfony\\Component\\Translation\\Translator::transChoice`::
 
-    $t = $this->get('translator')->transChoice(
+    $translated = $this->get('translator')->transChoice(
         'There is one apple|There are %count% apples',
         10,
         array('%count%' => 10)
@@ -840,7 +840,7 @@ Można również określić domenę komunikatu i przekazać dodatkowe zmienne:
     {% trans with {'%name%': 'Fabien'} from "app" into "fr" %}Hello %name%{% endtrans %}
 
     {% transchoice count with {'%name%': 'Fabien'} from "app" %}
-        {0} There is no apples|{1} There is one apple|]1,Inf] There are %count% apples
+        {0} %name%, there are no apples|{1} %name%, there is one apple|]1,Inf] %name%, there are %count% apples 
     {% endtranschoice %}
 
 .. _book-translation-filters:
