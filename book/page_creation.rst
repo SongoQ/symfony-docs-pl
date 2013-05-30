@@ -204,7 +204,7 @@ powitania.
 Krok 2: Utwórz kontroler
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Kiedy adres URL, taki jak ``/hello/Ryan``, jest obsługiwany przez aplikację dopasowywana
+Kiedy ścieżka URL, taka jak ``/hello/Ryan``, jest obsługiwany przez aplikację dopasowywana
 zostaje trasa ``hello`` i zostaje wykonany kontroler ``AcmeHelloBundle:Hello:index``.
 Drugim krokiem procedury tworzenia strony jest utworzenie tego własnie kontrolera.
 
@@ -351,7 +351,7 @@ W tym przypadku, ``AcmeHelloBundle`` jest nazwą pakietu, ``Hello`` to kontroler
             Hello {{ name }}!
         {% endblock %}
 
-    .. code-block:: php
+    .. code-block:: html+php
 
         <!-- src/Acme/HelloBundle/Resources/views/Hello/index.html.php -->
         <?php $view->extend('::base.html.php') ?>
@@ -393,7 +393,7 @@ wewnątrz katalogu ``app``:
             </body>
         </html>
 
-    .. code-block:: php
+    .. code-block:: html+php
 
        <!-- app/Resources/views/base.html.php -->
        <!DOCTYPE html>
@@ -444,6 +444,8 @@ ma taką samą podstawową, zalecaną strukturę katalogową:
 
 * ``web/``: jest to główny katalog internetowy, zawierający wszystkie publicznie dostępne pliki.
 
+.. _the-web-directory:
+
 Katalog web
 ~~~~~~~~~~~
 
@@ -475,7 +477,7 @@ jest wczytanie klas jądra ``AppKernel`` w celu przeprowadzenia rozruchu aplikac
 
         http://localhost/app.php/hello/Ryan
 
-    Kontroler wejścia ``app.php`` jest wykonywany również "wewnętrznie": adres URL
+    Kontroler wejścia ``app.php`` jest wykonywany również "wewnętrznie": ścieżka URL
     ``/hello/Ryan`` jest kierowany wewnętrznie przy użyciu konfiguracji trasowania.
     Stosując regułę ``mod_rewrite`` Apache można wymusić aby plik ``app.php`` był
     wykonywany bez potrzeby specyfikowania go w adresie URL:
@@ -600,7 +602,6 @@ klasy ``AppKernel``::
             new Symfony\Bundle\DoctrineBundle\DoctrineBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
