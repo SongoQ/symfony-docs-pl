@@ -43,7 +43,7 @@ aplikacji. W rzeczywistości większość standardowych ustawień bezpieczeństw
 to tylko kwestia zastosowania właściwej konfiguracji. Poniższa konfiguracja powiadamia
 Symfony aby zabezpieczyło każdy adres URL pasujący do wzorca ``/admin/*`` i prosiło
 użytkownika o podanie poświadczenia, stosując podstawowe uwierzytelnianie HTTP
-(tj. przez zastosowanie starej szkoły pól logowania nazwa użytkownika i hasło):
+(tj. przez zastosowanie starej szkoły pól logowania: nazwy użytkownika i hasła):
 
 .. configuration-block::
 
@@ -301,8 +301,8 @@ Stosowanie tradycyjnego logowania formularzowego
     ``security.yml``, ``security.xml`` czy ``security.php``.
 
     Aby się dowiedzieć jak załadować użytkowników z bazy danych, proszę przeczytać
-    artykuł :doc:`</cookbook/security/entity_provider>` 
-    Jak z ładować z bazy danych Security Users (dostawca encji). Posługując się
+    artykuł :doc:`Jak załadować użytkowników systemu bezpieczeństwa z bazy danych (dostawca encji)
+    </cookbook/security/entity_provider>`. Posługując się
     wiedzą z tego artykułu i niniejszego rozdziału, można stworzyć pełny system
     formularza logowania wykorzystującego dane z bazy danych.
 
@@ -837,7 +837,7 @@ powinna być użyta dla danego żądania. Przy dopasowaniu stosowane są następ
 ``access_control``:
 
 * ``path``
-* ``ip``
+* ``ip`` lub ``ips``
 * ``host``
 * ``methods``
 
@@ -952,6 +952,12 @@ Aby uniemożliwić dostęp do tych zasobów z poziomu przeglądarki (poprzez odg
 wzorców adresów URL ESI), trasa ESI musi zabezpieczony tak, aby adres taki był
 widoczny tylko z bufora zaufanego odwrotnego proxy.
 
+.. versionadded:: 2.3
+    Wersja 2.3 umożliwia określenie wielu adresów IP w jednej regule, poprzez
+    wykorzystanie konstrukcji ``ips: [a, b]``. W wersjach wcześniejszych trzeba
+    było tworzyć oddzielna regułę dla każdego adresu IP z użyciem klucza ``ip``
+    a nie ``ips``.
+
 Oto przykład, jak można zabezpieczyć przed dostępem z zewnątrz wszystkie trasy
 ESI rozpoczynające się przedrostkiem ``/esi``:
 
@@ -964,14 +970,14 @@ ESI rozpoczynające się przedrostkiem ``/esi``:
         security:
             # ...
             access_control:
-                - { path: ^/esi, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
+                - { path: ^/esi, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
                 - { path: ^/esi, roles: ROLE_NO_ACCESS }
 
     .. code-block:: xml
        :linenos:
 
             <access-control>
-                <rule path="^/esi" role="IS_AUTHENTICATED_ANONYMOUSLY" ip="127.0.0.1" />
+                <rule path="^/esi" role="IS_AUTHENTICATED_ANONYMOUSLY" ips="127.0.0.1, ::1" />
                 <rule path="^/esi" role="ROLE_NO_ACCESS" />
             </access-control>
 
@@ -979,14 +985,14 @@ ESI rozpoczynające się przedrostkiem ``/esi``:
        :linenos:
 
             'access_control' => array(
-                array('path' => '^/esi', 'role' => 'IS_AUTHENTICATED_ANONYMOUSLY', 'ip' => '127.0.0.1'),
+                array('path' => '^/esi', 'role' => 'IS_AUTHENTICATED_ANONYMOUSLY', 'ips' => '127.0.0.1, ::1'),
                 array('path' => '^/esi', 'role' => 'ROLE_NO_ACCESS'),
             ),
 
 Oto jak to działa dla adresu ``/esi/something`` przychodzącego z adresu IP ``10.0.0.1``:
 
 * Pierwsza reguła kontroli dostępu zostaje zignorowana, jako że ``path`` wprawdzie
-  pasuje, ale ``ip`` nie;
+  pasuje, ale nie dopasowuje jednego z wymienionych adresów ``ip``;
 
 * Druga reguła kontroli dostępu zostaje włączona (jedynym ograniczeniem jest ``path``,
   które pasuje) - jako że użytkownik nie może mieć roli ``ROLE_NO_ACCESS``, której
@@ -994,7 +1000,8 @@ Oto jak to działa dla adresu ``/esi/something`` przychodzącego z adresu IP ``1
   co nie pasuje do istniejącej roli, to po prostu tylko trik, zawsze uniemożliwiający
   dostęp).
 
-Teraz, gdy to samo żądanie przyjdzie z serwera ``127.0.0.1``:
+Teraz, gdy to samo żądanie przyjdzie z serwera ``127.0.0.1`` lub ``::1`` (adres
+pętli zwrotnej IPv6):
 
 * Teraz pierwsza reguła kontroli dostępu zostaje włączona, gdyż zarówno ``path``
   jak i ``ip`` zostają dopasowane – dostęp jest dozwolony jako że użytkownik zawsze
@@ -2237,8 +2244,8 @@ system "głosowania", tak że wiele elementów aplikacji może określić, czy b
 użytkownik może mieć dostęp do danych zasobów. Dowiedz się więcej o tym i innych
 tematach w Receptariuszu.
 
-Dowiedz się więcej w Receptariuszu
-----------------------------------
+Dalsza lektura
+--------------
 
 * :doc:`Forcing HTTP/HTTPS </cookbook/security/force_https>`
 * :doc:`Blacklist users by IP address with a custom voter </cookbook/security/voters>`
