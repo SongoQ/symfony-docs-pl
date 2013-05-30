@@ -175,8 +175,9 @@ kontrolerem ``DemoController`` (`DemoControllerTest`_), którego kod jest nastę
     W większości przypadków odbywa się to automatycznie. Jednak, gdy jądro jest
     zlokalizowane w niestandardowym katalogu, to zachodzi konieczność zmiany pliku
     ``phpunit.xml.dist`` przez ustawienie zmiennej środowiskowej ``KERNEL_DIR``
-    na katalog jądra aplikacji::
+    na katalog jądra aplikacji:
 
+.. code-block:: xml
 
         <phpunit>
             <!-- ... -->
@@ -380,7 +381,17 @@ formularza lub wykonania bardziej złożonych żądań::
 
     // Bezpośrednie przesłanie formularza (ale przy użyciu Crawler jest to łatwiejsze)
     $client->request('POST', '/submit', array('name' => 'Fabien'));
-
+    
+    // Przesłanie surowego łańcucha JSON w ciele żądania
+    $client->request(
+        'POST',
+        '/submit',
+        array(),
+        array(),
+        array('CONTENT_TYPE' => 'application/json'),
+        '{"name":"Fabien"}'
+    );
+      
     // Przesłanie formularza z załadowaniem pliku
     use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -390,14 +401,7 @@ formularza lub wykonania bardziej złożonych żądań::
         'image/jpeg',
         123
     );
-    // lub
-    $photo = array(
-        'tmp_name' => '/path/to/photo.jpg',
-        'name'     => 'photo.jpg',
-        'type'     => 'image/jpeg',
-        'size'     => 123,
-        'error'    => UPLOAD_ERR_OK
-    );
+    
     $client->request(
         'POST',
         '/submit',
@@ -440,6 +444,8 @@ przeglądarkach::
 Dostęp do wewnętrznych obiektów
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+W Symfony 2.3 dodano metody ``getInternalRequest()`` i ``getInternalResponse()``.
+
 Jeśli używa się klienta do testowania aplikacji, to można uzyskać dostęp do obiektów
 wewnętrznych klienta::
 
@@ -448,11 +454,28 @@ wewnętrznych klienta::
     $cookieJar = $client->getCookieJar();
 
 
-Można również pobrać obiekty związane z ostatnim żądaniem::
+Można również pobrać obiekty związane z ostatnim żądaniem.
 
+Przykład dla Symfony < 2.3::
 
     $request  = $client->getRequest();
     $response = $client->getResponse();
+    $crawler  = $client->getCrawler();
+
+Przykład dla Symfony 2.3::
+
+   // instancja żądania HttpKernel
+    $request  = $client->getRequest();
+
+    // instancja żądania BrowserKit
+    $request  = $client->getInternalRequest();
+
+    // instancja odpowiedzi HttpKernel
+    $response = $client->getResponse();
+
+    // instancja odpowiedzi BrowserKit
+    $response = $client->getInternalResponse();
+
     $crawler  = $client->getCrawler();
 
 

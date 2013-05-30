@@ -881,7 +881,7 @@ Najpierw trzeba włączyć obsługę ESI w konfiguracji aplikacji:
 
         // app/config/config.php
         $container->loadFromExtension('framework', array(
-            ...,
+            // ...,
             'esi'    => array('enabled' => true),
         ));
 
@@ -920,7 +920,7 @@ stosuje standardowy helper ``render`` do skonfigurowania znaczników ESI:
         {# ... or a URL #}
         {{ render_esi(url('latest_news', { 'max': 5 })) }}
 
-    .. code-block:: php
+    .. code-block:: html+php
        :linenos:
 
         <?php echo $view['actions']->render(
@@ -1068,10 +1068,10 @@ Oto jak można skonfigurować odwrotne proxy Symfony2 aby obsługiwało metodę 
 
     class AppCache extends HttpCache
     {
-        protected function invalidate(Request $request)
+        protected function invalidate(Request $request, $catch = false)
         {
             if ('PURGE' !== $request->getMethod()) {
-                return parent::invalidate($request);
+                return parent::invalidate($request, $catch);
             }
 
             $response = new Response();
@@ -1101,8 +1101,8 @@ Oznacza to z kolei, że zamiast poprzestać swoją edukację na dokumentacji Sym
 i przykładach kodu, powinieneś jeszcze zaczerpnąć dodatkowej wiedzy o buforowaniu
 HTTP i pamięci podręcznej bramy, takiej chociażby jak Varnish.
 
-Dowiedz sie wiecej w Receptariuszu
-----------------------------------
+Dalasza lektura
+---------------
 
 * :doc:`/cookbook/cache/varnish`
 

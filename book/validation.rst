@@ -16,8 +16,7 @@ prawie wszystkich współczesnych procesów wytwórczych.
 
 Symfony2 dostarcza komponent `Validator`_, dzięki któremu to zadanie jest łatwe
  i zrozumiałe. Komponent ten oparty jest o `specyfikację JSR303 Bean Validation`_.
- Co? Specyfikacja Java w PHP? Nie przesłyszałeś się, lecz nie jest to takie złe,
- jakby sie mogło wydawać. Przyjrzyjmy się w jaki sposób może to być użyte w PHP.
+ 
 
 .. index:
    single: walidacja; podstawy
@@ -227,14 +226,14 @@ zgłoszone i powiązane. Naruszenia ograniczeń dla obiektu są konwertowane do 
 ``FieldError``, który może być łatwo wyświetlany wraz z formularzem. Typowa procedura
 wysłania formularza z poziomu kontrolera wyglada następująco::
 
+   // ...
     use Acme\BlogBundle\Entity\Author;
     use Acme\BlogBundle\Form\AuthorType;
     use Symfony\Component\HttpFoundation\Request;
-    // ...
 
     public function updateAction(Request $request)
     {
-        $author = new Acme\BlogBundle\Entity\Author();
+        $author = new Author();
         $form = $this->createForm(new AuthorType(), $author);
 
         if ($request->getMethod() == 'POST') {
@@ -243,7 +242,7 @@ wysłania formularza z poziomu kontrolera wyglada następująco::
             if ($form->isValid()) {
                 // the validation passed, do something with the $author object
 
-                return $this->redirect($this->generateUrl('...'));
+                return $this->redirect($this->generateUrl(...));
             }
         }
 
@@ -291,9 +290,11 @@ adnotacji, to należy określić to w ograniczeniach:
        :linenos:
 
         // app/config/config.php
-        $container->loadFromExtension('framework', array('validation' => array(
-            'enable_annotations' => true,
-        )));
+        $container->loadFromExtension('framework', array(
+            'validation' => array(
+                'enable_annotations' => true,
+            ),
+        ));
 
 .. index::
    single: walidacja; ograniczenia
@@ -393,7 +394,7 @@ mają kilka dostępnych opcji konfiguracji. Załóżmy, że klasa ``Author`` ma 
 
         // src/Acme/BlogBundle/Entity/Author.php
         use Symfony\Component\Validator\Mapping\ClassMetadata;
-        use Symfony\Component\Validator\Constraints\NotBlank;
+        use Symfony\Component\Validator\Constraints\Choice;
 
         class Author
         {
@@ -527,8 +528,7 @@ klasy ``Author``, której wartość powinna mieć co najmniej 3 znaki.
             properties:
                 firstName:
                     - NotBlank: ~
-                    - Length:
-                        min: 3
+                    - MinLength: 3
 
     .. code-block:: php-annotations
        :linenos:
@@ -542,7 +542,7 @@ klasy ``Author``, której wartość powinna mieć co najmniej 3 znaki.
         {
             /**
              * @Assert\NotBlank()
-             * @Assert\Length(min = "3")
+             * @Assert\MinLength(3)
              */
             private $firstName;
         }
@@ -554,9 +554,7 @@ klasy ``Author``, której wartość powinna mieć co najmniej 3 znaki.
         <class name="Acme\BlogBundle\Entity\Author">
             <property name="firstName">
                 <constraint name="NotBlank" />
-                <constraint name="Length">
-                    <option name="min">3</option>
-                </constraint>
+                <constraint name="MinLength">3</constraint>
             </property>
         </class>
 
@@ -568,7 +566,7 @@ klasy ``Author``, której wartość powinna mieć co najmniej 3 znaki.
         // ...
         use Symfony\Component\Validator\Mapping\ClassMetadata;
         use Symfony\Component\Validator\Constraints\NotBlank;
-        use Symfony\Component\Validator\Constraints\Length;
+        use Symfony\Component\Validator\Constraints\MinLength;
 
         class Author
         {
@@ -577,9 +575,7 @@ klasy ``Author``, której wartość powinna mieć co najmniej 3 znaki.
             public static function loadValidatorMetadata(ClassMetadata $metadata)
             {
                 $metadata->addPropertyConstraint('firstName', new NotBlank());
-                $metadata->addPropertyConstraint(
-                    'firstName',
-                    new Length(array("min" => 3)));
+                $metadata->addPropertyConstraint('firstName', new MinLength(3));
             }
         }
 
@@ -799,9 +795,12 @@ rejestracji użytkownika jak i podczas aktualizowania jego informacji kontaktowy
             }
         }
 
-W tej konfiguracji są dwie grupy walidacyjne:
+W tej konfiguracji są trzy grupy walidacyjne:
 
 * ``Default`` - zawiera ograniczenia nieprzypisane do żadnej innej grupy;
+
+* ``User`` - zawiera ograniczenia, które należa do grupy ``Default`` (grupa ta
+   jest przydatna dla :ref:`book-validation-group-sequence`);
 
 * ``registration`` - zawiera ograniczenia wyłącznie dla pól ``email`` i ``password``.
 
@@ -810,9 +809,134 @@ lub więcej nazw grup jako drugi argument metody ``validate()``::
 
     $errors = $validator->validate($author, array('registration'));
 
+Jeśli nie zostanie określona żadna grupa, to będą używane ograniczenia należące
+do grupy ``Default``.
+
 Oczywiście będziesz zazwyczaj używał walidacji pośrednio, poprzez bibliotekę formularzy.
 Więcej informacji o tym jak używać grup walidacyjnych w formularzach znajdziesz w rozdziale
 :ref:`book-forms-validation-groups`.
+
+.. _book-validation-group-sequence:
+
+Sekwencja grup
+--------------
+
+W niektórych przypadkach zachodzi potrzeba etapowego sprawdzenia grup. Do wykonania
+tego należy użyć funkcjonalności ``GroupSequence``. W takim przypadku obiekt określa
+sekwencję grup a następnie grupy w sekwencji grup są sprawdzane w kolejności.
+
+.. tip::
+
+    Sekwencje grup nie mogą zawierać grupy ``Default``, gdyż stworzyło by to zapętlenie.
+    Zamiast tego należy użyć grupy ``{ClassName}`` (np. ``User``).
+
+Dla przykładu załóżmy, że mamy klasę ``User`` i chcemy sprawdzić, że *username*
+i *password* są różne tylko, gdy wszystkie inne dane przechodzą walidację (w celu
+uniknięcia wielu komunikatów o błędach).
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # src/Acme/BlogBundle/Resources/config/validation.yml
+        Acme\BlogBundle\Entity\User:
+            group_sequence:
+                - User
+                - Strict
+            getters:
+                passwordLegal:
+                    - "True":
+                        message: "The password cannot match your username"
+                        groups: [Strict]
+            properties:
+                username:
+                    - NotBlank: ~
+                password:
+                    - NotBlank: ~
+
+    .. code-block:: php-annotations
+
+        // src/Acme/BlogBundle/Entity/User.php
+        namespace Acme\BlogBundle\Entity;
+
+        use Symfony\Component\Security\Core\User\UserInterface;
+        use Symfony\Component\Validator\Constraints as Assert;
+
+        /**
+         * @Assert\GroupSequence({"Strict", "User"})
+         */
+        class User implements UserInterface
+        {
+            /**
+            * @Assert\NotBlank
+            */
+            private $username;
+
+            /**
+            * @Assert\NotBlank
+            */
+            private $password;
+
+            /**
+             * @Assert\True(message="The password cannot match your username", groups={"Strict"})
+             */
+            public function isPasswordLegal()
+            {
+                return ($this->username !== $this->password);
+            }
+        }
+
+    .. code-block:: xml
+
+        <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
+        <class name="Acme\BlogBundle\Entity\User">
+            <property name="username">
+                <constraint name="NotBlank" />
+            </property>
+            <property name="password">
+                <constraint name="NotBlank" />
+            </property>
+            <getter property="passwordLegal">
+                <constraint name="True">
+                    <option name="message">The password cannot match your username</option>
+                    <option name="groups">
+                        <value>Strict</value>
+                    </option>
+                </constraint>
+            </getter>
+            <group-sequence>
+                <value>User</value>
+                <value>Strict</value>
+            </group-sequence>
+        </class>
+
+    .. code-block:: php
+
+        // src/Acme/BlogBundle/Entity/User.php
+        namespace Acme\BlogBundle\Entity;
+
+        use Symfony\Component\Validator\Mapping\ClassMetadata;
+        use Symfony\Component\Validator\Constraints as Assert;
+
+        class User
+        {
+            public static function loadValidatorMetadata(ClassMetadata $metadata)
+            {
+                $metadata->addPropertyConstraint('username', new Assert\NotBlank());
+                $metadata->addPropertyConstraint('password', new Assert\NotBlank());
+
+                $metadata->addGetterConstraint('passwordLegal', new Assert\True(array(
+                    'message' => 'The password cannot match your first name',
+                    'groups'  => array('Strict'),
+                )));
+
+                $metadata->setGroupSequence(array('User', 'Strict'));
+            }
+        }
+
+W tym przykładzie najpierw sprawdzamy wszystkie ograniczenia w grupie ``User``
+(która jest taka sama jak grupa ``Default``). Gdy wszystkie ograniczenia w tej
+grupie są prawidłowe i tylko wtedy, sprawdzana jest druga grupa ``Strict``.
 
 .. index::
    single: walidacja; walidacja wartości
@@ -876,8 +1000,8 @@ akcesory w obiekcie. Najczęściej będziesz stosował framework walidacyjny po�
 podczas używania formularzy, pamiętając, że walidacja może być stosowana gdziekolwiek,
 w celu sprawdzenia poprawności danych dowolnego obiektu.
 
-Dowiedz się więcej w Receptariuszu
-----------------------------------
+Dalsza lektura
+--------------
 
 * :doc:`Jak utworzyć własne ograniczenia walidacyjne</cookbook/validation/custom_constraint>`
 

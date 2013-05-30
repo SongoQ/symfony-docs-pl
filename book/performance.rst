@@ -7,10 +7,10 @@
 Wydajność
 =========
 
-Symfony2 jest szybkie, od razu po uruchomieniu. Oczywiście jeśli potrzebuje się
+Symfony2 jest szybkie zaraz po uruchomieniu. Oczywiście jeśli potrzebuje się
 jeszcze lepszej wydajności, jest kilka sposobów na przyśpieszenie Symfony. W tym
 rozdziale prezentujemy kilka sposobów do przyśpieszenie aplikacji opartych na Symfony.
-Mają one bardzo duże możliwości i są szeroko strosowane.
+Mają one bardzo duże możliwości i są szeroko stosowane.
 
 .. index::
    single: wydajność; akceleratory kodu bajtowego
@@ -18,7 +18,7 @@ Mają one bardzo duże możliwości i są szeroko strosowane.
 Akceleratory skompilowanego kodu bajtowego (np. APC)
 ----------------------------------------------------
 
-Jednym z najlepszych (i najłatwiejszych) sposobów na zwiększenie wydajności jest
+Jednym z najlepszych (i najłatwiejszych) sposobów zwiększenia wydajności jest
 użycie **akceleratorów skompilowanego kodu bajtowego**, czyli pamięci podręcznej
 przechowującej kod bajtowy. Ideą buforowania `kodu bajtowego`_  jest wyeliminowanie
 potrzeby ciągłego kompilowywania tego samego kodu. Dostępnych jest kilka
