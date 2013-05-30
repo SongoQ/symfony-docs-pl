@@ -1,5 +1,5 @@
 Pola tekstowe
-~~~~~~~~~~~
+~~~~~~~~~~~~~
 
 * :doc:`text</reference/forms/types/text>`
 * :doc:`textarea</reference/forms/types/textarea>`
@@ -13,7 +13,7 @@ Pola tekstowe
 * :doc:`url</reference/forms/types/url>`
 
 Pola wyboru
-~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 * :doc:`choice</reference/forms/types/choice>`
 * :doc:`entity</reference/forms/types/entity>`
@@ -23,7 +23,7 @@ Pola wyboru
 * :doc:`timezone</reference/forms/types/timezone>`
 
 Pola daty i czasu
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 * :doc:`date</reference/forms/types/date>`
 * :doc:`datetime</reference/forms/types/datetime>`
@@ -31,20 +31,20 @@ Pola daty i czasu
 * :doc:`birthday</reference/forms/types/birthday>`
 
 Pozostałe pola
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~
 
 * :doc:`checkbox</reference/forms/types/checkbox>`
 * :doc:`file</reference/forms/types/file>`
 * :doc:`radio</reference/forms/types/radio>`
 
 Grupy pól
-~~~~~~~~~~~~
+~~~~~~~~~
 
 * :doc:`collection</reference/forms/types/collection>`
 * :doc:`repeated</reference/forms/types/repeated>`
 
 Ukryte pola
-~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 * :doc:`hidden</reference/forms/types/hidden>`
 * :doc:`csrf</reference/forms/types/csrf>`

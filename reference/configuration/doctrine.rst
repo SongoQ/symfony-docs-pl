@@ -1,6 +1,9 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 .. index::
-   single: Doctrine; ORM Configuration Reference
-   single: Configuration Reference; Doctrine ORM
+   single: Doctrine; konfiguracja ORM
+   single: konfiguracja; Doctrine ORM
 
 Konfiguracja
 ============
@@ -8,67 +11,170 @@ Konfiguracja
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         doctrine:
             dbal:
                 default_connection:   default
+                types:
+                    # Kolekcja własnych typów
+                    # Na przykład
+                    some_custom_type:
+                        class:                Acme\HelloBundle\MyCustomType
+                        commented:            true
+
                 connections:
                     default:
                         dbname:               database
-                        host:                 localhost
-                        port:                 1234
-                        user:                 user
-                        password:             secret
-                        driver:               pdo_mysql
-                        driver_class:         MyNamespace\MyDriverImpl
-                        options:
-                            foo: bar
-                        path:                 %kernel.data_dir%/data.sqlite
-                        memory:               true
-                        unix_socket:          /tmp/mysql.sock
-                        wrapper_class:        MyDoctrineDbalConnectionWrapper
-                        charset:              UTF8
-                        logging:              %kernel.debug%
-                        platform_service:     MyOwnDatabasePlatformService
-                        mapping_types:
-                            enum: string
-                    conn1:
-                        # ...
-                types:
-                    custom: Acme\HelloBundle\MyCustomType
-            orm:
-                auto_generate_proxy_classes:    false
-                proxy_namespace:                Proxies
-                proxy_dir:                      %kernel.cache_dir%/doctrine/orm/Proxies
-                default_entity_manager:         default # The first defined is used if not set
-                entity_managers:
+
+                    # Kolekcja różnych nazwanych połączeń (np. default, conn2 itd.)
                     default:
-                        # Nazwa połączenia DBAL (połączenie oznaczone atrybutem "default" jest połączeniem domyślnym)
-                        connection:                     conn1
-                        mappings: # Required
-                            AcmeHelloBundle: ~
-                        class_metadata_factory_name:    Doctrine\ORM\Mapping\ClassMetadataFactory
-                        # All cache drivers have to be array, apc, xcache or memcache
-                        metadata_cache_driver:          array
-                        query_cache_driver:             array
+                        dbname:               ~
+                        host:                 localhost
+                        port:                 ~
+                        user:                 root
+                        password:             ~
+                        charset:              ~
+                        path:                 ~
+                        memory:               ~
+
+                        # gnazdo Unix używane przez MySQL
+                        unix_socket:          ~
+
+                        # True jeśli ma być stosowane stałe połączenie dla sterownika ibm_db2
+                        persistent:           ~
+
+                        # Protokół jaki ma być stosowany dla sterownika ibm_db2 (jeśli nie podano, to domyślnie użyty będzie TCP/IP)
+                        protocol:             ~
+
+                        # True jeśli ma być użyta jako nazwa usługi nazwa bazy danyc zamiast SID dla Oracle
+                        service:              ~
+
+                        # Tryb sesji do zastosowania dla sterownika oci8
+                        sessionMode:          ~
+
+                        # True jeśli ze sterownikiem oci8 ma być użyty zbiorczy serwer
+                        pooled:               ~
+
+                        # Konfiguracja MultipleActiveResultSets dla sterownika pdo_sqlsrv
+                        MultipleActiveResultSets:  ~
+                        driver:               pdo_mysql
+                        platform_service:     ~
+                        logging:              %kernel.debug%
+                        profiling:            %kernel.debug%
+                        driver_class:         ~
+                        wrapper_class:        ~
+                        options:
+                            # tablica ocji
+                            key:                  []
+                        mapping_types:
+                            # tablica typów mapowania
+                            name:                 []
+                        slaves:
+
+                            # kolekcja nazwanych połączeń podrzędnych (np. slave1, slave2)
+                            slave1:
+                                dbname:               ~
+                                host:                 localhost
+                                port:                 ~
+                                user:                 root
+                                password:             ~
+                                charset:              ~
+                                path:                 ~
+                                memory:               ~
+
+                                # gniazdo unix do zastosowania przez MySQL
+                                unix_socket:          ~
+
+                                # True jeśli ma być użyte stałe połączenie dla sterownika ibm_db2
+                                persistent:           ~
+
+                                # Protokół jaki ma być użyty dla sterownika ibm_db2 (domyślnie jest to TCP/IP)
+                                protocol:             ~
+
+                                # True jeśli jako nazwa usługi ma być użyta nazwa bazy danych zamiast SID dla Oracle
+                                service:              ~
+
+                                # Tryb sesji do uzycia dla sterownika oci8
+                                sessionMode:          ~
+
+                                # True jeśli dla sterownika oci8 ma być użyty zbiorczy serwer
+                                pooled:               ~
+
+                                # Configuring MultipleActiveResultSets dla sterownika pdo_sqlsrv
+                                MultipleActiveResultSets:  ~
+
+            orm:
+                default_entity_manager:  ~
+                auto_generate_proxy_classes:  false
+                proxy_dir:            %kernel.cache_dir%/doctrine/orm/Proxies
+                proxy_namespace:      Proxies
+                # poszukaj na ten temat informacji o klasie "ResolveTargetEntityListener" w Receptariuszu
+                resolve_target_entities: []
+                entity_managers:
+                    # Kolekcja róznych nazwanych menadżerów encji (np. some_em, another_em)
+                    some_em:
+                        query_cache_driver:
+                            type:                 array # wymagane
+                            host:                 ~
+                            port:                 ~
+                            instance_class:       ~
+                            class:                ~
+                        metadata_cache_driver:
+                            type:                 array # wymagane
+                            host:                 ~
+                            port:                 ~
+                            instance_class:       ~
+                            class:                ~
                         result_cache_driver:
-                            type:           memcache
-                            host:           localhost
-                            port:           11211
-                            instance_class: Memcache
-                            class:          Doctrine\Common\Cache\MemcacheCache
+                            type:                 array # wymagane
+                            host:                 ~
+                            port:                 ~
+                            instance_class:       ~
+                            class:                ~
+                        connection:           ~
+                        class_metadata_factory_name:  Doctrine\ORM\Mapping\ClassMetadataFactory
+                        default_repository_class:  Doctrine\ORM\EntityRepository
+                        auto_mapping:         false
+                        hydrators:
+
+                            # Tablica nazw hydratorów
+                            hydrator_name:                 []
+                        mappings:
+                            # Tablica odwzorowań, którymi muszą być nazwy pakietów lub coś innego
+                            mapping_name:
+                                mapping:              true
+                                type:                 ~
+                                dir:                  ~
+                                alias:                ~
+                                prefix:               ~
+                                is_bundle:            ~
                         dql:
+                            # kolekcja funkcji łańcuchowych
                             string_functions:
-                                test_string: Acme\HelloBundle\DQL\StringFunction
+                                # przykład
+                                # test_string: Acme\HelloBundle\DQL\StringFunction
+
+                            # kolekcja funkcji numerycznych
                             numeric_functions:
-                                test_numeric: Acme\HelloBundle\DQL\NumericFunction
+                                # przykład
+                                # test_numeric: Acme\HelloBundle\DQL\NumericFunction
+
+                            # kolekcja funkcji daty i czasu
                             datetime_functions:
-                                test_datetime: Acme\HelloBundle\DQL\DatetimeFunction
-                    em2:
-                        # ...
+                                # przykład
+                                # test_datetime: Acme\HelloBundle\DQL\DatetimeFunction
+
+                        # zaresjestrowanie filtrów SQL dla menadżera encji
+                        filters:
+                            # Tablica filtrów
+                            some_filter:
+                                class:                ~ # wymagane
+                                enabled:              false
 
     .. code-block:: xml
-
+       :linenos:
+       
         <container xmlns="http://symfony.com/schema/dic/services"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:doctrine="http://symfony.com/schema/dic/doctrine"
@@ -115,7 +221,7 @@ Konfiguracja
                         <doctrine:mapping
                             name="DoctrineExtensions"
                             type="xml"
-                            dir="%kernel.root_dir%/../src/vendor/DoctrineExtensions/lib/DoctrineExtensions/Entity"
+                            dir="%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/DoctrineExtensions/Entity"
                             prefix="DoctrineExtensions\Entity"
                             alias="DExt"
                         />
@@ -124,17 +230,20 @@ Konfiguracja
             </doctrine:config>
         </container>
 
+
 Przegląd Konfiguracji
 ---------------------
 
-Poniższy przykład konfiguracji pokazuje wszystkie domyślne ustawienia konfiguracji ORMa:
+Poniższy przykład konfiguracji pokazuje wszystkie domyślne ustawienia konfiguracji
+rozpoznawane przez ORM:
 
 .. code-block:: yaml
+   :linenos:
 
     doctrine:
         orm:
             auto_mapping: true
-            # standardowa dystrybucja nadpisuje tą wartość, ustawiając true w trybie debug, oraz false w przeciwnym wypadku
+            # standardowa dystrybucja nadpisuje tą wartość, ustawiając true w trybie debugowania a false w przeciwnym wypadku
             auto_generate_proxy_classes: false
             proxy_namespace: Proxies
             proxy_dir: %kernel.cache_dir%/doctrine/orm/Proxies
@@ -143,66 +252,71 @@ Poniższy przykład konfiguracji pokazuje wszystkie domyślne ustawienia konfigu
             query_cache_driver: array
             result_cache_driver: array
 
-Istnieje jeszcze wiele innych opcji konfiguracyjnych których możesz użyć do zastąpienia niektórych klas,
-ale jest to przewidziane do bardziej zaawansowanych przypadków użycia.
+Istnieje jeszcze wiele innych opcji konfiguracyjnych których możesz użyć do
+zastąpienia niektórych klas, ale jest to już zastosowanie bardzo zaawansowane.
 
-Sterowniki Cache
-~~~~~~~~~~~~~~~~
+Sterowniki buforowania
+~~~~~~~~~~~~~~~~~~~~~~
 
-Dla sterowników cache możesz ustwić następujące wartości "array", "apc", "memcache"
-lub "xcache".
+Dla sterowników buforowania można ustawić następujące wartości "array", "apc",
+"memcache" lub "xcache".
 
-Poniższy przykład pokazuje nadpisanie konfiguracji cache:
+Poniższy przykład pokazuje ogólny zarys konfiguracji buforowania:
 
 .. code-block:: yaml
+   :linenos:
 
     doctrine:
         orm:
             auto_mapping: true
             metadata_cache_driver: apc
-            query_cache_driver: xcache
+            query_cache_driver:
+                type: service
+                id: my_doctrine_common_cache_service
             result_cache_driver:
                 type: memcache
                 host: localhost
                 port: 11211
                 instance_class: Memcache
 
-Konfiguracja Mapowania
+Konfiguracja mapowania
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Wyraźna definicja wszystkich zmapowanych encji jest potrzebna tylko w konfiguracji
-ORM, jest tam kilka opcji które możesz kontrolować. Poniższe opcje konfiguracyjne
-dostępne są dla mapowania:
+Jawne określenie wszystkich odwzorowanych encji jest tylko konieczne w konfiguracji
+ORM i jest kilka opcji konfiguracyjnych, które można kontrolować. Poniższe opcje
+konfiguracyjne służą dla odwzorowań:
 
-* ``type`` przyjmuje wartości ``annotation``, ``xml``, ``yml``, ``php`` lub ``staticphp``.
-  Opcja ta określa jaki sposób wykorzystujesz podczas opisywania mapowań.
+* ``type``: przyjmuje wartości ``annotation``, ``xml``, ``yml``, ``php`` lub ``staticphp``.
+  Opcja określa typ metadanych stosowany w mapowaniu.
 
-* ``dir`` ścieżka do mapowań lub też plików encji (w zależności od sterownika). 
-  Jeśli ścieżka jest względna, to zakładamy że jest względna do głównego katalogu bundla.
-  Działa to tylko wtedy gdy nazwa Twojego mapowania jest identyczna z nazwą bundla. 
-  Jeśli chcesz użyć ścieżki absolutnej powinieneś poprzedzić ją parametrem z kernela,
-  który jest dostępny w DIC (np. %kernel.root_dir%).
+* ``dir``: ścieżka do plików odwzorowań lub encji (w zależności od sterownika).
+  Jeśli jest to ścieżka względna, to odnosi się ona do katalogu pakietu. Działa
+  to tylko wtedy, gdy nazwa odwzorowań jest taka sama jak nazwa pakietu. Jeżeli
+  chce się użyć tej opcji do określenia ścieżki bezwzględnej, to należy podać
+  przedrostek ścieżki z parametrami *kernel*, które istnieją w DIC (na przykład
+  %kernel.root_dir%).
 
-* ``prefix`` Wspólny prefiks które wszystkie encje z tego mapowania będą używać.
-  Prefiks ten nie powinien być definiowany dla kilku różnych mapowań. Ponieważ
-  niektóre z Twoich encji mogą nie zostać znalezione przez Doctrine.
-  Ta opcja domyślnie przyjmuje wartość przestrzeń nazw bundla + ``Enity``, dla przykładu
-  dla aplikacji bundla nazwanej ``AcmeHelloBundle`` prefix będzie wyglądał tak
+* ``prefix``: wspólny przedrostek przestrzeni nazw dla wszystkich encji z tego
+  udziału odwzorowań. Przedrostek ten nie powinien kolidować z przedrostkami innych
+  definicji odwzorowań, gdyż w takim przypadku encje nie będą mogły być odnalezione
+  przez Doctrine. Opcja ta domyślnie przyjmuje wartość nazwy pakietu + ``Entity``.
+  Przykładowo, dla pakietu aplikacji o nazwie ``AcmeHelloBundle`` przedrostkiem będzie
   ``Acme\HelloBundle\Entity``.
 
-* ``alias`` Doctrine umożliwia skrócenie przestrzeni nazw encji, do krótszej wersji
-  używanej przez zapytania DQL lub też "Repository", poprzez skróty. Gdy używasz bundla
-  domyślnym aliasem jest nazwa bundla.
+* ``alias``: w celu uproszczenia, Doctrine oferuje możliwość aliasowanie nazw
+  przestrzeni nazw encji przez używanie w zapytaniach DQL lub przy dostępie do
+  repozytorium krótkich nazw. W przypadku używania pakietu, domyślna wartością
+  aliasu jest nazwa pakietu.
 
-* ``is_bundle`` Opcja ta wywodzi się z opcji ``dir`` i domyślnie przyjmuje wartość true
-  jeśli folder jest względny, poprzez sprawdzenie czy ``file_exists()`` zwraca false.
-  Przyjmuje wartość false jeśli sprawdzenie istnienia zwraca true. W tym przypadku
-  ścieżka absolutna została określona i pliki metadanych w większości przypadków są poza
-  folderem bundla.
+* ``is_bundle`` wartość tej opcji jest pochodną wartością opcji ``dir`` i domyślnie
+  jest to *true*, jeśli wartość ``dir`` jest adresem względnym dla którego funkcja
+  ``file_exists()` zwraca *false*. Gdy sprawdzenie istnienia pliku zwraca *true*,
+  to jest wartość *false*. W takim przypadku zostaje określona ścieżka bezwzględna
+  a pliki metadanych prawdopodobnie znajdują się poza pakietem.
 
 .. index::
-    single: Configuration; Doctrine DBAL
-    single: Doctrine; DBAL configuration
+    single: konfiguracja; Doctrine DBAL
+    single: Doctrine; konfiguracja DBAL
 
 .. _`reference-dbal-configuration`:
 
@@ -210,19 +324,16 @@ dostępne są dla mapowania:
 Konfiguracja Doctrine DBAL
 --------------------------
 
-.. note::
-
-    DoctrineBundle wspiera wszystkie parametry które są akceptowane przez sterowniki
-    Doctrine, przekonwertowane na XML lub YAML w formacie egzekwowanym przez Symfony.
-    Zobacz dokumentację Doctrine `DBAL documentation`_ w celu uzyskania większej ilości
-    informacji.
-
-Poza tym domyślne opcje Doctrine są powiązane z opcjami Symfony które możesz konfigurować.
-Poniższy przykład pokazuje wszystkie możliwe opcje konfiguracyjne:
+DoctrineBundle obsługuje wszystkie parametry które są akceptowane przez sterowniki
+Doctrine, przekonwertowane na standardy nazewnicze XML lub YAML egzekwowane przez
+Symfony. Proszę przeczytać dokumentację Doctrine `DBAL documentation`_ w celu
+uzyskania większej ilości informacji. Poniższy przykład pokazuje wszystkie możliwe
+opcje konfiguracyjne:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         doctrine:
             dbal:
@@ -232,22 +343,28 @@ Poniższy przykład pokazuje wszystkie możliwe opcje konfiguracyjne:
                 user:                 user
                 password:             secret
                 driver:               pdo_mysql
+                # the DBAL driverClass option
                 driver_class:         MyNamespace\MyDriverImpl
+                # opcje DBAL driverOptions
                 options:
                     foo: bar
-                path:                 %kernel.data_dir%/data.sqlite
+                path:                 "%kernel.data_dir%/data.sqlite"
                 memory:               true
                 unix_socket:          /tmp/mysql.sock
+                # opcje DBAL wrapperClass
                 wrapper_class:        MyDoctrineDbalConnectionWrapper
                 charset:              UTF8
-                logging:              %kernel.debug%
+                logging:              "%kernel.debug%"
                 platform_service:     MyOwnDatabasePlatformService
                 mapping_types:
                     enum: string
                 types:
                     custom: Acme\HelloBundle\MyCustomType
+                # opcje DBAL keepSlave
+                keep_slave:           false
 
     .. code-block:: xml
+       :linenos:
 
         <!-- xmlns:doctrine="http://symfony.com/schema/dic/doctrine" -->
         <!-- xsi:schemaLocation="http://symfony.com/schema/dic/doctrine http://symfony.com/schema/dic/doctrine/doctrine-1.0.xsd"> -->
@@ -276,10 +393,11 @@ Poniższy przykład pokazuje wszystkie możliwe opcje konfiguracyjne:
             </doctrine:dbal>
         </doctrine:config>
 
-Jeśli chcesz skonfigurować kilka połączeń w YAML, zdefiniuj je w kolekcji ``connections`
-oraz nadaj im unikalną nazwę:
+Jeżeli w pliku YAML chce się skonfigurować wiele połączeń, należy je umieścić w
+kluczu ``connections`` i nadać im unikalna nazwę:
 
 .. code-block:: yaml
+   :linenos:
 
     doctrine:
         dbal:
@@ -296,8 +414,9 @@ oraz nadaj im unikalną nazwę:
                     password:         null
                     host:             localhost
 
-Usługa ``database_connection`` zawsze odwołuje się do *domyślnego* połączenia,
-który to jest pierwszym zdefiniowanym lub też oznaczonym parametrem ``default_connection``.
+Usługa ``database_connection`` zawsze odnosi się do połączenia *default*,
+które jest skonfigurowane pierwsze lub połączenia skonfigurowanego w parametrze
+``default_connection``.
 
 Każde z połączeń jest także dostępne poprzez usługę ``doctrine.dbal.[name]_connection``
 gdzie ``[name]`` jest nazwą połączenia.

@@ -1,32 +1,36 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 .. index::
    pair: Doctrine; DBAL
 
-Jak używać Warstwy DBAL z Doctrine
-================================
+Jak używać warstwy DBAL z Doctrine
+==================================
 
 .. note::
 
-    Ten artykuł jest o warstwie DBAL z Doctrine. Zazwyczaj, będziesz pracował 
-    z warstwą ORM która jest wyższą warstwą w Doctrine, która używa warstwy DBAL
-    jakby "za sceną" do komunikowania się z bazą danych. Aby dowiedzieć się więcej
-    na temat ORM dostarczanego przez Doctrine, zobacz ":doc:`/book/doctrine`".
+    Artykuł ten traktuje o warstwie Doctrine DBAL. Zazwyczaj będziesz pracował z
+    warstwą wyższego poziomu - Doctrine ORM, która wykorzystuje w tle DBAL do
+    rzeczywistego komunikowania się z bazą danych. Aby dowiedzieć się więcej o
+    Doctrine ORM, proszę przeczytać ":doc:`/book/doctrine`".
 
-`Doctrine`_ Database Abstraction Layer (DBAL) jest abstrakcyjną warstwą która ulokowana jest
-na szczycie `PDO`_, umożliwia nam ona intuicyjne oraz elastyczne API do komunikacji z 
-większością popularnych relacyjnych baz danych. Innymi słowy, biblioteka DBAL
-ułatwia wywoływanie zapytań oraz wykonywanie innych akcji bazy danych.
+`Doctrine`_ Database Abstraction Layer (DBAL) jest abstrakcyjną warstwą ulokowana
+na szczycie `PDO`_ i dostarczajaca intuicyjne i elastyczne API dla komunikacji z
+najbardziej popularnymi relacyjnymi bazami danych. Innymi słowami, biblioteka DBAL
+ułatwia wykonywanie zapytań i realizację innych działań na bazie danych.
 
 .. tip::
 
-    Przeczytaj oficjalną dokumentację Doctrine `DBAL Documentation`_
-    aby dowiedzieć się wszystkich szczegółów i możliwości jakie daje biblioteka DBAL.
+    Przeczytaj oficjalną `dokumentację DBAL`_ w celu poznania wszystkich szczegółów
+    i możliwości jakie daje biblioteka DBAL Doctrine.
 
-Aby rozpocząć, skonfiguruj parametry połączenia do bazy:
+Aby rozpocząć należy skonfigurować parametry połączenia z bazą danych:
 
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         doctrine:
@@ -38,6 +42,7 @@ Aby rozpocząć, skonfiguruj parametry połączenia do bazy:
                 charset:  UTF8
 
     .. code-block:: xml
+       :linenos:
 
         // app/config/config.xml
         <doctrine:config>
@@ -51,6 +56,7 @@ Aby rozpocząć, skonfiguruj parametry połączenia do bazy:
         </doctrine:config>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('doctrine', array(
@@ -62,11 +68,10 @@ Aby rozpocząć, skonfiguruj parametry połączenia do bazy:
             ),
         ));
 
-Aby zobaczyć pełną konfigurację DBAL, zobacz :ref:`reference-dbal-configuration`.
+W celu poznania wszystkich opcji konfiguracyjnych DBAL proszę zobaczyć
+:ref:`reference-dbal-configuration`.
 
-Możesz uzyskać dostęp do połączenia DBAL poprzez dostęp do usługi ``database_connection``:
-
-.. code-block:: php
+Można uzyskać dostęp do połączenia Doctrine DBAL poprzez usługę ``database_connection``::
 
     class UserController extends Controller
     {
@@ -79,18 +84,20 @@ Możesz uzyskać dostęp do połączenia DBAL poprzez dostęp do usługi ``datab
         }
     }
 
-Rejestracja Niestandardowych Typów Mapowań
-------------------------------------------
 
-Możesz zarejestrować niestandardowe typy mapować poprzez konfigurację Symfony.
-Zostaną one dodane do wszystkich skonfigurowanych połączeń. 
-Aby uzyskać więcej informacji o niestandardowych typach mapowań, przeczytaj dokumentację
-`Custom Mapping Types`_.
+Rejestracja niestandardowych typów odwzorowań
+---------------------------------------------
+
+Zarejestrowanie niestandardowych typów odwzorowań dokonuje się w konfiguracji Symfony.
+Tak zarejestrowane typy zostaną dodane do wszystkich skonfigurowanych połączeń.
+Więcej informacji o niestandardowych typach odwzorowań można znaleźć w rozdziale
+`Niestandardowe typy odwzorowań`_ w dokumentacji Doctrine.
 
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         doctrine:
@@ -100,6 +107,62 @@ Aby uzyskać więcej informacji o niestandardowych typach mapowań, przeczytaj d
                     custom_second: Acme\HelloBundle\Type\CustomSecond
 
     .. code-block:: xml
+       :linenos:
+       
+        <!-- app/config/config.xml -->
+        <container xmlns="http://symfony.com/schema/dic/services"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:doctrine="http://symfony.com/schema/dic/doctrine"
+            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+                                http://symfony.com/schema/dic/doctrine http://symfony.com/schema/dic/doctrine/doctrine-1.0.xsd">
+
+            <doctrine:config>
+                <doctrine:dbal>
+                    <doctrine:type name="custom_first" class="Acme\HelloBundle\Type\CustomFirst" />
+                    <doctrine:type name="custom_second" class="Acme\HelloBundle\Type\CustomSecond" />
+                </doctrine:dbal>
+            </doctrine:config>
+        </container>
+
+    .. code-block:: php
+       :linenos:
+
+        // app/config/config.php
+        $container->loadFromExtension('doctrine', array(
+            'dbal' => array(
+                'types' => array(
+                    'custom_first'  => 'Acme\HelloBundle\Type\CustomFirst',
+                    'custom_second' => 'Acme\HelloBundle\Type\CustomSecond',
+                ),
+            ),
+        ));
+
+Rejestrowanie niestandardowych typów odwzorowań w SchemaTool
+------------------------------------------------------------
+
+SchemaTool jest używany do kontroli porównawczej bazy danych ze schematem.
+Do realizacji tego zadania trzeba znać typ potrzebnego odwzorowania, jaki należy
+zastosować dla każdego typu bazy danych. Zarejestrowanie nowego typu można dokonać
+za pomocą konfiguracji.
+
+Odwzorujmy typ ENUM (nie obsługiwany domyślnie przez DBAL) na typ odwzorowania ``string``:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+       :linenos:
+
+        # app/config/config.yml
+        doctrine:
+            dbal:
+                connections:
+                    default:
+                        // Other connections parameters
+                        mapping_types:
+                            enum: string
+
+    .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <container xmlns="http://symfony.com/schema/dic/services"
@@ -119,6 +182,7 @@ Aby uzyskać więcej informacji o niestandardowych typach mapowań, przeczytaj d
         </container>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('doctrine', array(
@@ -133,59 +197,8 @@ Aby uzyskać więcej informacji o niestandardowych typach mapowań, przeczytaj d
             ),
         ));
 
-Rejestrowanie Niestandardowych Typów Mapowań w SchemaTool
----------------------------------------------------------
-
-SchemaTool jest używany do porównywania bazy danych z schematem.
-Do realizacji tego zadania, mechanizm musi wiedzieć który typ mapowania
-ma być użyty do którego typu w bazie danych. Rejestracja odbywa się poprzez 
-plik konfiguracyjny. 
-
-Zmapujmy teraz type ENUM (nie wspierany domyślnie przez DBAL) do typu ``string``:
-
-.. configuration-block::
-
-    .. code-block:: yaml
-
-        # app/config/config.yml
-        doctrine:
-            dbal:
-                connection:
-                    default:
-                        // Other connections parameters
-                        mapping_types:
-                            enum: string
-
-    .. code-block:: xml
-
-        <!-- app/config/config.xml -->
-        <container xmlns="http://symfony.com/schema/dic/services"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xmlns:doctrine="http://symfony.com/schema/dic/doctrine"
-            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-                                http://symfony.com/schema/dic/doctrine http://symfony.com/schema/dic/doctrine/doctrine-1.0.xsd">
-
-            <doctrine:config>
-                <doctrine:dbal>
-                    <doctrine:type name="custom_first" class="Acme\HelloBundle\Type\CustomFirst" />
-                    <doctrine:type name="custom_second" class="Acme\HelloBundle\Type\CustomSecond" />
-                </doctrine:dbal>
-            </doctrine:config>
-        </container>
-
-    .. code-block:: php
-
-        // app/config/config.php
-        $container->loadFromExtension('doctrine', array(
-            'dbal' => array(
-                'types' => array(
-                    'custom_first'  => 'Acme\HelloBundle\Type\CustomFirst',
-                    'custom_second' => 'Acme\HelloBundle\Type\CustomSecond',
-                ),
-            ),
-        ));
 
 .. _`PDO`:           http://www.php.net/pdo
 .. _`Doctrine`:      http://www.doctrine-project.org/projects/dbal/2.0/docs/en
-.. _`DBAL Documentation`: http://www.doctrine-project.org/projects/dbal/2.0/docs/en
-.. _`Custom Mapping Types`: http://www.doctrine-project.org/docs/dbal/2.0/en/reference/types.html#custom-mapping-types
+.. _`dokumentację DBAL`: http://www.doctrine-project.org/projects/dbal/2.0/docs/en
+.. _`Niestandardowe typy odwzorowań`: http://www.doctrine-project.org/docs/dbal/2.0/en/reference/types.html#custom-mapping-types
