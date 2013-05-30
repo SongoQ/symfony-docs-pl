@@ -5,11 +5,7 @@ Symfony2 - polska dokumentacja
 
 Jest to polskie tłumczenie oficjalnej dokumentacji platformy aplikacyjnej Symfony,
 publikowanej na stronach http://symfony.com/, rozszerzone o polskojęzyczne artykuły
-tam nie ujęte. Jest to rozgałęzienie (fork) projektu `ampulso/symfony-docs-pl`_.
-Źródła niniejszej dokumentacji publikowane są na serwisie github
-pod adresem `abutronik/symfony-docs-pl`_. Zasilają one również projekt macierzysty 
-`ampulso/symfony-docs-pl`_, ale (jak na razie) nie w pełnym zakresie. Serdecznie
-zapraszam do współpracy. Szczegóły omówione są na stronie ..... 
+tam nie ujęte.  
 
 
 :doc:`Szybki przegląd<quick_tour/index>`
@@ -110,5 +106,3 @@ i dokumentacji Symfony2
    /contributing/documentation/index
    /contributing/community/index
 
-.. _`ampulso/symfony-docs-pl`: http://github.com/ampulso/symfony-docs-pl/
-.. _`abutronik/symfony-docs-pl`: http://github.com/abutronik/symfony-docs-pl/
