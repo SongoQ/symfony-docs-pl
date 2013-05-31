@@ -8,12 +8,12 @@ publikowanej na stronach http://symfony.com/, rozszerzone o polskojęzyczne arty
 tam nie ujęte.  
 
 
-:doc:`Szybki przegląd<quick_tour/index>`
-========================================
+:doc:`/quick_tour/index`
+========================
 
 Co może być lepszego dla uzupełnienia swojej wiedzy, niż wypróbowanie przez siebie Symfony?
 To zajmie Ci trochę czasu, ale warto go poświęcić. Krok, po kroku będziesz tu odkrywał
-wszechświat Symfony. Uważaj, Symfony może uzależnić!
+świat Symfony. Uważaj, Symfony może uzależnić!
 
 .. toctree::
    :maxdepth: 1
@@ -24,8 +24,8 @@ wszechświat Symfony. Uważaj, Symfony może uzależnić!
    /quick_tour/the_architecture
 
 
-:doc:`Podręcznik<book/index>`
-=============================
+:doc:`</book/index>`
+====================
 
 Jest to biblia Symfony, przygotowana przez zespół rdzenia projektu Symfony.
 Jest kierowany do wszystkich użytkowników platformy, którzy zazwyczaj chcą go
@@ -54,8 +54,8 @@ mieć pod ręka.
    /book/internals
    /book/stable_api
 
-:doc:`CMF Symfony<cmf/index>`
-=============================
+:doc:`/cmf/index`
+=================
 
 *Symfony Content Management Framework* (w skrócie Symfony CMF) jest dystrybucją
 frameworka Symfony i celowo dobranych pakietów, tworzących w ten sposób framework
@@ -63,8 +63,8 @@ systemu zarządania treścią (CMF). System ten ma swoją bogatą dokumentację,
 jej lektury niezbędna jest znajomość zagadnień omówionych w :doc:`Podręczniku
 Symfony<book/index>`.  
 
-:doc:`Receptariusz<cookbook/index>`
-===================================
+:doc:`/cookbook/index`
+======================
 
 Ten dział w oryginale nosi nazwę „Cookbook”, czyli „książka kucharska”.
 Ta „książka kucharska” nie jest przeznaczona do nauki gotowania. Jest to przewodnik
@@ -73,8 +73,8 @@ po recepturach przygotowanych wg precyzyjnej metodologii, pokazujących, jak prz
 Znajdziesz tu konkretne rozwiązania dla konkretnych potrzeb.
 
 
-:doc:`Informator API<reference/index>`
-======================================
+:doc:`/reference/index/`
+========================
 
 Odkryj wielkie możliwości dostosowania frameworka Symfony do swoich potrzeb
 
@@ -93,8 +93,8 @@ Symfony zbudowany jest z pakietów. Dowiedz się o nich więcej.
 Ponadto dostępnych jest wiele innych użytecznych pakietów osób trzecich.
 Lista tych pakietów dostępna jest na serwisie `Knp Bundles <http://knpbundles.com/>`_.       
 
-:doc:`Wkład w rozwój<contributing/index>`
-=========================================
+:doc:`/contributing/index`
+==========================
 
 Zbiór artykułów dotyczących społeności Symfony i współpracy przy rozwijaniu projektu
 i dokumentacji Symfony2
