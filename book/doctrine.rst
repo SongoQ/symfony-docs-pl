@@ -1421,8 +1421,8 @@ Więcej informacji o tym jak znaleźć i stosować te rozszerzenia znajdziesz w 
 
 .. _book-doctrine-field-types:
 
-Doctrine Field Types Reference
-------------------------------
+Informacje o typach pól Doctrine
+--------------------------------
 
 Doctrine dostarczana jest z dużą liczbą dostępnych typów pól.
 Każdy z nich odwzorowuje typ danych PHP na określony typ kolumny w bazie danych.
@@ -1469,17 +1469,17 @@ Rozpatrzmy kilka przykładów:
        :linenos:
 
         /**
-         * A string field with length 255 that cannot be null
-         * (reflecting the default values for the "type", "length"
-         * and *nullable* options)
+         * Pole tekstowe o długości 255 znaków, które nie może być puste
+         * (odzwierciedlają to wartości domyślne dla opcji "type", "length"
+         * i *nullable*)
          *
          * @ORM\Column()
          */
         protected $name;
 
         /**
-         * A string field of length 150 that persists to an "email_address" column
-         * and has a unique index.
+         * Pole tekstowe o długości 150 znaków, które utrzymuje kolumnę "email_address"
+         * i ma unikalny indeks.
          *
          * @ORM\Column(name="email_address", unique=true, length=150)
          */
@@ -1489,14 +1489,14 @@ Rozpatrzmy kilka przykładów:
        :linenos:
 
         fields:
-            # A string field length 255 that cannot be null
-            # (reflecting the default values for the "length" and *nullable* options)
-            # type attribute is necessary in yaml definitions
+            # Pole tekstowe odługości 255 znaków, które nie może być puste
+            # (odzwierciedlają to wartości domyślne dla opcji "length" i *nullable*).
+            # Atrybut type jest konieczny w definicji yaml
             name:
                 type: string
 
-            # A string field of length 150 that persists to an "email_address" column
-            # and has a unique index.
+            # Pole tekstowe o długości 150 znaków, które utrzymuje kolumnę "email_address"
+            # i ma unikalny indeks.
             email:
                 type: string
                 column: email_address
@@ -1507,9 +1507,9 @@ Rozpatrzmy kilka przykładów:
        :linenos:
 
         <!--
-            A string field length 255 that cannot be null
-            (reflecting the default values for the "length" and *nullable* options)
-            type attribute is necessary in yaml definitions
+            Pole tekstowe odługości 255 znaków, które nie może być puste
+            (odzwierciedlają to wartości domyślne dla opcji "length" i *nullable*).
+            Atrybut type jest konieczny w definicji yaml
         -->
         <field name="name" type="string" />
         <field name="email"
