@@ -1,10 +1,14 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 Architektura
 ============
 
-Jesteś moim bohaterem! Kto by pomyślał że będziesz tutaj po trzech pierwszych częściach?
-Twoje starania zostaną niedługo nagrodzone. Pierwsze trzy części nie zagłębiały się
-za głęboko w architekturę frameworka. A ponieważ ona wyróżna Symfony2 z tłumu innych
-frameworków, zanurkujmy w architekturę teraz.
+Jestem pełen uznania dla Ciebie! Miałem obawy, że nie znajdziesz sie tutaj po
+lekturze trzech pierwszych części przewodnika? Twoje starania zostaną niedługo
+nagrodzone. Pierwsze trzy części nie zagłębiały się za głęboko w architekturę frameworka.
+Bo to ona sprawia, że ​​Symfony2 wyróżnia się z tłumu innych frameworków.
+Zanurzmy się więc teraz w architekturę Symfony2.
 
 Zrozumienie Struktury Katalogów
 -------------------------------
@@ -21,9 +25,9 @@ aplikacji Symfony2:
 Katalog ``web/``
 ~~~~~~~~~~~~~~~~
 
-Katalog główny serwera jest miejscem wszystkich publicznych oraz statycznych
-plików takich jak obrazki, arkusze stylów, oraz pliki JavaScript. Tam także
-umiejscowione są front kontrolery::
+Katalog ``web`` jest miejscem wszystkich publicznych oraz statycznych
+plików takich jak obrazy, arkusze stylów oraz pliki JavaScript. Tam także
+umiejscowiony jest :term:`kontroler wejścia <kontroler wejścia>`::
 
     // web/app.php
     require_once __DIR__.'/../app/bootstrap.php.cache';
@@ -35,91 +39,71 @@ umiejscowione są front kontrolery::
     $kernel->loadClassCache();
     $kernel->handle(Request::createFromGlobals())->send();
 
-Jądro wymaga przede wszystkim pliku ``bootstrap.php.cache``, który inicjuje
-framework oraz rejestruje autoloader (zobacz poniżej).
+P pierwszej kolejności jądro oczekuje istnienie pliku ``bootstrap.php.cache``,
+który inicjuje framework oraz rejestruje ``autoloader`` (zobacz niżej).
 
-Jak każdy front kontroler, ``app.php`` używa Klasy Jądra, ``AppKernel``, do
-inicjalizacji aplikacji.
+Jak każdy kontroler wejścia, ``app.php`` używa klasy jądra ``AppKernel`` do
+rozruchu aplikacji.
 
 .. _the-app-dir:
 
 Katalog ``app/``
 ~~~~~~~~~~~~~~~~
 
-Klasa ``AppKernel`` jest głównym wejściem konfiguracji aplikacji
+Klasa ``AppKernel`` jest głównym punktem wejścia do konfiguracji aplikacji
 i jako takie, jest przechowywany w folderze ``app/``.
 
 Ta klasa musi implementować dwie metody:
 
-* ``registerBundles()`` musi zwracać tablicę wszystkich bundli do uruchomienia
+* ``registerBundles()`` zwraca tablicę wszystkich pakietów potrzebnych do uruchomienia
   aplikacji;
 
 * ``registerContainerConfiguration()`` wczytuje konfigurację aplikacji
   (więcej na ten temat później).
 
-Autoload PHP może zostać skonfigurowany poprzez ``app/autoload.php``::
-
-    // app/autoload.php
-    use Symfony\Component\ClassLoader\UniversalClassLoader;
-
-    $loader = new UniversalClassLoader();
-    $loader->registerNamespaces(array(
-        'Symfony'          => array(__DIR__.'/../vendor/symfony/src', __DIR__.'/../vendor/bundles'),
-        'Sensio'           => __DIR__.'/../vendor/bundles',
-        'JMS'              => __DIR__.'/../vendor/bundles',
-        'Doctrine\\Common' => __DIR__.'/../vendor/doctrine-common/lib',
-        'Doctrine\\DBAL'   => __DIR__.'/../vendor/doctrine-dbal/lib',
-        'Doctrine'         => __DIR__.'/../vendor/doctrine/lib',
-        'Monolog'          => __DIR__.'/../vendor/monolog/src',
-        'Assetic'          => __DIR__.'/../vendor/assetic/src',
-        'Metadata'         => __DIR__.'/../vendor/metadata/src',
-    ));
-    $loader->registerPrefixes(array(
-        'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',
-        'Twig_'            => __DIR__.'/../vendor/twig/lib',
-    ));
-
-    // ...
-
-    $loader->registerNamespaceFallbacks(array(
-        __DIR__.'/../src',
-    ));
-    $loader->register();
-
-:class:`Symfony\\Component\\ClassLoader\\UniversalClassLoader` jest używana do ładowania
-plików które respektują techniczne `standardy`_ dla przestrzeni nazw PHP 5.3
-lub też `konwencji`_ nazewnictwa klas PEAR. Jak możesz zauważyć tutaj, wszystkie
-zależności przechowywane są w katalogu ``vendor/``, jest to tylko konwencja.
-Możesz przechowywać je gdziekolwiek chcesz, globalnie na Twoim serwerze lub
-lokalnie w Twoich projektach.
+Autoładowanie jest obsługiwane automatycznie poprzez `Composer`_, co oznacza, że
+można użyć dowolnych  klas PHP nie robiąc nic. Jeśli potrzeba więcej elastyczności,
+to można rozszerzyć autoloader w pliku ``app/autoload.php``. Wszystkie zależności
+są przechowywane w katalogu ``vendor/``, ale jest to tylko konwencja. Można je
+przechowywać wszędzie tam, gdzie się chce -  globalnie na serwerze lub lokalnie
+w swoich projektach.
 
 .. note::
 
-    Jeśli chcesz dowiedzieć się więcej o elastyczności autoloadera Symfony2, przeczytaj
-    ":doc:`/cookbook/tools/autoloader`".
+    Jeżeli chcesz nauczyć się więcej o programie Composer, przeczytaj `Composer-Autoloader`_.
+    Symfony ma również komponent autoładowania - czytaj ":doc:`/components/class_loader`".
 
-Zrozumienie Systemu Bundli
---------------------------
 
-Ten rozdział przedstawia jeden z największych i najpotężniejszych cech Symfony2,
-system :term:`bundle`.
+Zrozumienie systemu pakietów
+----------------------------
 
-Bundle jest czymś w rodzaju pluginu - w innych programach. Więc dlaczego nazywamy
-to *bundle* a nie właśnie *plugin*? Ponieważ *wszystko* jest bundlem w Symfony2,
-od rdzennych funkcjonalności frameworka po kod który piszesz dla swojej aplikacji.
-Bundle są obywatelami pierwszej kategorii w Symfony2. Daje Ci to elastyczność
-użycia gotowych funkcji popakowanych w bundlach zewnętrznych lub do
-rozpowszechniania swoich własnych bundli. Umożliwia to łatwe wybranie funkcji
-które chcesz włączyć w swojej aplikacji oraz dostosowanie ich do swoich potrzeb.
-I na koniec dnia, kod Twojej aplikacji jest tak samo *ważny* jak kod jądra
-frameworka.
+Rozdział ten wprowadza do jedenej z największych i najpotężniejszych cech Symfony2 -
+systemu :term:`pakietów <pakiet>`.
 
-Rejestracja Bundla
-~~~~~~~~~~~~~~~~~~
+Pakiet jest czymś w rodzaju wtyczki w innych programach. Więc dlaczego został nazwany
+pakietem (*ang. bundle*) a nie wtyczką (*ang. plugin*)? To dlatego, że wszystko w Symfony2
+należy do jakiegoś pakietu, od funkcji rdzenia frameworka po kod napisany dla Twojej aplikacji.
+Pakiety są obywatelem numer jeden w Symfony2. Zapewnia to elastyczność w używaniu
+wbudowanych pakietów funkcyjnych rozpowszechnianych przez osoby trzecie lub w dystrybucji
+Twoich własnych pakietów. Stwarza to możliwość łatwego doboru i wyboru odpowiednich
+dla swojej aplikacji funkcjonalności i umożliwia łatwą optymalizację całości.
+Tak na koniec - w Symfony2 Twój kod jest tak samo ważny jak kod frameworka.
 
-Aplikacja składa się z bundli zdefiniowanych w metodzie ``registerBundles()``
-klasy ``AppKernel``. Każdy bundle jest folderem zawierającym pojedyńczą klasę
-``Bundle`` która go opisuje::
+.. note::
+
+   W rzeczywistości pojęcie pakietu (*ang. bundle*), nie jest pojęciem wyłącznym
+   dla Symfony2. Pakiety są ściśle związane z przestrzenią nazw i w niektórych
+   językach (jak np. w Java) są sformalizowane od początku. W PHP pojęcia te nie
+   istniały, co było powodem wielu problemów. Zmuszało to programistów do stosowania
+   własnych konwencji nazewniczych. Pakiety i przestrzenie nazw zostały formalnie
+   wprowadzone w PHP 5.3 i tym samym pojawiły się w Symfony2.
+
+Rejestrowanie pakietów
+~~~~~~~~~~~~~~~~~~~~~~
+
+Aplikacja składa się z pakietów określonych przez metodę ``registerBundles()``
+klasy ``AppKernel``. Każdy pakiet jest katalogiem zawierającym pojedyńczą klasę
+``Bundle`` opisującą ten pakiet::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -133,7 +117,6 @@ klasy ``AppKernel``. Każdy bundle jest folderem zawierającym pojedyńczą klas
             new Symfony\Bundle\DoctrineBundle\DoctrineBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -146,87 +129,91 @@ klasy ``AppKernel``. Każdy bundle jest folderem zawierającym pojedyńczą klas
         return $bundles;
     }
 
-Oprócz ``AcmeDemoBundle`` o którym już rozmawialiśmy wcześniej, zauważ że jądro
-także włącza inne bundle, takie jak ``FrameworkBundle``,
-``DoctrineBundle``, ``SwiftmailerBundle``, oraz ``AsseticBundle``.
-One wszystkie pochodzą z rdzenia frameworka.
+Proszę zauważyć, że oprócz pakietu ``AcmeDemoBundle``, który już był omawiany, jądro
+udostępnia również inne pakiety, takie jak ``FrameworkBundle``, ``DoctrineBundle``,
+``SwiftmailerBundle`` czy ``AsseticBundle``. Są one częścią rdzenia szkieletu.
 
-Konfiguracja Bundla
-~~~~~~~~~~~~~~~~~~~
+Konfiguracja pakietu
+~~~~~~~~~~~~~~~~~~~~
 
-Każdy z bundli może być dostosowany dzięki plikom konfiguracyjnym napisanym w
-YAML, XML lub PHP. Popatrz na domyślną konfigurację:
+Każdy pakiet może być dostosowywany poprzez pliki konfiguracyjne w języku YAML,
+XML, czy też PHP. Wystarczy popatrzeć na domyślną konfigurację:
 
 .. code-block:: yaml
+   :linenos:
 
     # app/config/config.yml
     imports:
-        - { resource: parameters.ini }
+        - { resource: parameters.yml }
         - { resource: security.yml }
 
     framework:
-        secret:          %secret%
-        charset:         UTF-8
-        router:          { resource: "%kernel.root_dir%/config/routing.yml" }
+        #esi:             ~
+        #translator:      { fallback: "%locale%" }
+        secret:          "%secret%"
+        router:
+            resource: "%kernel.root_dir%/config/routing.yml"
+            strict_requirements: "%kernel.debug%"
         form:            true
         csrf_protection: true
         validation:      { enable_annotations: true }
         templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
-        session:
-            default_locale: %locale%
-            auto_start:     true
+        default_locale:  "%locale%"
+        trusted_proxies: ~
+        session:         ~
 
-    # Konfiguracja Twig
+    # Twig Configuration
     twig:
-        debug:            %kernel.debug%
-        strict_variables: %kernel.debug%
+        debug:            "%kernel.debug%"
+        strict_variables: "%kernel.debug%"
 
-    # Konfiguracja Assetic
+    # Assetic Configuration
     assetic:
-        debug:          %kernel.debug%
+        debug:          "%kernel.debug%"
         use_controller: false
+        bundles:        [ ]
+        #java: /usr/bin/java
         filters:
             cssrewrite: ~
-            # closure:
-            #     jar: %kernel.root_dir%/java/compiler.jar
-            # yui_css:
-            #     jar: %kernel.root_dir%/java/yuicompressor-2.4.2.jar
+            #closure:
+            #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+            #yui_css:
+            #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
-    # Konfiguracja Doctrine
+    # Doctrine Configuration
     doctrine:
         dbal:
-            driver:   %database_driver%
-            host:     %database_host%
-            dbname:   %database_name%
-            user:     %database_user%
-            password: %database_password%
+            driver:   "%database_driver%"
+            host:     "%database_host%"
+            port:     "%database_port%"
+            dbname:   "%database_name%"
+            user:     "%database_user%"
+            password: "%database_password%"
             charset:  UTF8
 
         orm:
-            auto_generate_proxy_classes: %kernel.debug%
+            auto_generate_proxy_classes: "%kernel.debug%"
             auto_mapping: true
 
-    # Konfiguracja Swiftmailer
+    # Swiftmailer Configuration
     swiftmailer:
-        transport: %mailer_transport%
-        host:      %mailer_host%
-        username:  %mailer_user%
-        password:  %mailer_password%
+        transport: "%mailer_transport%"
+        host:      "%mailer_host%"
+        username:  "%mailer_user%"
+        password:  "%mailer_password%"
+        spool:     { type: memory }
 
-    jms_security_extra:
-        secure_controllers:  true
-        secure_all_services: false
-
-Każdy z wpisów jak np. ``framework`` definiuje konfigurację dla specyficznego bundla.
-Dla przykładu, ``framework`` konfiguruje bundla ``FrameworkBundle`` a ``swiftmailer``
+Każdy wpisów jak np. ``framework`` definiuje konfigurację dla określonego pakietu.
+Dla przykładu, ``framework`` konfiguruje pakiet ``FrameworkBundle`` a ``swiftmailer``
 konfiguruje ``SwiftmailerBundle``.
 
-Każde środowisko może nadpisać domyślną konfigurację poprzez dostarczenie odpowiedniego
-pliku konfiguracyjnego. Dla przykładu, środowisko ``dev`` wczytuje plik ``config_dev.yml``,
-który to wczytuje główną konfigurację (np. ``config.yml``) oraz modyfikuje go w celu
-dodania narzędzi do debugowania:
+Każde :term:`środowisko` może nadpisać domyślną konfigurację poprzez dostarczenie
+odpowiedniego pliku konfiguracyjnego. Dla przykładu, środowisko ``dev`` wczytuje plik
+``config_dev.yml``, który to wczytuje główną konfigurację (np. ``config.yml``) oraz
+modyfikuje go w celu dodania narzędzi do debugowania:
 
 .. code-block:: yaml
+   :linenos:
 
     # app/config/config_dev.yml
     imports:
@@ -253,94 +240,103 @@ dodania narzędzi do debugowania:
     assetic:
         use_controller: true
 
-Rozszerzenie Bundla
-~~~~~~~~~~~~~~~~~~~
 
-Oprócz tego że bundle to dobry sposób na zorganizowanie i skonfigurowanie Twojego
-kodu, bundle może rozszerzyć innego bundla. Dziedziczenie bundla umożliwia Ci nadpisanie
-istniejącego bundla w celu dostosowania jego kontrolerów, szablonów lub każdego z jego plików.
-To jest miejsce gdzie logiczne nazwy (np. ``@AcmeDemoBundle/Controller/SecuredController.php``)
-są tak przydatne: są abstrakcją do aktualnego miejsca przechowywania zasobu.
+Rozszerzanie pakietu
+~~~~~~~~~~~~~~~~~~~~
 
-Logiczne Nazwy Plików
+Oprócz tego że pakiety są dobrym sposobem na zorganizowanie i skonfigurowanie kodu,
+pakiet może rozszerzać inny pakiet. Dziedziczenie pakietu umożliwia zamienienie
+istniejącego pakietu w celu dostosowania jego kontrolerów, szablonów lub każdego
+z jego plików. Tu właśnie przydadzą się logiczne nazwy
+(np. ``@AcmeDemoBundle/Controller/SecuredController.php``) - są abstraktem,
+niezależnym od rzeczywistego miejsca przechowywania zasobu.
+
+Logiczne nazwy plików
 .....................
 
-Kiedy chcesz się odwołać do pliku bundla, użyj notacji:
-``@BUNDLE_NAME/path/to/file``; Symfony2 zamieni ``@BUNDLE_NAME`` na
-realną ścieżkę do bundla. Na przykład, logiczna ścieżka
-``@AcmeDemoBundle/Controller/DemoController.php`` zostanie przekonwertowana
-na ``src/Acme/DemoBundle/Controller/DemoController.php`` ponieważ Symfony
+Kiedy chce się odwołać do pliku pakietu, trzeba użyj notacji:
+``@BUNDLE_NAME/path/to/file``. Symfony2 zamieni ``@BUNDLE_NAME`` na
+realną ścieżkę do pakietu. Na przykład, logiczna ścieżka
+``@AcmeDemoBundle/Controller/DemoController.php`` zostanie przekształcona
+do ``src/Acme/DemoBundle/Controller/DemoController.php`` ponieważ Symfony
 zna lokalizację ``AcmeDemoBundle``.
 
-Logiczne Nazwy Kontrolera
-.........................
+Logiczne nazwy kontrolerów
+..........................
 
-Dla kontrolerów, do odwołania się do metod musisz użyć notacji
+W przypadku kontrolerów trzeba odwołać się do metod stosując notację
 ``BUNDLE_NAME:CONTROLLER_NAME:ACTION_NAME``. Dla przykładu,
 ``AcmeDemoBundle:Welcome:index`` wskazuje na metodę ``indexAction``
 z klasy ``Acme\DemoBundle\Controller\WelcomeController``.
 
-Logiczne Nazwy Szablonów
+Logiczne nazwy szablonów
 ........................
 
 Dla szablonów, logiczna nazwa ``AcmeDemoBundle:Welcome:index.html.twig`` zostanie
-przekonwertowana na ścieżke do pliku ``src/Acme/DemoBundle/Resources/views/Welcome/index.html.twig``.
-Szablony staną się jeszcze bardziej interesujące kiedy zdasz sobie sprawę że nie musisz je
-przechowywać w systemie plików. Dla przykładu, możesz w prosty sposób przechowywać je w bazie danych.
+przekształcona na ścieżkę do pliku ``src/Acme/DemoBundle/Resources/views/Welcome/index.html.twig``.
+Szablony staną się jeszcze bardziej interesujące kiedy zdasz sobie sprawę że nie
+musisz je przechowywać w systemie plików. Dla przykładu, możesz w prosty sposób
+przechowywać je w bazie danych.
 
-Rozszerzenie Bundli
-...................
+Rozszerzenie pakietów
+.....................
 
-Jeśli będziesz stosować tę konwencję, możesz użyć :doc:`bundle inheritance</cookbook/bundles/inheritance>`
-do "nadpisania" plików, kontrolerów lub szablonów. Dla przykładu, możesz stworzyć bundle - ``AcmeNewBundle`` -
-oraz określić że jego rodzicem jest ``AcmeDemoBundle``.
-Kiedy Symfony będzie ładowało kontroler ``AcmeDemoBundle:Welcome:index``, najpierw poszukiwania
-klasy ``WelcomeController`` rozpocznie w ``AcmeNewBundle`` a dopiero później w ``AcmeDemoBundle``.
-To oznacza że jeden bundle może nadpisać praktycznie każdą część innego bundla!
+Stosując tą konwencję, można następnie wykorzystać
+:doc:`dziedziczenia pakietów </cookbook/bundles/inheritance>` do "napisania" plików,
+kontrolerów lub szablonów. Na przykład, można utworzyć pakiet ``AcmeNewBundle``
+i  określić, że zastępuje on pakiet ``AcmeDemoBundle``. Gdy Symfony ładuje kontroler
+``AcmeDemoBundle:Welcome:index``, to najpierw będzie wyszukiwał klasy ``WelcomeController``
+w pakiecie ``AcmeNewBundle`` i jeśli jej nie znajdzie, to rozpocznie przeszukiwanie
+pakietu ``AcmeDemoBundle``. Oznacza to, że pakiet może zastąpić prawie każdą część
+innego pakietu.
 
-Rozumiesz teraz dlaczego Symfony2 jest tak elastyczne? Wykorzystuj swoje bundle pomiędzy
-aplikacjami, przechowuj je lokalnie lub globalnie, to zależy od Ciebie.
+Rozumiesz teraz dlaczego Symfony2 jest tak elastyczny? Współdziel swoje pakiety
+pomiędzy aplikacjami, przechowuj je lokalnie lub globalnie, to zależy od tylko
+Ciebie.
 
 .. _using-vendors:
 
-Używanie "Vendors"
-------------------
+Korzystanie ze żródeł dostawców
+-------------------------------
 
-Przeważnie Twoja aplikacja będzie zależała od bibliotek zewnętrznych.
-Te powinny być składowane w folderze ``vendor/``. Katalog ten zawiera już biblioteki
-Symfony2, bibliotekę SwiftMailer, Doctrine ORM, system szablonów Twig,
-oraz kilka innych bibliotek zewnętrznych oraz bundli.
+Jest bardzo prawdopodobne, że Twoja aplikacja będzie zależeć od bibliotek i pakietów
+osób trzecich. Powinny być one przechowywane w katalogu ``vendor/``. Katalog ten już
+zawiera biblioteki Symfony2, biblioteki ``SwiftMailer``, ``Doctrine ORM``,
+system szablonów Twig i trochę innych bibliotek i pakietów osób trzecich
+(zwanych też dostawcami).
 
-Zrozumienie Cache oraz Logów
-----------------------------
+Zrozumienie buforowania i dzienników zdarzeń
+--------------------------------------------
 
-Symfony2 jest prawdopodobnie jednym z najszybszych pełnych frameworków.
-Ale jak może być tak szybki skoro parsuje oraz interpretuje kilkadziesiąt
+Symfony2 jest prawdopodobnie jednym z najszybszych pełnych frameworków PHP.
+Ale jak może tak szybko działać, skoro parsuje oraz interpretuje kilkadziesiąt
 plików YAML oraz XML dla każdego zapytania. Prędkość jest po części związana
-z systemem cache. Konfiguracja aplikacji jest parsowana tylko za pierwszym zapytaniem
-i przetwarzana do kodu PHP przechowywanego w katalogu ``app/cache/``.
-W środowisku deweloperskim, Symfony2 jest wystarczająco inteligentny aby czyścić
-cache po zmianie pliku. Ale w środowisku produkcyjnym, to do Twoich obowiązków
-należy czyszczenie cache po zmianie kodu lub jego konfiguracji.
+z systemem buforowania. Konfiguracja aplikacji jest parsowana tylko dla pierwszego
+żądania i przetwarzana do kodu PHP przechowywanego w katalogu ``app/cache/``.
+W środowisku programistycznym, Symfony2 jest wystarczająco inteligentny aby czyścić
+pamięć podręczną po zmianie pliku. Ale w środowisku produkcyjnym, to do 
+do zadań programisty należy czyszczenie pamięci podręcznej zmianie kodu lub
+konfiguracji.
 
-Podczas tworzenia aplikacji, dużo rzeczy może pójść źle. Pliki logów w katalogu
-``app/logs/`` powiedzą Ci wszystko na temat zapytań (requests) oraz pomogą Ci
-szybko naparwić napotkane problemy.
+Podczas tworzenia aplikacji, dużo rzeczy może pójść źle. Pliki dzienników zdarzeń,
+znajdujące się w katalogu ``app/logs/``, informują o wszystkich żądaniach
+i mogą pomóc w naprawieniu napotkanych problemów.
 
-Korzystanie z Interfejsu Linii Poleceń
---------------------------------------
+Sosowanie interfejsu linii poleceń
+----------------------------------
 
 Każda aplikacja posiada narzędzie interfejsu linii poleceń (``app/console``)
-który pomaga utrzymywać aplikację. Interfejs zapewnia polecenia które zwiększają
-produktywność poprzez automatyzację żmudnych i powtarzających się zadań.
+który pomaga w utrzymywaniu aplikacji. Udostęþnia on polecenia które zwiększają
+wydajność prac programistycznych i administracyjnych poprzez automatyzację żmudnych
+i powtarzających się zadań.
 
-Uruchom go bez żadnych argumentów aby dowiedzieć się więcej o dostępnych możliwościach:
+Uruchom go bez żadnych argumentów aby dowiedzieć się więcej o jego możliwościach:
 
 .. code-block:: bash
 
     php app/console
 
-Opcja ``--help`` pomoże Ci odkryć sposoby używania komendy:
+Opcja ``--help`` pomaga w poznaniu dostęþnych poleceń:
 
 .. code-block:: bash
 
@@ -349,14 +345,17 @@ Opcja ``--help`` pomoże Ci odkryć sposoby używania komendy:
 Podsumowanie
 ------------
 
-Nazwij mnie szaleńcem, ale po przeczytaniu tej części powinieneś czuć się komfortowo
-w pracy z Symfony2. Wszystko w Symfony2 jest zaprojektowane tak by sprostać Twoim
+Nazwij mnie szaleńcem, bo twierdzę, że po przeczytaniu tego przewodnika powinieneś czuć
+się komfortowo w pracy z Symfony2. Wszystko w Symfony2 jest zaprojektowane tak by sprostać Twoim
 oczekiwaniom. Zatem, zmieniaj nazwy, przenoś katalogi zgodnie z swoimi upodobaniami.
 
-I to wyszystko jeśli chodzi o szybkie wprowadzenie. Od testowania do wysyłania maili,
-musisz jeszcze się wiele nauczyć aby zostać mistrzem Symfony2. Gotowy aby zagłębić
-się w te tematy? Nie musisz szukać dalej - przejdź do :doc:`/book/index` i wybierz
-temat który Cię interesuje.
+I to wszystko jeśli chodzi o szybkie wprowadzenie. Musisz się jeszcze dużo nauczyć
+o Symfony2 by stać się mistrzem, od testowania do wysyłania poczty e-mail. Gotowy
+jesteś do dokopania się do tych tematów? Nie musisz specjalnie szukać - przejdź
+do oficjalnej książki i wybierz dowolny temat.
 
-.. _standardy:               http://groups.google.com/group/php-standards/web/psr-0-final-proposal
-.. _konwencji:               http://pear.php.net/
+
+.. _`standardy`:               http://groups.google.com/group/php-standards/web/psr-0-final-proposal
+.. _`konwencji`:               http://pear.php.net/
+.. _`Composer`:                http://getcomposer.org
+.. _`Composer-Autoloader`:     http://getcomposer.org/doc/01-basic-usage.md#autoloading
