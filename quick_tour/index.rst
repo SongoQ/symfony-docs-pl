@@ -1,5 +1,5 @@
 Szybkie wprowadzenie
-==========
+====================
 
 .. toctree::
    :maxdepth: 1

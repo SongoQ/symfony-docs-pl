@@ -43,9 +43,9 @@ Apache) wraz z PHP 5.3.3 lub ​​wersją wyższą.
     postać "http://localhost/app_dev.php".
 
 
-Gotowy? Pobierz "`Symfony2 Standard Edition`_", jest to :term:`dystrybucja` Symfony, która 
-jest skonfigurowana do najczęstszych przypadków użycia i zawiera także kod, który 
-pokazuje, jak używać Symfony2 (archiwum z *vendors*).
+Gotowy? Pobierz "`Symfony2 Standard Edition`_", jest to :term:`dystrybucja` Symfony,
+która jest skonfigurowana do najczęstszych zastosowań i zawiera także przykładowy kod
+pokazujący, jak używać Symfony2 (archiwum z *vendors*).
 
 Po rozpakowaniu archiwum, struktura katalogów ``Symfony/`` wygląda następująco:
 
@@ -416,7 +416,7 @@ przyjaciel programisty.
    
 Ale to, co widzisz na początku jest tylko wierzchołkiem góry lodowej. Kliknij na
 dziwne liczby szesnastkowe, aby odsłonić kolejne bardzo przydatne narzędzie do
-debugowania Symfony2: profiler..
+debugowania Symfony2: profiler.
 
 .. image:: /images/quick_tour/profiler.png
    :align: center

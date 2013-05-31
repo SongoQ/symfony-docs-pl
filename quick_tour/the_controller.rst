@@ -1,22 +1,26 @@
+.. highlight:: php
+   :linenothreshold: 2
+
 Kontroler
 =========
 
-Wciąż z nami po pierwszych dwóch częściach?
-Zaczynasz się uzależniać od Symfony2! Bez zbędnych ceregieli, zobacz
-co kontrolery potrafią zrobić dla Ciebie.
+Wciąż z nami po pierwszych dwóch częściach? Zaczynasz się uzależniać od Symfony2!
+Bez zbędnych ceregieli, zobacz co kontrolery potrafią zrobić dla Ciebie.
 
 Formaty Używania
 ----------------
 
-Obecnie, aplikacja webowa powinna być w stanie dostarczyć więcej niż tylko
-strony HTML. Od XML dla RSS lub Usług Internetowych (Web Services), do
-JSON dla zapytań Ajaxowych, istnieje wiele różnych formatów do wyboru.
-Symfony2 w prosty sposób wspiera te formaty. Ulepsz routing poprzez dodanie
-domyślnej wartości ``xml`` dla zmiennej ``_format``::
+Obecnie, aplikacje internetowe powinna dostarczać coś więcej niż tylko
+strony HTML. Od XML dla kanałów RSS lub usług internetowych, do JSON dla żądań Ajax,
+istnieje wiele różnych formatów do wyboru. Obsługa tych formatów w Symfony2 jest prosta.
+Popraw wydajność definicji tras przez dodanie domyślnej wartości xml dla zmiennej
+``_format``::
 
     // src/Acme/DemoBundle/Controller/DemoController.php
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+    // ...
 
     /**
      * @Route("/hello/{name}", defaults={"_format"="xml"}, name="_demo_hello")
@@ -27,7 +31,7 @@ domyślnej wartości ``xml`` dla zmiennej ``_format``::
         return array('name' => $name);
     }
 
-Dzięki wykorzystaniu formatu zapytania (zdefiniowanego przez wartość ``_format``),
+Dzięki wykorzystaniu formatu zapytania (określonego jako wartość ``_format``),
 Symfony2 automatycznie wybierze odpowiedni szablon, w tym przypadku ``hello.xml.twig``:
 
 .. code-block:: xml+php
@@ -37,14 +41,16 @@ Symfony2 automatycznie wybierze odpowiedni szablon, w tym przypadku ``hello.xml.
         <name>{{ name }}</name>
     </hello>
 
-Dla standardowych formatów, Symfony2 będzie także
-automatycznie dobierał najlepszy nagłówek ``Content-Type`` dla odpowiedzi
-(response). Jeśli chcesz mieć możliwość obsłużenia kilku formatów w jednej akcji,
-użyj zmiennej {_format} w wzorcu routingu::
+To wszystko co jest niezbędne. Dla standardowych formatów Symfony2 będzie również
+automatycznie wybierać najlepszy nagłówek ``Content-Type`` dla odpowiedzi. Jeżeli
+chce się obsługiwać różne formaty dla pojedyńczej akcji, to trzeba zamiat tego
+użyć w ścieżce trasy wieloznacznika {_format}::
 
     // src/Acme/DemoBundle/Controller/DemoController.php
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+    // ...
 
     /**
      * @Route("/hello/{name}.{_format}", defaults={"_format"="html"}, requirements={"_format"="html|xml|json"}, name="_demo_hello")
@@ -55,37 +61,38 @@ użyj zmiennej {_format} w wzorcu routingu::
         return array('name' => $name);
     }
 
-Kontroler może być teraz wywoływany przez URL ``/demo/hello/Fabien.xml`` lub
-``/demo/hello/Fabien.json``.
+Kontroler będzie teraz również wywoływany dla ścieżek URL takich jak ``/demo/hello/Fabien.xml``
+lub ``/demo/hello/Fabien.json``.
 
-Wpis ``requirements`` definiuje wyrażenie regularne do którego zmienna {_format} musi pasować.
-W tym przykładzie, jeśli spróbujesz dostać się do ``/demo/hello/Fabien.js``, dostaniesz
-w odpowiedzi błąd HTTP 404, ponieważ nie pasuje do wymaganej opcji ``_format``.
+Wpis ``requirements`` określa wyrażenie regularne, jakie wieloznacznik musi dopasować.
+W tym przykładzie, jeżeli zażąda się zasobu ``/demo/hello/Fabien.js``, to otrzyma się
+komunikat błędu 404 HTTP, jako że podany łańcuch nie pasuje do wymagania ``_format``.
 
-Przekierowania (Redirecting) oraz Przekazania (Forwarding)
-----------------------------------------------------------
+Przekierowanie i przekazanie
+----------------------------
 
-Jeśli chcesz przekierować użytkownika do innej strony, użyj metody ``redirect()``::
+Jeśli chce się przekierować użytkownika do innej strony, to trzeba użyć metody
+``redirect()``::
 
     return $this->redirect($this->generateUrl('_demo_hello', array('name' => 'Lucas')));
 
-Metoda ``generateUrl()`` jest identyczna z funkcją ``path()`` którą używaliśmy w szablonach.
-Przyjmuje nazwe routingu oraz tablicę parametrów jako atrybuty, oraz zwraca przygotowany
-przyjazny URL.
+Metoda ``generateUrl()`` jest identyczna z funkcją ``path()`` którą użyliśmy w szablonach.
+Jako argumenty, przyjmuje nazwę trasy oraz tablicę parametrów i zwraca związany
+przyjazny adres URL.
 
 Możesz także w łatwy sposób przekazać akcję do innej akcji używając metodę ``forward()``.
-Wewnętrznie Symfony2 wykonuje "pod-zapytanie", oraz zwraca obiekt ``Response`` z tego
-pod-zapytania::
+Wewnętrznie Symfony2 wykonuje "pod-żądanie" oraz zwraca z niego obiekt ``Response``::
 
     $response = $this->forward('AcmeDemoBundle:Hello:fancy', array('name' => $name, 'color' => 'green'));
 
     // zrób coś z obiektem Response lub też zwróć go bezpośrednio
 
-Pobieranie informacji z Zapytania (Request)
--------------------------------------------
 
-Poza dostępem do wartości parametrów routingu, kontroler ma także dostęp do
-obiektu ``Request``::
+Pobieranie informacji z zapytania
+---------------------------------
+
+Poza wartościami wieloznaczników tras kontroler ma również dostęp do obiektu
+``Request``::
 
     $request = $this->getRequest();
 
@@ -106,46 +113,53 @@ zmienną ``app.request``:
 
     {{ app.request.parameter('page') }}
 
-Trzymanie Danych w Sesji
-------------------------
+Utrzymywanie danych w sesji
+---------------------------
 
-Nawet jeśli HTTP jest protokołem bezstanowym, Symfony2 zapewnia obiekt sesji 
-reprezentujący klienta (może to być prawdziwa osoba używająca przeglądarki, bot, 
-lub też web service). Pomiędzy zapytaniami, Symfony2 przechowuje atrybuty 
-w ciasteczku używając natywnej obsługi sesji w PHP.
+Pomimo że protokół HTTP jest bezstanowy, Symfony2 dostarcza przyjemny obiekt sesji,
+który reprezentuje klienta (może to być realna osoba używająca przeglądarki, bot
+lub usługa internetowa). Symfony2 przechowuje w pliku cookie atrybuty sesji pomiędzy
+dwoma żądaniami, wykorzystując natywną sesję PHP.
 
-W prosty sposób możemy zapisywać jak i odczytywać dane z sesji w kontrolerze::
+
+Przechowywania i pobierania informacji z sesji można łatwo uzyskać w dowolnym kontrolerze::
 
     $session = $this->getRequest()->getSession();
 
-    // zapis atrybutu do ponownego użycia w późniejszym zapytaniu użytkownika
+    // przechowanie atrybutu do ponownego użycia w późniejszym żądaniu użytkownika
     $session->set('foo', 'bar');
 
-    // w innym kontrolerze dla innego zapytania
+    // w innym kontrolerze dla innego żądania
     $foo = $session->get('foo');
 
-    // ustawienie lokalizacji użytkownika
-    $session->setLocale('fr');
+    // użycie domyślnej wartości, jeśli klucz nie istnieje
+    $filters = $session->set('filters', array());
 
-Możesz także przechowywać małe wiadomości które będą dostępne tylko w kolejnym
-zapytaniu::
+Można także przechowywać małe komunikaty (zwane komunikatami fleszowymi) które będą
+dostępne w kolejnych żądaniach::
 
-    // zapis wiadomości dla następnego zapytania (w kontrolerze)
-    $session->setFlash('notice', 'Congratulations, your action succeeded!');
+    // przechowanie (w kontrolerze) komunikatu dla następnych żądań
+    $session->getFlashBag()->add('notice', 'Congratulations, your action succeeded!');
 
-    // wyświetlenie wiadomości w kolejnym zapytania (w szablonie)
-    {{ app.session.flash('notice') }}
+    // wyświetlenie z powrotem komunikatu w następnym żądaniu (w szablonie)
 
-Jest to przydatne gdy chcesz ustawić wiadomość o powodzeniu przed przekierowaniem
-użytkownika do innej strony (która pokaże wiadomość).
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div>{{ flashMessage }}</div>
+    {% endfor %}
 
-Zabezpieczone Zasoby
---------------------
+Jest to przydatne gdy chce się ustawić komunikat o powodzeniu przed przekierowaniem
+użytkownika do innej strony (która wyświetli ten komunikat). Należy pamiętać, że
+przy stosowaniu funkcji has() zamiast get(), komunikat fleszowy nie będzie usunięty
+i pozostanie dostępny dla następnych żądań.
 
-Symfony Standard Edition posiada bardzo prostą konfigurację bezpieczeństwa,
-która pasuje do większości potrzeb:
+Bezpieczeństwo zasobów
+----------------------
+
+Symfony Standard Edition dostarczany jest z prostą konfiguracją bezpieczeństwa,
+która wystarcza dla potrzeb większości powszechnych zastosowań:
 
 .. code-block:: yaml
+   :linenos:
 
     # app/config/security.yml
     security:
@@ -158,9 +172,10 @@ która pasuje do większości potrzeb:
 
         providers:
             in_memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+                memory:
+                    users:
+                        user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+                        admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
 
         firewalls:
             dev:
@@ -180,24 +195,24 @@ która pasuje do większości potrzeb:
                     path:   /demo/secured/logout
                     target: /demo/
 
-Ta konfiguracja wymaga aby użytkownicy musieli być zalogowani dla każdego
-z URLi zaczynających się od ``/demo/secured/`` oraz definiuje dwóch
-użytkowników: ``user`` oraz ``admin``.
-Ponadto, użytkownik ``admin`` posiada rolę ``ROLE_ADMIN``, która zawiera rolę
-``ROLE_USER`` (zobacz ustawienie ``role_hierarchy``).
+Taka konfiguracja wymaga od użytkowników zalogowania się dla dowolnego adresu URL
+zaczynającego się od ``/demo/secured/`` i określa dwóch właściwych użytkowników:
+``user`` i ``admin``. Ponadto użytkownik ``admin`` ma rolę ``ROLE_ADMIN``, która
+obejmuje też rolę ``ROLE_USER`` (zobacz na ustawienie ``role_hierarchy``).
+
 
 .. tip::
 
-    Dla czytelności, w tym przykładzie konfiguracji, hasła są zapisane w
-    czystym tekście, ale możesz użyć dowolnego algorytmu mieszania poprzez
-    zmienienie sekcji ``encoders``.
+    W tym przykładzie, dla czytelności konfiguracji, hasła są zapisane w zwyłym
+    tekście, ale można użyć dowolnego algorytmu mieszajacego poprzez zmienienie
+    sekcji ``encoders``.
 
-Wywołując URL ``http://localhost/Symfony/web/app_dev.php/demo/secured/hello``
-użytkownik zostanie automatycznie przekierowany do formularza logowania, ponieważ
-ten zasób jest chroniony przez ``firewall``.
+Przechodząc do adresu ``http://localhost/Symfony/web/app_dev.php/demo/secured/hello``,
+użytkownik automatycznie zostanie przekierowany do formularza logowania, gdyż zasób
+jest chroniony przez firewall.
 
-Możesz także wymusić aby akcja wymagała określonej roli za pomocą adnotacji
-``@Secure`` w kontrolerze::
+Można również wymusić na kontrolerze działanie wymagające określonej roli uzywając
+adnotacji @Secure::
 
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -213,26 +228,26 @@ Możesz także wymusić aby akcja wymagała określonej roli za pomocą adnotacj
         return array('name' => $name);
     }
 
-Teraz, zaloguj się jako ``user`` (który *nie* ma roli ``ROLE_ADMIN``) i
-z zabezpieczonej strony hello, kliknij w link "Hello resource secured".
-Symfony2 powinno zwrócić 403 HTTP, wskazując że użytkownik ma "zabroniony"
-dostęp do tego zasobu.
+Zaloguj się teraz jako user (który nie ma roli ``ROLE_ADMIN``) i na strzeżonej
+stronie ``hello``, kliknij na odnośnik "Hello resource secured". Symfony2 powinno
+zwrócić kod ze statusem HTTP 403 oznaczającym, że ten użytkownik ma "zabroniony"
+dostęp do żądanego zasobu.
 
 .. note::
 
-    Warstwa bezpieczeństwa Symfony2 jest bardzo elastyczna i posiada wiele
-    różnych dostawców użytkownika (jak jeden dla Doctrine ORM) oraz dostawców
-    uwierzytelniania (podstawowe HTTP, HTTP digest, czy certyfikaty X.509).
-    Przeczytaj rozdział ":doc:`/book/security`" aby dowiedzieć się więcej jak
-    ich używać oraz jak je skonfigurować.
+    Warstwa bezpieczeństwa Symfony2 jest bardzo użyteczna i dostarczana jest z wieloma
+    "dostawcami" użytkowników (czyli mechanizmami umożliwiającymi dostęp do danych
+    użytkownika z różnych źródeł, takimi jak Doctrine ORM) i "dostawcami" uwierzytelniania
+    (takimi jak HTTP Basic, HTTP Digest  lub certyfikaty X509). Przeczytaj rozdział
+    ":doc:`/book/security`" podręcznika w celu uzyskania więcej informacji.
 
-Cache
------
+Buforowanie zasobów
+-------------------
 
-Jak tylko Twoja strona zacznie generować więcej ruchu, będziesz chciał uniknąć
-ciągłego generowania tych samych zasobów. Symfony2 używa nagłówków cache HTTP
-do zarządzania zasobami cache. Dla prostych strategi cache, użyj wygodnej
-adnotacji ``@Cache()``::
+Gdy tylko witryna zacznie generować więcej ruchu, zachodzi potrzeba uniknnięcia
+ciągłego generowania tych samych zasobów. Symfony2 używa nagłówków buforowania
+HTTP do zarządzania zasobami pamięci podręcznej. Dla prostych strategi buforowania,
+mozna użyć wygodnej adnotacji ``@Cache()``::
 
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -248,25 +263,27 @@ adnotacji ``@Cache()``::
         return array('name' => $name);
     }
 
-W tym przykładzie, zasób będzie trzymany w cache przez jeden dzień. Możesz także
-użyć walidacji zamiast wygasania lub też kombinacji tych dwóch jeśli to bardziej
-dopasowuje się do Twoich potrzeb.
+W tym przykładzie, zasób będzie buforowany przez jeden dzień. Można także
+użyć walidacji zamiast wygasania lub kombinacji tych dwóch technik, jeśli to lepsze
+rozwiązanie dla konkretnej sytuacji.
 
-Cachowanie zasobów jest zarządzane przez wbudowany w Symfony2 reverse proxy.
-Ale jako że cache jest zarządzany przez regularne nagłówki cache HTTP, możesz
-zamienić wbudowany reverse proxy z Varnish lub też Squid.
+Buforowanie zasobów jest zarządzane przez wbudowane w Symfony2 odwrotny serwer pośredniczący
+(*ang. reverse proxy*). Ponieważ buforowanie jest zarządzane z wykorzystaniem zwykłych
+nagłówków buforowania HTTP, to można zamienić wbudowane odwrotny serwer pośredniczący
+na Varnish lub Squid i łatwo skalować swoją aplikację.
+
 
 .. note::
 
-    Ale co gdy nie możesz cachować całych stron? Symfony2 posiada rozwiązanie
-    poprzez Edge Side Includes (ESI), które jest wspierane natywnie.
-    Dowiedz się więcej na ten temat z rozdziału ":doc:`/book/http_cache`" książki.
+    Lecz co, jeżeli nie można buforować całej strony? Symfony2 rozwiązuje ten problem
+    przez natywnie wspierane Edge Side Includes (ESI). Zapoznaj się ze szczegółami
+    na stronie ":doc:`/book/http_cache`". 
 
 Podsumowanie
 ------------
 
-Wszystko w temacie, i nie jestem pewien czy spędziliśmy pełnych 10 minut.
-Zwięźle omówiliśmy bundle w pierwszej części, i wszystkie funkcje które
-poznaliśmy dotychczas są częścią rdzenia "framework bundle".
-Dzięki bundlom, wszystko w Symfony2 może być rozszerzone oraz zamienione.
-Ale to jest tematem :doc:`kolejnej części kursu<the_architecture>`.
+To wszystko w tym temacie i nie jestem pewny, czy czytanie tego zajęło Ci pełne 10 minut.
+W pierwszej części pokrótce zapoznaliśmy się z pakietami poznając, że wszystkie dotychczas
+poznane funkcjonalności są składnikiem pakietu rdzenia frameworka i wiemy już też, że
+dzięki pakietom wszystko w Symfony2 może zostać rozszerzone lub wymienione. To właśnie
+jest tematem :doc:`następnej części przewodnika<the_architecture>`.
