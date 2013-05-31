@@ -232,7 +232,7 @@ do parametru trasy. Rozważmy następujący przykład:
         # app/config/routing.yml
         hello:
             path:      /hello/{first_name}/{last_name}
-            defaults:     { _controller: AcmeHelloBundle:Hello:index, color: green }
+            defaults:  { _controller: AcmeHelloBundle:Hello:index, color: green }
 
     .. code-block:: xml
        :linenos:
@@ -327,7 +327,7 @@ Jest to sczególnie wygodne podczas pracy z formularzem, na przykład::
     {
         $form = $this->createForm(...);
 
-        $form->bindRequest($request);
+        $form->handleRequest($request);
         // ...
     }
 
@@ -670,7 +670,8 @@ Na przykład, wyobraźmy sobie, że przetwarzane jest zgłoszenie formularza::
     {
         $form = $this->createForm(...);
 
-        $form->bindRequest($this->getRequest());
+        $form->handleRequest($this->getRequest());
+        
         if ($form->isValid()) {
             // obsługa formularza
 

@@ -457,7 +457,7 @@ zawartością:
 
     {
         "require": {
-            "symfony/symfony": "2.2.*"
+            "symfony/symfony": "2.3.*"
         },
         "autoload": {
             "files": ["model.php","controllers.php"]
