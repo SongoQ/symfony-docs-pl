@@ -374,7 +374,7 @@ Szablony
 Kontroler renderuje szablon ``src/Acme/DemoBundle/Resources/views/Demo/hello.html.twig``
 (lub ``AcmeDemoBundle:Demo:hello.html.twig`` jeśli używa się logicznej nazwy):
 
-.. code-block:: html + jinja
+.. code-block:: html+jinja
    :linenos:
       
    {# src/Acme/DemoBundle/Resources/views/Demo/hello.html.twig #}
