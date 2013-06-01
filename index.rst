@@ -24,8 +24,8 @@ To zajmie Ci trochę czasu, ale warto go poświęcić. Krok, po kroku będziesz 
    /quick_tour/the_architecture
 
 
-:doc:`</book/index>`
-====================
+:doc:`/book/index`
+==================
 
 Jest to biblia Symfony, przygotowana przez zespół rdzenia projektu Symfony.
 Jest kierowany do wszystkich użytkowników platformy, którzy zazwyczaj chcą go
