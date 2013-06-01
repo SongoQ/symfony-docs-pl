@@ -153,7 +153,7 @@ Przykład dla Symfony < 2.3:
 
 .. configuration-block::
 
-   .. code-block:: html_jinja
+   .. code-block:: html+jinja
       :linenos:
       
       {# src/Acme/TaskBundle/Resources/views/Default/new.html.twig #}
