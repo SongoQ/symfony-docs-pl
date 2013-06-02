@@ -10,13 +10,13 @@ Dokumentacja Symfony CMF
 Jest to polska dokumentacja dystrybucji frameworka Symfony o nazwie
 `Symfony Content Management Framework`_. Dystrybucję tą będziemy w skrócie
 nazywać *Symfony CMF*, nie wdając się teraz w dywagacje, co to jest *Content Management
-System*. Nadmienię tu tylko, że do tego typu platform programistycznych
+Framework*. Nadmienię tu tylko, że do tego typu platform programistycznych
 (opartych na PHP) zalicza sie takie systemy jak `Drupal`_, `ez Publish`_  czy
 `MODx`_. Temat ten rozwinięty jest w sekcji :ref:`why-another-cms`.
 
 Dokumentacja ta w zasadzie jest tłumaczeniem oficjalnej dokumentacji
 `Symfony Content Management Framework`_, publikowanej na stronie
-http://symfony.com/doc/master/cmf/, ale w założeniach ma zawiera też oryginalne
+http://symfony.com/doc/master/cmf/, ale w założeniach ma zawierać też oryginalne
 artykuły polskojęzyczne.    
  
 Projekt *Symfony2 Content Management Framework* jest realizowany przez
@@ -52,7 +52,7 @@ Właściwie uważamy, że ten projekt jest **frameworkiem systemu zarządzania t
 (*ang. Content Management System - CMS*). Powodem tego jest fakt, że tylko
 **dostarczamy narzędzia do budowy własnego CMS**. Istnieje wiele rozwiązań CMS już
 gotowych, ale na ogół są to monolityczne pakiety dostosowane do potrzeb końcowych
-uzytkowników. Wiele z nich posiada bagaż starszych rozwiązań, co czyni je mniej
+użytkowników. Wiele z nich posiada bagaż starszych rozwiązań, co czyni je mniej
 niż **idealnymi do tworzenia wysoko zindywidualizowanych aplikacji**, w przeciwieństwie
 do `Symfony2`_.
 
@@ -73,7 +73,7 @@ Istnieją dwie główne grupy odbiorców:
    przez użytkownika.
 
 
-:doc:`/cmf/getting-started/index`
+:doc:`/cmf/getting_started/index`
 ---------------------------------
 
 Właśnie rozpocząłeś naukę o CMF? Chcesz dowiedzieć się czy CMF nadaje się do Twojego

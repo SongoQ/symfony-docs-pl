@@ -686,8 +686,8 @@ czasu wywołania metody ``flush()``.
 
 .. _`book-doctrine-queries`:
 
-Zapytania o obiekty
--------------------
+Zapytania do obiektów
+---------------------
 
 Widziałeś już, jak obiekt repozytorium umożliwia uruchomienie podstawowych zapytań
 bez specjalnego wysiłku::
