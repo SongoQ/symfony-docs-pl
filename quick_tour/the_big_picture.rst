@@ -374,7 +374,7 @@ Szablony
 Kontroler renderuje szablon ``src/Acme/DemoBundle/Resources/views/Demo/hello.html.twig``
 (lub ``AcmeDemoBundle:Demo:hello.html.twig`` jeśli używa się logicznej nazwy):
 
-.. code-block:: html + jinja
+.. code-block:: html+jinja
    :linenos:
       
    {# src/Acme/DemoBundle/Resources/views/Demo/hello.html.twig #}
@@ -393,7 +393,7 @@ jak działają szablony w Symfony2.
 Pakiety
 ~~~~~~~
 
-Może zastanawiałeś się, do czego odnosi się słowo :term:`pakiet`(*ang. bundle*),
+Może zastanawiałeś się, do czego odnosi się słowo :term:`pakiet` (*ang. bundle*),
 które już kilkakrotnie zostało użyte wcześniej? Cały kod tworzony dla jakiejś aplikacji
 jest zorganizowany w pakiety. W Symfony2 mówi się, że pakiet, to uporządkowany zestaw plików
 (plików PHP, arkuszy stylów, skryptów JavaScript, obrazów, ...), które implementują
