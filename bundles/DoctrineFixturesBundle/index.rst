@@ -33,21 +33,21 @@ wymieniony pakiet i bibliotekę . Do pliku ``composer.json`` dodaj:
         }
     }
 
-Zakualizuj biblioteki dostawców:
+Zaktualizuj biblioteki dostawców:
 
 .. code-block:: bash
 
     $ php composer.phar update
 
-Jeżeli wszystko działa, to teraz można znaleźć ``DoctrineFixturesBundle``
-w ``vendor/doctrine/doctrine-fixtures-bundle``.
+Jeżeli wszystko działa, to teraz można znaleźć ppliki pakietu ``DoctrineFixturesBundle``
+w katalogu ``vendor/doctrine/doctrine-fixtures-bundle``.
 
 .. note::
 
     ``DoctrineFixturesBundle`` instaluje bibliotekę `Doctrine Data Fixtures`_.
     Biblioteke ta można znaleźć w ``vendor/doctrine/data-fixtures``.
 
-Na koniec zarejestruj pakiet ``DoctrineFixturesBundle`` w ``app/AppKernel.php``.
+Na koniec zarejestruj pakiet ``DoctrineFixturesBundle`` w ``app/AppKernel.php``:
 
 .. code-block:: php
    :linenos:
@@ -110,7 +110,7 @@ załadować dane ze swoimi encjami, tak jak to się zwykle robi. Umożliwia to u
 dla aplikacji konfiguratorów testowych, dokładnie według potrzeb.
 
 Najpoważniejszym ograniczeniem jest to, że nie można współdzielić obiektów pomiędzy
-pomiędzy konfiguratorami testowymi. Dalej poznamy obejście tego ograniczenia.
+pomiędzy konfiguratorami testowymi. Później poznamy obejście tego ograniczenia.
 
 Uruchamianie konfiguratorów testowania
 --------------------------------------
