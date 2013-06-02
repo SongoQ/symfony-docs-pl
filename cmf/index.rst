@@ -16,7 +16,7 @@ System*. Nadmienię tu tylko, że do tego typu platform programistycznych
 
 Dokumentacja ta w zasadzie jest tłumaczeniem oficjalnej dokumentacji
 `Symfony Content Management Framework`_, publikowanej na stronie
-http://symfony.com/doc/master/cmf/, ale w założeniach ma zawiera też oryginalne
+http://symfony.com/doc/master/cmf/, ale w założeniach ma zawierać też oryginalne
 artykuły polskojęzyczne.    
  
 Projekt *Symfony2 Content Management Framework* jest realizowany przez
