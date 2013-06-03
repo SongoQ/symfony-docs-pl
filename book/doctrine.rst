@@ -7,8 +7,8 @@
 Bazy danych i Doctrine
 ======================
 
-Jednym z najbardziej powszechnych i trudnych zadań każdej aplikacji jest utrwalanie
-i czytanie informacji zapisanej w bazie danych. Na szczęście Symfony jest zintegrowana
+Jednym z najczęstszych i trudnych zadań każdej aplikacji jest utrwalanie
+i odczytywanie informacji zapisanej w bazie danych. Na szczęście Symfony jest zintegrowany
 z biblioteką PHP `Doctrine`_, której jedynym celem jest dostarczenie skutecznych
 narzędzi do uczynienia tego zadania łatwym. W tym rozdziale zapoznasz się z podstawami
 filozofii stojącej za Doctrine i zobaczysz jak można łatwo pracować z bazą danych.
@@ -42,10 +42,10 @@ go w bazie danych i pobierzemy go z powrotem.
 
         $ php app/console generate:bundle --namespace=Acme/StoreBundle
 
-Konfiguracja bazy danych
-~~~~~~~~~~~~~~~~~~~~~~~~
+Skonfigurowanie bazy danych
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Zanim naprawdę zaczniemy, musisz skonfigurować informację o połączeniu ze swoją
+Zanim naprawdę zaczniemy, musimy skonfigurować informację o połączeniu ze swoją
 bazą danych. Zgodnie z konwencją informacja ta zapisywana jest w pliku
 ``app/config/parameters.yml``:
 
@@ -66,7 +66,7 @@ bazą danych. Zgodnie z konwencją informacja ta zapisywana jest w pliku
 
     Definiowanie konfiguracji przez ``parameters.yml`` to tylko konwencja.
     Parametry określone w tym pliku są odnoszone do głównego pliku konfiguracyjnego,
-    w którym konfigurowana jest Doctrine:
+    w którym konfigurowana jest biblioteka Doctrine:
 
     .. configuration-block::
 
@@ -116,7 +116,7 @@ bazą danych. Zgodnie z konwencją informacja ta zapisywana jest w pliku
     informacje), na przykład wewnątrz konfiguracji Apache. Więcej informacji na
     ten temat można uzyskać w artykule :doc:`/cookbook/configuration/external_parameters`.
 
-Teraz, gdy Doctrine posiada informacje o bazie danych, można użyć tej biblioteki
+Teraz, gdy Doctrine posiada informacje o bazie danych, Symfony2 może użyć tej biblioteki
 do utworzenia bazy danych:
 
 .. code-block:: bash
@@ -229,8 +229,8 @@ klasa PHP.
 
 .. _book-doctrine-adding-mapping:
 
-Dodawanie informacji odwzorowania
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dodanie informacji odwzorowania
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Doctrine umożliwia pracę z bazami danych w sposób o wiele bardziej interesujacy
 niż tylko pobieranie wierszy do tablic z tabel kolumnowych. Zamiast tego, Doctrine
@@ -579,7 +579,7 @@ produktu na podstawie jego wartości ``id``::
     :doc:`FrameworkExtraBundle</bundles/SensioFrameworkExtraBundle/annotations/converters>`.
     
 Gdy przesyła się zapytanie dotyczące określonego typu obiektu, zawsze używa się czegoś,
-co nazywa się "repozytorium". Możesz myśleć o repozytorium jak o klasie PHP, której
+co nazywa się "repozytorium". Można myśleć o repozytorium jak o klasie PHP, której
 jedynym zadaniem jest pomoc w pobieraniu encji pewnych klas. Można uzyskać dostęp do
 obiektu repozytorium dla klasy encji poprzez::
 
@@ -640,8 +640,8 @@ Aktualizacja obiektu
 ~~~~~~~~~~~~~~~~~~~~
 
 Po pobraniu obiektu z Doctrine, jego aktualizacja jest prosta. Załóżmy, że mamy
-trasę, która mapuje ``id`` produktu do kontrolera w celu przeprowadzenia aktualizacji
-danych::
+trasę, która odwzorowuje ``id`` produktu do kontrolera w celu przeprowadzenia
+aktualizacji danych::
 
     public function updateAction($id)
     {
@@ -669,7 +669,7 @@ Aktualizacja obiektu obejmuje tylko trzy kroki:
 Proszę zauważyć, że wywołanie ``$em->persist($product)`` nie jest konieczne.
 Przypominamy, że metoda ta jedynie informuje Doctrine, aby zarządzało lub
 "przyglądało się" obiektowi ``$product``. W naszym przypadku, ponieważ obiekt
-``$product`` został już pobrany przez Doctrine, więc jest już on zarządzany.
+``$product`` został już pobrany przez Doctrine, jest już on zarządzany.
 
 Usunięcie obiektu
 ~~~~~~~~~~~~~~~~~
@@ -689,7 +689,7 @@ czasu wywołania metody ``flush()``.
 Zapytania do obiektów
 ---------------------
 
-Widziałeś już, jak obiekt repozytorium umożliwia uruchomienie podstawowych zapytań
+Pokazywaliśmy już, jak obiekt repozytorium umożliwia uruchomienie podstawowych zapytań
 bez specjalnego wysiłku::
 
     $repository->find($id);
@@ -704,10 +704,10 @@ a nie wiersze tabeli (np. ``product``).
 Podczas odpytywania w Doctrine, ma się dwie możliwości: pisanie czystych zapytań
 Doctrine lub stosowanie konstruktora zapytań Doctrine.
 
-Zapytania o obiekty z DQL
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Zapytania do obiektów z użyciem DQL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Wyobraź sobie, że chcesz zapytać o produkty, ale tylko takie, które kosztują więcej
+Proszę sobie wyobrazić, że chcemy zapytać o produkty, ale tylko takie, które kosztują więcej
 niż ``19.99`` i są uporządkowane od najtańszych do najdroższych. Wewnątrz kontrolera
 utwórz następujący kod::
 
@@ -718,8 +718,8 @@ utwórz następujący kod::
 
     $products = $query->getResult();
 
-Jeżeli jesteś zaznajomiony z SQL, to z DQL powinieneś się czuć bardzo naturalnie.
-Największą różnicą jest to, że w DQL powinieneś myśleć w kategoriach "obiektów"
+Jeżeli zna się SQL, to z DQL powinno się czuć bardzo naturalnie.
+Największą różnicą jest to, że w DQL powinienno sie myśleć w kategoriach "obiektów"
 zamiast wierszy bazy danych. Z tego powodu należy wybrać ``AcmeStoreBundle:Product``
 i następnie oznaczyć jego alias jako ``p``.
 
@@ -785,7 +785,7 @@ Stosowanie konstruktora zapytań Doctrine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Zamiast pisać bezpośrednio zapytania, można alternatywnie wykorzystać obiekt
-``QueryBuilder`` Doctrine, udostęþniający obiektowo-zorientowany interfejs.
+``QueryBuilder`` Doctrine, udostępniający obiektowo-zorientowany interfejs.
 Jeżeli używa się z IDE, to można również skorzystać z autouzupełniania podczas
 wpisywania nazw metod. Z poziomu kontrolera::
 
@@ -892,7 +892,7 @@ alfabetycznej.
     Menadżer encji może być dostępny poprzez ``$this->getEntityManager()``
     z poziomu repozytorium.
 
-Możesz używać tej nowej metody, podobnie jak domyślnych metod wyszukujących repozytorium::
+Można używać tej nowej metody, podobnie jak domyślnych metod wyszukujących repozytorium::
 
     $em = $this->getDoctrine()->getManager();
     $products = $em->getRepository('AcmeStoreBundle:Product')
@@ -1080,9 +1080,9 @@ tablicę obiektów klasy ``Product`` zawierajaca produkty jednej kategorii. Inny
 słowami, mamy skonstruowane potrzebne klasy. Fakt, że muszą one zostać utrwalone
 w bazie danych, jest kwestią wtórną
 
-Teraz spójrz na metadane sformułowane powyżej właściwości ``$category`` w klasie
-``Product``. Informacja ta powiadamia Doctrine, że powiązana klasa jest kategorią
-i że powinna przechowywać identyfikator ``id`` rekordu w polu ``category_id``,
+Proszę teraz spójrzeć na metadane sformułowane powyżej właściwości ``$category``
+w klasie ``Product``. Informacja ta powiadamia Doctrine, że powiązana klasa jest
+kategorią i że powinna przechowywać identyfikator ``id`` rekordu w polu ``category_id``,
 które istnieje w tabeli ``product``. Innymi słowami, powiązany obiekt ``Category``
 będzie przechowywane właściwości ``$category``, ale w tle, Doctrine będzie utrzymywać
 tą relację przez przechowywanie wartości ``id`` kategorii w kolumnie ``category_id``
@@ -1109,10 +1109,11 @@ tablicy ``category`` i kolumnie ``product.category_id`` oraz nowym kluczu zewnę
     bazy danych, przeczytaj artykuł
     :doc:`Doctrine migrations</bundles/DoctrineMigrationsBundle/index>`.
 
-Zapisywanie związanych encji
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Zapisywanie powiązanych encji
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Teraz możemy zobaczyć jak działa nowy kod. Wyobraź sobie, że jesteś w kontrolerze::
+Teraz możemy zobaczyć jak działa nowy kod. Przyjmijmy, że mamy następujący kod
+kontrolera::
 
     // ...
 
@@ -1145,7 +1146,7 @@ Teraz możemy zobaczyć jak działa nowy kod. Wyobraź sobie, że jesteś w kont
     }
 
 Teraz pojedynczy wiersz jest dodawany do obu tabel ``category`` i ``product``.
-Kolumna ``product.category_id`` dla nowego produktu jest ustawiana na ``id``
+Kolumna ``product.category_id`` dla nowego produktu jest ustawiana na identyfikator
 nowej kategorii. Doctrine sam zarządza utrzymaniem tej relacji.
 
 Pobieranie powiązanych obiektów
@@ -1293,9 +1294,9 @@ Doctrine `Association Mapping`_.
 Konfiguracja
 ------------
 
-Doctrine jest wysoce konfigurowalna, ale prawdopodobnie nigdy nie będziesz musiał
+Doctrine jest wysoce konfigurowalna, ale prawdopodobnie nigdy nie trzeba będzie
 martwić się o większość opcji konfiguracyjnych tej biblioteki. Aby dowiedzieć się
-więcej o konfiguracji Doctrine, przeczytaj rozdział
+więcej o konfiguracji Doctrine, proszę przeczytać rozdział
 :doc:`reference manual</reference/configuration/doctrine>` w dokumentacji Doctrine.
 
 Wywołania zwrotne cyklu życia encji
@@ -1415,7 +1416,7 @@ osób trzecich, pozwalających łatwo wykonywać na encjach powtarzające się, 
 zadania. Są to takie rozszerzenia, jak *Sluggable*, *Timestampable*, *Loggable*,
 *Translatable* i *Tree*.
 
-Więcej informacji o tym jak znaleźć i stosować te rozszerzenia znajdziesz w artykule
+Więcej informacji o tym jak znaleźć i stosować te rozszerzenia mozna znaleźć w artykule
 :doc:`How using common Doctrine extensions</cookbook/doctrine/common_extensions>`. 
 
 
@@ -1596,8 +1597,8 @@ Pomimo, ze Doctrine działa wg. prostej koncepcji, to jest bardzo silną bibliot
 umożliwiająca tworzenie złożonych zapytań i wykorzystywać zdarzenia, pozwalając
 na wykonywanie różnych akcji na wszystkich etapach życia encji.
 
-Więcej informacji o Doctrine znajdziesz w :doc:`cookbook</cookbook/index>`,
-gdzie znajdują sie następujące artykuły:
+Więcej informacji o Doctrine znajduje w :doc:`cookbook</cookbook/index>`,
+w artykułach:
 
 * :doc:`/bundles/DoctrineFixturesBundle/index`
 * :doc:`/cookbook/doctrine/common_extensions`
