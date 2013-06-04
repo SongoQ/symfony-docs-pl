@@ -282,9 +282,9 @@ Poniższy przykład pokazuje ogólny zarys konfiguracji buforowania:
 Konfiguracja mapowania
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Jawne określenie wszystkich odwzorowanych encji jest tylko konieczne w konfiguracji
-ORM i jest kilka opcji konfiguracyjnych, które można kontrolować. Poniższe opcje
-konfiguracyjne służą dla odwzorowań:
+Niezbędną konfiguracją dla ORM jest tylko jawne zdefiniowanie wszystkich
+odwzorowywanych dokumentów i ma ona kilka opcji konfiguracyjnych, które
+można kontrolować. Dla odwzorowań istnieją następujące opcje konfiguracyjne:
 
 * ``type``: przyjmuje wartości ``annotation``, ``xml``, ``yml``, ``php`` lub ``staticphp``.
   Opcja określa typ metadanych stosowany w mapowaniu.
