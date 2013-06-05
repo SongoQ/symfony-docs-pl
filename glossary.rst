@@ -134,10 +134,8 @@ Słownik
    kernel
       (*ang. kernel*)
       W Symfony2 *kernel*, to centralna klasa obsługująca zapytania HTTP, używająca
-      wszystkich pakietów oraz bibliotek w niej zarejestrowanych. Zlokalizowana jest
-      w "jądrze aplikacji" (*ang. kernel*), który jest centralnym katalogiem aplikacji
-      opartej na Symfony2.    
-      Zobacz :ref:`the-app-dir` oraz :ref:`internals-kernel`
+      wszystkich pakietów oraz bibliotek w niej zarejestrowanych.
+      Zobacz: :ref:`the-app-dir` oraz :ref:`book-internals-kernel`.
 
    zapora
       (*ang. firewall*)
