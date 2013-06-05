@@ -27,32 +27,11 @@ To zajmie Ci trochę czasu, ale warto go poświęcić. Krok, po kroku będziesz 
 :doc:`/book/index`
 ==================
 
-Jest to biblia Symfony, przygotowana przez zespół rdzenia projektu Symfony.
-Jest kierowany do wszystkich użytkowników platformy, którzy zazwyczaj chcą go
-mieć pod ręka.
+Jest to biblia Symfony, przygotowana przez zespół rdzenia tego projektu.
+Jest kierowany do wszystkich użytkowników Symfony2, którzy zazwyczaj chcą ten
+podręcznik mieć pod ręka.
 
-.. toctree::
-   :maxdepth: 1
-   
-   /book/http_fundamentals
-   /book/from_flat_php_to_symfony2
-   /book/installation
-   /book/page_creation
-   /book/controller
-   /book/routing
-   /book/templating
-   /book/doctrine
-   /book/propel
-   /book/testing
-   /book/validation
-   /book/forms
-   /book/security
-   /book/http_cache
-   /book/translation
-   /book/service_container
-   /book/performance
-   /book/internals
-   /book/stable_api
+.. include:: /book/map.rst.inc
 
 :doc:`/cmf/index`
 =================
