@@ -1,5 +1,5 @@
-Dokumenty źródłowe
-===================
+Informator API
+==============
 
 .. toctree::
     :hidden:
@@ -12,13 +12,15 @@ Dokumenty źródłowe
     configuration/twig
     configuration/monolog
     configuration/web_profiler
+    configuration/kernel
 
     forms/types
     forms/twig_reference
 
+    twig_reference
+
     constraints
     dic_tags
-    YAML
     requirements
 
 .. include:: /reference/map.rst.inc

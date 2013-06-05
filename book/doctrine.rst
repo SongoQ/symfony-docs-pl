@@ -4,7 +4,7 @@
 .. index::
    single: Doctrine
 
-Bazy danych i Doctrine
+Bazy danych a Doctrine
 ======================
 
 Jednym z najczęstszych i trudnych zadań każdej aplikacji jest utrwalanie
@@ -32,7 +32,7 @@ Najprostszym sposobem zrozumienia działania Doctrine jest zobaczenia jej w dzia
 W tym rozdziale skonfigurujemy bazę danych, utworzymy obiekt ``Product``, zachowamy
 go w bazie danych i pobierzemy go z powrotem.
 
-.. sidebar:: Kod z przykładem
+.. sidebar:: Ćwiczenie przykładowego kodu
 
     Jeśli chcesz przećwiczyć przykład z tego rozdziału, to utwórz pakiet
     ``AcmeStoreBundle`` poleceniem:
@@ -212,8 +212,8 @@ w ``AcmeStoreBundle``::
     }
 
 Klasa ta, często nazywana "encją" (co oznacza podstawową klasę przechowującą dane),
-jest prosta i pomaga spełnić wymóg biznesowy prezentowania produktów w aplikacji.
-Na razie nie może ona być utrwalona w bazie danych - jest to tylko prosta
+jest prosta i pomaga spełnić w aplikacji wymóg procesów biznesowy potrzebujących
+produktów . Na razie nie może ona być utrwalona w bazie danych - jest to tylko prosta
 klasa PHP.
 
 .. tip::
@@ -240,9 +240,9 @@ umożliwia utrwalanie w bazie danych całych obiektów. Działa to poprzez odwzo
 .. image:: /images/book/doctrine_image_1.png
    :align: center
 
-By to wykonać w Doctrine trzeba utworzyć "metadane" lub w konfiguracji ustawić
+Aby to wykonać w Doctrine trzeba utworzyć "metadane" lub w konfiguracji ustawić
 odwzorowanie klasy Product i jej właściwości na bazę danych. Metadane można określić
-w kilku różnych formatach, włączając w to YAML, XML lub bezpośredni w klasie
+w kilku różnych formatach, włączając w to YAML, XML lub bezpośrednio w klasie
 ``Product`` poprzez adnotacje:
 
 .. configuration-block::
@@ -664,7 +664,7 @@ Aktualizacja obiektu obejmuje tylko trzy kroki:
 
 #. pobranie obiektu przez Doctrine;
 #. zmodyfikowanie obiektu;
-#. wywołanie metody ``flush()`` w menadżerze encji
+#. wywołanie metody ``flush()`` w menadżerze encji.
 
 Proszę zauważyć, że wywołanie ``$em->persist($product)`` nie jest konieczne.
 Przypominamy, że metoda ta jedynie informuje Doctrine, aby zarządzało lub

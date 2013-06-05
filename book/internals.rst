@@ -71,7 +71,10 @@ frameworka MVC. Dostarczany jest z sensowną domyślną konfiguracją, łagodzą
 ścieżkę uczenia się.
 
 .. index::
-   single: elementy wewnętrzne; Kernel
+   single: elementy wewnętrzne; kernel
+   single: kernel
+
+.. _book-internals-kernel:
 
 Kernel
 ------
@@ -81,7 +84,7 @@ Symfony2 i jest odpowiedzialna za obsługę żądań . Jej głównym celem jest 
 obiektu :class:`Symfony\\Component\\HttpFoundation\\Request` do obiektu
 :class:`Symfony\\Component\\HttpFoundation\\Response`.
 
-Każdy Kernel Symfony2 implementuje
+Każdy kernel Symfony2 implementuje
 :class:`Symfony\\Component\\HttpKernel\\HttpKernelInterface`::
 
     function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
@@ -92,10 +95,10 @@ Każdy Kernel Symfony2 implementuje
 Kontrolery
 ~~~~~~~~~~
 
-Aby przekształcić żądanie w odpowiedź, Kernel wykorzystuje "kontrtoler".
+Aby przekształcić żądanie w odpowiedź, kernel wykorzystuje "kontrtoler".
 Kontrolerem może być każde prawidłowe wywołanie kodu PHP.
 
-The Kernel zleca wybór tego co kontroler powinien wykonać do implementacji
+Kernel zleca wybór tego co kontroler powinien wykonać do implementacji
 :class:`Symfony\\Component\\HttpKernel\\Controller\\ControllerResolverInterface`::
 
     public function getController(Request $request);
@@ -196,12 +199,12 @@ Ten typ jest przekazywany do wszystkich zdarzeń i odbiorników, które mogą po
 odpowiednie działanie (niektóre procesy są wyzwalane tylko dla żądania głównego).
 
 .. index::
-   pair: Kernel; zdarzenie
+   pair: kernel; zdarzenie
 
 Zdarzenia
 ~~~~~~~~~
 
-Każde zdarzenie zrzucane przez Kernel jest podklasą
+Każde zdarzenie zrzucane przez kernel jest podklasą
 :class:`Symfony\\Component\\HttpKernel\\Event\\KernelEvent`. Oznacza to, że każde
 zdarzenie ma dostęp do tej samej podstawowej informacji:
 
@@ -210,7 +213,7 @@ zdarzenie ma dostęp do tej samej podstawowej informacji:
   ``HttpKernelInterface::SUB_REQUEST``);
 
 * :method:`Symfony\\Component\\HttpKernel\\Event\\KernelEvent::getKernel` 
-  - zwraca Kernel obsługujący żądanie;
+  - zwraca kernel obsługujący żądanie;
 
 * :method:`Symfony\\Component\\HttpKernel\\Event\\KernelEvent::getRequest` 
   - zwraca bieżacy obslugiwany ``Request``.

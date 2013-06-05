@@ -2,7 +2,7 @@
    :linenothreshold: 2
 
 .. index::
-   single: Routing
+   single: trasowanie
 
 Trasowanie
 ==========
