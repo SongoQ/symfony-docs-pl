@@ -18,7 +18,7 @@ Prosty przykład: "Produkty"
 W tym rozdziale skonfigurujemy przykładową bazę danych, tworząc obiekt ``Product``,
 utrwalając go w bazie danych i pobierając go z powrotem.
 
-.. sidebar:: Kod z przykładem
+.. sidebar:: Ćwiczenie przykładowego kodu
 
     Jeśli chcesz przećwiczyć przykład z tego rozdziału, to utwórz pakiet
     ``AcmeStoreBundle`` poleceniem:
@@ -82,7 +82,7 @@ Utworzenie klasy modelu
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 W świecie Propel klasy wzorca ActiveRecord nazywane są **modelami**, ponieważ
-zawierają one jakąś logikę biznesową.
+zawierają one jakąś logikę procesów biznesowych.
 
 .. note::
 
