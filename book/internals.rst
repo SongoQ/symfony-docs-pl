@@ -74,7 +74,7 @@ frameworka MVC. Dostarczany jest z sensowną domyślną konfiguracją, łagodzą
    single: elementy wewnętrzne; kernel
    single: kernel
 
-.. internals-kernel:
+.. _book-internals-kernel:
 
 Kernel
 ------
