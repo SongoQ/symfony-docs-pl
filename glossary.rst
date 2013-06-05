@@ -131,12 +131,13 @@ Słownik
       w katalogu projektu ``web``, lub publikowane do katalogu ``web`` z :term:`pakietu`
       przez wykonanie polecenia ``assets:install`` w terminalu.
 
-   Kernel
-      (*nazwa własna*)
-      *Kernel* jest rdzeniem Symfony2. Obiekt *Kernel* obsługuje zapytania
-      HTTP używając wszystkich pakietów oraz bibliotek zarejestrowanych w nim.
-      Zobacz :ref:`Architektura: Katalog app/ <the-app-dir>` oraz rozdział
-      :doc:`/book/internals`
+   kernel
+      (*ang. kernel*)
+      W Symfony2 *kernel*, to centralna klasa obsługująca zapytania HTTP, używająca
+      wszystkich pakietów oraz bibliotek w niej zarejestrowanych. Zlokalizowana jest
+      w "jądrze aplikacji" (*ang. kernel*), który jest centralnym katalogiem aplikacji
+      opartej na Symfony2.    
+      Zobacz :ref:`the-app-dir` oraz :ref:`internals-kernel`
 
    zapora
       (*ang. firewall*)
