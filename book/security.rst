@@ -1429,9 +1429,9 @@ narzędzia internetowe, takie jak `functions-online.com`_.
 
 Jeśli użytkownicy tworzeni sa dynamicznie (i przechowuje się ich w bazie danych),
 to można użyć nawet bardziej złożonych algorytmów haszujących i następnie powoływać
-się na rzeczyswisty obiekt enkodera haseł aby pomóc w kodowaniu haseł. Na przykład,
+się na rzeczyswisty obiekt kodera haseł aby pomóc w kodowaniu haseł. Na przykład,
 przyjmijmy, że obiekt ``User`` to ``Acme\UserBundle\Entity\User`` (podobnie jak w powyższym
-przykładzie). Najpierw skonfigurujemy enkoder dla tego użytkownika:
+przykładzie). Najpierw skonfigurujemy koder dla tego użytkownika:
 
 .. configuration-block::
 
