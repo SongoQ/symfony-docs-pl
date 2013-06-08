@@ -1,23 +1,34 @@
 .. index::
-   single: Configuration Reference; WebProfiler
+   single: konfiguracja; WebProfiler
 
-WebProfilerBundle - Konfiguracja
-===============================
+Konfiguracja WebProfilerBundle
+==============================
 
-Pełna Domyślna Konfiguracja
+Pełna domyślna konfiguracja
 ---------------------------
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         web_profiler:
-            
-            # wyświetlaj informacje pomocnicze w celu zmniejszenia toolbara
-            verbose:             true
 
-            # wyświetlaj web debug toolbar na dole stron wraz z podsumowaniem profilera
-            toolbar:             false
+            # PRZESTARZAŁE, it is not useful anymore and can be removed safely from your configuration
+            verbose:              true
 
-            # daj sobie możliwość do zobaczenia zebranych danych przed przekierowaniem
+            # display the web debug toolbar at the bottom of pages with a summary of profiler info
+            toolbar:              false
+            position:             bottom
+
+            # gives you the opportunity to look at the collected data before following the redirect
             intercept_redirects: false
+
+    .. code-block:: xml
+       :linenos:
+
+        <web-profiler:config
+            toolbar="false"
+            verbose="true"
+            intercept_redirects="false"
+        />

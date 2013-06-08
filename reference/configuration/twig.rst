@@ -1,5 +1,5 @@
 .. index::
-   pair: Twig; Configuration Reference
+   pair: Twig; konfiguracja
 
 TwigBundle - Konfiguracja
 =========================
@@ -7,37 +7,47 @@ TwigBundle - Konfiguracja
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         twig:
+            exception_controller:  twig.controller.exception:showAction
             form:
                 resources:
 
-                    # Default:
-                    - div_layout.html.twig
+                    # Domyślnie:
+                    - form_div_layout.html.twig
 
-                    # Example:
+                    # Przykład:
                     - MyBundle::form.html.twig
             globals:
 
-                # Examples:
+                # Przykłady:
                 foo:                 "@bar"
                 pi:                  3.14
 
-                # Prototype
-                key:
+                # Opcje przykładowe, ale najłatwiej stosować jest to co widać powyżej
+                some_variable_name:
+                    # id usługi, którym powinna być wartość
                     id:                   ~
+                    # ustawienia dla usługi, lub pozostawić puste
                     type:                 ~
                     value:                ~
-            autoescape:           ~
-            base_template_class:  ~ # Przykład: Twig_Template
-            cache:                %kernel.cache_dir%/twig
-            charset:              %kernel.charset%
-            debug:                %kernel.debug%
-            strict_variables:     ~
-            auto_reload:          ~
-            exception_controller:  Symfony\Bundle\TwigBundle\Controller\ExceptionController::showAction
+            autoescape:                ~
+
+            # Ponizszy kod dodano w Symfony 2.3.
+            # Zobacz http://twig.sensiolabs.org/doc/recipes.html#using-the-template-name-to-set-the-default-escaping-strategy
+            autoescape_service:        ~ # Example: @my_service
+            autoescape_service_method: ~ # use in combination with autoescape_service option
+            base_template_class:       ~ # Example: Twig_Template
+            cache:                     "%kernel.cache_dir%/twig"
+            charset:                   "%kernel.charset%"
+            debug:                     "%kernel.debug%"
+            strict_variables:          ~
+            auto_reload:               ~
+            optimizations:             ~
 
     .. code-block:: xml
+       :linenos:
 
         <container xmlns="http://symfony.com/schema/dic/services"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -55,6 +65,7 @@ TwigBundle - Konfiguracja
         </container>
 
     .. code-block:: php
+       :linenos:
 
         $container->loadFromExtension('twig', array(
             'form' => array(
@@ -83,12 +94,12 @@ Konfiguracja
 exception_controller
 ....................
 
-**typ**: ``string`` **domyślnie**: ``Symfony\\Bundle\\TwigBundle\\Controller\\ExceptionController::showAction``
+**typ**: ``string`` **domyślnie**: ``twig.controller.exception:showAction``
 
-Jest to kontroler aktywowany po wyrzuceniu wyjątku w każdym miejscu Twojej aplikacji.
-Domyślny kontroler (:class:`Symfony\\Bundle\\TwigBundle\\Controller\\ExceptionController`)
-jest odpowiedzialny za renderowanie specyficznych szablonów w stosunku do różnych rodzajów błędów
-(zobacz :doc:`/cookbook/controller/error_pages`). Modyfikowanie tej opcji jest dość zaawansowane.
-Jeśli chcesz dostosować stronę błędu powinieneś użyć poprzedniego linku. Jeśli chcesz aby wywoływana
-była pewna akcja po wystąpieniu wyjątku, powinieneś dodać słuchacza (listener) do zdarzenia (event)
-``kernel.exception`` (zobacz :ref:`dic-tags-kernel-event-listener`).
+Kontroler ten jest aktywowany po zgłoszeniu w aplikacji wyjątku. Domyślny kontroler
+(:class:`Symfony\\Bundle\\TwigBundle\\Controller\\ExceptionController`)
+odpowiada za renderowanie szablonów dla różnych stanów aplikacji w warunkach błędu
+(zobacza :doc:`/cookbook/controller/error_pages`). Modyfikowanie tej opcji jest zaawansowane.
+Jeśli trzeba dostosować stronę błędu, to lepiej użyć działań omówionych na poprzedniej
+stronie. Jeśli trzeba wykonać jakieś zachowanie na wyjątku, to należy dodać detektor
+nasłuchujący (*ang. listner*) do zdarzenia ``kernel.exception`` (zobacz :ref:`dic-tags-kernel-event-listener`).

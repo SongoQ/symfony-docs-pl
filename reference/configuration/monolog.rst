@@ -1,8 +1,8 @@
 .. index::
-   pair: Monolog; Configuration Reference
+   pair: Monolog; konfiguracja
 
-Konfiguracja
-============
+Konfiguracja pakietu Monolog
+============================
 
 .. configuration-block::
 
@@ -18,8 +18,10 @@ Konfiguracja
                     level:               ERROR
                     bubble:              false
                     formatter:           my_formatter
+                    processors:
+                        - some_callable
                 main:
-                    type:                fingerscrossed
+                    type:                fingers_crossed
                     action_level:        WARNING
                     buffer_size:         30
                     handler:             custom
@@ -27,28 +29,36 @@ Konfiguracja
                     type:                service
                     id:                  my_handler
 
-                # Prototype
-                name:
+                # Default options and values for some "my_custom_handler" 
+                my_custom_handler:
                     type:                 ~ # Required
                     id:                   ~
                     priority:             0
                     level:                DEBUG
                     bubble:               true
-                    path:                 %kernel.logs_dir%/%kernel.environment%.log
+                    path:                 "%kernel.logs_dir%/%kernel.environment%.log"
                     ident:                false
                     facility:             user
                     max_files:            0
                     action_level:         WARNING
+                    activation_strategy:  ~
                     stop_buffering:       true
                     buffer_size:          0
                     handler:              ~
                     members:              []
+                    channels:
+                        type:     ~
+                        elements: ~
                     from_email:           ~
                     to_email:             ~
                     subject:              ~
+                    mailer:               ~
                     email_prototype:
-                        id:     ~ # Required (when the email_prototype is used)
-                        method: ~
+                        id:                   ~ # Required (when the email_prototype is used)
+                        method:               ~
+                    channels:
+                        type:                 ~
+                        elements:             []
                     formatter:            ~
 
     .. code-block:: xml
@@ -70,7 +80,7 @@ Konfiguracja
                 />
                 <monolog:handler
                     name="main"
-                    type="fingerscrossed"
+                    type="fingers_crossed"
                     action-level="warning"
                     handler="custom"
                 />
@@ -84,6 +94,6 @@ Konfiguracja
 
 .. note::
 
-    Gdy jest włączony profiler, dodana jest usługa do składowania logów w 
-    profilerze. Nazwa "debug" jest zarezerwowana dla profilera dlatego też
-    nie może zostać użyta w konfiguracji.
+    Gdy profiler jest włączony, dodawana jest obsługa składowania logów  w profilerze.
+    Profiler stosuje nazwę "debug", tak więc jest ona zastrzeżona i nie może być
+    używana w konfiguracji.

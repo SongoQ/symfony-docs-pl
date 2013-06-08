@@ -1,12 +1,9 @@
-.. highlight:: php
-   :linenothreshold: 2
-
 .. index::
-   single: Doctrine; konfiguracja ORM
-   single: konfiguracja; Doctrine ORM
+   pair: Doctrine; konfiguracja
 
-Konfiguracja
-============
+
+Konfiguracja Doctrine
+=====================
 
 .. configuration-block::
 
@@ -246,7 +243,7 @@ rozpoznawane przez ORM:
             # standardowa dystrybucja nadpisuje tą wartość, ustawiając true w trybie debugowania a false w przeciwnym wypadku
             auto_generate_proxy_classes: false
             proxy_namespace: Proxies
-            proxy_dir: %kernel.cache_dir%/doctrine/orm/Proxies
+            proxy_dir: "%kernel.cache_dir%/doctrine/orm/Proxies"
             default_entity_manager: default
             metadata_cache_driver: array
             query_cache_driver: array
