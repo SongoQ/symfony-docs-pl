@@ -36,7 +36,7 @@ load them from anywhere) before serving them. This means you can:
 
 .. _cookbook-assetic-assets:
 
-Assets
+Zasoby zewnętrzne
 ------
 
 Using Assetic provides many advantages over directly serving the files.
@@ -49,7 +49,7 @@ behind adding either is basically the same, but with a slightly different syntax
 
 .. _cookbook-assetic-including-javascript:
 
-Including JavaScript Files
+Dołączanie plików JavaScript
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To include JavaScript files, use the ``javascript`` tag in any template.
@@ -90,7 +90,7 @@ that reference images by their relative path. See :ref:`cookbook-assetic-cssrewr
 
 .. _cookbook-assetic-including-css:
 
-Including CSS Stylesheets
+Dołączanie stylów CSS
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To bring in CSS stylesheets, you can use the same methodologies seen
@@ -217,7 +217,7 @@ combine third party assets, such as jQuery, with your own into a single file:
 
 .. _cookbook-assetic-filters:
 
-Filters
+Filtry
 -------
 
 Once they're managed by Assetic, you can apply filters to your assets before
@@ -294,7 +294,7 @@ into your template:
 A more detailed guide about configuring and using Assetic filters as well as
 details of Assetic's debug mode can be found in :doc:`/cookbook/assetic/yuicompressor`.
 
-Controlling the URL used
+Kontrolowanie używanych URL
 ------------------------
 
 If you wish to, you can control the URLs that Assetic produces. This is
@@ -327,7 +327,7 @@ done from the template and is relative to the public document root:
 
 .. _cookbook-assetic-dumping:
 
-Dumping Asset Files
+Zrzut plików zewnętrznych zasobów
 -------------------
 
 In the ``dev`` environment, Assetic generates paths to CSS and JavaScript
