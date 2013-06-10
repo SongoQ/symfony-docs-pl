@@ -4,15 +4,11 @@
 Jak zastosować Assetic przy zarządzaniu zewnętrznymi zasobami
 =======================================
 
-Assetic combines two major ideas: :ref:`assets<cookbook-assetic-assets>` and
-:ref:`filters<cookbook-assetic-filters>`. The assets are files such as CSS,
-JavaScript and image files. The filters are things that can be applied to
-these files before they are served to the browser. This allows a separation
-between the asset files stored in the application and the files actually presented
-to the user.
+Assetic łączy w sobie dwie idee: :ref:`assets<cookbook-assetic-assets>` i :ref:`filters<cookbook-assetic-filters>`. Zewnętrzne zasoby to pliki CSS, JavaScript i obrazów.
+Filtry to coś, co może zostać zaaplikowane do owych zasobów zanim te zostaną przesłane do przeglądarki. Pozwala to na zachowanie separacji pomiędzy plikami zewnętrznych zasobów trzymanymi w aplikacji, 
+a plikami rzeczywiście prezentowanymi użytkownikowi.
 
-Without Assetic, you just serve the files that are stored in the application
-directly:
+Bez Assetic, pliki obecne w aplikacji są prezentowane bezpośrednio:
 
 .. configuration-block::
 
@@ -24,37 +20,29 @@ directly:
 
         <script src="<?php echo $view['assets']->getUrl('js/script.js') ?>" type="text/javascript" />
 
-But *with* Assetic, you can manipulate these assets however you want (or
-load them from anywhere) before serving them. This means you can:
+Dzięki Assetic można manipulować zewnętrznymi zasobami na różne sposoby (albo też dołączać je z różnych miejsc) zanim zostaną wysłane do użytkownika. Znaczy to, że można:
 
-* Minify and combine all of your CSS and JS files
+* Skompresować i połączyć wszystkie pliki CSS i JS w jeden
 
-* Run all (or just some) of your CSS or JS files through some sort of compiler,
-  such as LESS, SASS or CoffeeScript
+* Przepuścić wszystkie (albo tylko część) pliki CSS i JS przez pewien rodzaj kompilatora, taki jak LESS, SASS albo CoffeeScript
 
-* Run image optimizations on your images
+* Zastosować optymalizacje obrazu na plikach obrazów
 
 .. _cookbook-assetic-assets:
 
 Zasoby zewnętrzne
 ------
 
-Using Assetic provides many advantages over directly serving the files.
-The files do not need to be stored where they are served from and can be
-drawn from various sources such as from within a bundle.
+Korzystanie z Assetic przynosi wiele zalet nad metodą bezpośredniego obsługiwania plików. Zasoby nie muszą być trzymane w miejscu z którego są serwowane i mogą zostać wyciągniete z różnych źródeł takich jak bundle.
 
-You can use Assetic to process both :ref:`CSS stylesheets<cookbook-assetic-including-css>`
-and :ref:`JavaScript files<cookbook-assetic-including-javascript>`. The philosophy
-behind adding either is basically the same, but with a slightly different syntax.
+Można używać Assetic zarówno dla :ref:`CSS stylesheets<cookbook-assetic-including-css>` jak i :ref:`JavaScript files<cookbook-assetic-including-javascript>`. Filozofia dodawania obydwóch jest identyczna, z nieznacznie zmienioną składnią.
 
 .. _cookbook-assetic-including-javascript:
 
 Dołączanie plików JavaScript
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To include JavaScript files, use the ``javascript`` tag in any template.
-This will most commonly live in the ``javascripts`` block, if you're using
-the default block names from the Symfony Standard Distribution:
+By dołączyć pliki JavaScript, można w szablonie zastosować etykietę ``javascript``. Etykieta ta najczęściej spotykana jest w bloku ``javascripts``, jeśli operujesz domyślnie na Standardowej Dystrybucji Symfony, nazwy bloków wyglądają następująco:
 
 .. configuration-block::
 
@@ -74,29 +62,22 @@ the default block names from the Symfony Standard Distribution:
 
 .. tip::
 
-    You can also include CSS Stylesheets: see :ref:`cookbook-assetic-including-css`.
+    Można również dołączyć style CSS: zobacz :ref:`cookbook-assetic-including-css`.
 
-In this example, all of the files in the ``Resources/public/js/`` directory
-of the ``AcmeFooBundle`` will be loaded and served from a different location.
-The actual rendered tag might simply look like:
-
+W tym przykładzie, wszystkie pliki w katalogu ``Resources/public/js/`` z ``AcmeFooBundle`` zostaną wczytane i zaserwowane z różnych miejsc. Rzeczywista etykieta mogłaby wyglądać na przykład tak:
+    
 .. code-block:: html
 
     <script src="/app_dev.php/js/abcd123.js"></script>
 
-This is a key point: once you let Assetic handle your assets, the files are
-served from a different location. This *will* cause problems with CSS files
-that reference images by their relative path. See :ref:`cookbook-assetic-cssrewrite`.
+Kluczowym punktem jest: gdy pozwolisz Assetic obsługiwać zewnętrzne zasoby, pliki te zostaną dostarczane z róznych miejsc. To *będzie* powodowało problemy z plikami CSS, które odwołują się do obrazów poprzez ścieżki względne. Zobacz :ref:`cookbook-assetic-cssrewrite`.
 
 .. _cookbook-assetic-including-css:
 
 Dołączanie stylów CSS
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To bring in CSS stylesheets, you can use the same methodologies seen
-above, except with the ``stylesheets`` tag. If you're using the default
-block names from the Symfony Standard Distribution, this will usually live
-inside a ``stylesheets`` block:
+Aby dostarczyć pliki CSS, można użyć tych samych metodologii co powyżej, za wyjątkiem etykiety, której nazwa powinna być ``stylesheets``. Jeśli domyślnie używasz Standardowej Dystrybucji Symfony, pliki CSS znajdziesz w bloku ``stylesheets``:
 
 .. configuration-block::
 
@@ -115,45 +96,30 @@ inside a ``stylesheets`` block:
             <link rel="stylesheet" href="<?php echo $view->escape($url) ?>" />
         <?php endforeach; ?>
 
-But because Assetic changes the paths to your assets, this *will* break any
-background images (or other paths) that uses relative paths, unless you use
-the :ref:`cssrewrite<cookbook-assetic-cssrewrite>` filter.
+Z uwagi na to, że Assetic zmienia ścieżki do zewnętrznych zasobów, zainfekuje to obrazy tła (lub inne zasoby), które używają ścieżek względnych, chyba, że zostanie zastosowany filtr :ref:`cssrewrite<cookbook-assetic-cssrewrite>`.
 
 .. note::
 
-    Notice that in the original example that included JavaScript files, you
-    referred to the files using a path like ``@AcmeFooBundle/Resources/public/file.js``,
-    but that in this example, you referred to the CSS files using their actual,
-    publicly-accessible path: ``bundles/acme_foo/css``. You can use either, except
-    that there is a known issue that causes the ``cssrewrite`` filter to fail
-    when using the ``@AcmeFooBundle`` syntax for CSS Stylesheets.
+    Zauważ, że w przykładzie, w którym dołączałeś pliki JavaScript, odnosiłeś się do nich z użyciem ``@AcmeFooBundle/Resources/public/file.js``, jednak teraz odwołujesz się do plików CSS używając rzeczywistej, publicznie widocznej ścieżki: ``bundles/acme_foo/css``. Możesz używać obu metod, wiedz tylko, że istnieje znany problem, który powoduje niepowodzenie filtra ``cssrewrite`` przy użyciu składni ``@AcmeFooBundle``.
 
 .. _cookbook-assetic-cssrewrite:
 
-Fixing CSS Paths with the ``cssrewrite`` Filter
+Ustalanie ścieżki w plikach CSS z użyciem filtra ``cssrewrite``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Since Assetic generates new URLs for your assets, any relative paths inside
-your CSS files will break. To fix this, make sure to use the ``cssrewrite``
-filter with your ``stylesheets`` tag. This parses your CSS files and corrects
-the paths internally to reflect the new location.
+Ponieważ Assetic generuje nowe URL'e dla Twoich zewnętrznych zasobów, jakakolwiek ścieżka względna wewnątrz Twoich plików CSS nie będzie działać. By temu zaradzić, upewnij się, że używasz filtra ``cssrewrite`` w etykiecie ``stylesheets``. Pozwala to przeanalizować Twoje pliki CSS i poprawić wewnętrznie wszystkie ścieżki by odzwierciedlały nową lokalizację.
 
-You can see an example in the previous section.
+Możesz prześledzić przykład z poprzedniej sekcji.
 
 .. caution::
 
-    When using the ``cssrewrite`` filter, don't refer to your CSS files using
-    the ``@AcmeFooBundle`` syntax. See the note in the above section for details.
+  Gdy używasz filtru ``cssrewrite``, nie odwołuj się do plików CSS z użyciem składni ``@AcmeFooBundle``. Aby poznać szczegóły, prześledź notę z sekcji powyżej.
 
-Combining Assets
+Łączenie zasobów
 ~~~~~~~~~~~~~~~~
 
-One feature of Assetic is that it will combine many files into one. This helps
-to reduce the number of HTTP requests, which is great for front end performance.
-It also allows you to maintain the files more easily by splitting them into
-manageable parts. This can help with re-usability as you can easily split
-project-specific files from those which can be used in other applications,
-but still serve them as a single file:
+Jedną z cech Assetic jest łączenie wielu plików w jeden. Pozwala to zredukować ilość zapytań HTTP, co jest pożądane dla wydajności aplikacji. Pozwala to również utrzymywać pliki poprzez dzielenie ich na łatwiejsze w utrzymaniu części.
+Sposób ten ułatwia ponowne użycie gdyż z łatwością dzieli specyficzne dla projektu pliki od tych, które mogłyby zostać użyte w innych aplikacjach, wciąż serwując je jako jeden plik:
 
 .. configuration-block::
 
@@ -178,11 +144,7 @@ but still serve them as a single file:
             <script src="<?php echo $view->escape($url) ?>"></script>
         <?php endforeach; ?>
 
-In the ``dev`` environment, each file is still served individually, so that
-you can debug problems more easily. However, in the ``prod`` environment
-(or more specifically, when the ``debug`` flag is ``false``), this will be
-rendered as a single ``script`` tag, which contains the contents of all of
-the JavaScript files.
+W środowisku ``dev`` każdy plik jest wciąż serwowany indywidualnie, dzięki czemu można całkiem łatwo okiełznać problem. Natomiast środowisko ``prod`` (bardziej szczegółowo, gdy flaga ``debug`` jest ustawiona na ``false``), wyrenderuje wszystko jako jeden ``script``, na którego zawartość będą składać się wszystkie użyte pliki JavaScript.
 
 .. tip::
 
