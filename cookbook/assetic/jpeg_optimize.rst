@@ -4,17 +4,12 @@
 Jak zastosować Assetic do optymalizacji obrazów w funkcjach Twiga
 =============================================================
 
-Amongst its many filters, Assetic has four filters which can be used for on-the-fly
-image optimization. This allows you to get the benefits of smaller file sizes
-without having to use an image editor to process each image. The results
-are cached and can be dumped for production so there is no performance hit
-for your end users.
+Wśród swoich wielu filtrów, Assetic posiada cztery, które mogą być wykorzystane do optymalizacji obrazów w locie. Pozwala to uzyskać korzyści z mniejszych rozmiarów plików bez konieczności używania edytora graficznego do przetwarzachnia każdego obrazu z osobna. Wyniki są buforowane i mogą zostać zrzucone na produkcji, zatem nie doświadczy się spadku wydajności dla użytkowników końcowych.
 
-Using Jpegoptim
+Używanie Jpegoptim
 ---------------
 
-`Jpegoptim`_ is a utility for optimizing JPEG files. To use it with Assetic,
-add the following to the Assetic config:
+`Jpegoptim`_ to narzędzie do optymalizacji plików JPEG. Aby korzystać z niego w Assetic, dodaj poniższe do konfiguracji Assetic:
 
 .. configuration-block::
 
@@ -48,10 +43,9 @@ add the following to the Assetic config:
 
 .. note::
 
-    Notice that to use jpegoptim, you must have it already installed on your
-    system. The ``bin`` option points to the location of the compiled binary.
+    Zauważ, że do korzystania z jpegoptim trzeba mieć go zainstalowanego w systemie. Opcja ``bin`` wskazuje na lokalizację skompilowanej binarki.
 
-It can now be used from a template:
+Można go teraz użyć z szablonu:
 
 .. configuration-block::
 
@@ -71,12 +65,10 @@ It can now be used from a template:
             <img src="<?php echo $view->escape($url) ?>" alt="Example"/>
         <?php endforeach; ?>
 
-Removing all EXIF Data
+Usuwanie wszystkich danych EXIF
 ~~~~~~~~~~~~~~~~~~~~~~
 
-By default, running this filter only removes some of the meta information
-stored in the file. Any EXIF data and comments are not removed, but you can
-remove these by using the ``strip_all`` option:
+Domyślnie, uruchomienie tego filtru usunie tylko część metainformacji przechowywanych w pliku. Wszelkie dane EXIF i komentarze nie zostaną usunięte, ale można tego dokonać dzięki opcji ``strip_all``:
 
 .. configuration-block::
 
@@ -111,13 +103,10 @@ remove these by using the ``strip_all`` option:
             ),
         ));
 
-Lowering Maximum Quality
+Obniżanie maksymalnej jakości
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The quality level of the JPEG is not affected by default. You can gain
-further file size reductions by setting the max quality setting lower than
-the current level of the images. This will of course be at the expense of
-image quality:
+Poziom jakości JPEG nie jest tknięty domyślnie. Można uzyskać dalszą redukcję rozmiaru pliku poprzez ustawienie maksymalnej jakości niższej niż obecny poziom dla obrazów. Będzie to oczywiście kosztem jakości obrazu: 
 
 .. configuration-block::
 
@@ -152,12 +141,10 @@ image quality:
             ),
         ));
 
-Shorter syntax: Twig Function
+Krótsza składnia: Funkcja Twig
 -----------------------------
 
-If you're using Twig, it's possible to achieve all of this with a shorter
-syntax by enabling and using a special Twig function. Start by adding the
-following config:
+Jeśli używasz szablonów Twig, jest możliwe by osiągnąc to wszystko dzięki krótszej składni poprzez użycie specjalnej funkcji. By rozpoczać, należy dodać następującą konfigurację:
 
 .. configuration-block::
 
@@ -200,13 +187,13 @@ following config:
             ),
         ));
 
-The Twig template can now be changed to the following:
+Szablon Twig można teraz zmienić następująco:        
 
 .. code-block:: html+jinja
 
     <img src="{{ jpegoptim('@AcmeFooBundle/Resources/public/images/example.jpg') }}" alt="Example"/>
 
-You can specify the output directory in the config in the following way:
+Można określić katalog docelowy w konfiguracji w następujący sposób:
 
 .. configuration-block::
 

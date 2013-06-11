@@ -118,8 +118,7 @@ Możesz prześledzić przykład z poprzedniej sekcji.
 Łączenie zasobów
 ~~~~~~~~~~~~~~~~
 
-Jedną z cech Assetic jest łączenie wielu plików w jeden. Pozwala to zredukować ilość zapytań HTTP, co jest pożądane dla wydajności aplikacji. Pozwala to również utrzymywać pliki poprzez dzielenie ich na łatwiejsze w utrzymaniu części.
-Sposób ten ułatwia ponowne użycie gdyż z łatwością dzieli specyficzne dla projektu pliki od tych, które mogłyby zostać użyte w innych aplikacjach, wciąż serwując je jako jeden plik:
+Jedną z cech Assetic jest łączenie wielu plików w jeden. Pomaga to zredukować ilość zapytań HTTP, co jest niezbędne dla wydajności aplikacji. Umożliwia to również sprawniejsze zarządanie plikami poprzez dzielenie ich na mniejsze, łatwiejsze w utrzymaniu części. Wpływa to na reużywalność, bowiem pozwala oddzielić pliki specyficzne dla danego projektu od tych, które mogą zostać użyte w innych aplikacjach, wciąż prezentując je jako jeden zasób:
 
 .. configuration-block::
 
@@ -144,17 +143,13 @@ Sposób ten ułatwia ponowne użycie gdyż z łatwością dzieli specyficzne dla
             <script src="<?php echo $view->escape($url) ?>"></script>
         <?php endforeach; ?>
 
-W środowisku ``dev`` każdy plik jest wciąż serwowany indywidualnie, dzięki czemu można całkiem łatwo okiełznać problem. Natomiast środowisko ``prod`` (bardziej szczegółowo, gdy flaga ``debug`` jest ustawiona na ``false``), wyrenderuje wszystko jako jeden ``script``, na którego zawartość będą składać się wszystkie użyte pliki JavaScript.
+W środowisku ``dev`` każdy plik jest serwowany indywidualnie, dzięki czemu można okiełznać problem. Natomiast środowisko ``prod`` (mówiąc szczegółowiej, gdy flaga ``debug`` jest ustawiona na ``false``), wyrenderuje wszystko w jednym znaczniku ``script``, który skumuluje zawartość wszystkich użytych przez Ciebie plików JavaScript.
 
 .. tip::
 
-    If you're new to Assetic and try to use your application in the ``prod``
-    environment (by using the ``app.php`` controller), you'll likely see
-    that all of your CSS and JS breaks. Don't worry! This is on purpose.
-    For details on using Assetic in the ``prod`` environment, see :ref:`cookbook-assetic-dumping`.
+    Jeśli dopiero co poznajesz Assetic i uruchamiasz aplikacje w środowisku ``prod`` (poprzez użycie kontrolera ``app.php``), prawdopodobnie doświadczysz, że wszystkie Twoje pliki CSS i JS uległy zniszczeniu. Nie przejmuj się! Jest to celowe zachowanie. Po szczegółowe informacje na temat używania Assetic w środowisku ``prod`` sięgnij do :ref:`cookbook-assetic-dumping`.
 
-And combining files doesn't only apply to *your* files. You can also use Assetic to
-combine third party assets, such as jQuery, with your own into a single file:
+Łączenie plików nie odnosi się tylko i wyłącznie do *swoich* plików. Można równie dobrze użyć Assetic w celu połączenia zasobów zewnętrznych, takich jak jQuery, z własnymi i zawrzeć je w pojedynczym pliku:
 
 .. configuration-block::
 
@@ -182,26 +177,13 @@ combine third party assets, such as jQuery, with your own into a single file:
 Filtry
 -------
 
-Once they're managed by Assetic, you can apply filters to your assets before
-they are served. This includes filters that compress the output of your assets
-for smaller file sizes (and better front-end optimization). Other filters
-can compile JavaScript file from CoffeeScript files and process SASS into CSS.
-In fact, Assetic has a long list of available filters.
+Gdy są one zarządzane przez Assetic, można zastosować filtry do zasobów zanim te zostaną zaserwowane użytkownikowi. Wliczając w nie filtry, które kompresują rezultat użytych zasobów do mniejszych rozmiarów (i optymalizują aplikację), jak i te, które mogą skompilować plik JavaScript z plików CoffeeScript albo przetworzyć SASS w CSS. W rzeczywistości, Assetic ma dość pokaźną listę dostępnych filtrów.
 
-Many of the filters do not do the work directly, but use existing third-party
-libraries to do the heavy-lifting. This means that you'll often need to install
-a third-party library to use a filter.  The great advantage of using Assetic
-to invoke these libraries (as opposed to using them directly) is that instead
-of having to run them manually after you work on the files, Assetic will
-take care of this for you and remove this step altogether from your development
-and deployment processes.
+Wiele z tych filtrów nie działa bezpośrednio, gdyż używa bibliotek firm trzecich do wykonywania najcięższej, algorytmicznej pracy. Oznacza to, że nieraz będzie trzeba zainstalować biblioteki firm trzecich, by potem zmusić dany filtr do działania. Ogromną zaletą korzystania z Assetic do wywoływania tych bibliotek (w przeciwieństwie do używania ich bezpośrednio) jest to, że zamiast uruchamiać je ręcznie podczas pracy, Assetic zadba o to za nas i usunie ten krok z procesu rozwoju i wdrażania aplikacji.
 
-To use a filter, you first need to specify it in the Assetic configuration.
-Adding a filter here doesn't mean it's being used - it just means that it's
-available to use (you'll use the filter below).
+By skorzystać z filtru, trzeba go najpierw skonfigurować w Assetic. Dodanie filtru tutaj nie znaczy, że jest już używany - oznacza to po prostu, że jest dostępny do wykorzystania (użyjemy filtru poniżej).
 
-For example to use the JavaScript YUI Compressor the following config should
-be added:
+Na przykład, by użyć JavaScript YUI Compressor, następująca konfiguracja powinna zostać dodana:
 
 .. configuration-block::
 
@@ -233,8 +215,7 @@ be added:
             ),
         ));
 
-Now, to actually *use* the filter on a group of JavaScript files, add it
-into your template:
+Teraz, by tak naprawdę *użyć* filtru na grupie plików JavaScript, wystarczy dodać poniższe linie do szablonu:
 
 .. configuration-block::
 
@@ -253,14 +234,12 @@ into your template:
             <script src="<?php echo $view->escape($url) ?>"></script>
         <?php endforeach; ?>
 
-A more detailed guide about configuring and using Assetic filters as well as
-details of Assetic's debug mode can be found in :doc:`/cookbook/assetic/yuicompressor`.
+Bardziej szczegółowy przewodnik na temat konfiguracji i korzystania z filtrów Assetic, jak również informacji o trybie debugowania Assetic można znaleźć w :doc:`/cookbook/assetic/yuicompressor`.
 
-Kontrolowanie używanych URL
+Kontrolowanie używanych adresów URL
 ------------------------
 
-If you wish to, you can control the URLs that Assetic produces. This is
-done from the template and is relative to the public document root:
+Jeśli chcesz, możesz kontrolować adresy URL generowane przez Assetic. Są one tworzone z szablonu i relatywne do głównego dokumentu publicznego:
 
 .. configuration-block::
 
@@ -282,66 +261,45 @@ done from the template and is relative to the public document root:
 
 .. note::
 
-    Symfony also contains a method for cache *busting*, where the final URL
-    generated by Assetic contains a query parameter that can be incremented
-    via configuration on each deployment. For more information, see the
-    :ref:`ref-framework-assets-version` configuration option.
+    Symfony zawiera metody do *niszczenia* cache, gdzie finalny adres URL generowany przez Assetic zawiera parametr zapytania, który może być zwiększany w konfiguracji przy każdym procesie wdrażania. Aby uzyskać więcej informacji, zobacz na opcje konfiguracji :ref:`ref-framework-assets-version`.
 
 .. _cookbook-assetic-dumping:
 
-Zrzut plików zewnętrznych zasobów
+Zrzut plików aktywów
 -------------------
 
-In the ``dev`` environment, Assetic generates paths to CSS and JavaScript
-files that don't physically exist on your computer. But they render nonetheless
-because an internal Symfony controller opens the files and serves back the
-content (after running any filters).
+W środowisku ``dev``, Assetic generuje ścieżki do plików CSS i JavaScript, które nie istnieją fizycznie na komputerze. Ścieżki sa tak czy inaczej generowane, gdyż wewnętrzny kontroler Symfony jest w stanie otworzyć pliki, by zaserwować ich zawartość (zaraz po uruchomieniu filtrów).
 
-This kind of dynamic serving of processed assets is great because it means
-that you can immediately see the new state of any asset files you change.
-It's also bad, because it can be quite slow. If you're using a lot of filters,
-it might be downright frustrating.
+Ten rodzaj dynamicznego serwowania przetworzonych aktywów daje dużo korzyści, gdyż oznacza to, że można od razu zobaczyć stan wszystkich plików aktywów, które uległy zmianie. Z drugiej strony, może przynieśc i straty z uwagi na spowolnienie aplikacji. Jeśli używa się zbyt wielu filtrów, może okazać się to wręcz frustrujące.
 
-Fortunately, Assetic provides a way to dump your assets to real files, instead
-of being generated dynamically.
+Na szczęście Assetic zapewnia możliwość zrzutu aktywów do rzeczywistych plików, zamiast generowania ich dynamicznie.
 
-Dumping Asset Files in the ``prod`` environment
+
+Zrzut plików aktywów w środowisku ``prod``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the ``prod`` environment, your JS and CSS files are represented by a single
-tag each. In other words, instead of seeing each JavaScript file you're including
-in your source, you'll likely just see something like this:
+W środowisku ``prod``, pliki JS i CSS sa reprezentowane przez pojedynczy znacznik. Innymi słowy, zamiast widzieć każdy plik JavaScript, który załączono w źródle, nieraz zobaczymy coś takiego:
 
 .. code-block:: html
 
     <script src="/app_dev.php/js/abcd123.js"></script>
 
-Moreover, that file does **not** actually exist, nor is it dynamically rendered
-by Symfony (as the asset files are in the ``dev`` environment). This is on
-purpose - letting Symfony generate these files dynamically in a production
-environment is just too slow.
+Co więcej, ten plik tak naprawdę **nie** istnieje, ani też nie jest dynamicznie generowany przez Symfony (jak pliki aktywów w środowisku ``dev``). Jest to celowe - pozwolenie Symfony na generowanie tych plików dynamicznie w środowisku produkcyjnym byłoby po prostu za wolne.
 
-Instead, each time you use your app in the ``prod`` environment (and therefore,
-each time you deploy), you should run the following task:
+Zamiast tego, za każdym gdy używa się środowiska ``prod`` (a zatem za każdym razem gdy wdrażano), powinno sie uruchomić następujące zadanie:
 
 .. code-block:: bash
 
     $ php app/console assetic:dump --env=prod --no-debug
 
-This will physically generate and write each file that you need (e.g. ``/js/abcd123.js``).
-If you update any of your assets, you'll need to run this again to regenerate
-the file.
+To spowoduje fizyczną generację każdego pliku, który potrzeba. (np: ``/js/abcd123.js``). W przypadku aktualizacji aktywów, trzeba uruchomić to zadanie ponownie i przegenerować pliki.
 
-Dumping Asset Files in the ``dev`` environment
+Zrzut plików aktywów w środowisku ``dev``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, each asset path generated in the ``dev`` environment is handled
-dynamically by Symfony. This has no disadvantage (you can see your changes
-immediately), except that assets can load noticeably slow. If you feel like
-your assets are loading too slowly, follow this guide.
+Domyślnie, każda ścieżka aktywów generowana w środowisku ``dev`` jest obsługiwana dynamicznie przez Symfony. Nie ma to wad (widać zmiany natychmiast), z wyjątkiem, że aktywa mogą ładować się zauważalnie wolniej. Jeśli uważasz, że aktywa wczytują się zbyt wolno, skorzystaj z tej instrukcji.
 
-First, tell Symfony to stop trying to process these files dynamically. Make
-the following change in your ``config_dev.yml`` file:
+Po pierwsze, nakaż Symfony aby zatrzymać przetwarzanie tych plików dynamicznie. Zmień konfigurację w pliku ``config_dev.yml`` następująco:
 
 .. configuration-block::
 
@@ -363,12 +321,13 @@ the following change in your ``config_dev.yml`` file:
             'use_controller' => false,
         ));
 
-Next, since Symfony is no longer generating these assets for you, you'll
-need to dump them manually. To do so, run the following:
+Następnie, ponieważ Symfony nie jest już odpowiedzialne za generowanie aktywów, trzeba zrzucić je ręcznie. Aby to zrobić, wykonaj następujące czynności:
 
 .. code-block:: bash
 
     $ php app/console assetic:dump
+
+To zadanie fizycznie zapisuje wszystkie pliki aktywów dla środowiska ``dev``. Dużą wadą jest, że trzeba uruchamiać je za każdym razem gdy zaktualizowano aktyw. Na szczęście, stosując opcje ``--watch``, polecenie automatycznie przegeneruje aktywa *w chwili ich zmiany*:
 
 This physically writes all of the asset files you need for your ``dev``
 environment. The big disadvantage is that you need to run this each time
@@ -379,9 +338,7 @@ command will automatically regenerate assets *as they change*:
 
     $ php app/console assetic:dump --watch
 
-Since running this command in the ``dev`` environment may generate a bunch
-of files, it's usually a good idea to point your generated assets files to
-some isolated directory (e.g. ``/js/compiled``), to keep things organized:
+Ponieważ uruchomienie tego polecenia w środowisku ``dev`` może wygererować dość sporo plików, zazwyczaj dobrym pomysłem dla tak generowanych plików aktywów jest wskazanie odizolowanego katalogu (np: ``/js/compiled``), by wciąż przechowywać rzeczy w sposób zorganizowany:
 
 .. configuration-block::
 

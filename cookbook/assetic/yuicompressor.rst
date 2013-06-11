@@ -1,25 +1,20 @@
 .. index::
    single: Assetic; YUI Compressor
 
-Jak skompresować skrypty i style z użyciem YUI Compressor
+Jak kompresować skrypty i style z użyciem YUI Compressor
 =============================================================
 
-Yahoo! provides an excellent utility for minifying JavaScripts and stylesheets
-so they travel over the wire faster, the `YUI Compressor`_. Thanks to Assetic,
-you can take advantage of this tool very easily.
+Yahoo! dostarcza doskonałego narzędzia do minimalizowania plików JavaScripts oraz arkuszy stylów, dzięki czemu podróżują przez sieć o wiele szybciej, `YUI Compressor`_. Dzięki Assetic, można skorzystać z tego narzędzia bardzo łatwo. 
 
-Download the YUI Compressor JAR
+Pobierz plik JAR YUI Compressor
 -------------------------------
 
-The YUI Compressor is written in Java and distributed as a JAR. `Download the JAR`_
-from the Yahoo! site and save it to ``app/Resources/java/yuicompressor.jar``.
+YUI Compressor jest napisany w Java i dystrybuowany jako JAR. `Pobierz JAR`_ ze strony Yahoo! i zapisz go do ``app/Resources/java/yuicompressor.jar``.
 
-Configure the YUI Filters
+Konfiguracja filtrów YUI
 -------------------------
 
-Now you need to configure two Assetic filters in your application, one for
-minifying JavaScripts with the YUI Compressor and one for minifying
-stylesheets:
+Pora na skonfigurowanie dwóch filtrów Assetic w naszej aplikacji, pierwszy do minimalizowania plików JavaScripts z YUI Compressor oraz drugi do minimalizowania arkuszy stylów:
 
 .. configuration-block::
 
@@ -63,19 +58,14 @@ stylesheets:
         
 .. note::
 
-    Windows users need to remember to update config to proper java location. 
-    In Windows7 x64 bit by default it's ``C:\Program Files (x86)\Java\jre6\bin\java.exe``.
+    Użytkownicy Windows muszą pamiętać o zaktualizowaniu konfiguracji o właściwą lokalizację biblioteki java. W Windows7 x64 bitów domyślnie jest to ``C:\Program Files (x86)\Java\jre6\bin\java.exe``.
 
-You now have access to two new Assetic filters in your application:
-``yui_css`` and ``yui_js``. These will use the YUI Compressor to minify
-stylesheets and JavaScripts, respectively.
+W naszej aplikacji do dyspozycji mamy dwa filtry Assetic: ``yui_css`` i ``yui_css``. Będą one używać YUI Compressor by zminimalizować odpowiednio arkusze stylów i pliki JavaScripts.
 
-Minify your Assets
+Minimalizacja aktywów
 ------------------
 
-You have YUI Compressor configured now, but nothing is going to happen until
-you apply one of these filters to an asset. Since your assets are a part of
-the view layer, this work is done in your templates:
+Mamy już skonfigurowany YUI Compressor, lecz nic się nie dzieje, dopóki nie zastosuje się jednego z jego filtrów do używanych aktywów. Ponieważ aktywa są częścią warstwy widoku, praca ta jest wykonywana w szablonach:
 
 .. configuration-block::
 
@@ -96,14 +86,9 @@ the view layer, this work is done in your templates:
 
 .. note::
 
-    The above example assumes that you have a bundle called ``AcmeFooBundle``
-    and your JavaScript files are in the ``Resources/public/js`` directory under
-    your bundle. This isn't important however - you can include your Javascript
-    files no matter where they are.
+    Powyższy przykład zakłada, że posiada się pakiet o nazwie ``AcmeFooBundle``, a pliki JavaScripts znajdują się w katalogu ``Resources/public/js`` w tymże pakiecie. Nie jest to jednak tak ważne, gdyż można załączać pliki JavaScriptsbez względu na to gdzie się znajdują.
 
-With the addition of the ``yui_js`` filter to the asset tags above, you should
-now see minified JavaScripts coming over the wire much faster. The same process
-can be repeated to minify your stylesheets.
+Po dodaniu filtru ``yui_js`` do znaczników aktywów powyżej, powinno się odczuć, że tak generowane pliki JavaScript przechodzą przez sieć znacznie szybciej. Identyczny proces mozna powtórzyć by zminimalizować arkusze stylów.
 
 .. configuration-block::
 
@@ -122,14 +107,10 @@ can be repeated to minify your stylesheets.
             <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $view->escape($url) ?>" />
         <?php endforeach; ?>
 
-Disable Minification in Debug Mode
+Wyłączanie minimalizowania w trybie debugowania
 ----------------------------------
 
-Minified JavaScripts and Stylesheets are very difficult to read, let alone
-debug. Because of this, Assetic lets you disable a certain filter when your
-application is in debug mode. You can do this by prefixing the filter name
-in your template with a question mark: ``?``. This tells Assetic to only
-apply this filter when debug mode is off.
+Pliki JavaScripts i arkusze stylów po minimalizacji są trudne do odczytania, nie mówiąc już o samym debugowaniu. Z tego powodu, Assetic pozwala wyłączyć pewien filtr gdy aplikacja jest w trybie debugowania. Można to zrobić poprzedzając nazwę filtra w szablonie znakiem zapytania: ``?``. Instruuje to Assetic, by zastosować ten filtr tylko w chwili, gdy tryb debugowania jest wyłączony.
 
 .. configuration-block::
 
@@ -150,15 +131,9 @@ apply this filter when debug mode is off.
 
 
 .. tip::
-
-    Instead of adding the filter to the asset tags, you can also globally
-    enable it by adding the apply-to attribute to the filter configuration, for
-    example in the yui_js filter ``apply_to: "\.js$"``. To only have the filter
-    applied in production, add this to the config_prod file rather than the
-    common config file. For details on applying filters by file extension,
-    see :ref:`cookbook-assetic-apply-to`.
+    Zamiast dodawać filtry do znaczników aktywów, można również globalnie włączyć je przez dodawanie atrybutu apply-to do konfiguracji filtra, na przykład w filtrze yui_js ``apply_to: "\.js$"``. By zastosować to tylko na produkcji, należy dodać ową konfigurację do pliku config_prod zamiast do głównego config. Szczegółowe informacje na temat stosowania filtrów w zależności od rozszerzenia pliku można znaleźć pod :ref:`cookbook-assetic-apply-to`. 
 
 
 .. _`YUI Compressor`: http://developer.yahoo.com/yui/compressor/
-.. _`Download the JAR`: http://yuilibrary.com/projects/yuicompressor/
+.. _`Pobierz JAR`: http://yuilibrary.com/projects/yuicompressor/
 
