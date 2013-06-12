@@ -1,14 +1,14 @@
 .. index::
    single: Assetic; Wprowadzenie
 
-Jak zastosować Assetic przy zarządzaniu zewnętrznymi zasobami
+Jak zastosować Assetic do zarządzania aktywami
 =======================================
 
-Assetic łączy w sobie dwie idee: :ref:`assets<cookbook-assetic-assets>` i :ref:`filters<cookbook-assetic-filters>`. Zewnętrzne zasoby to pliki CSS, JavaScript i obrazów.
-Filtry to coś, co może zostać zaaplikowane do owych zasobów zanim te zostaną przesłane do przeglądarki. Pozwala to na zachowanie separacji pomiędzy plikami zewnętrznych zasobów trzymanymi w aplikacji, 
+Assetic łączy w sobie dwie idee: :ref:`aktywa<cookbook-assetic-assets>` i :ref:`filtry<cookbook-assetic-filters>`. Aktywa to pliki CSS, JavaScript i obrazów.
+Filtry to coś, co może zostać użyte na aktywach zanim te zostaną przesłane do przeglądarki. Pozwala to na zachowanie separacji pomiędzy plikami aktywów trzymanymi w aplikacji, 
 a plikami rzeczywiście prezentowanymi użytkownikowi.
 
-Bez Assetic, pliki obecne w aplikacji są prezentowane bezpośrednio:
+Bez Assetic, pliki obecne w aplikacji są serwowane bezpośrednio:
 
 .. configuration-block::
 
@@ -20,7 +20,7 @@ Bez Assetic, pliki obecne w aplikacji są prezentowane bezpośrednio:
 
         <script src="<?php echo $view['assets']->getUrl('js/script.js') ?>" type="text/javascript" />
 
-Dzięki Assetic można manipulować zewnętrznymi zasobami na różne sposoby (albo też dołączać je z różnych miejsc) zanim zostaną wysłane do użytkownika. Znaczy to, że można:
+Dzięki Assetic można manipulować aktywami na różne sposoby (albo też dołączać je z różnych miejsc) zanim zostaną wysłane do użytkownika. Znaczy to, że można:
 
 * Skompresować i połączyć wszystkie pliki CSS i JS w jeden
 
