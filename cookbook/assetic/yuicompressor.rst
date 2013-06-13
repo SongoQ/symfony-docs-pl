@@ -4,7 +4,7 @@
 Jak kompresować skrypty i style z użyciem YUI Compressor
 =============================================================
 
-Yahoo! dostarcza doskonałego narzędzia do minimalizowania plików JavaScripts oraz arkuszy stylów, dzięki czemu podróżują przez sieć o wiele szybciej, `YUI Compressor`_. Dzięki Assetic, można skorzystać z tego narzędzia bardzo łatwo. 
+Yahoo! dostarcza doskonałe narzędzie do minimalizacji plików JavaScript i arkuszy stylów, dzięki czemu podróżują one przez sieć o wiele szybciej, `YUI Compressor`_. Dzięki Assetic, można skorzystać z tego narzędzia bardzo łatwo. 
 
 Pobierz plik JAR YUI Compressor
 -------------------------------
@@ -14,7 +14,7 @@ YUI Compressor jest napisany w Java i dystrybuowany jako JAR. `Pobierz JAR`_ ze 
 Konfiguracja filtrów YUI
 -------------------------
 
-Pora na skonfigurowanie dwóch filtrów Assetic w naszej aplikacji, pierwszy do minimalizowania plików JavaScripts z YUI Compressor oraz drugi do minimalizowania arkuszy stylów:
+Pora na skonfigurowanie dwóch filtrów Assetic w aplikacji, jeden do minimalizacji plików JavaScripts z YUI Compressor i jeden do minimalizacji arkuszy stylów:
 
 .. configuration-block::
 
@@ -60,12 +60,12 @@ Pora na skonfigurowanie dwóch filtrów Assetic w naszej aplikacji, pierwszy do 
 
     Użytkownicy Windows muszą pamiętać o zaktualizowaniu konfiguracji o właściwą lokalizację biblioteki java. W Windows7 x64 bitów domyślnie jest to ``C:\Program Files (x86)\Java\jre6\bin\java.exe``.
 
-W naszej aplikacji do dyspozycji mamy dwa filtry Assetic: ``yui_css`` i ``yui_css``. Będą one używać YUI Compressor by zminimalizować odpowiednio arkusze stylów i pliki JavaScripts.
+Do dyspozycji są dwa filtry Assetic: ``yui_css`` i ``yui_css``. Będą korzystać z YUI Compressor do minimalizacji arkuszy stylów i plików JavaScript.
 
 Minimalizacja aktywów
 ------------------
 
-Mamy już skonfigurowany YUI Compressor, lecz nic się nie dzieje, dopóki nie zastosuje się jednego z jego filtrów do używanych aktywów. Ponieważ aktywa są częścią warstwy widoku, praca ta jest wykonywana w szablonach:
+Pomimo skonfigurowanego YUI Compressor, nic się nie stanie dopóty, dopóki nie zastosuje się jednego z jego filtrów na używanych aktywach. Ponieważ aktywa są częścią warstwy widoku, praca ta jest wykonywana w szablonach:
 
 .. configuration-block::
 
@@ -86,9 +86,9 @@ Mamy już skonfigurowany YUI Compressor, lecz nic się nie dzieje, dopóki nie z
 
 .. note::
 
-    Powyższy przykład zakłada, że posiada się pakiet o nazwie ``AcmeFooBundle``, a pliki JavaScripts znajdują się w katalogu ``Resources/public/js`` w tymże pakiecie. Nie jest to jednak tak ważne, gdyż można załączać pliki JavaScriptsbez względu na to gdzie się znajdują.
+    Powyższy przykład zakłada, że posiada się pakiet o nazwie ``AcmeFooBundle``, a pliki JavaScripts znajdują się w katalogu ``Resources/public/js``. To nie jest tak ważne, gdyż można dołączyć pliki JavaScript bez względu na to gdzie się znajdują.
 
-Po dodaniu filtru ``yui_js`` do znaczników aktywów powyżej, powinno się odczuć, że tak generowane pliki JavaScript przechodzą przez sieć znacznie szybciej. Identyczny proces mozna powtórzyć by zminimalizować arkusze stylów.
+Po dodaniu filtru ``yui_js`` do znaczników aktywów powyżej, powinno się odczuć, że tak generowane pliki JavaScript przechodzą przez sieć znacznie szybciej. Identyczny proces można powtórzyć do zminimalizowania arkuszy stylów.
 
 .. configuration-block::
 
@@ -107,10 +107,10 @@ Po dodaniu filtru ``yui_js`` do znaczników aktywów powyżej, powinno się odcz
             <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $view->escape($url) ?>" />
         <?php endforeach; ?>
 
-Wyłączanie minimalizowania w trybie debugowania
+Wyłączenie minimalizacji w trybie debugowania
 ----------------------------------
 
-Pliki JavaScripts i arkusze stylów po minimalizacji są trudne do odczytania, nie mówiąc już o samym debugowaniu. Z tego powodu, Assetic pozwala wyłączyć pewien filtr gdy aplikacja jest w trybie debugowania. Można to zrobić poprzedzając nazwę filtra w szablonie znakiem zapytania: ``?``. Instruuje to Assetic, by zastosować ten filtr tylko w chwili, gdy tryb debugowania jest wyłączony.
+Pliki JavaScripts i arkusze stylów po minimalizacji są trudne do odczytania, nie mówiąc już o samym debugowaniu. Z tego powodu, Assetic pozwala wyłączyć pewien filtr gdy aplikacja jest w trybie debugowania. Można to zrobić poprzedzając nazwę filtra w szablonie znakiem zapytania: ``?``. Instruuje on Assetic, by zastosować ten filtr w momencie, gdy tryb debugowania jest wyłączony.
 
 .. configuration-block::
 
@@ -131,7 +131,7 @@ Pliki JavaScripts i arkusze stylów po minimalizacji są trudne do odczytania, n
 
 
 .. tip::
-    Zamiast dodawać filtry do znaczników aktywów, można również globalnie włączyć je przez dodawanie atrybutu apply-to do konfiguracji filtra, na przykład w filtrze yui_js ``apply_to: "\.js$"``. By zastosować to tylko na produkcji, należy dodać ową konfigurację do pliku config_prod zamiast do głównego config. Szczegółowe informacje na temat stosowania filtrów w zależności od rozszerzenia pliku można znaleźć pod :ref:`cookbook-assetic-apply-to`. 
+    Zamiast dodawać filtry do znaczników aktywów, można również globalnie włączyć je dodając atrybut apply-to do konfiguracji filtra, na przykład w filtrze yui_js ``apply_to: "\.js$"``. Aby zastosować to tylko na produkcji, należy zaktualizować plik konfiguracyjny config_prod zamiast głównego pliku config. Szczegółowe informacje na temat stosowania filtrów w zależności od rozszerzenia pliku można znaleźć pod adresem :ref:`cookbook-assetic-apply-to`. 
 
 
 .. _`YUI Compressor`: http://developer.yahoo.com/yui/compressor/

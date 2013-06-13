@@ -4,9 +4,9 @@
 Jak zastosować filtry w Assetic do określonych rozszerzeń plików
 ===========================================================
 
-Filtry Assetic mogą być stosowane do poszczególnych plików, grup plików a nawet, jak zobaczysz tutaj, do plików, które mają określone rozszerzenie. Aby pokazać, jak obsłużyć każdą opcję, załóżmy, że chcemy używać filtra CoffeeScript, który kompiluje pliki CoffeeScript w JavaScript.
+Filtry Assetic mogą być stosowane do poszczególnych plików, grup plików a nawet, jak zobaczysz tutaj, do plików, które mają określone rozszerzenie. Aby pokazać, jak radzić sobie z każdą opcją, załóżmy, że chcemy używać filtra CoffeeScript, który kompiluje pliki CoffeeScript w JavaScript.
 
-Głowna konfiguracja to ustanowienie ścieżek do coffee i node. Domyślnie ustawione są one odpowiednio na ``/usr/bin/coffee`` i ``/usr/bin/node``:
+Główna konfiguracja polega na ustanowieniu ścieżek do coffee i node. Domyślnie są one ustawione odpowiednio na ``/usr/bin/coffee`` i ``/usr/bin/node``:
 
 .. configuration-block::
 
@@ -68,7 +68,7 @@ To wszystko co jest potrzebne by skompilować ten plik CoffeeScript i zaserwowa�
 Filtrowanie wielu plików
 ---------------------
 
-Można także połączyć wiele plików CoffeeScript w jeden wynikowy plik:
+Można także połączyć wiele plików CoffeeScript w jeden plik wynikowy:
 
 .. configuration-block::
 
@@ -92,16 +92,16 @@ Można także połączyć wiele plików CoffeeScript w jeden wynikowy plik:
             <script src="<?php echo $view->escape($url) ?>" type="text/javascript"></script>
         <?php endforeach; ?>
 
-Oba pliki będą teraz serwowane jako jeden plik skompilowane do regularnej postaci JavaScript.
+Oba pliki będą teraz serwowane jako jeden plik, skompilowane do regularnego JavaScript.
 
 .. _cookbook-assetic-apply-to:
 
-Filtrowanie na podstawie rozszerzenia pliku
+Filtrowanie na podstawie rozszerzeń plików
 -----------------------------------
 
-Jedną z największych zalet korzystania z Assetic jest zredukowanie liczby plików aktywów by obniżyć ilość żądań HTTP. Aby w pełni z tego skorzytać, byłoby dobrze połączyć *wszystkie* pliki JavaScript i CoffeeScript razem, ponieważ będą one ostatecznie wszystkie zaserwowane jako JavaScript. Niestety dodanie plików JavaScript do łączonych w ten sposób plików nie zadziała, gdyż regularne pliki JavaScript nie przetrwają kompilacji CoffeeScript.
+Jedną z największych zalet korzystania z Assetic jest redukowanie liczby plików aktywów w celu obniżenia liczby żądań HTTP. Aby w pełni z tego skorzytać, byłoby dobrze połączyć *wszystkie* pliki JavaScript i CoffeeScript razem, ponieważ będą one wszystkie ostatecznie zaserwowane jako regularny JavaScript. Niestety dodanie plików JavaScript w ten sposób nie zadziała, gdyż regularne pliki JavaScript nie przetrwają kompilacji CoffeeScript.
 
-Można tego uniknąć korzystając w konfiguracji z opcji ``apply_to``, która pozwala określić, że dany filtr powinien zawsze być stosowany do szczególnych rozszerzeń plików. W tym przypadku można określić, że filtry Coffee zostanie zastosowany do wszystkich plików ``.coffee``:
+Można tego uniknąć korzystając w konfiguracji z opcji ``apply_to``, która pozwala określić, że dany filtr powinien zawsze być stosowany do poszczególnych rozszerzeń plików. W tym przypadku można określić, że filtr Coffee zostanie zastosowany do wszystkich plików ``.coffee``:
 
 .. configuration-block::
 
@@ -139,7 +139,7 @@ Można tego uniknąć korzystając w konfiguracji z opcji ``apply_to``, która p
             ),
         ));
 
-Dzięki temu nie ma już potrzeby, aby określać filtr ``coffee`` w szablonie. Można także wymienić regularne pliki JavaScript, które zostaną połączone i wyrenderowane jako pojedynczy plik JavaScript (tylko pliki ``.coffee`` zostaną przepuszczone przez filtr CoffeeScript):
+Dzięki temu nie ma już potrzeby, aby określać filtr ``coffee`` w szablonie. Można również stosować regularne pliki JavaScript, które zostaną połączone i wyrenderowane jako pojedynczy plik JavaScript (tylko pliki ``.coffee`` zostaną poddane filtrowi CoffeeScript):
 
 .. configuration-block::
 

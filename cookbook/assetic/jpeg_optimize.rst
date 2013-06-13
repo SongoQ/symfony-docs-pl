@@ -4,12 +4,12 @@
 Jak zastosować Assetic do optymalizacji obrazów w funkcjach Twiga
 =============================================================
 
-Wśród swoich wielu filtrów, Assetic posiada cztery, które mogą być wykorzystane do optymalizacji obrazów w locie. Pozwala to uzyskać korzyści z mniejszych rozmiarów plików bez konieczności używania edytora graficznego do przetwarzachnia każdego obrazu z osobna. Wyniki są buforowane i mogą zostać zrzucone na produkcji, zatem nie doświadczy się spadku wydajności dla użytkowników końcowych.
+Wśród swoich wielu filtrów, Assetic posiada cztery, które mogą być wykorzystane do optymalizacji obrazów w locie. Pozwala to uzyskać korzyści z mniejszych rozmiarów plików bez konieczności używania edytora graficznego do przetwarzania każdego obrazu z osobna. Wyniki są buforowane i mogą zostać zrzucone na produkcji, zatem nie doświadczy się spadku wydajności dla użytkowników końcowych.
 
 Używanie Jpegoptim
 ---------------
 
-`Jpegoptim`_ to narzędzie do optymalizacji plików JPEG. Aby korzystać z niego w Assetic, dodaj poniższe do konfiguracji Assetic:
+`Jpegoptim`_ to narzędzie do optymalizacji plików JPEG. Aby korzystać z niego w Assetic, trzeba dodać poniższe linie do konfiguracji Assetic:
 
 .. configuration-block::
 
@@ -43,7 +43,7 @@ Używanie Jpegoptim
 
 .. note::
 
-    Zauważ, że do korzystania z jpegoptim trzeba mieć go zainstalowanego w systemie. Opcja ``bin`` wskazuje na lokalizację skompilowanej binarki.
+    Zauważ, że do korzystania z jpegoptim trzeba mieć go zainstalowanego w systemie. Opcja ``bin`` wskazuje na lokalizację skompilowanego kodu binarnego.
 
 Można go teraz użyć z szablonu:
 
@@ -68,7 +68,7 @@ Można go teraz użyć z szablonu:
 Usuwanie wszystkich danych EXIF
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Domyślnie, uruchomienie tego filtru usunie tylko część metainformacji przechowywanych w pliku. Wszelkie dane EXIF i komentarze nie zostaną usunięte, ale można tego dokonać dzięki opcji ``strip_all``:
+Domyślnie, uruchomienie tego filtru usunie tylko część metainformacji przechowywanych w pliku. Wszelkie dane EXIF i komentarze nie zostaną usunięte, ale można tego dokonać używając opcji ``strip_all``:
 
 .. configuration-block::
 
@@ -106,7 +106,7 @@ Domyślnie, uruchomienie tego filtru usunie tylko część metainformacji przech
 Obniżanie maksymalnej jakości
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Poziom jakości JPEG nie jest tknięty domyślnie. Można uzyskać dalszą redukcję rozmiaru pliku poprzez ustawienie maksymalnej jakości niższej niż obecny poziom dla obrazów. Będzie to oczywiście kosztem jakości obrazu: 
+Poziom jakości JPEG nie jest tknięty domyślnie. Można osiągnąć dalszą redukcję rozmiaru pliku poprzez ustawienie maksymalnej jakości, która będzie niższa niż obecny poziom dla obrazów. Nastąpi to oczywiście kosztem jakości obrazu: 
 
 .. configuration-block::
 
@@ -144,7 +144,7 @@ Poziom jakości JPEG nie jest tknięty domyślnie. Można uzyskać dalszą reduk
 Krótsza składnia: Funkcja Twig
 -----------------------------
 
-Jeśli używasz szablonów Twig, jest możliwe by osiągnąc to wszystko dzięki krótszej składni poprzez użycie specjalnej funkcji. By rozpoczać, należy dodać następującą konfigurację:
+Jeśli używa się szablonów Twig, to jest możliwe osiągnięcie tego wszystkiego poprzez zastosowanie krótszej składni i specjalnej funkcji. Aby rozpoczać, należy dodać następującą konfigurację:
 
 .. configuration-block::
 

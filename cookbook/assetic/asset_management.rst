@@ -60,9 +60,9 @@ By dołączyć pliki JavaScript, można w szablonie zastosować znacznik ``javas
 
 .. tip::
 
-    Można również dołączyć style CSS: zobacz :ref:`cookbook-assetic-including-css`.
+    Można również dołączyć style CSS: :ref:`cookbook-assetic-including-css`.
 
-W tym przykładzie wszystkie pliki w katalogu ``Resources/public/js/`` z ``AcmeFooBundle`` zostaną wczytane i zaserwowane z innych lokalizacji. Rzeczywisty znacznik mogłby wyglądać na przykład tak:
+W tym przykładzie wszystkie pliki w katalogu ``Resources/public/js/`` z ``AcmeFooBundle`` zostaną wczytane i zaserwowane z innych lokalizacji. Rzeczywisty znacznik mógłby wyglądać na przykład tak:
     
 .. code-block:: html
 
