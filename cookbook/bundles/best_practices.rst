@@ -1,41 +1,42 @@
 .. index::
-   single: Bundle; Best practices
+   single: Pakiet; Najlepsze praktyki
 
-How to use Best Practices for Structuring Bundles
-=================================================
+Jak stosować Najlepsze Praktyki w Strukturze Pakietów
+====================================================
 
-A bundle is a directory that has a well-defined structure and can host anything
-from classes to controllers and web resources. Even if bundles are very
-flexible, you should follow some best practices if you want to distribute them.
+Pakiet to katalog posiadający dobrze zdefiniowaną strukturę, mogący obsługiwać
+wszystko, począwszy od klas, a skończywszy na kontrolerach i zasobach internetowych.
+Nawet jeśli pakiety są bardzo elastyczne, należy stosować się do najlepszych
+praktyk, aby zacząć je z powodzeniem rozpowszechniać.
 
 .. index::
-   pair: Bundle; Naming conventions
+   pair: Pakiet; Konwencje nazewnictwa
 
 .. _bundles-naming-conventions:
 
-Bundle Name
+Nazwa Pakietu
 -----------
 
-A bundle is also a PHP namespace. The namespace must follow the technical
-interoperability `standards`_ for PHP 5.3 namespaces and class names: it
-starts with a vendor segment, followed by zero or more category segments, and
-it ends with the namespace short name, which must end with a ``Bundle``
-suffix.
+Pakiet to również przestrzeń nazw PHP. Przestrzeń ta musi przestrzegać
+zasad żądzących `standardami`_ w PHP 5.3 dla przestrzeni nazw oraz nazewnictwa
+klas: rozpoczyna się od segmentu dostawcy, następnie zawiera zero lub więcej
+segmentów kategorii, by zakończyć się krótka nazwą przestrzeni nazw, która
+musi koniecznie kończyć się sufiksem ``Bundle``.
 
-A namespace becomes a bundle as soon as you add a bundle class to it. The
-bundle class name must follow these simple rules:
+Przestrzeń nazw staję się pakietem w chwili, gdy doda się do niej klasę
+pakietu. Nazwa klasy pakietu musi przestrzegać następujących, prostych reguł:
 
-* Use only alphanumeric characters and underscores;
-* Use a CamelCased name;
-* Use a descriptive and short name (no more than 2 words);
-* Prefix the name with the concatenation of the vendor (and optionally the
-  category namespaces);
-* Suffix the name with ``Bundle``.
+* Używać tylko znaków alfanumerycznych i podkreśleń;
+* Używać nazewnictwa w stylu CamelCase;
+* Używać treściwych i krótkich nazw (nie więcej niż 2 słowa);
+* Posiadać prefiks zawierający nazwę dostawcy (i opcjonalnie przestrzeń
+  nazw kategorii);
+* Posiadać sufiks ``Bundle``.
 
-Here are some valid bundle namespaces and class names:
+Oto kilka poprawnych przestrzeni oraz nazw klas dla pakietów:
 
 +-----------------------------------+--------------------------+
-| Namespace                         | Bundle Class Name        |
+| Przestrzeń nazw                   | Nazwa klasy pakietu      |
 +===================================+==========================+
 | ``Acme\Bundle\BlogBundle``        | ``AcmeBlogBundle``       |
 +-----------------------------------+--------------------------+
@@ -44,32 +45,30 @@ Here are some valid bundle namespaces and class names:
 | ``Acme\BlogBundle``               | ``AcmeBlogBundle``       |
 +-----------------------------------+--------------------------+
 
-By convention, the ``getName()`` method of the bundle class should return the
-class name.
+Zwyczajowo, metoda ``getName()`` w klasie pakietu powinna zwracać nazwę
+klasy.
 
 .. note::
 
-    If you share your bundle publicly, you must use the bundle class name as
-    the name of the repository (``AcmeBlogBundle`` and not ``BlogBundle``
-    for instance).
+    Jeśli planuje się udostępnić pakiet publicznie, należy użyć nazwy klasy
+    pakietu zawierając w niej nazwę repozytorium (na przykład ``AcmeBlogBundle``
+    a nie ``BlogBundle``).
 
 .. note::
 
-    Symfony2 core Bundles do not prefix the Bundle class with ``Symfony``
-    and always add a ``Bundle`` subnamespace; for example:
+    Podstawowe pakiety Symfony2 nie prefiksują klasy pakietu słowem ``Symfony``,
+    a dodatkowo zawsze dodają podprzestrzeń nazw ``Bundle``; na przykład:
     :class:`Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle`.
 
-Each bundle has an alias, which is the lower-cased short version of the bundle
-name using underscores (``acme_hello`` for ``AcmeHelloBundle``, or
-``acme_social_blog`` for ``Acme\Social\BlogBundle`` for instance). This alias
-is used to enforce uniqueness within a bundle (see below for some usage
-examples).
+Każdy pakiet ma alias, który jest krótszą nazwą pakietu pisaną małymi literami
+z użyciem podkreśleń (na przykład ``acme_hello`` dla ``AcmeHelloBundle``, albo
+``acme_social_blog`` dla ``Acme\Social\BlogBundle``). Ten alias jest używany
+do wymuszenia unikatowości wewnątrz pakietu (poniżej kilka przykładów)
 
-Directory Structure
+Struktura katalogów
 -------------------
 
-The basic directory structure of a ``HelloBundle`` bundle must read as
-follows:
+Podstawowa struktura katalogów pakietu ``HelloBundle`` przedstawia się następująco:
 
 .. code-block:: text
 
@@ -88,164 +87,159 @@ follows:
                 public/
             Tests/
 
-The ``XXX`` directory(ies) reflects the namespace structure of the bundle.
+Katalog(i) ``XXX`` odzwierciedlają strukturę przestrzeni nazw w pakiecie.
 
-The following files are mandatory:
+Poniższe pliki są obowiązkowe:
 
 * ``HelloBundle.php``;
-* ``Resources/meta/LICENSE``: The full license for the code;
-* ``Resources/doc/index.rst``: The root file for the Bundle documentation.
+* ``Resources/meta/LICENSE``: Pełna licencja na kod;
+* ``Resources/doc/index.rst``: Plik główny dla dokumentacji Pakietu.
 
 .. note::
 
-    These conventions ensure that automated tools can rely on this default
-    structure to work.
+    Konwencje te zapewniają, że zautomatyzowane narzędzie mogą polegać na
+    tej domyślnej strukturze przy wykonywaniu swojej pracy.
 
-The depth of sub-directories should be kept to the minimal for most used
-classes and files (2 levels at a maximum). More levels can be defined for
-non-strategic, less-used files.
+Głębokośc podkatalogów należy ograniczyć do mimimum dla najczęściej stosowanych
+klas i plików (2 poziomu to maksimum). Więcej poziomów można definiować
+dla niestrategicznych, rzadziej używanych plików.
 
-The bundle directory is read-only. If you need to write temporary files, store
-them under the ``cache/`` or ``log/`` directory of the host application. Tools
-can generate files in the bundle directory structure, but only if the generated
-files are going to be part of the repository.
+Katalog pakietu jest tylko do odczytu. Jeśli zachodzi potrzeba zapisu w nim
+plików tymczasowych, powinno się je przechowywać w katalogach ``cache/`` albo
+``log/`` w rozwijanej aplikacji. Narzędzia mogą generować pliki w strukturze
+katalogów pakietu tylko wtedy, gdy tworzone pliki będą częścią repozytorium.
 
-The following classes and files have specific emplacements:
+Poniższe klasy i pliki mają swoje określone lokalizacje:
 
-+------------------------------+-----------------------------+
-| Type                         | Directory                   |
-+==============================+=============================+
-| Commands                     | ``Command/``                |
-+------------------------------+-----------------------------+
-| Controllers                  | ``Controller/``             |
-+------------------------------+-----------------------------+
-| Service Container Extensions | ``DependencyInjection/``    |
-+------------------------------+-----------------------------+
-| Event Listeners              | ``EventListener/``          |
-+------------------------------+-----------------------------+
-| Configuration                | ``Resources/config/``       |
-+------------------------------+-----------------------------+
-| Web Resources                | ``Resources/public/``       |
-+------------------------------+-----------------------------+
-| Translation files            | ``Resources/translations/`` |
-+------------------------------+-----------------------------+
-| Templates                    | ``Resources/views/``        |
-+------------------------------+-----------------------------+
-| Unit and Functional Tests    | ``Tests/``                  |
-+------------------------------+-----------------------------+
++---------------------------------+-----------------------------+
+| Typ                             | Katalog                     |
++=================================+=============================+
+| Komendy                         | ``Command/``                |
++---------------------------------+-----------------------------+
+| Kontrolery                      | ``Controller/``             |
++---------------------------------+-----------------------------+
+| Rozszerzenia Kontenera Serwisów | ``DependencyInjection/``    |
++---------------------------------+-----------------------------+
+| Detektory zdarzeń               | ``EventListener/``          |
++---------------------------------+-----------------------------+
+| Konfiguracja                    | ``Resources/config/``       |
++---------------------------------+-----------------------------+
+| Zasoby publiczne                | ``Resources/public/``       |
++---------------------------------+-----------------------------+
+| Pliki tłumaczeń                 | ``Resources/translations/`` |
++---------------------------------+-----------------------------+
+| Szablony                        | ``Resources/views/``        |
++---------------------------------+-----------------------------+
+| Testy jednostkowe i funkcjonalne| ``Tests/``                  |
++---------------------------------+-----------------------------+
 
 .. note::
 
-    When building a reusable bundle, model classes should be placed in the
-    ``Model`` namespace. See :doc:`/cookbook/doctrine/mapping_model_classes` for
-    how to handle the mapping with a compiler pass.
+    Budując pakiet wielokrotnego użytku, klasy modelu powinny być umieszczone
+    w przestrzeni nazw ``Model``. Zobacz :doc:`/cookbook/doctrine/mapping_model_classes`
+    aby dowiedzieć się jak obsługiwać mapowanie by przechodziły proces kompilacji.
 
-Classes
+Klasy
 -------
 
-The bundle directory structure is used as the namespace hierarchy. For
-instance, a ``HelloController`` controller is stored in
-``Bundle/HelloBundle/Controller/HelloController.php`` and the fully qualified
-class name is ``Bundle\HelloBundle\Controller\HelloController``.
+Struktura katalogów pakietu jest używana do budowania hierarchii przestrzeni
+nazw. Na przykład kontroler ``HelloController`` jest przechowywany w
+``Bundle/HelloBundle/Controller/HelloController.php``, zaś pełna nazwa klasy
+to ``Bundle\HelloBundle\Controller\HelloController``.
 
-All classes and files must follow the Symfony2 coding :doc:`standards
-</contributing/code/standards>`.
+Wszystkie klasy i pliki muszą przestrzegać :doc:`standardów</contributing/code/standards>` kodowania Symfony2.
 
-Some classes should be seen as facades and should be as short as possible, like
-Commands, Helpers, Listeners, and Controllers.
+Niektóre klasy powinny pełnić rolę fasad i być tak zwięzłe jak to możliwe, tak jak
+Commands, Helpers, Listeners, i Controllers.
 
-Classes that connect to the Event Dispatcher should be suffixed with
-``Listener``.
+Klasy łączące się z Dyspozytorem Zdarzeń powinny posiadać przyrostek ``Listener``.
 
-Exceptions classes should be stored in an ``Exception`` sub-namespace.
+Klasy wyjątków powinny być przechowywane w podprzestrzeni ``Exception``.
 
 Vendors
 -------
 
-A bundle must not embed third-party PHP libraries. It should rely on the
-standard Symfony2 autoloading instead.
+Pakiet nie może osadzać zewnętrznych blibliotek PHP. Zamiast tego, powinien
+on polegać na standardowym mechanizmie autoloadingu w Symfony2.
 
-A bundle should not embed third-party libraries written in JavaScript, CSS, or
-any other language.
+Pakiet nie powinien również dodawać zewnętrznych bilbliotek napisanych w JavaScript,
+CSS, lub każdym innym języku.
 
-Tests
+Testy
 -----
 
-A bundle should come with a test suite written with PHPUnit and stored under
-the ``Tests/`` directory. Tests should follow the following principles:
+Pakiet powinien zawierać w sobie zestaw testów w PHPUnit przechowywanych
+w katalogu ``Tests/``. Testy powinny przestrzegać następujących zasad:
 
-* The test suite must be executable with a simple ``phpunit`` command run from
-  a sample application;
-* The functional tests should only be used to test the response output and
-  some profiling information if you have some;
-* The tests should cover at least 95% of the code base.
+* Zestaw testów musi być wykonywalny z użyciem prostej komendy ``phpunit``
+  wywoływanej w przykładowej aplikacji;
+* Testy funkcjonalne powinny być używane tylko do testowania rezultatów
+  odpowiedzi serwera, ewentualnie do zbierania informacji o profilowaniu, o
+  ile miało to miejsce;
+* Testy powinny pokrywać przynajmniej 95% podstawowego kodu;
 
 .. note::
-   A test suite must not contain ``AllTests.php`` scripts, but must rely on the
-   existence of a ``phpunit.xml.dist`` file.
+   Zestaw testów nie może zawierać skryptów ``AllTests.php``, ale musi opierać
+   się na istnieniu pliku ``phpunit.xml.dist``.
 
-Documentation
+Dokumentacja
 -------------
 
-All classes and functions must come with full PHPDoc.
+Wszystkie klasy i funkcje muszą być w pełni udokumentowane w PHPDoc.
 
-Extensive documentation should also be provided in the :doc:`reStructuredText
-</contributing/documentation/format>` format, under the ``Resources/doc/``
-directory; the ``Resources/doc/index.rst`` file is the only mandatory file and
-must be the entry point for the documentation.
+Obszerna dokumentacja powinna być w formacie :doc:`reStructuredText
+</contributing/documentation/format>` w katalogu ``Resources/doc/``
+; plik ``Resources/doc/index.rst`` jest jedynym, obowiązkowym plikiem i
+musi być punktem wyjścia dla całej dokumentacji.
 
-Controllers
------------
+Kontrolery
+----------
 
-As a best practice, controllers in a bundle that's meant to be distributed
-to others must not extend the
-:class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller` base class.
-They can implement
-:class:`Symfony\\Component\\DependencyInjection\\ContainerAwareInterface` or
-extend :class:`Symfony\\Component\\DependencyInjection\\ContainerAware`
-instead.
+Zgodnie z zaleceniami, kontrolory w pakiecie, które będą dystrybuowane dla
+innych nie mogą rozszerzać klasy bazowej :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`.
+Zamiast tego, mogą implementować :class:`Symfony\\Component\\DependencyInjection\\ContainerAwareInterface`
+albo rozszerzać :class:`Symfony\\Component\\DependencyInjection\\ContainerAware`.
 
 .. note::
 
-    If you have a look at
-    :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller` methods,
-    you will see that they are only nice shortcuts to ease the learning curve.
+    Gdyby spojrzeć na metody kontrolera :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`,
+    widać, że są to w głównej mierze skrótym które ułatwiają naukę.
 
 Routing
 -------
 
-If the bundle provides routes, they must be prefixed with the bundle alias.
-For an AcmeBlogBundle for instance, all routes must be prefixed with
+Jeśli pakiet dostarcza trasy, muszą one zostać poprzedzone aliasem pakietu.
+Na przykład dla AcmeBlogBundle, wszystkie trasy powinny zawierać prefiks
 ``acme_blog_``.
 
-Templates
----------
+Szablony
+--------
 
-If a bundle provides templates, they must use Twig. A bundle must not provide
-a main layout, except if it provides a full working application.
+Jeśli pakiet dostarcza szablonów, muszą one stosować Twiga. Pakiet nie może
+dostarczać głównego układu, chyba że dostarcza w pełni działającą aplikację.
 
-Translation Files
------------------
+Pliki tłumaczeń
+---------------
 
-If a bundle provides message translations, they must be defined in the XLIFF
-format; the domain should be named after the bundle name (``bundle.hello``).
+Jeśli pakiet zawiera tłumaczenia wiadomości, muszą być one zdefiniowane w
+formacie XLIFF; domeny powinny być nazwane po nazwie pakietu. (``bundle.hello``).
 
-A bundle must not override existing messages from another bundle.
+Pakiet nie może nadpisywać istniejących wiadomości z innego pakietu.
 
-Configuration
--------------
+Konfiguracja
+------------
 
-To provide more flexibility, a bundle can provide configurable settings by
-using the Symfony2 built-in mechanisms.
+Aby zapewnić większą elastyczność, pakiet może dostarczyć konfigurowalnych
+ustawień przy użyciu wbudowanych mechanizmów Symfony2.
 
-For simple configuration settings, rely on the default ``parameters`` entry of
-the Symfony2 configuration. Symfony2 parameters are simple key/value pairs; a
-value being any valid PHP value. Each parameter name should start with the
-bundle alias, though this is just a best-practice suggestion. The rest of the
-parameter name will use a period (``.``) to separate different parts (e.g.
-``acme_hello.email.from``).
+Dla prostych ustawień można polegać na domyślnym wpisie ``parameters`` w
+konfiguracji Symfony2. Parametry w Symfony2 to prosta para klucz/wartość;
+wartość jest dowolną, prawidłową wartością PHP. Każda nazwa parametru powinna
+zaczynać się od aliasu pakietu, choć jest to tylko zalecane praktyka. Reszta
+nazwy parametru będzie używać kropki (``.``) w celu oddzielenia różnych części
+(na przykład ``acme_hello.email.from``).
 
-The end user can provide values in any configuration file:
+Użytkownik może wprowadzić wartości w dowolnym pliku konfiguracyjnym:
 
 .. configuration-block::
 
@@ -273,21 +267,21 @@ The end user can provide values in any configuration file:
         [parameters]
         acme_hello.email.from = fabien@example.com
 
-Retrieve the configuration parameters in your code from the container::
+Pobieranie parametrów konfiguracyjnych w kodzie z kontenera::
 
     $container->getParameter('acme_hello.email.from');
 
-Even if this mechanism is simple enough, you are highly encouraged to use the
-semantic configuration described in the cookbook.
+Nawet jeśli ten mechanizm jest prosty, zachęca się do korzystania z semantycznej
+konfiguracji opisanej w receptariuszu.
 
 .. note::
 
-    If you are defining services, they should also be prefixed with the bundle
-    alias.
+    Jeśli definiuje się serwisy, powinny one również zostać poprzedzone aliasem
+    pakietu.
 
-Learn more from the Cookbook
-----------------------------
+Dowiedz się więcej z Receptariusza
+----------------------------------
 
 * :doc:`/cookbook/bundles/extension`
 
-.. _standards: http://symfony.com/PSR0
+.. _standardami: http://symfony.com/PSR0
