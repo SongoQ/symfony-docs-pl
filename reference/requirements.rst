@@ -18,7 +18,9 @@ Poniżej znajduje się lista koniecznych oraz opcjonalnych wymagań które musi 
 Wymagane
 --------
 
-* PHP w wersji minimum 5.3.2
+* PHP w wersji minimum 5.3.3
+* JSON musi być włączony
+* ctype musi być włączone
 * Twój PHP.ini musi mieć ustawioną wartość date.timezone
 
 Opcjonalne
