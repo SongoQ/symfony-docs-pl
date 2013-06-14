@@ -1,16 +1,16 @@
 .. index::
-   single: Bundle; Inheritance
+   single: Pakiet; Dziedziczenie
 
-How to Override any Part of a Bundle
-====================================
+Jak zastąpić każdą część pakietu
+================================
 
-This document is a quick reference for how to override different parts of
-third-party bundles.
+Ten dokument to szybkie odniesienie się do sposobów nadpisywania różnych 
+części pakietów firm trzecich.
 
-Templates
----------
+Szablony
+--------
 
-For information on overriding templates, see
+Aby uzyskać informacje o sposobach nadpisywania szablonów, zobacz:
 
 * :ref:`overriding-bundle-templates`.
 * :doc:`/cookbook/bundles/inheritance`
@@ -18,34 +18,36 @@ For information on overriding templates, see
 Routing
 -------
 
-Routing is never automatically imported in Symfony2. If you want to include
-the routes from any bundle, then they must be manually imported from somewhere
-in your application (e.g. ``app/config/routing.yml``).
+Routing nie jest automatycznie importowany w Symfony2. Jeśli chciałoby się 
+dołączyć trasy z dowolnego pakietu, należałoby je ręcznie zaimportować w
+swojej aplikacji (np. ``app/config/routing.yml``).
 
-The easiest way to "override" a bundle's routing is to never import it at
-all. Instead of importing a third-party bundle's routing, simply copying
-that routing file into your application, modify it, and import it instead.
+Najprostszym sposobem na "nadpisanie" routingu w pakiecie jest nie importowanie
+go wcale. Zamiast tego, odpowiedniejszym wydaje się skopiowanie pliku routingu 
+z danego pakietu do swojej aplikacji, zmodyfikowanie go, a dopiero potem 
+zaimportowanie.
 
-Controllers
------------
+Kontrolery
+----------
 
-Assuming the third-party bundle involved uses non-service controllers (which
-is almost always the case), you can easily override controllers via bundle
-inheritance. For more information, see :doc:`/cookbook/bundles/inheritance`.
-If the controller is a service, see the next section on how to override it.
+Zakładając, że używane pakiety firm trzecich stosują kontrolery non-service
+(co zdarza się w większości przypadków), można je bardzo łatwo nadpisać 
+poprzez dziedziczenie pakietu. Aby uzyskać więcej informacji, zobacz 
+:doc:`/cookbook/bundles/inheritance`. Jeśli kontroler jest usługą (ang. service), 
+zobacz następny rozdział, aby dowiedzieć się jak postępować w tym przypadku.
 
-Services & Configuration
+Usługi & Konfiguracja
 ------------------------
 
-In order to override/extend a service, there are two options. First, you can
-set the parameter holding the service's class name to your own class by setting
-it in ``app/config/config.yml``. This of course is only possible if the class name is
-defined as a parameter in the service config of the bundle containing the
-service. For example, to override the class used for Symfony's ``translator``
-service, you would override the ``translator.class`` parameter. Knowing exactly
-which parameter to override may take some research. For the translator, the
-parameter is defined and used in the ``Resources/config/translation.xml`` file
-in the core FrameworkBundle:
+W celu nadpisania/rozszerzenia serwisu można skorzystać z dwóch opcji. Po 
+pierwsze można ustawić parametr trzymający nazwę klasy serwisu do swoich klas 
+poprzez ustawienia w ``app/config/config.yml``. To jest oczywiście możliwe 
+tylko wtedy, gdy nazwa klasy jest zdefiniowana jako parametr w konfiguracji usługi 
+pakietu zawierającego tą usługę. Na przykład, aby nadpisać klasę używaną w
+Symfonowej usłudze ``translator``, należałoby nadpisać parametr ``translator.class``. 
+Upewnienie się, który parametr nadpisać, nieraz może zając sporo czasu. Dla 
+translatora, parametr jest zdefiniowany i używany w pliku ``Resources/config/translation.xml``
+głównego pakietu FrameworkBundle:
 
 .. configuration-block::
 
@@ -67,9 +69,9 @@ in the core FrameworkBundle:
         // app/config/config.php
         $container->setParameter('translator.class', 'Acme\HelloBundle\Translation\Translator');
 
-Secondly, if the class is not available as a parameter, you want to make sure the
-class is always overridden when your bundle is used, or you need to modify
-something beyond just the class name, you should use a compiler pass::
+Po drugie, jeśli klasa nie jest dostępna jako parametr, należy upewnić się, 
+że klasa będzie zawsze nadpisywana, albo też należy zmodyfikować coś więcej
+niż tylko jej nazwę, w tym celu powinno się skorzystać z compiler pass::
 
     // src/Acme/DemoBundle/DependencyInjection/Compiler/OverrideServiceCompilerPass.php
     namespace Acme\DemoBundle\DependencyInjection\Compiler;
@@ -86,58 +88,61 @@ something beyond just the class name, you should use a compiler pass::
         }
     }
 
-In this example you fetch the service definition of the original service, and set
-its class name to your own class.
+W tym przykładzie pobiera się definicję oryginalnej usługi i ustawia jej 
+nazwę klasy na swoją własną.
 
-See :doc:`/cookbook/service_container/compiler_passes` for information on how to use
-compiler passes. If you want to do something beyond just overriding the class -
-like adding a method call - you can only use the compiler pass method.
+Zobacz :doc:`/cookbook/service_container/compiler_passes` w celu zasięgnięcia
+informacji na temat używania compiler pass. Jeśli chce się zrobić coś poza 
+nadpisywaniem klasy - jak choćby dodać wywołania metody - jedyne co można 
+zrobić, to skorzystać z metod compiler pass.
 
-Entities & Entity mapping
--------------------------
+Encje & mapowanie encji
+---------------------------
 
-Due to the way Doctrine works, it is not possible to override entity mapping
-of a bundle. However, if a bundle provides a mapped superclass (such as the
-``User`` entity in the FOSUserBundle) one can override attributes and
-associations. Learn more about this feature and its limitations in
-`the Doctrine documentation`_.
+Z powodu tego jak działa Doctrine, nie jest możliwe zastąpienie mapowania
+encji w pakiecie. Jednakże, jeśli pakiet zapewnia zmapowaną superklasę (jak
+encja ``User`` w pakiecie FOSUserBundle), możliwe jest nadpisanie jej atrybutów
+i powiązań. Dowiedz się więcej o tej funkcjonalności i jej ograniczeniach
+czytając `dokumentację Doctrine`_.
 
-Forms
------
+Formularze
+----------
 
-In order to override a form type, it has to be registered as a service (meaning
-it is tagged as "form.type"). You can then override it as you would override any
-service as explained in `Services & Configuration`_. This, of course, will only
-work if the type is referred to by its alias rather than being instantiated,
-e.g.::
+Aby zastąpić typ formularza, musi być on zarejestrowany jako usługa (czyli
+przy użyciu etykiety "form.type"). Można wówczas nadpisać go tak jak każdą 
+inną usługę, co zostało szczegółowo wyjaśnione w dziale `Usługi & konfiguracja`_. 
+To oczywiście zadziała tylko wtedy, gdy typ formularza został zdefiniowany 
+aliasem, a nie przez utworzenie egzemplarza klasy, np.::
 
     $builder->add('name', 'custom_type');
 
-rather than::
+zamiast::
 
     $builder->add('name', new CustomType());
 
-Validation metadata
--------------------
+Walidacja metadanych
+--------------------
 
-In progress...
+W toku...
 
 .. _override-translations:
 
-Translations
-------------
+Tłumaczenia
+-----------
 
-Translations are not related to bundles, but to domains. That means that you
-can override the translations from any translation file, as long as it is in
-:ref:`the correct domain <translation-domains>`.
+Tłumaczenia nie są powiązane z pakietami, tylko z domenami. Oznacza to, że
+można je zastąpić z dowolnego pliku tłumaczeń, o ile znajduje się w
+:ref:`odpowiedniej domenie <translation-domains>`.
 
 .. caution::
 
-    The last translation file always wins. That mean that you need to make
-    sure that the bundle containing *your* translations is loaded after any
-    bundle whose translations you're overriding. This is done in ``AppKernel``.
+    Ostatni plik tłumaczeń zawsze wygrywa. Oznacza to, że trzeba upewnić
+    się czy pakiet zawierający *twoje* tłumaczenia jest ładowany na samym
+    końcu, zaraz po wszystkich tłumaczeniach, które nadpisywano. Jest to
+    robione w ``AppKernel``.
 
-    The file that always wins is the one that is placed in
-    ``app/Resources/translations``, as those files are always loaded last.
+    Plik, który zawsze wygrywa to ten, który umieszczono w katalogu
+    ``app/Resources/translations``, gdyż pliki z tego katalogu są zawsze
+    wczytywane na samym końcu. 
 
-.. _`the Doctrine documentation`: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/inheritance-mapping.html#overrides
+.. _`dokumentację Doctrine`: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/inheritance-mapping.html#overrides
