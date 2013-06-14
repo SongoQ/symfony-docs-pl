@@ -1,47 +1,47 @@
 .. index::
-   single: Bundle; Installation
+   single: Pakiet; Instalacja
 
-How to install 3rd party Bundles
-================================
+Jak zainstalować Pakiety firm trzecich ?
+========================================
 
-Most bundles provide their own installation instructions. However, the
-basic steps for installing a bundle are the same.
+Większość pakietów zapewnia własne instrukcje obsługi. Jednakże, podstawowe
+etapy instalacji pakietów są identyczne.
 
-Add Composer Dependencies
--------------------------
+Dodawanie zależności w Composer
+-------------------------------
 
-Starting from Symfony 2.1, dependencies are managed with Composer. It's
-a good idea to learn some basics of Composer in `their documentation`_.
+Począwszy od Symfony 2.1, zależności są zarządzane przez Composer. To dobry
+pomysł, aby nauczyć się podstaw Composera studiując `jego dokumentację`_.
 
-Before you can use composer to install a bundle, you should look for a
-`Packagist`_ package of that bundle. For example, if you search for the popular
-`FOSUserBundle`_ you will find a packaged called `friendsofsymfony/user-bundle`_.
+Przed użyciem composera do instalacji pakietu, należy sprawdzić czy dany
+pakiet istnieje w archiwum `Packagist`_. Na przykład, jeśli wyszukiwano
+popularnego `FOSUserBundle`_, archiwum powinno odnaleźć `friendsofsymfony/user-bundle`_.
 
 .. note::
 
-    Packagist is the main archive for Composer. If you are searching
-    for a bundle, the best thing you can do is check out
-    `KnpBundles`_, it is the unofficial achive of Symfony Bundles. If
-    a bundle contains a ``README`` file, it is displayed there and if it
-    has a Packagist package it shows a link to the package. It's a
-    really useful site to begin searching for bundles.
+    Packagist jest głównym archiwum dla Composera. Jeśli szukasz pakietu,
+    najlepsze co możesz zrobić, to sprawdzić serwis `KnpBundles`_, gdyż
+    jest to nieoficjalne archiwum pakietów Symfony. Jeśli pakiet zawiera
+    plik ``README``, zostanie wyświetlony, a jeśli posiada wpis w Packagist,
+    zostanie dodatkowo ukazany odnośnik do owej paczki. To naprawdę przydatna
+    witryna, od której warto rozpocząć poszukiwania konkretnych pakietów.
 
-Now that you have the package name, you should determine the version
-you want to use. Usually different versions of a bundle correspond to
-a particular version of Symfony. This information should be in the ``README``
-file. If it isn't, you can use the version you want. If you choose an incompatible
-version, Composer will throw dependency errors when you try to install. If
-this happens, you can try a different version.
+Teraz, gdy ma się już nazwę pakietu, należy określić, którą wersję użyć.
+Zazwyczaj różne wersje pakietu odpowiadają konkretnej wersji Symfony. Informacje
+te powinny być zawarte w pliku ``README``. Jeśli tak nie jest, można użyć
+dowolnej wersji. Jeśli przez przypadek wybrano niezgodną, Composer poinformuje
+o błędnych zależnościach, które planowano zainstalować. Jeśli to się wydarzy,
+można spróbować innej wersji.
 
-In the case of the FOSUserBundle, the ``README`` file has a caution that version
-1.2.0 must be used for Symfony 2.0 and 1.3+ for Symfony 2.1+. Packagist displays
-example ``require`` statements for all existing versions of a package. The
-current development version of FOSUserBundle is ``"friendsofsymfony/user-bundle": "2.0.*@dev"``.
+W przypadku FOSUserBundle, plik ``README`` zawiera przestrogę, że wersja
+1.2.0 musi być używana z Symfony 2.0, a 1.3+ z Symfony 2.1+. Packagist wyświetla
+przykładowe wymagania ``require`` dla wszystkich wersji pakietu. Aktualna
+wersja rozwojowa FOSUserBundle to ``"friendsofsymfony/user-bundle": "2.0.*@dev"``.
 
-Now you can add the bundle to your ``composer.json`` file and update the
-dependencies. You can do this manually:
+Teraz można dodać pakiet do pliku ``composer.json`` i zaktualizować zależności.
+Można zrobić to ręcznie:
 
-1. **Add it to the composer.json file:**
+1. **Dodaj poniższe linie do pliku composer.json:**
 
    .. code-block:: json
 
@@ -53,30 +53,30 @@ dependencies. You can do this manually:
            }
        }
 
-2. **Update the dependency:**
+2. **Zaktualizuj zależności**
 
    .. code-block:: bash
 
        $ php composer.phar update friendsofsymfony/user-bundle
 
-   or update all dependencies
+   albo zaktualizuj wszystkie zależności naraz
 
    .. code-block:: bash
 
        $ php composer.phar update
 
-Or you can do this in one command:
+Można to również zrobić jednym poleceniem:
 
 .. code-block:: bash
 
     $ php composer.phar require friendsofsymfony/user-bundle:2.0.*@dev
 
-Enable the Bundle
------------------
+Uaktywnianie Pakietu
+--------------------
 
-At this point, the bundle is installed in your Symfony project (in
-``vendor/friendsofsymfony/``) and the autoloader recognizes its classes.
-The only thing you need to do now is register the bundle in ``AppKernel``::
+W tym momencie pakiet jest zainstalowany w projekcie Symfony (w ``vendor/friendsofsymfony/``),
+a autoloader rozpoznaje jego klasy. Jedyne co trzeba zrobić, to zarejestrować
+pakiet w ``AppKernel``::
 
     // app/AppKernel.php
 
@@ -96,28 +96,26 @@ The only thing you need to do now is register the bundle in ``AppKernel``::
         }
     }
 
-Configure the Bundle
---------------------
+Konfigurowanie Pakietu
+----------------------
 
-Usually a bundle requires some configuration to be added to app's
-``app/config/config.yml`` file. The bundle's documentation will likely
-describe that configuration. But you can also get a reference of the
-bundle's config via the ``config:dump-reference`` command.
+Pakiet zazwyczaj wymaga dodania specjalnej konfiguracji do pliku ``app/config/config.yml``.
+Dokumentacja pakietu najprawdopodobniej opisze wszelkie szczegóły, niemniej
+można również odwołać się do jego konfiguracji używając polecenia ``config:dump-reference``.
 
-For instance, in order to look the reference of the ``assetic`` config you
-can use this:
+Na przykład, aby zobaczyć odwołania do konfiguracji ``assetic``, można użyć:
 
 .. code-block:: bash
 
     $ app/console config:dump-reference AsseticBundle
 
-or this:
+albo też zastosować:
 
 .. code-block:: bash
 
     $ app/console config:dump-reference assetic
 
-The output will look like this:
+Na wyjściu powinno się otrzymać coś podobnego do:
 
 .. code-block:: text
 
@@ -133,13 +131,13 @@ The output will look like this:
         node_paths:           []
         # ...
 
-Other Setup
------------
+Inne ustawienia
+---------------
 
-At this point, check the ``README`` file of your brand new bundle to see
-what do to next.
+W tym momencie powinno się przestudiować plik ``README`` używanego pakietu i
+zobaczyć co zrobić dalej.
 
-.. _their documentation: http://getcomposer.org/doc/00-intro.md
+.. _jego dokumentację: http://getcomposer.org/doc/00-intro.md
 .. _Packagist:           https://packagist.org
 .. _FOSUserBundle:       https://github.com/FriendsOfSymfony/FOSUserBundle
 .. _`friendsofsymfony/user-bundle`: https://packagist.org/packages/friendsofsymfony/user-bundle
