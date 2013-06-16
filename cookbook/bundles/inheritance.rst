@@ -1,8 +1,12 @@
-.. index::
-   single: Bundle; Inheritance
+.. highlight:: php
+   :linenothreshold: 2
 
-How to use Bundle Inheritance to Override parts of a Bundle
-===========================================================
+
+.. index::
+   single: pakiety; dziedziczenie
+
+Jak wykorzystywać dziedziczenie pakietów w celu zastępowania części pakietu
+===========================================================================
 
 When working with third-party bundles, you'll probably come across a situation
 where you want to override a file in that third-party bundle with a file
@@ -97,12 +101,9 @@ The same goes for routing files, validation configuration and other resources.
 
 .. caution::
 
-   Translation files do not work in the same way as described above. All
-   translation files are accumulated into a set of "pools" (one for each)
-   domain. Symfony loads translation files from bundles first (in the order
-   that the bundles are initialized) and then from your ``app/Resources``
-   directory. If the same translation is specified in two resources, the
-   translation from the resource that's loaded last will win.
+   Translation files do not work in the same way as described above. Read
+   :ref:`override-translations` if you want to learn how to override
+   translations.
 
 .. _`FOSUserBundle`: https://github.com/friendsofsymfony/fosuserbundle
 
