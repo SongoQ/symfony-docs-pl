@@ -8,10 +8,10 @@ Słownik
 
    aktywa
       (*ang. assets*)
-      W nomenklaturze Symfony pojecie aktywów jest pojeciem szerszym niż
-      popularne pojecie zasobów i obejmuje nie tylko fizyczne pliki zasobów
-      (CSS, JavaScript, obrazy itd.) ale też skrypty generowane na ich podstawie,
-      czy tworzone "w locie".
+      Aktywa w Symfony, to załadowane zasoby (pliki CSS, JavaScript, obrazy itd.),
+      skrypty generowane na podstawie zasobów i skrypty tworzone "w locie".
+      Zasób po załadowaniu jest aktywem - przetwarzane są aktywa, a nie zasoby.
+      Podobnie jest w ekonomii - aktywa, to aktywowane (aktywne) zasoby.
       
    dystrybucja
       (*ang. distribution*)
@@ -127,9 +127,9 @@ Słownik
    zasób
       (*ang. asset*)
       *Zasób* jest komponentem aplikacji internetowej, bedącym plikiem takim jak
-      CSS, JavaScript, obraz czy wideo. Mogą one być umiejscowione bezpośrednio
-      w katalogu projektu ``web``, lub publikowane do katalogu ``web`` z :term:`pakietu`
-      przez wykonanie polecenia ``assets:install`` w terminalu.
+      CSS, JavaScript, obraz czy wideo. Zasoby mogą być umiejscowione bezpośrednio
+      w katalogu projektu ``web``, lub publikowane do katalogu ``web``
+      z :term:`pakietu <pakiet>` przez wykonanie polecenia konsoli ``assets:install``.
 
    kernel
       (*ang. kernel*)
