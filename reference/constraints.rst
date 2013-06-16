@@ -1,4 +1,4 @@
-Walidacja poprzez Ograniczenia
+Walidacja poprzez ograniczenia
 ==============================
 
 .. toctree::
