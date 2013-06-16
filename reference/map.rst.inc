@@ -18,14 +18,13 @@
 
 * **Formularze i walidacja**
 
-  * :doc:`Typy pól formularzy odnośnik</reference/forms/types>`
-  * :doc:`Ustawienia walidacji odnośnik </reference/constraints>`
-  * :doc:`Funkcje i zmienne szablonu Twig odnośnik</reference/forms/twig_reference>`
+  * :doc:`Typy pól formularzy</reference/forms/types>`
+  * :doc:`Ustawienia walidacji</reference/constraints>`
+  * :doc:`Funkcje i zmienne szablonu Twig</reference/forms/twig_reference>`
 
-* :doc:`Rozszerzenia Twig (formularze, filtry, tagi, itd) odnośnik</reference/twig_reference>`
+* :doc:`Rozszerzenia Twig (formularze, filtry, tagi, itd)</reference/twig_reference>`
 
-Pozostałe
----------
+* **Pozostałe**
 
   * :doc:`/reference/dic_tags`
   * :doc:`/reference/requirements`
