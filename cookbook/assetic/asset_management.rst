@@ -1,10 +1,15 @@
 .. index::
-   single: Assetic; Wprowadzenie
+   single: Assetic; wprowadzenie
 
 Jak zastosować Assetic do zarządzania aktywami
-=======================================
+==============================================
 
-Assetic łączy w sobie dwie podstawowe idee: :ref:`aktywów<cookbook-assetic-assets>` i :ref:`filtrów<cookbook-assetic-filters>`. Aktywa to pliki CSS, JavaScript i obrazów. Filtry to coś, co może być zastosowane na aktywach zanim te zostaną przesłane do przeglądarki. Pozwala to odseparować pliki aktywów trzymane w aplikacji od plików rzeczywiście prezentowanych użytkownikowi.
+Assetic łączy w sobie dwie podstawowe idee: :ref:`aktywów<cookbook-assetic-assets>`
+i :ref:`filtrów<cookbook-assetic-filters>`. Pliki CSS, JavaScript i obrazy, to zasoby.
+Zasoby po załadowaniu i ewentualnym przetworzeniu stają się aktywami. Filtry to coś,
+co może być zastosowane na aktywach zanim te zostaną przesłane do przeglądarki.
+Pozwala to odseparować pliki zasobów trzymane w aplikacji od plików rzeczywiście
+prezentowanych użytkownikowi.
 
 Bez Assetic, pliki obecne w aplikacji są serwowane bezpośrednio:
 
@@ -18,11 +23,13 @@ Bez Assetic, pliki obecne w aplikacji są serwowane bezpośrednio:
 
         <script src="<?php echo $view['assets']->getUrl('js/script.js') ?>" type="text/javascript" />
 
-Jednakże dzięki Assetic można manipulować aktywami na różne sposoby (albo załadować je z dowolnego miejsca) zanim te zostaną wyświetlone użytkownikowi. Oznacza to, że można:
+Jednakże dzięki Assetic można manipulować aktywami na różne sposoby (albo załadować
+je z dowolnego miejsca) zanim te zostaną wyświetlone użytkownikowi. Oznacza to, że można:
 
-* Skompresować i połączyć wszystkie pliki CSS i JS w jeden
+* Skompresować i połączyć wszystkie pliki CSS i JS
 
-* Przepuścić wszystkie (albo tylko część) pliki CSS i JS przez jakiś kompilator, taki jak LESS, SASS albo CoffeeScript
+* Przepuścić wszystkie, albo tylko część plików CSS i JS przez jakiś kompilator,
+  taki jak LESS, SASS albo CoffeeScript
 
 * Zastosować optymalizacje obrazu na zdjęciach
 
@@ -31,14 +38,18 @@ Jednakże dzięki Assetic można manipulować aktywami na różne sposoby (albo 
 Aktywa
 ------
 
-Korzystanie z Assetic posiada wiele zalet nad metodą bezpośredniego serwowania plików. Pliki nie musząbyć przechowywane w miejscach z których są serwowane oraz mogą zostać pobrane z różnych źródeł, takich jak pakiety.
+Korzystanie z Assetic posiada wiele zalet nad metodą bezpośredniego serwowania
+plików. Pliki nie muszą być przechowywane w miejscach z których są serwowane oraz
+mogą zostać pobrane z różnych źródeł, takich jak pakiety.
 
-Można używać Assetic zarówno dla :ref:`stylów CSS<cookbook-assetic-including-css>` jak i :ref:`plików JavaScript<cookbook-assetic-including-javascript>`. Idea przewodnia dodawania obu jest w zasadzie taka sama, ale z nieco inną składnią.
+Można używać Assetic zarówno dla :ref:`stylów CSS<cookbook-assetic-including-css>`
+jak i :ref:`plików JavaScript<cookbook-assetic-including-javascript>`. Idea przewodnia
+dodawania obu jest w zasadzie taka sama, ale z nieco inną składnią.
 
 .. _cookbook-assetic-including-javascript:
 
 Dołączanie plików JavaScript
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By dołączyć pliki JavaScript, można w szablonie zastosować znacznik ``javascript``. Jest on najczęściej spotykany w bloku ``javascripts``, o ile używano domyślnej nazwy bloków ze Standardowej Dystrybucji Symfony:
 
@@ -68,24 +79,30 @@ W tym przykładzie wszystkie pliki w katalogu ``Resources/public/js/`` z ``AcmeF
 
     <script src="/app_dev.php/js/abcd123.js"></script>
 
-Punktem kluczowym jest: gdy pozwolisz Assetic obsługiwać swoje aktywa, będą one serwowane z róznych lokalizacji. *Będzie* to powodować problemy z plikami CSS, które odwołują się do obrazów poprzez ścieżki względne. Zobacz :ref:`cookbook-assetic-cssrewrite`.
+Jest to punkt kluczowy - gdy pozwolisz Assetic obsługiwać swoje aktywa, będą one
+serwowane z różnych lokalizacji. *Będzie* to powodować problemy z plikami CSS,
+które odwołują się do obrazów poprzez ścieżki względne. Zobacz :ref:`cookbook-assetic-cssrewrite`.
 
 .. _cookbook-assetic-including-css:
 
 Dołączanie stylów CSS
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
-Aby dostarczyć pliki CSS, można użyć tych samych metod co powyżej, z wyjątkiem znacznika ``stylesheets``. Jeśli domyślnie używano Standardowej Dystrybucji Symfony, pliki CSS powinny znajdować się w bloku ``stylesheets``:
+Aby dostarczyć pliki CSS, można użyć tych samych metod co powyżej, z wyjątkiem znacznika
+``stylesheets``. Jeśli używa się Symfony Standard Edition, pliki CSS powinny znajdować
+się w bloku ``stylesheets``:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {% stylesheets 'bundles/acme_foo/css/*' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 
     .. code-block:: html+php
+       :linenos:
 
         <?php foreach ($view['assetic']->stylesheets(
             array('bundles/acme_foo/css/*'),
@@ -94,33 +111,51 @@ Aby dostarczyć pliki CSS, można użyć tych samych metod co powyżej, z wyjąt
             <link rel="stylesheet" href="<?php echo $view->escape($url) ?>" />
         <?php endforeach; ?>
 
-Z uwagi na to, że Assetic zmienia ścieżki do swoich aktywów, najprawdopodobniej obrazy tła przestaną działać (lub inne zasoby), które używają ścieżek względnych, chyba, że zastosowano filtr :ref:`cssrewrite<cookbook-assetic-cssrewrite>`.
+Z uwagi na to, że Assetic zmienia ścieżki do swoich aktywów, najprawdopodobniej
+obrazy tła przestaną działać (lub inne zasoby), które używają ścieżek względnych,
+chyba, że zastosowano filtr :ref:`cssrewrite<cookbook-assetic-cssrewrite>`.
 
 .. note::
 
-    Zauważ, że w pierwotnym przykładzie, gdzie dołączano pliki JavaScript, odnoszono się do nich z użyciem ``@AcmeFooBundle/Resources/public/file.js``, zaś w tym przykładzie odwołanie do plików CSS następuje poprzez rzeczywistą, publicznie widoczną ścieżkę: ``bundles/acme_foo/css``. Można używać obu metod, należy jednak pamiętać, że istnieje znany problem, który powoduje błędne działanie filtra ``cssrewrite`` z użyciem składni ``@AcmeFooBundle``.
+    Zauważ, że w pierwotnym przykładzie, gdzie dołączano pliki JavaScript, odnoszono
+    się do nich z użyciem ``@AcmeFooBundle/Resources/public/file.js``, zaś w tym
+    przykładzie odwołanie do plików CSS następuje poprzez rzeczywistą, publicznie
+    widoczną ścieżkę: ``bundles/acme_foo/css``. Można używać obu metod, należy jednak
+    pamiętać, że istnieje znany problem, który powoduje błędne działanie filtra
+    ``cssrewrite`` z użyciem składni ``@AcmeFooBundle``.
 
 .. _cookbook-assetic-cssrewrite:
 
 Ustalanie ścieżki w plikach CSS z użyciem filtra ``cssrewrite``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ponieważ Assetic generuje nowe URL'e dla Twoich aktywów, wszystkie ścieżki względne wewnątrz plików CSS nie będa działać. By temu zaradzić, upewnij się, że użyto filtra ``cssrewrite`` w znaczniku ``stylesheets``. Pozwala on przeanalizować pliki CSS i skorygować wszystkie ścieżki wewnętrznie tak, by odzwierciedlały nową położenie.
+Ponieważ Assetic generuje nowe adresy URL dla aktywów, wszystkie ścieżki względne
+wewnątrz plików CSS nie będa działać. By temu zaradzić, upewnij się, że użyto filtra
+``cssrewrite`` w znaczniku ``stylesheets``. Pozwala on przeanalizować pliki CSS
+i skorygować wszystkie ścieżki wewnętrznie tak, by odzwierciedlały nową położenie.
 
 Można zobaczyć przykład z poprzedniej części.
 
 .. caution::
-
-  Przy stosowaniu filtra ``cssrewrite``, nie powinno się odnosić do plików CSS za pomocą składni ``@AcmeFooBundle``. Zobacz wiadomości z poprzedniej części, aby poznać szczegóły.
+   
+   Przy stosowaniu filtra ``cssrewrite``, nie powinno się odwoływać do plików CSS
+   za pomocą składni ``@AcmeFooBundle``. W celu poznania szczegółow proszę się zapoznać
+   z uwagą w poprzednim rozdziale.
 
 Łączenie aktywów
 ~~~~~~~~~~~~~~~~
 
-Jedną z cech Assetic jest łączenie wielu plików w jeden. Pomaga to zredukować liczbę żądań HTTP, co jest niezbędne dla wydajności części publicznej aplikacji. Pozwala to także na sprawniejsze zarządanie plikami poprzez dzielenie ich na mniejsze, łatwiejsze w utrzymaniu części. Wpływa to na wieloużywalność, bowiem pozwala oddzielić pliki specyficzne dla danego projektu od tych, które mogą zostać użyte w innych aplikacjach, wciąż serwując je jako jeden plik:
+Jedną z cech Assetic jest łączenie wielu plików w jeden. Pomaga to zredukować liczbę
+żądań HTTP, co jest niezbędne dla wydajności części publicznej aplikacji. Pozwala to
+także na sprawniejsze zarządanie plikami poprzez dzielenie ich na mniejsze, łatwiejsze
+w utrzymaniu części. Wpływa to na wieloużywalność, bowiem pozwala oddzielić pliki
+specyficzne dla danego projektu od tych, które mogą zostać użyte w innych aplikacjach,
+wciąż serwując je jako jeden plik:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {% javascripts
             '@AcmeFooBundle/Resources/public/js/*'
@@ -130,6 +165,7 @@ Jedną z cech Assetic jest łączenie wielu plików w jeden. Pomaga to zredukowa
         {% endjavascripts %}
 
     .. code-block:: html+php
+       :linenos:
 
         <?php foreach ($view['assetic']->javascripts(
             array(
@@ -141,17 +177,27 @@ Jedną z cech Assetic jest łączenie wielu plików w jeden. Pomaga to zredukowa
             <script src="<?php echo $view->escape($url) ?>"></script>
         <?php endforeach; ?>
 
-W środowisku ``dev`` każdy plik jest nadal serwowany indywidualnie, tak aby można było debugować problemy łatwiej. Jednak w środowisku ``prod`` (a dokładniej, gdy flaga ``debug`` jest ustawiona na ``false``), wszystko zostanie wygenerowane w jednym znaczniku ``script``, który zawierał będzie zawartość wszystkich użytych plików JavaScript.
+W środowisku ``dev`` każdy plik jest nadal serwowany indywidualnie, tak aby można
+było łatwiej debugować problemy. Jednak w środowisku ``prod`` (a dokładniej, gdy
+flaga ``debug`` jest ustawiona na ``false``), wszystko zostanie wygenerowane w jednym
+znaczniku ``script``, który zawierał będzie zawartość wszystkich użytych plików JavaScript.
 
 .. tip::
 
-    Jeśli dopiero co poznajesz Assetic i uruchamiasz aplikacje w środowisku ``prod`` (za pomocą kontrolera ``app.php``), prawdopodobnie doświadczysz, że wszystkie pliki CSS i JS przestały działać. Nie martw się! Jest to celowe. Po szczegółowe informacje dotyczące korzystania Assetic w środowisku ``prod`` sięgnij do :ref:`cookbook-assetic-dumping`.
+    Jeśli dopiero co poznajesz Assetic i uruchamiasz aplikacje w środowisku ``prod``
+    (za pomocą kontrolera ``app.php``), prawdopodobnie doświadczysz, że wszystkie
+    pliki CSS i JS przestały działać. Nie martw się! Jest to celowe. Po szczegółowe
+    informacje dotyczące korzystania Assetic w środowisku ``prod`` sięgnij do
+    :ref:`cookbook-assetic-dumping`.
 
-Łączenie plików odnosi się nie tylko do *swoich* plików. Można również użyć Assetic do połączenia zasobów osób trzecich, takich jak jQuery, z własnymi i połączyć je w jednym pliku:
+Łączenie plików odnosi się nie tylko do *własnych* plików. Można również użyć
+Assetic do połączenia zasobów osób trzecich, takich jak jQuery, z własnymi i połączyć
+je w jeden plik:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {% javascripts
             '@AcmeFooBundle/Resources/public/js/thirdparty/jquery.js'
@@ -160,6 +206,7 @@ W środowisku ``dev`` każdy plik jest nadal serwowany indywidualnie, tak aby mo
         {% endjavascripts %}
 
     .. code-block:: html+php
+       :linenos:
 
         <?php foreach ($view['assetic']->javascripts(
             array(
@@ -173,19 +220,32 @@ W środowisku ``dev`` każdy plik jest nadal serwowany indywidualnie, tak aby mo
 .. _cookbook-assetic-filters:
 
 Filtry
--------
+------
 
-Gdy są one zarządzane przez Assetic, można zastosować filtry do aktywów, zanim te zostaną zaserwowane użytkownikowi. Obejmuje to filtry, które kompresują dane wyjściowe aktywów do mniejszych rozmiarów (i poprawiają wydajność części publicznej aplikacji). Inne filtry mogą skompilować plik JavaScript z plików CoffeeScript albo przetworzyć SASS w CSS. W rzeczywistości, Assetic ma dość pokaźną listę dostępnych filtrów.
+Gdy są filtry są zarządzane przez Assetic, można zastosować je do aktywów, zanim
+te zostaną zaserwowane użytkownikowi. Obejmuje to filtry, które kompresują dane
+wyjściowe aktywów do mniejszych rozmiarów (i poprawiają wydajność części publicznej aplikacji).
+Inne filtry mogą skompilować plik JavaScript z plików CoffeeScript albo przetworzyć
+SASS w CSS. W rzeczywistości, Assetic ma dość pokaźną listę dostępnych filtrów.
 
-Wiele z tych filtrów nie zadziała bezpośrednio, gdyż używa bibliotek firm trzecich do wykonywania najcięższej, algorytmicznej pracy. Oznacza to, że nieraz będzie trzeba zainstalować biblioteki firm trzecich, by potem użyć konkretnego filtru. Zaletą korzystania z Assetic do wywoływania tych bibliotek (w przeciwieństwie do korzystania z nich bezpośrednio) jest to, że zamiast uruchamiać je ręcznie podczas pracy, Assetic zadba o to za nas i usunie ten krok z procesu rozwoju i wdrażania aplikacji.
+Wiele z tych filtrów nie zadziała bezpośrednio, gdyż używa bibliotek osób trzecich
+do wykonywania najcięższej, algorytmicznej pracy. Oznacza to, że nieraz będzie trzeba
+najpierwe zainstalować takie biblioteki, by potem użyć konkretnego filtru. Zaletą 
+korzystania z Assetic do wywoływania tych bibliotek (w przeciwieństwie do korzystania
+z nich bezpośrednio) jest to, że zamiast uruchamiać je ręcznie podczas pracy, Assetic
+zadba o to za nas i usunie ten krok z procesu tworzenia i wdrażania aplikacji.
 
-Aby użyć filtru, trzeba najpierw określić go w konfiguracji Assetic. Dodawanie filtru tutaj nie znaczy, że jest już używany - to po prostu oznacza, że jest możliwy do wykorzystania (można skorzystać z filtra poniżej).
+Aby użyć filtru, trzeba najpierw określić go w konfiguracji Assetic. Dodawanie filtru
+tutaj nie znaczy, że jest już używany - to po prostu oznacza, że jest możliwy do
+wykorzystania (można skorzystać z filtra poniżej).
 
-Na przykład, aby użyć JavaScript YUI Compressor, powinna zostać dodana następująca konfiguracja:
+Na przykład, aby użyć JavaScript YUI Compressor, powinna zostać dodana następująca
+konfiguracja:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         assetic:
@@ -194,6 +254,7 @@ Na przykład, aby użyć JavaScript YUI Compressor, powinna zostać dodana nast�
                     jar: "%kernel.root_dir%/Resources/java/yuicompressor.jar"
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <assetic:config>
@@ -203,6 +264,7 @@ Na przykład, aby użyć JavaScript YUI Compressor, powinna zostać dodana nast�
         </assetic:config>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('assetic', array(
@@ -213,17 +275,20 @@ Na przykład, aby użyć JavaScript YUI Compressor, powinna zostać dodana nast�
             ),
         ));
 
-Teraz, aby rzeczywiście *użyć* filtru na grupie plików JavaScript, wystarczy następująco zmodyfikować plik szablonu:
+Teraz, aby rzeczywiście *użyć* filtru na grupie plików JavaScript, wystarczy następująco
+zmodyfikować plik szablonu:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {% javascripts '@AcmeFooBundle/Resources/public/js/*' filter='yui_js' %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
     .. code-block:: html+php
+       :linenos:
 
         <?php foreach ($view['assetic']->javascripts(
             array('@AcmeFooBundle/Resources/public/js/*'),
@@ -232,22 +297,26 @@ Teraz, aby rzeczywiście *użyć* filtru na grupie plików JavaScript, wystarczy
             <script src="<?php echo $view->escape($url) ?>"></script>
         <?php endforeach; ?>
 
-Bardziej szczegółowy przewodnik na temat konfiguracji i korzystania z filtrów Assetic, jak również informacji o trybie debugowania Assetic można znaleźć w :doc:`/cookbook/assetic/yuicompressor`.
+Bardziej szczegółowy przewodnik na temat konfiguracji i korzystania z filtrów Assetic,
+jak również informacji o trybie debugowania Assetic można znaleźć w :doc:`/cookbook/assetic/yuicompressor`.
 
 Kontrolowanie używanych adresów URL
-------------------------
+-----------------------------------
 
-Jeśli chcesz, możesz kontrolować adresy URL generowane przez Assetic. Są one tworzone z szablonu i relatywne w stosunku do głównego dokumentu publicznego:
+Jeśli chcesz, możesz kontrolować adresy URL generowane przez Assetic. Są one tworzone
+z szablonu i relatywne w stosunku do głównego dokumentu publicznego:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {% javascripts '@AcmeFooBundle/Resources/public/js/*' output='js/compiled/main.js' %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
     .. code-block:: html+php
+       :linenos:
 
         <?php foreach ($view['assetic']->javascripts(
             array('@AcmeFooBundle/Resources/public/js/*'),
@@ -259,32 +328,48 @@ Jeśli chcesz, możesz kontrolować adresy URL generowane przez Assetic. Są one
 
 .. note::
 
-    Symfony zawiera metody do *czyszczenia* pamięci podręcznej, gdzie ostateczny adres URL generowany przez Assetic zawiera parametr zapytania, który może być zwiększany w konfiguracji przy każdym wdrożeniu. Aby uzyskać więcej informacji, zapoznaj się z opcja konfiguracji :ref:`ref-framework-assets-version`.
+    Symfony zawiera metody do generowania pamięci podręcznej typu *cache-busting*,
+    dla których ostateczny adres URL generowany przez Assetic zawiera parametr zapytania,
+    który może być zwiększany poprzez konfigurację przy każdym rozmieszczeniu aktywa.
+    Aby uzyskać więcej informacji, zapoznaj się z opcją konfiguracji :ref:`ref-framework-assets-version`.
 
 .. _cookbook-assetic-dumping:
 
 Zrzut plików aktywów
--------------------
+--------------------
 
-W środowisku ``dev``, Assetic generuje ścieżki do plików CSS i JavaScript, które fizycznie nie istnieją na komputerze. Ścieżki są tak czy inaczej generowane, gdyż wewnętrzny kontroler Symfony jest w stanie otworzyć pliki, by zaserwować ich zawartość (zaraz po uruchomieniu filtrów).
+W środowisku ``dev``, Assetic generuje ścieżki do plików CSS i JavaScript, które
+fizycznie nie istnieją na komputerze. Ścieżki są tak czy inaczej generowane, gdyż
+wewnętrzny kontroler Symfony jest w stanie otworzyć pliki, by zaserwować ich zawartość
+(zaraz po uruchomieniu filtrów).
 
-Ten rodzaj dynamicznego serwowania przetworzonych aktywów daje dużo korzyści, gdyż oznacza to, że można od razu zobaczyć stan wszystkich plików aktywów, które uległy zmianie. Z drugiej strony, może przynieśc i straty z uwagi na spowolnienie aplikacji. Jeśli używa się zbyt wielu filtrów, może okazać się to wręcz frustrujące.
+Ten rodzaj dynamicznego serwowania przetworzonych aktywów daje dużo korzyści, gdyż
+oznacza to, że można od razu zobaczyć stan wszystkich plików aktywów, które uległy
+zmianie. Z drugiej strony, może przynieśc i straty z uwagi na spowolnienie aplikacji.
+Jeśli używa się zbyt wielu filtrów, może okazać się to wręcz frustrujące.
 
-Na szczęście Assetic zapewnia możliwość zrzutu aktywów do rzeczywistych plików, zamiast generowania ich dynamicznie.
+Na szczęście Assetic zapewnia możliwość zrzutu aktywów do rzeczywistych plików,
+zamiast generowania ich dynamicznie.
 
 
 Zrzut plików aktywów w środowisku ``prod``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-W środowisku ``prod``, pliki JS i CSS sa reprezentowane przez pojedynczy znacznik. Innymi słowy, zamiast widzieć każdy plik JavaScript, który załączono w źródle, nieraz zobaczy się coś takiego:
+W środowisku ``prod``, pliki JS i CSS sa reprezentowane przez pojedynczy znacznik.
+Innymi słowy, zamiast widzieć każdy plik JavaScript, który załączono w źródle,
+nieraz zobaczy się coś takiego:
 
 .. code-block:: html
 
     <script src="/app_dev.php/js/abcd123.js"></script>
 
-Co więcej, plik ten w rzeczywistości **nie** istnieje, ani nie jest również dynamicznie generowany przez Symfony (jak pliki aktywów w środowisku ``dev``). Jest to celowe - pozwolenie Symfony na generowanie tych plików dynamicznie w środowisku produkcyjnym byłoby po prostu zbyt wolne.
+Co więcej, plik ten w rzeczywistości **nie** istnieje, ani nie jest również dynamicznie
+generowany przez Symfony (jak pliki aktywów w środowisku ``dev``). Jest to celowe -
+pozwolenie Symfony na generowanie tych plików dynamicznie w środowisku produkcyjnym
+byłoby po prostu zbyt wolne.
 
-Zamiast tego, za każdym razem gdy korzysta się ze środowiska ``prod`` (a zatem za każdym razem gdy następuje proces wdrażania), powinno sie uruchomiać następujące zadanie:
+Zamiast tego, za każdym razem gdy korzysta się ze środowiska ``prod`` (a zatem za
+każdym razem gdy następuje proces wdrażania), powinno sie uruchomiać następujące zadanie:
 
 .. code-block:: bash
 
@@ -293,55 +378,71 @@ Zamiast tego, za każdym razem gdy korzysta się ze środowiska ``prod`` (a zate
 To spowoduje fizyczną generację każdego pliku, którego potrzeba. (np. ``/js/abcd123.js``). W przypadku aktualizacji aktywów, trzeba uruchomić to zadanie ponownie i przegenerować pliki.
 
 Zrzut plików aktywów w środowisku ``dev``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Domyślnie, każda ścieżka aktywa generowana w środowisku ``dev`` jest obsługiwana dynamicznie przez Symfony. Nie ma to wad (zmiany widać natychmiast), z zastrzeżeniem, że aktywa mogą ładować się zauważalnie wolniej. Jeśli uważasz, że aktywa wczytują się zbyt wolno, skorzystaj z tej instrukcji.
+Domyślnie, każda ścieżka aktywa generowana w środowisku ``dev`` jest obsługiwana
+dynamicznie przez Symfony. Nie ma to wad (zmiany widać natychmiast), z zastrzeżeniem,
+że aktywa mogą ładować się zauważalnie wolniej. Jeśli uważasz, że aktywa wczytują się
+zbyt wolno, skorzystaj z tej instrukcji.
 
-Po pierwsze, powiedz Symfony aby zatrzymać przetwarzanie tych plików dynamicznie. Wprowadź następującą zmianę w pliku konfiguracji ``config_dev.yml``:
+Po pierwsze, poinformuj Symfony aby zatrzymać dynamicznie przetwarzanie tych plików.
+Wprowadź następującą zmianę w pliku konfiguracji ``config_dev.yml``:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config_dev.yml
         assetic:
             use_controller: false
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config_dev.xml -->
         <assetic:config use-controller="false" />
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config_dev.php
         $container->loadFromExtension('assetic', array(
             'use_controller' => false,
         ));
 
-Następnie, ponieważ Symfony nie jest już odpowiedzialne za generowanie aktywów, trzeba zrzucić je ręcznie. Aby to zrobić, wykonaj następujące czynności:
+Następnie, ponieważ Symfony nie jest już odpowiedzialne za generowanie aktywów,
+trzeba zrzucić je ręcznie. Aby to zrobić, wykonaj następujące czynności:
 
 .. code-block:: bash
 
     $ php app/console assetic:dump
 
-To polecenie fizycznie zapisuje wszystkie pliki aktywów w środowisku ``dev``. Dużą wadą jest, że trzeba uruchamiać je za każdym razem gdy zaktualizowano aktywa. Na szczęście, przekazując opcje ``--watch`` umożliwi się automatycznie ich przegenerowywanie  *w chwili ich zmiany*:
+To polecenie fizycznie zapisuje wszystkie pliki aktywów w środowisku ``dev``.
+Dużą wadą jest, że trzeba uruchamiać je za każdym razem gdy zaktualizowano aktywa.
+Na szczęście, przekazując opcje ``--watch`` umożliwi się automatycznie ich
+przegenerowywanie  *w chwili ich zmiany*:
 
 .. code-block:: bash
 
     $ php app/console assetic:dump --watch
 
-Ponieważ uruchomienie tego polecenia w środowisku ``dev`` może wygererować dość sporo plików, zazwyczaj dobrym pomysłem dla tak generowanych plików jest wskazanie dla nich odizolowanego katalogu (np. ``/js/compiled``), tak aby utrzymać wszystko w sposób zorganizowany:
+Ponieważ uruchomienie tego polecenia w środowisku ``dev`` może wygererować dość
+sporo plików, zazwyczaj dobrym pomysłem dla tak generowanych plików jest wskazanie
+dla nich odreębnego katalogu (np. ``/js/compiled``), tak aby utrzymać wszystko
+w sposób zorganizowany:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {% javascripts '@AcmeFooBundle/Resources/public/js/*' output='js/compiled/main.js' %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
     .. code-block:: html+php
+       :linenos:
 
         <?php foreach ($view['assetic']->javascripts(
             array('@AcmeFooBundle/Resources/public/js/*'),
@@ -350,4 +451,3 @@ Ponieważ uruchomienie tego polecenia w środowisku ``dev`` może wygererować d
         ) as $url): ?>
             <script src="<?php echo $view->escape($url) ?>"></script>
         <?php endforeach; ?>
-

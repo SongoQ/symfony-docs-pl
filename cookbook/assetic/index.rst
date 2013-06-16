@@ -8,4 +8,3 @@ Assetic
     yuicompressor
     jpeg_optimize
     apply_to_option
-

@@ -918,15 +918,15 @@ aplikacji, które wykorzystują możliwości różnych usług ze szkieletu.
 
 
 .. index::
-   single: kontener usług; etykiety
+   single: kontener usług; tagi
 
 .. _book-service-container-tags:
 
-Etykiety
---------
+Tagi
+----
 
-Usługi skonfigurowane w kontenerze mogą być również etykietowane, w podobny sposób
-jak wpisy na blogu. W kontenerze usług etykieta wskazuje, ze dana usługa może być
+Usługi skonfigurowane w kontenerze mogą być również oflagowane, w podobny sposób
+jak wpisy na blogu. W kontenerze usług tag wskazuje, że dana usługa może być
 użyta w określonym celu. Weźmy następujący przykład:
 
 .. configuration-block::
@@ -954,21 +954,21 @@ użyta w określonym celu. Weźmy następujący przykład:
         $definition->addTag('twig.extension');
         $container->setDefinition('foo.twig.extension', $definition);
 
-Etykieta ``twig.extension`` jest specjalną etykietą, którą wykorzystuje ``TwigBundle``
-podczas konfiguracji. Przez przyporządkowanie usłudze etykiety ``twig.extension``
+Tag ``twig.extension`` jest specjalną etykietą, którą wykorzystuje ``TwigBundle``
+podczas konfiguracji. Przez przyporządkowanie usłudze taga ``twig.extension``
 pakiet wie, że usługa ``foo.twig.extension`` powinna zostać zarejestrowana jako
-rozszerzenie Twiga w Twigu. Innymi słowami, Twig wyszukuje wszystkie usługi z etykietą
+rozszerzenie Twiga w Twigu. Innymi słowami, Twig wyszukuje wszystkie usługi z tagiem
 ``twig.extension`` i automatycznie rejestruje je jako rozszerzenia.
 
-Etykiety są więc sposobem na poinformowanie Symfony2 lub pakiety osób trzecich,
+Tagi są więc sposobem na poinformowanie Symfony2 lub pakietów osób trzecich,
 że usługa powinina zostać zarejestrowana lub użyta w jakiś specjalny sposób przez
 pakiet.
 
-Poniżej znajduje się lista etykiet dostępnych w pakietach rdzennych Symfony2.
-Każda z nich ma inny wpływ na usługę a wiele etykiet wymaga dodatkowych argumentów
+Poniżej znajduje się lista tagów dostępnych w pakietach rdzennych Symfony2.
+Każda z nich ma inny wpływ na usługę a wiele tagów wymaga dodatkowych argumentów
 (nie licząc parametru ``name``).
 
-Listę wszystkich dostępnych etykiet w rdzennym pakiecie Symfony Framework można
+Listę wszystkich dostępnych tagów w rdzennym pakiecie Symfony Framework można
 znaleźć w dokumencie :doc:`/reference/dic_tags`.
 
 .. index::

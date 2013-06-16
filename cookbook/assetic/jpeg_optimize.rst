@@ -1,19 +1,26 @@
 .. index::
-   single: Assetic; Optymalizacja obrazów
+   single: Assetic; optymalizacja obrazów
 
 Jak zastosować Assetic do optymalizacji obrazów w funkcjach Twiga
-=============================================================
+=================================================================
 
-Wśród swoich wielu filtrów, Assetic posiada cztery, które mogą być wykorzystane do optymalizacji obrazów w locie. Pozwala to uzyskać korzyści z mniejszych rozmiarów plików bez konieczności używania edytora graficznego do przetwarzania każdego obrazu z osobna. Wyniki są buforowane i mogą zostać zrzucone na produkcji, zatem nie doświadczy się spadku wydajności dla użytkowników końcowych.
+Wśród swoich wielu filtrów, Assetic posiada cztery, które mogą być wykorzystane
+do optymalizacji obrazów w czasie przetwarzania. Pozwala to uzyskać korzyści
+z mniejszych rozmiarów plików bez konieczności używania edytora graficznego
+do przetwarzania każdego obrazu z osobna. Wyniki są buforowane i mogą zostać
+zrzucone w środowisku produkcyjnym, zatem nie doświadczy się spadku wydajności
+dla użytkowników końcowych.
 
 Używanie Jpegoptim
----------------
+------------------
 
-`Jpegoptim`_ to narzędzie do optymalizacji plików JPEG. Aby korzystać z niego w Assetic, trzeba dodać poniższe linie do konfiguracji Assetic:
+`Jpegoptim`_ to narzędzie do optymalizacji plików JPEG. Aby korzystać z niego
+w Assetic, trzeba dodać poniższe linie kodu do konfiguracji Assetic:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         assetic:
@@ -22,6 +29,7 @@ Używanie Jpegoptim
                     bin: path/to/jpegoptim
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <assetic:config>
@@ -31,6 +39,7 @@ Używanie Jpegoptim
         </assetic:config>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('assetic', array(
@@ -43,13 +52,15 @@ Używanie Jpegoptim
 
 .. note::
 
-    Zauważ, że do korzystania z jpegoptim trzeba mieć go zainstalowanego w systemie. Opcja ``bin`` wskazuje na lokalizację skompilowanego kodu binarnego.
+    Proszę zwrócić uwagę, że aby korzystać z jpegoptim trzeba mieć go zainstalowanego
+    w systemie. Opcja ``bin`` wskazuje na lokalizację skompilowanego kodu binarnego.
 
 Można go teraz użyć z szablonu:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {% image '@AcmeFooBundle/Resources/public/images/example.jpg'
             filter='jpegoptim' output='/images/example.jpg' %}
@@ -57,6 +68,7 @@ Można go teraz użyć z szablonu:
         {% endimage %}
 
     .. code-block:: html+php
+       :linenos:
 
         <?php foreach ($view['assetic']->images(
             array('@AcmeFooBundle/Resources/public/images/example.jpg'),
@@ -66,13 +78,16 @@ Można go teraz użyć z szablonu:
         <?php endforeach; ?>
 
 Usuwanie wszystkich danych EXIF
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Domyślnie, uruchomienie tego filtru usunie tylko część metainformacji przechowywanych w pliku. Wszelkie dane EXIF i komentarze nie zostaną usunięte, ale można tego dokonać używając opcji ``strip_all``:
+Domyślnie, uruchomienie tego filtru usunie tylko część metainformacji przechowywanych
+w pliku. Wszelkie dane EXIF i komentarze nie zostaną usunięte, ale można tego dokonać
+używając opcji ``strip_all``:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         assetic:
@@ -82,6 +97,7 @@ Domyślnie, uruchomienie tego filtru usunie tylko część metainformacji przech
                     strip_all: true
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <assetic:config>
@@ -92,6 +108,7 @@ Domyślnie, uruchomienie tego filtru usunie tylko część metainformacji przech
         </assetic:config>
 
     .. code-block:: php
+       :linenos;
 
         // app/config/config.php
         $container->loadFromExtension('assetic', array(
@@ -104,13 +121,16 @@ Domyślnie, uruchomienie tego filtru usunie tylko część metainformacji przech
         ));
 
 Obniżanie maksymalnej jakości
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Poziom jakości JPEG nie jest tknięty domyślnie. Można osiągnąć dalszą redukcję rozmiaru pliku poprzez ustawienie maksymalnej jakości, która będzie niższa niż obecny poziom dla obrazów. Nastąpi to oczywiście kosztem jakości obrazu: 
+Poziom jakości JPEG nie jest domyślnie zmieniany. Można osiągnąć redukcję
+rozmiaru pliku poprzez ustawienie maksymalnej jakości obrazu, która będzie niższa
+niż obecny poziom. Nastąpi to oczywiście kosztem jakości obrazu: 
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         assetic:
@@ -120,6 +140,7 @@ Poziom jakości JPEG nie jest tknięty domyślnie. Można osiągnąć dalszą re
                     max: 70
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <assetic:config>
@@ -130,6 +151,7 @@ Poziom jakości JPEG nie jest tknięty domyślnie. Można osiągnąć dalszą re
         </assetic:config>
 
     .. code-block:: php
+       :linenos;
 
         // app/config/config.php
         $container->loadFromExtension('assetic', array(
@@ -141,14 +163,17 @@ Poziom jakości JPEG nie jest tknięty domyślnie. Można osiągnąć dalszą re
             ),
         ));
 
-Krótsza składnia: Funkcja Twig
------------------------------
+Krótsza składnia: funkcja Twig
+------------------------------
 
-Jeśli używa się szablonów Twig, to jest możliwe osiągnięcie tego wszystkiego poprzez zastosowanie krótszej składni i specjalnej funkcji. Aby rozpoczać, należy dodać następującą konfigurację:
+Jeśli używa się szablonów Twig, to jest możliwe osiągnięcie tego wszystkiego poprzez
+zastosowanie krótszej składni i specjalnej funkcji. Aby rozpoczać, należy dodać
+następującą konfigurację:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         assetic:
@@ -160,6 +185,7 @@ Jeśli używa się szablonów Twig, to jest możliwe osiągnięcie tego wszystki
                     jpegoptim: ~
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <assetic:config>
@@ -173,6 +199,7 @@ Jeśli używa się szablonów Twig, to jest możliwe osiągnięcie tego wszystki
         </assetic:config>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('assetic', array(
@@ -198,6 +225,7 @@ Można określić katalog docelowy w konfiguracji w następujący sposób:
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         assetic:
@@ -209,6 +237,7 @@ Można określić katalog docelowy w konfiguracji w następujący sposób:
                     jpegoptim: { output: images/*.jpg }
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <assetic:config>
@@ -223,6 +252,7 @@ Można określić katalog docelowy w konfiguracji w następujący sposób:
         </assetic:config>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('assetic', array(
@@ -241,4 +271,3 @@ Można określić katalog docelowy w konfiguracji w następujący sposób:
         ));
 
 .. _`Jpegoptim`: http://www.kokkonen.net/tjko/projects.html
-
