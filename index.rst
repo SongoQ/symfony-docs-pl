@@ -1,49 +1,41 @@
-
-##############################
-Symfony2 - polska dokumentacja
-##############################
+Symfony2 - Polska Dokumentacja
+======================
 
 Jest to polskie tłumczenie oficjalnej dokumentacji platformy aplikacyjnej Symfony,
 publikowanej na stronach http://symfony.com/, rozszerzone o polskojęzyczne artykuły
-tam nie ujęte.  
+jeszcze tam nie ujęte.
 
+Szybkie wprowadzenie
+----------
 
-:doc:`/quick_tour/index`
-========================
-
-Co może być lepszego dla uzupełnienia swojej wiedzy, niż wypróbowanie przez siebie Symfony?
-To zajmie Ci trochę czasu, ale warto go poświęcić. Krok, po kroku będziesz tu odkrywał
-świat Symfony. Uważaj, Symfony może uzależnić!
+Zacznij szybko z Symfony2 :doc:`Quick Tour <quick_tour/index>`:
 
 .. toctree::
-   :maxdepth: 1
+    :hidden:
 
-   /quick_tour/the_big_picture
-   /quick_tour/the_view
-   /quick_tour/the_controller
-   /quick_tour/the_architecture
+    quick_tour/index
 
+* :doc:`quick_tour/the_big_picture` >
+* :doc:`quick_tour/the_view` >
+* :doc:`quick_tour/the_controller` >
+* :doc:`quick_tour/the_architecture`
 
-:doc:`/book/index`
-==================
+Podręcznik
+----
 
 Jest to biblia Symfony, przygotowana przez zespół rdzenia tego projektu.
 Jest kierowany do wszystkich użytkowników Symfony2, którzy zazwyczaj chcą ten
 podręcznik mieć pod ręka.
 
+.. toctree::
+    :hidden:
+
+    book/index
+
 .. include:: /book/map.rst.inc
 
-:doc:`/cmf/index`
-=================
-
-*Symfony Content Management Framework* (w skrócie Symfony CMF) jest dystrybucją
-frameworka Symfony i celowo dobranych pakietów, tworzących w ten sposób framework
-systemu zarządania treścią (CMF). System ten ma swoją bogatą dokumentację, ale do
-jej lektury niezbędna jest znajomość zagadnień omówionych w :doc:`Podręczniku
-Symfony<book/index>`.  
-
-:doc:`/cookbook/index`
-======================
+Cookbook - książka kucharska
+--------
 
 Ten dział w oryginale nosi nazwę „Cookbook”, czyli „książka kucharska”.
 Ta „książka kucharska” nie jest przeznaczona do nauki gotowania. Jest to przewodnik
@@ -51,37 +43,68 @@ po recepturach przygotowanych wg precyzyjnej metodologii, pokazujących, jak prz
 ”konkretne potrawy”, czyli elementy aplikacji internetowej z użyciem Symfony.
 Znajdziesz tu konkretne rozwiązania dla konkretnych potrzeb.
 
+.. toctree::
+    :hidden:
 
-:doc:`/reference/index/`
-========================
+    cookbook/index
 
-Odkryj wielkie możliwości dostosowania frameworka Symfony do swoich potrzeb
+Czytaj :doc:`Cookbook </cookbook/index>`.
 
+Komponenty
+----------
+
+.. toctree::
+    :hidden:
+
+    components/index
+
+Czytaj :doc:`Components </components/index>` documentation.
+
+Dokumenty źródłowe
+-------------------
+
+Odkryj wielkie możliwości dostosowania frameworka Symfony do swoich potrzeb:
+
+.. toctree::
+    :hidden:
+
+    reference/index
+
+.. include:: /reference/map.rst.inc
 
 Pakiety
-=======
+-------
 
-Symfony zbudowany jest z pakietów. Dowiedz się o nich więcej.
-
-.. toctree::
-   :maxdepth: 2
-   
-   /bundles/index
-   /cmf/bundles/index
-
-Ponadto dostępnych jest wiele innych użytecznych pakietów osób trzecich.
-Lista tych pakietów dostępna jest na serwisie `Knp Bundles <http://knpbundles.com/>`_.       
-
-:doc:`/contributing/index`
-==========================
-
-Zbiór artykułów dotyczących społeności Symfony i współpracy przy rozwijaniu projektu
-i dokumentacji Symfony2
+Symfony Standardowa Edycja zbudowana jest z pakietów. Dowiedz się o niej więcej:
 
 .. toctree::
-   :maxdepth: 2
-   
-   /contributing/code/index
-   /contributing/documentation/index
-   /contributing/community/index
+    :hidden:
 
+    bundles/index
+
+.. include:: /bundles/map.rst.inc
+
+CMF
+---
+
+*Symfony Content Management Framework* (w skrócie Symfony CMF) jest dystrybucją
+frameworka Symfony i celowo dobranych pakietów, tworzących w ten sposób framework
+systemu zarządania treścią.
+
+.. toctree::
+    :hidden:
+
+    cmf/index
+
+Wkład w rozwój
+------------
+
+Zbiór artykułów dotyczących społeności Symfony i współpracy przy rozwijaniu 
+projektu i dokumentacji Symfony2:
+
+.. toctree::
+    :hidden:
+
+    contributing/index
+
+.. include:: /contributing/map.rst.inc
