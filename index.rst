@@ -96,7 +96,7 @@ systemu zarządania treścią.
 
     cmf/index
 
-Wkład w rozwój
+Współpraca
 ------------
 
 Zbiór artykułów dotyczących społeności Symfony i współpracy przy rozwijaniu 
