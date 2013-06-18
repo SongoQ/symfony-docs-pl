@@ -21,9 +21,11 @@ dokumentację. Oto lista oficjalnych repozytoriów *master* tłumaczeń:
 * *włoski*:  https://github.com/garak/symfony-docs-it
 * *japoński*: https://github.com/symfony-japan/symfony-docs-ja
 * *polski*:   http://github.com/ampluso/symfony-docs-pl
+* *portugalski (brazylijski)*:  https://github.com/andreia/symfony-docs-pt-BR
 * *rumuński*: http://github.com/sebio/symfony-docs-ro
 * *rosyjski*:  http://github.com/avalanche123/symfony-docs-ru
 * *hiszpański*:  https://github.com/gitnacho/symfony-docs-es
+* *turecki*:  https://github.com/symfony-tr/symfony-docs-tr
 
 .. note::
 
