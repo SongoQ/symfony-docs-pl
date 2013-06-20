@@ -70,8 +70,8 @@ Można też dopasować więcej niż jedną ścieżkę URL definiując dodatkową
 Aktywacja
 ~~~~~~~~~
 
-W celu aktywowania trasy wymagają zaimportowania jak wszelkie inne zasoby trasowania
-(zwróć uwagę na typ zasobu):
+W celu aktywowania trasy wymagane jest zaimportowanie wszelkich innych zasobów
+trasowania (proszę zwrócic uwagę na typ zasobu):
 
 .. code-block:: yaml
    :linenos:
