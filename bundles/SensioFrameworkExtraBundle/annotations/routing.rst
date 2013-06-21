@@ -93,7 +93,8 @@ Można również zaimportować cały katalog:
       resource: "@SensioBlogBundle/Controller"
       type:     annotation
       
-Trasy można "zamontować" w ramach przedrostka, jak każdy inny zasób:
+Trasy można "zamontować", jak każdy inny zasób, w zakresie określonego przedrostka
+trasy:
 
 .. code-block:: yaml
    :linenos:
@@ -123,7 +124,8 @@ Do zmiany domyślnej nazwy trasy można użyć atrybutu *name*::
 Przedrostek trasy
 ~~~~~~~~~~~~~~~~~
 
-Adnotacja @Route na w klasie kontrolera definiuje przedrostek dla wszystkich tras akcji::
+Adnotacja @Route określona w klasie kontrolera definiuje przedrostek dla wszystkich
+tras akcji w tej klasie::
 
    /**
    * @Route("/blog")
@@ -174,7 +176,7 @@ Kontroler jako usługa
 
 Adnotacja *@Route* w klasie kontrolera może być również wykorzystywana do przypisania
 klasy kontrolera do usługi tak, że rezolwer kontrolera będzie tworzył instancję
-kontrolera przez pobieranie jej z kontenera DI zamiast wywoływanie
+kontrolera przez pobieranie jej z kontenera DI zamiast wywoływania
 ``new PostController()``::
 
    /**
