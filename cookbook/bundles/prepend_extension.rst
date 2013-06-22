@@ -1,28 +1,29 @@
 .. index::
-   single: Configuration; Semantic
-   single: Bundle; Extension configuration
+   single: Konfiguracja; Semantyczny
+   single: Pakiet; konfiguracja rozszerzenia
 
-How to simplify configuration of multiple Bundles
-=================================================
+Jak uprościć konfiguracje wielu pakietów
+========================================
 
-When building reusable and extensible applications, developers are often
-faced with a choice: either create a single large Bundle or multiple smaller
-Bundles. Creating a single Bundle has the draw back that it's impossible for
-users to choose to remove functionality they are not using. Creating multiple
-Bundles has the draw back that configuration becomes more tedious and settings
-often need to be repeated for various Bundles.
+Budując aplikacje rozszerzalne i wieloużywalne, programiści stają w obliczu 
+wyboru: albo utworzyć jeden, wielki pakiet, albo też kilkanaście mniejszych. 
+Tworzenie pojedynczego pakietu ma ten minus, że uniemożliwia użytkownikom
+zrezygnowanie z funkcjonalności, której nie chcą używać. Z kolei tworzenie
+wielu pakietów ma tą wadę, że konfiguracja staję się coraz bardziej uciążliwa,
+a poszczególne opcje muszą być powielane w różnych pakietach.
 
-Using the below approach, it is possible to remove the disadvantage of the
-multiple Bundle approach by enabling a single Extension to prepend the settings
-for any Bundle. It can use the settings defined in the ``app/config/config.yml``
-to prepend settings just as if they would have been written explicitly by the
-user in the application configuration.
+Korzystając z metody poniżej, możliwe jest zniwelowanie wad korzystania z 
+wielu pakietów dzięki stworzeniu pojedynczego rozszerzenia (ang. Extension),
+które umożliwi dołączenie opcji do każdego z pakietów. Rozszerzenie może 
+korzystać z opcji określonych w ``app/config/config.yml``, a następnie 
+dołączać je tak jak gdyby były jawnie napisane w konfiguracji aplikacji.
 
-For example, this could be used to configure the entity manager name to use in
-multiple Bundles. Or it can be used to enable an optional feature that depends
-on another Bundle being loaded as well.
+Na przykład można by było tego użyć do skonfigurowania nazwy menedżera encji, 
+która byłaby widoczna w kilku pakietach jednocześnie. Albo też skorzystać 
+z tego w celu ustawienia opcjonalnej właściwości, która zależałaby od innego, 
+wczytywanego pakietu.
 
-To give an Extension the power to do this, it needs to implement
+Aby rozszerzenie mogło to zrobić, musi implementować klasę
 :class:`Symfony\\Component\\DependencyInjection\\Extension\\PrependExtensionInterface`::
 
     // src/Acme/HelloBundle/DependencyInjection/AcmeHelloExtension.php
@@ -42,57 +43,58 @@ To give an Extension the power to do this, it needs to implement
         }
     }
 
-Inside the :method:`Symfony\\Component\\DependencyInjection\\Extension\\PrependExtensionInterface::prepend`
-method, developers have full access to the :class:`Symfony\\Component\\DependencyInjection\\ContainerBuilder`
-instance just before the :method:`Symfony\\Component\\DependencyInjection\\Extension\\ExtensionInterface::load`
-method is called on each of the registered Bundle Extensions. In order to
-prepend settings to a Bundle extension developers can use the
+Wewnątrz metody :method:`Symfony\\Component\\DependencyInjection\\Extension\\PrependExtensionInterface::prepend` programiści mają pełny dostęp do instancji klasy 
+:class:`Symfony\\Component\\DependencyInjection\\ContainerBuilder`, tuż zanim 
+metoda :method:`Symfony\\Component\\DependencyInjection\\Extension\\ExtensionInterface::load`
+zostanie wywołana na każdym z zarejestrowanych rozszerzeń pakietu. W celu
+dołączenia ustawień do rozszrzenia pakietu, programiści mogą użyć metody 
 :method:`Symfony\\Component\\DependencyInjection\\ContainerBuilder::prependExtensionConfig`
-method on the :class:`Symfony\\Component\\DependencyInjection\\ContainerBuilder`
-instance. As this method only prepends settings, any other settings done explicitly
-inside the ``app/config/config.yml`` would override these prepended settings.
+obecnej w instancji klasy :class:`Symfony\\Component\\DependencyInjection\\ContainerBuilder`.
+Ponieważ metoda ta tylko dołącza ustawienia, wszelkie inne ustawienia, zrobione
+bezpośrednio wewnątrz ``app/config/config/yml`` nadpiszą te, które zostały
+dołączone.
 
-The following example illustrates how to prepend
-a configuration setting in multiple Bundles as well as disable a flag in multiple Bundles
-in case a specific other Bundle is not registered::
+Poniższy przykład ilustruje jak dołączyć ustawienia konfiguracji w wielu
+pakietach oraz jak wyłączyć flagi na wypadek gdyby dany pakiet nie był
+zarejestrowany::
 
     public function prepend(ContainerBuilder $container)
     {
-        // get all Bundles
+        // pobierz wszystkie pakiety
         $bundles = $container->getParameter('kernel.bundles');
-        // determine if AcmeGoodbyeBundle is registered
+        // określ czy pakiet AcmeGoodbyeBundle jest zarejestrowany 
         if (!isset($bundles['AcmeGoodbyeBundle'])) {
-            // disable AcmeGoodbyeBundle in Bundles
+            // wyłącz AcmeGoodbyeBundle w pakietach
             $config = array('use_acme_goodbye' => false);
             foreach ($container->getExtensions() as $name => $extension) {
                 switch ($name) {
                     case 'acme_something':
                     case 'acme_other':
-                        // set use_acme_goodbye to false in the config of acme_something and acme_other
-                        // note that if the user manually configured use_acme_goodbye to true in the
-                        // app/config/config.yml then the setting would in the end be true and not false
+                        // ustaw use_acme_goodbye na false w konfiguracji acme_something oraz acme_other
+                        // zauważ, że jeśli użytkownik ręcznie ustawił use_acme_goodbye na true w
+                        // app/config/config.yml, to ustawienie to ostatecznie będzie true, a nie false
                         $container->prependExtensionConfig($name, $config);
                         break;
                 }
             }
         }
 
-        // process the configuration of AcmeHelloExtension
+        // przetwórz konfigurację rozszerzenia AcmeHelloExtension
         $configs = $container->getExtensionConfig($this->getAlias());
-        // use the Configuration class to generate a config array with the settings ``acme_hello``
+        // użyj klasy Configuration aby wygenerować tablicę konfiguracji z opcją ``acme_hello``
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        // check if entity_manager_name is set in the ``acme_hello`` configuration
+        // sprawdź czy entity_manager_name jest ustawione w konfiguracji ``acme_hello``
         if (isset($config['entity_manager_name'])) {
-            // prepend the acme_something settings with the entity_manager_name
+            // dołącz ustawienie acme_something do entity_manager_name
             $config = array('entity_manager_name' => $config['entity_manager_name']);
             $container->prependExtensionConfig('acme_something', $config);
         }
     }
 
-The above would be the equivalent of writing the following into the ``app/config/config.yml``
-in case ``AcmeGoodbyeBundle`` is not registered and the ``entity_manager_name`` setting
-for ``acme_hello`` is set to ``non_default``:
+Ekwiwalent powyższego można dodać do ``app/config/config.yml`` w sytuacji,
+gdy ``AcmeGoodbyeBundle`` nie jest zarejestrowane, a opcja ``entity_manager_name`` 
+dla ``acme_hello`` ustawiona na ``non_default``:
 
 .. configuration-block::
 

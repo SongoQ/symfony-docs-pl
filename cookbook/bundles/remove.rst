@@ -1,25 +1,27 @@
 .. index::
-    single: Bundle; Removing AcmeDemoBundle
+    single: Pakiet; Usuwanie AcmeDemoBundle
 
-How to remove the AcmeDemoBundle
-================================
+Jak usunąć AcmeDemoBundle
+=========================
 
-The Symfony2 Standard Edition comes with a complete demo that lives inside a
-bundle called ``AcmeDemoBundle``. It is a great boilerplate to refer to while
-starting a project, but you'll probably want to eventually remove it.
+Standardowa Edycja Symfony2 wyposażona jest w kompletne demo, które umieszczono
+w pakiecie o nazwie ``AcmeDemoBundle``. Jest to szkielet, na którym można 
+się wzorować rozpoczynając nowe projekty, ale prędzej czy później przyjdzie pora,
+aby go usunąć.
 
 .. tip::
 
-    This article uses the ``AcmeDemoBundle`` as an example, but you can use
-    these steps to remove any bundle.
+    Ten artykuł korzysta z przykładowego pakietu ``AcmeDemoBundle``, nic jednak
+    nie stoi na przeszkodzie, aby zastosować użyte tu kroki do usunięcia 
+    dowolnego innego pakietu.
 
-1. Unregister the bundle in the ``AppKernel``
----------------------------------------------
+1. Wyrejestrowanie pakietu w ``AppKernel``
+------------------------------------------
 
-To disconnect the bundle from the framework, you should remove the bundle from
-the ``Appkernel::registerBundles()`` method. The bundle is normally found in
-the ``$bundles`` array but the ``AcmeDemoBundle`` is only registered in a
-development environment and you can find him in the if statement after::
+Aby odłączyć pakiet od frameworka, powinno się go usunąć z metody ``Appkernel::registerBundles()``. 
+Pakiet można zazwyczaj odszukać w tablicy ``$bundle``, lecz ``AcmeDemoBundle`` 
+został zarejestrowany tylko w środowisku deweloperskim i można go odnaleźć w
+instrukcji if po::
 
     // app/AppKernel.php
 
@@ -38,68 +40,66 @@ development environment and you can find him in the if statement after::
         }
     }
 
-2. Remove bundle configuration
-------------------------------
+2. Usuwanie konfiguracji pakkietu
+---------------------------------
 
-Now that Symfony doesn't know about the bundle, you need to remove any
-configuration and routing configuration inside the ``app/config`` directory
-that refers to the bundle.
+Teraz, gdy Symfony nie wie już nic o pakiecie, trzeba usunąć wszelkie ustawienia
+i konfiguracje routingu w katalogu ``app/config``, które odnoszą się do danego
+pakietu.
 
-2.1 Remove bundle routing
-~~~~~~~~~~~~~~~~~~~~~~~~~
+2.1 Usuwanie routingu w pakiecie
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The routing for the AcmeDemoBundle can be found in ``app/config/routing_dev.yml``.
-Remove the ``_acme_demo`` entry at the bottom of this file.
+Routing dla pakietu AcmeDemoBundle można znaleźć w ``app/config/routing_dev.yml``.
+Jedyne co trzeba zrobić, to usunąć wpis ``_acme_demo`` na dole tego pliku.
 
-2.2 Remove bundle configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2.2 Usuwanie konfiguracji pakietu
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Some bundles contain configuration in one of the ``app/config/config*.yml``
-files. Be sure to remove the related configuration from these files. You can
-quickly spot bundle configuration by looking at a ``acme_demo`` (or whatever
-the name of the bundle is, e.g. ``fos_user`` for the ``FOSUserBundle``) string in
-the configuration files.
+Niektóre pakiety zawierają konfigurację w jednym z plików ``app/config/config*.yml``.
+Należy pamiętać, żeby usunąć z nich tylko powiązane ustawienia. W tym
+celu wystarczy szukać nazwy ``acme_demo`` (lub jakiejkolwiek innej nazwy 
+pakietu, np. ``fos_user`` dla ``FOSUserBundle``) w plikach konfiguracyjnych.
 
-The ``AcmeDemoBundle`` doesn't have configuration. However, the bundle is
-used in the configuration for  the ``app/config/security.yml`` file. You can
-use it as a boilerplate for your own security, but you **can** also remove
-everything: it doesn't matter to Symfony if you remove it or not.
+``AcmeDemoBundle`` nie posiada konfiguracji. Jednakże pakiet ten używany jest
+w pliku konfiguracyjnym ``app/config/security.yml``. Można używać go jako
+wzoru dla swojej konfiguracji security, ale równie dobrze **można** usunąć 
+wszystko: nie ma to bowiem żadnego znaczenia dla Symfony.
 
-3. Remove the bundle from the Filesystem
-----------------------------------------
+3. Usuwanie pakietu z systemu plików
+------------------------------------
 
-Now you have removed every reference to the bundle in your application, you
-should remove the bundle from the filesystem. The bundle is located in the
-``src/Acme/DemoBundle`` directory. You should remove this directory and you
-can remove the ``Acme`` directory as well.
+Z aplikacji zostały już usunięte wszystkie odniesienia do pakietu, najwyższy 
+czas, aby usunąć go również z systemu plików. Pakiet znajduje się w katalogu 
+``src/Acme/DemoBundle``. Należy usunąć ten katalog jak również katalog ``Acme``.
 
 .. tip::
-
-    If you don't know the location of a bundle, you can use the
-    :method:`Symfony\\Bundle\\FrameworkBundle\\Bundle\\Bundle::getPath` method
-    to get the path of the bundle::
+    Jeśli nie zna się położenia pakietu, można użyć metody	
+    :method:`Symfony\\Bundle\\FrameworkBundle\\Bundle\\Bundle::getPath`, w 
+    celu uzyskania ścieżki do tego pakietu::
 
         echo $this->container->get('kernel')->getBundle('AcmeDemoBundle')->getPath();
 
-4. Remove integration in other bundles
---------------------------------------
+4. Usuwanie zależności w innych pakietach
+-----------------------------------------
 
 .. note::
 
-    This doesn't apply to the ``AcmeDemoBundle`` - no other bundles depend
-    on it, so you can skip this step.
+    Nie dotyczy to pakietu ``AcmeDemoBundle`` - żaden inny pakiet nie zależy
+    od niego, można więc pominąć ten krok.
 
-Some bundles rely on other bundles, if you remove one of the two, the other
-will probably not work. Be sure that no other bundles, third party or self-made,
-rely on the bundle you are about to remove.
-
-.. tip::
-
-    If one bundle relies on another, in most it means that it uses some services
-    from the bundle. Searching for a ``acme_demo`` string may help you spot
-    them.
+Niektóre pakiety zależą od innych, jeśli usunie się jeden z dwóch, inny 
+prawdopodobnie przestanie działać. Upewnij się, że żadne inne pakiety, zarówno
+ firm trzecich jak i własne, nie zależą od pakietu, który zamierza się usunąć.
 
 .. tip::
 
-    If a third party bundle relies on another bundle, you can find that bundle
-    mentioned in the ``composer.json`` file included in the bundle directory.
+    Jeśli jeden pakiet zależy od drugiego, w większości oznacza to, że wykorzystuje
+    on pewne usługi z tego drugiego. Wyszukiwanie nazwy ``acme_demo`` powinno
+    pomóc odnaleźć wszystkie zależności.
+
+.. tip::
+
+    Jeśli pakiet firm trzecich zależy od innego pakietu, można dowiedzieć się
+    tego z dołączonego pliku ``composer.json``, który powinien znajdować się
+    w katalogu tego pakietu.
