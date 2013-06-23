@@ -41,7 +41,7 @@ ten ma kilka wspólnych kroków:
 #. Udostępnienie i skonfigurowanie komponentu ``Translation`` Symfony;
 
 #. Uabstrakcyjnienie łańcuchów tekstowych (czyli "komunikatów") przez opakowanie
-   ich w wywołania ``Translator``;
+   ich w wywołania usługi ``Translator``;
 
 #. Stworzenie zasobów translacyjnych dla każdego obsługiwanego ustawienia regionalnego,
    dla którego tłumaczony jest każdy komunikat w aplikacji;
@@ -208,6 +208,7 @@ Czasem komunikat zwiera zmienną, która musi być tłumaczona::
         return new Response($translated);
     }
 
+
 Jednak utworzenie tłumaczenia tego łańcucha nie jest możliwe, gdyż translator
 będzie próbował wyszukać komunikat łącznie z wartościa tekstową zmiennej
 (np. "Hello Ryan" lub "Hello Fabien"). Zamiast pisać tłumaczenia dla każdej
@@ -225,6 +226,7 @@ możliwej iteracji zmiennej ``$name``, można zamienić zmienną "wieloznaczniki
 
         return new Response($translated);
     }
+
 
 Symfony2 będzie teraz wyszukiwać tłumaczenie dla surowego komunikatu (``Hello %name%``)
 i następnie zamieni wieloznacznik ``%name%`` wartością zmiennej ``$name``.
@@ -284,7 +286,7 @@ dla dowolnej liczby różnych identyfikatorów regionalnych.
    single: tłumaczenia; katalogi komunikatów
    single: tłumaczenia; zasoby translacyjne
 
-.. _message-cataloques:
+.. _message-catalogues:
 
 Katalogi komunikatów
 --------------------
@@ -343,7 +345,7 @@ ustalania szczegółowej informacji o tłumaczeniach. Każdy plik komunikatu mus
 nazwany zgodnie z następującym wzorcem: ``domain.locale.loader``:
 
 * **domain**: opcjonalny sposób organizowania komunikatów w grupach (np. ``admin``,
-  ``navigation`` lub domyślnie``messages``) - zobacz `Using Message Domains`_;
+  ``navigation`` lub domyślnie ``messages``) - zobacz :ref:`using-message-domains`;
 
 * **locale**: identyfikator regionalny tłumaczenia (np. ``en_GB``, ``en``, itd.);
 
@@ -351,13 +353,13 @@ nazwany zgodnie z następującym wzorcem: ``domain.locale.loader``:
   ``php`` lub ``yml``).
 
 Część ``loader`` może być nazwą dowolnego zarejestrowanego loadera. Domyślnie
-Symfony obsługuje::
+Symfony obsługuje:
 
 * ``xliff``: plik XLIFF;
 * ``php``:   plik PHP;
 * ``yml``:  plik YAML.
 
-Wybór loadera zależy tylko do Ciebie i jest to tylko kwestia gustu.
+Wybór loadera zależy tylko do Ciebie i jest to tylko kwestia preferencji.
 
 .. note::
 
@@ -401,6 +403,7 @@ unikalny identyfikator (np. "symfony2.great" – patrz na ramkę poniżej):
         </xliff>
 
     .. code-block:: php
+       :linenos:
 
         // src/Acme/DemoBundle/Resources/translations/messages.pl.php
         return array(
@@ -409,10 +412,12 @@ unikalny identyfikator (np. "symfony2.great" – patrz na ramkę poniżej):
         );
 
     .. code-block:: yaml
+       :linenos:
 
         # src/Acme/DemoBundle/Resources/translations/messages.pl.yml
         Symfony2 is great: Symfony2 jest wielkie
         symfony2.great:    Symfony2 jest wielkie
+
 
 Symfony2 znajdzie te pliki i użyje je  podczas tłumaczenia komunikatu "Symfony2
 is great" lub "symfony2.great" w języku polskimi (czyli ``pl_PL``).
@@ -425,13 +430,14 @@ is great" lub "symfony2.great" w języku polskimi (czyli ``pl_PL``).
         $translated = $translator->trans('Symfony2 is great');
 
         $translated = $translator->trans('symfony2.great');
-
+   
+   
     W pierwszej metodzie komunikaty są pisane w języku domyślnego ustawienia
     regionalnego (w tym przypadku angielski). Treść komunikatu jest stosowana
     jako "id" podczas tworzenia tłumaczeń.
 
     W drugiej metodzie komunikaty są rzeczywistymi "słowami kluczowymi", które
-    przekazują ideę komunikatu. Komunikat ze słowem kluczowym jest następnie
+    przekazują "ideę" komunikatu. Komunikat ze słowem kluczowym jest następnie
     stosowany jako "identyfikator" jakichkolwiek tłumaczeń. W tym przypadku
     tłumaczenia muszą zostać wykonane dla domyślnego ustawienia regionalnego
     (np. do tłumaczenia ``symfony2.great`` na ``Symfony2 is great``).
@@ -445,7 +451,7 @@ is great" lub "symfony2.great" w języku polskimi (czyli ``pl_PL``).
 
     Dodatkowo formaty plików ``php`` i ``yaml`` obsługują zagnieżdżanie identyfikatorów,
     co pozwala uniknąć powtarzania się, jeśli stosuje się dla identyfikatorów  słowa
-    kluczowe anie rzeczywisty tekst:
+    kluczowe a nie rzeczywisty tekst:
     
     .. configuration-block::
 
@@ -506,6 +512,8 @@ is great" lub "symfony2.great" w języku polskimi (czyli ``pl_PL``).
 .. index::
    single: tłumaczenia; domeny komunikatów
 
+.. _`using-message-domains`:
+
 Używanie domen komunikatów
 --------------------------
 
@@ -536,7 +544,7 @@ Obsługa ustawienia regionalengo użytkownika
 -------------------------------------------
 
 Ustawienie regionalne bieżącego użytkownika jest zapisywane w żądaniu i jest dostępne
-poprze obiekt ``request``::
+poprzez obiekt ``request``::
 
     // access the request object in a standard controller
     $request = $this->getRequest();
@@ -684,6 +692,7 @@ języka rosyjskiego i polskiego::
                 : 2
     );
 
+
 Jak widać, w języku rosyjskim i polskim, ma się trzy różne formy liczby mnogiej,
 której tu przypisano kolejno indeks 0, 1 lub 2. Każda z tych form jest inna
 i dlatego tłumaczenie dla każdej z tych form jest również inne.
@@ -738,7 +747,7 @@ znacznika::
 
     'none_or_one: Il y a %count% pomme|some: Il y a %count% pommes'
     
-    'n1: To jest jedno jabłko|n2-n4: To są %count% jabłka|some: To jest %count% jabłek
+    'N1: To jest jedno jabłko|N2-N4: To są %count% jabłka|some: To jest %count% jabłek
 
 Etykiety te są tu tylko wskazówką dla tłumacza i nie wpływają na logikę użytą do
 określenia tego, jaką formę liczby mnogiej się używa. Etykiety mogą być dowolnym
@@ -862,9 +871,9 @@ zmiennych* i wyrażeń złożonych:
 .. tip::
 
     Przy użyciu znaczników translacyjnych osiąga się ten sam efekt co z użyciem
-    filtrami, ale jest jedna subtelna różnica: automatyczne zabezpieczenie zmiennych
+    filtrów, ale jest jedna subtelna różnica: automatyczne zabezpieczenie zmiennych
     znakami ucieczki (*ang. output escaping*) jest osiągalne tylko przy użyciu filtrów.
-    Innymi słowami, jeśli chce się mieć pewność, że zmienne w tłumaczeniu nie są
+    Innymi słowami, jeśli chce się mieć pewność, że zmienne w tłumaczeniu są
     zabezpieczone znakami ucieczki, to  należy zastosować filtr ``raw`` po filtrze
     translacji:
 
@@ -882,6 +891,7 @@ zmiennych* i wyrażeń złożonych:
             {{ message|trans|raw }}
             {{ '<h3>bar</h3>'|trans|raw }}
 
+
 .. tip::
 
     Można ustawić domenę tłumaczenia dla całego szablonu Twiga używając pojedynczego
@@ -891,7 +901,7 @@ zmiennych* i wyrażeń złożonych:
 
            {% trans_default_domain "app" %}
 
-    Proszę zwrócić uwagę, ze wpływa to tylko na bieżący szablon, a anie na szablony
+    Proszę zwrócić uwagę, ze wpływa to tylko na bieżący szablon, a nie na szablony
     "dołączone" (w celu uniknięcia skutków ubocznych).
 
 .. versionadded:: 2.1
@@ -917,7 +927,7 @@ Wymuszanie tłumaczeń regionalnych
 ---------------------------------
 
 Podczas tłumaczenia komunikatu Symfony2 używa identyfikatora regionalnego z bieżącego
-żądania lub z wartości parametru ``fallback`` w razie konieczności. Można również
+żądania lub w razie konieczności z wartości parametru ``fallback``. Można również
 ręcznie określić identyfikator regionalny do zastosowania w tłumaczeniu::
 
     $this->get('translator')->trans(
