@@ -1,8 +1,8 @@
 .. index::
    single: Pakiet; Najlepsze praktyki
 
-Jak stosować Najlepsze Praktyki w Strukturze Pakietów
-====================================================
+Jak stosować najlepsze praktyki w strukturze pakietów
+=====================================================
 
 Pakiet to katalog posiadający dobrze zdefiniowaną strukturę, mogący obsługiwać
 wszystko, począwszy od klas, a skończywszy na kontrolerach i zasobach internetowych.
@@ -14,8 +14,8 @@ praktyk, aby zacząć je z powodzeniem rozpowszechniać.
 
 .. _bundles-naming-conventions:
 
-Nazwa Pakietu
------------
+Nazwa pakietu
+-------------
 
 Pakiet to również przestrzeń nazw PHP. Przestrzeń ta musi przestrzegać
 zasad żądzących `standardami`_ w PHP 5.3 dla przestrzeni nazw oraz nazewnictwa
@@ -118,7 +118,7 @@ Poniższe klasy i pliki mają swoje określone lokalizacje:
 +---------------------------------+-----------------------------+
 | Kontrolery                      | ``Controller/``             |
 +---------------------------------+-----------------------------+
-| Rozszerzenia Kontenera Serwisów | ``DependencyInjection/``    |
+| Rozszerzenia kontenera serwisów | ``DependencyInjection/``    |
 +---------------------------------+-----------------------------+
 | Detektory zdarzeń               | ``EventListener/``          |
 +---------------------------------+-----------------------------+
@@ -140,14 +140,15 @@ Poniższe klasy i pliki mają swoje określone lokalizacje:
     aby dowiedzieć się jak obsługiwać mapowanie by przechodziły proces kompilacji.
 
 Klasy
--------
+-----
 
 Struktura katalogów pakietu jest używana do budowania hierarchii przestrzeni
 nazw. Na przykład kontroler ``HelloController`` jest przechowywany w
 ``Bundle/HelloBundle/Controller/HelloController.php``, zaś pełna nazwa klasy
 to ``Bundle\HelloBundle\Controller\HelloController``.
 
-Wszystkie klasy i pliki muszą przestrzegać :doc:`standardów</contributing/code/standards>` kodowania Symfony2.
+Wszystkie klasy i pliki muszą przestrzegać :doc:`standardów</contributing/code/standards>`
+kodowania Symfony2.
 
 Niektóre klasy powinny pełnić rolę fasad i być tak zwięzłe jak to możliwe, tak jak
 Commands, Helpers, Listeners, i Controllers.
@@ -156,8 +157,8 @@ Klasy łączące się z Dyspozytorem Zdarzeń powinny posiadać przyrostek ``Lis
 
 Klasy wyjątków powinny być przechowywane w podprzestrzeni ``Exception``.
 
-Vendors
--------
+Dostawcy
+--------
 
 Pakiet nie może osadzać zewnętrznych blibliotek PHP. Zamiast tego, powinien
 on polegać na standardowym mechanizmie autoloadingu w Symfony2.
@@ -176,18 +177,18 @@ w katalogu ``Tests/``. Testy powinny przestrzegać następujących zasad:
 * Testy funkcjonalne powinny być używane tylko do testowania rezultatów
   odpowiedzi serwera, ewentualnie do zbierania informacji o profilowaniu, o
   ile miało to miejsce;
-* Testy powinny pokrywać przynajmniej 95% podstawowego kodu;
+* Testy powinny pokrywać przynajmniej 95% podstawowego kodu.
 
 .. note::
    Zestaw testów nie może zawierać skryptów ``AllTests.php``, ale musi opierać
    się na istnieniu pliku ``phpunit.xml.dist``.
 
 Dokumentacja
--------------
+------------
 
 Wszystkie klasy i funkcje muszą być w pełni udokumentowane w PHPDoc.
 
-Obszerna dokumentacja powinna być w formacie :doc:`reStructuredText
+Obszerna dokumentacja powinna być trzymana w formacie :doc:`reStructuredText
 </contributing/documentation/format>` w katalogu ``Resources/doc/``
 ; plik ``Resources/doc/index.rst`` jest jedynym, obowiązkowym plikiem i
 musi być punktem wyjścia dla całej dokumentacji.
@@ -215,8 +216,9 @@ Na przykład dla AcmeBlogBundle, wszystkie trasy powinny zawierać prefiks
 Szablony
 --------
 
-Jeśli pakiet dostarcza szablonów, muszą one stosować Twiga. Pakiet nie może
-dostarczać głównego układu, chyba że dostarcza w pełni działającą aplikację.
+Jeśli pakiet dostarcza szablonów, muszą one korzystać z systemu szablonów Twig.
+Pakiet nie może dostarczać głównego układu, chyba że dostarcza w pełni działającą
+aplikację.
 
 Pliki tłumaczeń
 ---------------

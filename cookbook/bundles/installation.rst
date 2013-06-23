@@ -1,11 +1,11 @@
 .. index::
    single: Pakiet; Instalacja
 
-Jak zainstalować Pakiety firm trzecich ?
+Jak zainstalować pakiety firm trzecich ?
 ========================================
 
-Większość pakietów zapewnia własne instrukcje obsługi. Jednakże, podstawowe
-etapy instalacji pakietów są identyczne.
+Większość pakietów zapewnia swoje instrukcje obsługi. Jednakże, podstawowe
+etapy instalacji pakietów są niemalże identyczne.
 
 Dodawanie zależności w Composer
 -------------------------------
@@ -71,8 +71,8 @@ Można to również zrobić jednym poleceniem:
 
     $ php composer.phar require friendsofsymfony/user-bundle:2.0.*@dev
 
-Uaktywnianie Pakietu
---------------------
+Aktywowanie pakietu
+-------------------
 
 W tym momencie pakiet jest zainstalowany w projekcie Symfony (w ``vendor/friendsofsymfony/``),
 a autoloader rozpoznaje jego klasy. Jedyne co trzeba zrobić, to zarejestrować
@@ -96,7 +96,7 @@ pakiet w ``AppKernel``::
         }
     }
 
-Konfigurowanie Pakietu
+Konfigurowanie pakietu
 ----------------------
 
 Pakiet zazwyczaj wymaga dodania specjalnej konfiguracji do pliku ``app/config/config.yml``.
@@ -109,7 +109,7 @@ Na przykład, aby zobaczyć odwołania do konfiguracji ``assetic``, można uży�
 
     $ app/console config:dump-reference AsseticBundle
 
-albo też zastosować:
+albo też:
 
 .. code-block:: bash
 

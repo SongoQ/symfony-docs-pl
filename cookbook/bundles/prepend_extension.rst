@@ -5,23 +5,22 @@
 Jak uprościć konfiguracje wielu pakietów
 ========================================
 
-Budując aplikacje rozszerzalne i wieloużywalne, programiści stają w obliczu 
-wyboru: albo utworzyć jeden, wielki pakiet, albo też kilkanaście mniejszych. 
+Budując aplikacje rozszerzalne i wieloużywalne, programiści stają w obliczu
+wyboru: albo utworzyć jeden, wielki pakiet, albo też kilkanaście mniejszych.
 Tworzenie pojedynczego pakietu ma ten minus, że uniemożliwia użytkownikom
 zrezygnowanie z funkcjonalności, której nie chcą używać. Z kolei tworzenie
 wielu pakietów ma tą wadę, że konfiguracja staję się coraz bardziej uciążliwa,
 a poszczególne opcje muszą być powielane w różnych pakietach.
 
-Korzystając z metody poniżej, możliwe jest zniwelowanie wad korzystania z 
+Korzystając z metody poniżej, możliwe jest zniwelowanie wad korzystania z
 wielu pakietów dzięki stworzeniu pojedynczego rozszerzenia (ang. Extension),
-które umożliwi dołączenie opcji do każdego z pakietów. Rozszerzenie może 
-korzystać z opcji określonych w ``app/config/config.yml``, a następnie 
+które umożliwi dołączenie opcji do każdego z pakietów. Rozszerzenie może
+korzystać z opcji określonych w ``app/config/config.yml``, a następnie
 dołączać je tak jak gdyby były jawnie napisane w konfiguracji aplikacji.
 
-Na przykład można by było tego użyć do skonfigurowania nazwy menedżera encji, 
-która byłaby widoczna w kilku pakietach jednocześnie. Albo też skorzystać 
-z tego w celu ustawienia opcjonalnej właściwości, która zależałaby od innego, 
-wczytywanego pakietu.
+Przykładowo można by tego użyć do skonfigurowania nazwy menedżera encji,
+która byłaby widoczna w kilku pakietach jednocześnie. Albo też do ustawienia
+opcjonalnej właściwości, która zależałaby od innego, wczytywanego pakietu.
 
 Aby rozszerzenie mogło to zrobić, musi implementować klasę
 :class:`Symfony\\Component\\DependencyInjection\\Extension\\PrependExtensionInterface`::
@@ -43,14 +42,14 @@ Aby rozszerzenie mogło to zrobić, musi implementować klasę
         }
     }
 
-Wewnątrz metody :method:`Symfony\\Component\\DependencyInjection\\Extension\\PrependExtensionInterface::prepend` programiści mają pełny dostęp do instancji klasy 
-:class:`Symfony\\Component\\DependencyInjection\\ContainerBuilder`, tuż zanim 
+Wewnątrz metody :method:`Symfony\\Component\\DependencyInjection\\Extension\\PrependExtensionInterface::prepend` programiści mają pełny dostęp do instancji klasy
+:class:`Symfony\\Component\\DependencyInjection\\ContainerBuilder`, tuż zanim
 metoda :method:`Symfony\\Component\\DependencyInjection\\Extension\\ExtensionInterface::load`
 zostanie wywołana na każdym z zarejestrowanych rozszerzeń pakietu. W celu
-dołączenia ustawień do rozszrzenia pakietu, programiści mogą użyć metody 
+dołączenia ustawień do rozszrzenia pakietu, programiści mogą użyć metody
 :method:`Symfony\\Component\\DependencyInjection\\ContainerBuilder::prependExtensionConfig`
 obecnej w instancji klasy :class:`Symfony\\Component\\DependencyInjection\\ContainerBuilder`.
-Ponieważ metoda ta tylko dołącza ustawienia, wszelkie inne ustawienia, zrobione
+Ponieważ metoda ta tylko dołącza ustawienia, wszelkie inne ustawienia, robione
 bezpośrednio wewnątrz ``app/config/config/yml`` nadpiszą te, które zostały
 dołączone.
 
@@ -62,7 +61,7 @@ zarejestrowany::
     {
         // pobierz wszystkie pakiety
         $bundles = $container->getParameter('kernel.bundles');
-        // określ czy pakiet AcmeGoodbyeBundle jest zarejestrowany 
+        // określ czy pakiet AcmeGoodbyeBundle jest zarejestrowany
         if (!isset($bundles['AcmeGoodbyeBundle'])) {
             // wyłącz AcmeGoodbyeBundle w pakietach
             $config = array('use_acme_goodbye' => false);
@@ -93,7 +92,7 @@ zarejestrowany::
     }
 
 Ekwiwalent powyższego można dodać do ``app/config/config.yml`` w sytuacji,
-gdy ``AcmeGoodbyeBundle`` nie jest zarejestrowane, a opcja ``entity_manager_name`` 
+gdy ``AcmeGoodbyeBundle`` nie jest zarejestrowane, a opcja ``entity_manager_name``
 dla ``acme_hello`` ustawiona na ``non_default``:
 
 .. configuration-block::
