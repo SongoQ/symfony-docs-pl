@@ -1,5 +1,5 @@
 .. index::
-    single: Pakiet; Usuwanie AcmeDemoBundle
+    single: pakiet; usuwanie AcmeDemoBundle
 
 Jak usunąć AcmeDemoBundle
 =========================

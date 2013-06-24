@@ -1,63 +1,65 @@
 .. index::
-   single: Pakiet; Dziedziczenie
+   single: pakiet; dziedziczenie
 
 Jak zastąpić każdą część pakietu
 ================================
 
-Ten dokument to szybkie odniesienie się do sposobów nadpisywania różnych
+Ten dokument to szybkie odniesienie się do sposobów przesłaniania różnych
 części pakietów firm trzecich.
 
 Szablony
 --------
 
-Aby uzyskać informacje o sposobach nadpisywania szablonów, zobacz:
+Aby uzyskać informacje o sposobach przesłaniania szablonów, zobacz:
 
 * :ref:`overriding-bundle-templates`.
 * :doc:`/cookbook/bundles/inheritance`
 
-Routing
--------
+Trasowanie
+----------
 
-Routing nie jest automatycznie importowany w Symfony2. Jeśli chciałoby się
+Trasowanie nie jest automatycznie importowane z Symfony2. Jeśli chciałoby się
 dołączyć trasy z dowolnego pakietu, należy je ręcznie zaimportować do
 swojej aplikacji (np. ``app/config/routing.yml``).
 
-Najprostszym sposobem na "nadpisanie" routingu w pakiecie jest nie importowanie
-go wcale. Zamiast tego, odpowiedniejszym wydaje się skopiowanie pliku routingu
+Najprostszym sposobem na "zastąpienie" trasowania w pakiecie jest nie importowanie
+go wcale. Zamiast tego, odpowiedniejszym wydaje się skopiowanie pliku trasowania
 z danego pakietu do swojej aplikacji, zmodyfikowanie go, a dopiero potem
 zaimportowanie.
 
 Kontrolery
 ----------
 
-Zakładając, że używane pakiety firm trzecich stosują kontrolery non-service
-(co zdarza się w większości przypadków), można je bardzo łatwo nadpisać
-poprzez dziedziczenie pakietu. Aby uzyskać więcej informacji, zobacz
+Zakładając, że używane pakiety firm trzecich stosują kontrolery "non-service"
+(co zdarza się w większości przypadków), można je bardzo łatwo zastąpić
+dzięki dziedziczeniu pakietu. Aby uzyskać więcej informacji, zobacz
 :doc:`/cookbook/bundles/inheritance`. Jeśli kontroler jest usługą (ang. service),
-zobacz następny rozdział, aby dowiedzieć się jak postępować w tym przypadku.
+zobacz następny rozdział, aby dowiedzieć się jak postąpić w tym przypadku.
 
-Usługi & konfiguracja
+Usługi i konfiguracja
 ---------------------
 
-W celu nadpisania/rozszerzenia serwisu można skorzystać z dwóch opcji. Po
-pierwsze można ustawić parametr zawierający nazwę klasy serwisu do swoich klas
-poprzez modyfikacje ustawień w ``app/config/config.yml``. To jest oczywiście możliwe
+W celu przesłonięcia lub rozszerzenia kodu usługi można skorzystać z dwóch opcji. Po
+pierwsze można ustawić parametr zawierający nazwę klasy usługi do swoich klas
+modyfikując ustawienia w ``app/config/config.yml``. To jest oczywiście możliwe
 tylko wtedy, gdy nazwa klasy jest zdefiniowana jako parametr w konfiguracji usługi
-pakietu zawierającego tę usługę. Na przykład, aby nadpisać klasę używaną w
-Symfonowej usłudze ``translator``, należałoby nadpisać parametr ``translator.class``.
-Upewnienie się, który parametr nadpisać, nieraz może zająć sporo czasu. Dla
-translatora, parametr jest zdefiniowany i używany w pliku ``Resources/config/translation.xml``
+pakietu zawierającego tę usługę. Na przykład, aby zastąpić klasę używaną w
+Symfonowej usłudze ``translator``, należałoby przesłonić parametr ``translator.class``.
+Upewnienie się, który parametr przesłonić nieraz może zająć naprawdę sporo czasu. Dla
+translatora jest on zdefiniowany i używany w pliku ``Resources/config/translation.xml``
 głównego pakietu FrameworkBundle:
 
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         parameters:
             translator.class:      Acme\HelloBundle\Translation\Translator
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <parameters>
@@ -65,13 +67,14 @@ głównego pakietu FrameworkBundle:
         </parameters>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->setParameter('translator.class', 'Acme\HelloBundle\Translation\Translator');
 
 Po drugie, jeśli klasa nie jest dostępna jako parametr, należy upewnić się,
-że klasa będzie zawsze nadpisywana, albo też należy zmodyfikować coś więcej
-niż tylko jej nazwę, do tego celu powinno się użyć compiler pass::
+że będzie zawsze przesłaniana, tudzież powinno się zmodyfikować coś więcej
+niż tylko jej nazwę, w typ przypadku z użyciem interfejsu compiler pass::
 
     // src/Acme/DemoBundle/DependencyInjection/Compiler/OverrideServiceCompilerPass.php
     namespace Acme\DemoBundle\DependencyInjection\Compiler;
@@ -93,15 +96,15 @@ nazwę klasy na swoją.
 
 Zobacz :doc:`/cookbook/service_container/compiler_passes` w celu zasięgnięcia
 informacji na temat używania compiler pass. Jeśli chce się zrobić coś poza
-nadpisywaniem klasy - jak choćby dodać wywołania metody - jedyne co można
+przesłanianiem klasy - jak choćby dodać wywołania metody - jedyne co można
 zrobić, to skorzystać z metod compiler pass.
 
-Encje & mapowanie encji
+Encje i mapowanie encji
 -----------------------
 
 Z uwagi na to jak działa Doctrine, nie jest możliwe zastąpienie mapowania
-encji w pakiecie. Jednakże, jeśli pakiet zapewnia zmapowaną superklasę (jak
-encja ``User`` w pakiecie FOSUserBundle), możliwe jest nadpisanie jej atrybutów
+encji w pakiecie. Jednakże, jeśli pakiet dostarcza odwzorowaną superklasę (jak
+encja ``User`` w pakiecie FOSUserBundle), możliwe jest zastąpienie jej atrybutów
 i powiązań. Dowiedz się więcej o tej funkcjonalności i jej ograniczeniach
 czytając `dokumentację Doctrine`_.
 
@@ -109,7 +112,7 @@ Formularze
 ----------
 
 Aby zastąpić typ formularza, musi być on zarejestrowany jako usługa (czyli
-przy użyciu etykiety "form.type"). Można wówczas nadpisać go tak jak każdą
+przy użyciu etykiety "form.type"). Można wówczas zastąpić go tak jak każdą
 inną usługę, co zostało szczegółowo wyjaśnione w dziale `Usługi & konfiguracja`_.
 To oczywiście zadziała tylko wtedy, gdy typ formularza został zdefiniowany
 aliasem, a nie przez utworzenie egzemplarza klasy, np.::
@@ -138,8 +141,8 @@ można je zastąpić dowolnym plikiem tłumaczeń, o ile znajduje się w
 
     Ostatni plik tłumaczeń zawsze wygrywa. Oznacza to, że trzeba upewnić
     się czy pakiet zawierający *twoje* tłumaczenia jest ładowany na samym
-    końcu, zaraz po wszystkich tłumaczeniach, które nadpisywano. Jest to
-    robione w ``AppKernel``.
+    końcu, zaraz po wszystkich tłumaczeniach, które próbowano przesłonić.
+    Jest to robione w ``AppKernel``.
 
     Plik, który zawsze wygrywa to ten, który umieszczono w katalogu
     ``app/Resources/translations``, gdyż pliki z tego katalogu są zawsze

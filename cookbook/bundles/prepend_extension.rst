@@ -1,12 +1,12 @@
 .. index::
-   single: Konfiguracja; Semantyczny
-   single: Pakiet; konfiguracja rozszerzenia
+   single: konfiguracja; semantyczny
+   single: pakiet; konfiguracja rozszerzenia
 
 Jak uprościć konfiguracje wielu pakietów
 ========================================
 
-Budując aplikacje rozszerzalne i wieloużywalne, programiści stają w obliczu
-wyboru: albo utworzyć jeden, wielki pakiet, albo też kilkanaście mniejszych.
+Budując aplikacje rozszerzalne i przeznaczone dla wielu użytkowników, programiści
+stają w obliczu wyboru: albo utworzyć jeden, wielki pakiet, albo też kilkanaście mniejszych.
 Tworzenie pojedynczego pakietu ma ten minus, że uniemożliwia użytkownikom
 zrezygnowanie z funkcjonalności, której nie chcą używać. Z kolei tworzenie
 wielu pakietów ma tą wadę, że konfiguracja staję się coraz bardziej uciążliwa,
@@ -98,6 +98,7 @@ dla ``acme_hello`` ustawiona na ``non_default``:
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
 
@@ -111,6 +112,7 @@ dla ``acme_hello`` ustawiona na ``non_default``:
             use_acme_goodbye: false
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
 
@@ -121,6 +123,7 @@ dla ``acme_hello`` ustawiona na ``non_default``:
         <acme-other:config use-acme-goodbye="false" />
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
 
