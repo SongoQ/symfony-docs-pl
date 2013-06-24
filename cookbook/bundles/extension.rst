@@ -18,18 +18,21 @@ jak również integracje innych, powiązanych komponentów:
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         framework:
             # ...
             form: true
 
     .. code-block:: xml
+       :linenos:
 
         <framework:config>
             <framework:form />
         </framework:config>
 
     .. code-block:: php
+       :linenos:
 
         $container->loadFromExtension('framework', array(
             // ...
@@ -88,8 +91,8 @@ Druga metoda ma kilka szczególnych zalet:
     których zgodność wstecz będzie utrzymywana.
 
 .. index::
-   single: Pakiet; Rozszerzenie
-   single: Wstrzykiwanie zależności; Rozszerzenia
+   single: pakiet; rozszerzenie
+   single: wstrzykiwanie zależności; rozszerzenia
 
 Tworzenie klasy Extension
 -------------------------
@@ -141,11 +144,13 @@ Można rozpocząć określanie konfiguracji pod tą przestrzenią nazw natychmia
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         acme_hello: ~
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <?xml version="1.0" ?>
@@ -161,6 +166,7 @@ Można rozpocząć określanie konfiguracji pod tą przestrzenią nazw natychmia
         </container>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('acme_hello', array());
@@ -187,6 +193,7 @@ Zapoznaj się z następującą konfiguracją:
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         acme_hello:
@@ -194,6 +201,7 @@ Zapoznaj się z następującą konfiguracją:
             bar: barValue
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <?xml version="1.0" ?>
@@ -210,6 +218,7 @@ Zapoznaj się z następującą konfiguracją:
         </container>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('acme_hello', array(
@@ -326,6 +335,7 @@ pliku ustawień usługi (np. ``services.xml``), powinno się ją zdefiniować
 z użyciem pustego parametru - ``acme_hello.my_service_type`` - jako jej pierwszego argumentu:
 
 .. code-block:: xml
+   :linenos:
 
     <!-- src/Acme/HelloBundle/Resources/config/services.xml -->
     <container xmlns="http://symfony.com/schema/dic/services"
@@ -377,6 +387,7 @@ konfiguracji ``my_type``:
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         acme_hello:
@@ -384,6 +395,7 @@ konfiguracji ``my_type``:
             # ...
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <?xml version="1.0" ?>
@@ -400,6 +412,7 @@ konfiguracji ``my_type``:
         </container>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->loadFromExtension('acme_hello', array(
@@ -549,7 +562,7 @@ metod ``->info()`` oraz ``->example()``::
 Ten tekst pojawi się jako komentarz w formacie yaml po wydaniu polecenia ``config:dump-reference``.
 
 .. index::
-   pair: Konwencje; Konfiguracja
+   pair: konwencje; konfiguracja
 
 Konwencje rozszerzeń
 --------------------
