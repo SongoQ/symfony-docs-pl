@@ -1,5 +1,5 @@
 .. index::
-   single: Pakiet; Najlepsze praktyki
+   single: pakiet; najlepsze praktyki
 
 Jak stosować najlepsze praktyki w strukturze pakietów
 =====================================================
@@ -118,9 +118,9 @@ Poniższe klasy i pliki mają swoje określone lokalizacje:
 +---------------------------------+-----------------------------+
 | Kontrolery                      | ``Controller/``             |
 +---------------------------------+-----------------------------+
-| Rozszerzenia kontenera serwisów | ``DependencyInjection/``    |
+| Rozszerzenia kontenera usług    | ``DependencyInjection/``    |
 +---------------------------------+-----------------------------+
-| Detektory zdarzeń               | ``EventListener/``          |
+| Detektor zdarzeń                | ``EventListener/``          |
 +---------------------------------+-----------------------------+
 | Konfiguracja                    | ``Resources/config/``       |
 +---------------------------------+-----------------------------+

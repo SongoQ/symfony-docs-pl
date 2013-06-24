@@ -1,19 +1,19 @@
 .. index::
-   single: Configuration; Semantic
-   single: Bundle; Extension configuration
+   single: konfiguracja; semantyczny
+   single: pakiet; konfiguracja rozszerzenia
 
-How to expose a Semantic Configuration for a Bundle
-===================================================
+Jak wystawić semantyczną konfigurację pakietu
+=============================================
 
-If you open your application configuration file (usually ``app/config/config.yml``),
-you'll see a number of different configuration "namespaces", such as ``framework``,
-``twig``, and ``doctrine``. Each of these configures a specific bundle, allowing
-you to configure things at a high level and then let the bundle make all the
-low-level, complex changes that result.
+Po otwarciu pliku konfiguracyjnego aplikacji (zazwyczaj ``app/config/config.yml``)
+widać wiele różnych konfiguracji "przestrzeni nazw", takie jak ``framework``,
+``twig``, i ``doctrine``. Każda z nich konfiguruje określony pakiet, pozwalając
+skonfigurować rzeczy na wysokim poziomie, tym samym składając wszystkie
+niskopoziomowe, złożone działania na barki pakietu.
 
-For example, the following tells the ``FrameworkBundle`` to enable the form
-integration, which involves the defining of quite a few services as well
-as integration of other related components:
+Przykładowo następujący przykład instruuje ``FrameworkBundle``, aby ustawił
+funkcje integracji formularzy, co pociąga za sobą zdefiniowanie kilku usług,
+jak również integracje innych, powiązanych komponentów:
 
 .. configuration-block::
 
@@ -37,70 +37,69 @@ as integration of other related components:
             // ...
         ));
 
-When you create a bundle, you have two choices on how to handle configuration:
+Po utworzeniu pakietu są dwa sposoby na zarządzanie jego konfiguracją:
 
-1. **Normal Service Configuration** (*easy*):
+1. **Normalna konfiguracja usługi** (*łatwe*):
 
-    You can specify your services in a configuration file (e.g. ``services.yml``)
-    that lives in your bundle and then import it from your main application
-    configuration. This is really easy, quick and totally effective. If you
-    make use of :ref:`parameters<book-service-container-parameters>`, then
-    you still have the flexibility to customize your bundle from your application
-    configuration. See ":ref:`service-container-imports-directive`" for more
+    Można określić swoje usługi w pliku konfiguracyjnym (np. ``services.yml``),
+    zlokalizowanym w strukturze plików pakietu, a następnie zaimportować go
+    z głównej konfiguracji aplikacji. To jest bardzo proste, szybkie i całkowicie
+    skuteczne. Jeśli wykorzystuje się :ref:`parameters<book-service-container-parameters>`,
+    wówczas posiada się elastyczność w dostosowywaniu swojego pakietu z konfiguracji
+    aplikacji. Aby poznać więcej szczegółów, zobacz ":ref:`service-container-imports-directive`".
     details.
 
-2. **Exposing Semantic Configuration** (*advanced*):
+2. **Wystawianie semantycznej konfiguracji** (*zaawansowane*):
 
-    This is the way configuration is done with the core bundles (as described
-    above). The basic idea is that, instead of having the user override individual
-    parameters, you let the user configure just a few, specifically created
-    options. As the bundle developer, you then parse through that configuration
-    and load services inside an "Extension" class. With this method, you won't
-    need to import any configuration resources from your main application
-    configuration: the Extension class can handle all of this.
+    To jest sposób, w jaki główne pakiety eksponują swoją konfigurację. (jak
+    opisano powyżej). Podstawowa idea jest taka, że zamiast pozwalać użytkownikowi
+    na nadpisywanie indywidualnych parametrów, pozwala się mu tylko na konfigurację
+    tylko kilku, specjalnie przygotowanych wcześniej. Twórca pakietu powinien
+    wówczas przeanalizować te opcje, a następnie wczytać usługi wewnątrz klasy
+    "Extension". Dzięki ten metodzie, nie będzie trzeba importować żadnych zasobów
+    z głównej konfiguracji swojej aplikacji: klasa Extension zajmie się tym wszystkim.
 
-The second option - which you'll learn about in this article - is much more
-flexible, but also requires more time to setup. If you're wondering which
-method you should use, it's probably a good idea to start with method #1,
-and then change to #2 later if you need to.
+Druga opcja - o której dowiesz się w tym artykule - jest o wiele bardziej elastyczna,
+ale wymaga stosunkowo więcej czasu na skonfigurowanie. Jeśli zastanawiasz się,
+której metody użyć, dobrym pomysłem jest zacząć od metody #1, by potem w miarę
+upływu czasu przejść na metodę #2, o ile oczywiście zajdzie taka potrzeba.
 
-The second method has several specific advantages:
+Druga metoda ma kilka szczególnych zalet:
 
-* Much more powerful than simply defining parameters: a specific option value
-  might trigger the creation of many service definitions;
+* Dostarcza o wiele więcej, niż tylko proste definiowanie parametrów: konkretna wartość
+  opcji może powodować tworzenie wielu definicji usług;
 
-* Ability to have configuration hierarchy
+* Daje możliwość hierarchizacji konfiguracji;
 
-* Smart merging when several configuration files (e.g. ``config_dev.yml``
-  and ``config.yml``) override each other's configuration;
+* Pozwala na inteligentne łączenie wielu plików konfiguracyjnych (np. ``config_dev.yml``
+  i ``config.yml``), które mogłyby nadpisywać swoje własne konfiguracje;
 
-* Configuration validation (if you use a :ref:`Configuration Class<cookbook-bundles-extension-config-class>`);
+* Sprawdzanie poprawności konfiguracji (jeśli używa się :ref:`Configuration Class<cookbook-bundles-extension-config-class>`);
 
-* IDE auto-completion when you create an XSD and developers use XML.
+* Autouzupełnianie w IDE podczas tworzenia XSD dla programistów używających XML.
 
-.. sidebar:: Overriding bundle parameters
+.. sidebar:: Nadpisywanie parametrów pakietu
 
-    If a Bundle provides an Extension class, then you should generally *not*
-    override any service container parameters from that bundle. The idea
-    is that if an Extension class is present, every setting that should be
-    configurable should be present in the configuration made available by
-    that class. In other words the extension class defines all the publicly
-    supported configuration settings for which backward compatibility will
-    be maintained.
+    Jeśli pakiet zawiera klasę Extension, to *nie* powinno się generalnie
+    nadpisywać żadnych parametrów kontenera usług z tego pakietu. Ideą jest, że
+    jeśli klasa Extension jest obecna w pakiecie, wszelkie konfigurowalne ustawienia
+    powinny być obecne w konfiguracji udostępnianej przez tą klasę. Innymi słowy,
+    klasa Extension określa wszystkie publicznie obsługiwane ustawienia konfiguracji dla
+    których zgodność wstecz będzie utrzymywana.
 
 .. index::
-   single: Bundle; Extension
-   single: Dependency Injection; Extension
+   single: Pakiet; Rozszerzenie
+   single: Wstrzykiwanie zależności; Rozszerzenia
 
-Creating an Extension Class
----------------------------
+Tworzenie klasy Extension
+-------------------------
 
-If you do choose to expose a semantic configuration for your bundle, you'll
-first need to create a new "Extension" class, which will handle the process.
-This class should live in the ``DependencyInjection`` directory of your bundle
-and its name should be constructed by replacing the ``Bundle`` suffix of the
-Bundle class name with ``Extension``. For example, the Extension class of
-``AcmeHelloBundle`` would be called ``AcmeHelloExtension``::
+Jeśli zdecydowano o wystawieniu semantycznej konfiguracji pakietu, będzie
+trzeba najpierw utworzyć nową klasę "Extension", odpowiedzialną za obsługiwanie
+tego procesu. Klasa ta powinna mieścić się w katalogu pakietu ``DependencyInjection``,
+a jej nazwa powinna zostać utworzona poprzez podmianę sufiksu ``Bundle`` z klasy
+pakietu na ``Extension``. Przykładowo, klasa Extension pakietu ``AcmeHelloBundle``
+miałaby nazwę ``AcmeHelloExtension``::
 
     // Acme/HelloBundle/DependencyInjection/AcmeHelloExtension.php
     namespace Acme\HelloBundle\DependencyInjection;
@@ -112,7 +111,7 @@ Bundle class name with ``Extension``. For example, the Extension class of
     {
         public function load(array $configs, ContainerBuilder $container)
         {
-            // ... where all of the heavy logic is done
+            // ... gdzie ma miejsce cała cieżka logika
         }
 
         public function getXsdValidationBasePath()
@@ -128,16 +127,16 @@ Bundle class name with ``Extension``. For example, the Extension class of
 
 .. note::
 
-    The ``getXsdValidationBasePath`` and ``getNamespace`` methods are only
-    required if the bundle provides optional XSD's for the configuration.
+    Metody ``getXsdValidationBasePath`` i ``getNamespace`` są wymagane jedynie,
+    gdy pakiet zapewnia opcjonalne schematy XSD dla konfiguracji.
 
-The presence of the previous class means that you can now define an ``acme_hello``
-configuration namespace in any configuration file. The namespace ``acme_hello``
-is constructed from the extension's class name by removing the word ``Extension``
-and then lowercasing and underscoring the rest of the name. In other words,
-``AcmeHelloExtension`` becomes ``acme_hello``.
+Obecność poprzedniej klasy oznacza, że można zdefiniować przestrzeń nazw
+konfiguracji ``acme_hello`` w każdym pliku konfiguracyjnym. Przestrzeń ``acme_hello``
+tworzona jest z nazwy klasy Extension przez usunięcie słowa ``Extension``,
+podmianę na małe litery i użycie podkreśleń w reszcie nazwy. Innymi słowa,
+``AcmeHelloExtension`` staje się ``acme_hello``.
 
-You can begin specifying configuration under this namespace immediately:
+Można rozpocząć określanie konfiguracji pod tą przestrzenią nazw natychmiast:
 
 .. configuration-block::
 
@@ -168,23 +167,22 @@ You can begin specifying configuration under this namespace immediately:
 
 .. tip::
 
-    If you follow the naming conventions laid out above, then the ``load()``
-    method of your extension code is always called as long as your bundle
-    is registered in the Kernel. In other words, even if the user does not
-    provide any configuration (i.e. the ``acme_hello`` entry doesn't even
-    appear), the ``load()`` method will be called and passed an empty ``$configs``
-    array. You can still provide some sensible defaults for your bundle if
-    you want.
+    Jeśli stosuje się konwencje nazewnictwa określone powyżej, wówczas metoda
+    ``load()`` z klasy Extension jest wywoływana zawsze, oczywiście tak długo, jak
+    pakiet jest zarejestrowany w klasie Kernel. Innymi słowy, nawet gdy użytkownik
+    nie zapewni żadnej konfiguracji (np. wpis ``acme_hello`` nawet się nie pojawi),
+    metoda ``load()`` zostanie wywołana z pustą tablicą ``$configs``. Nadal
+    można podać kilka wartości domyślnych dla pakietu, o ile zachodzi taka potrzeba.
 
-Parsing the ``$configs`` Array
-------------------------------
+Analizowanie tablicy ``$configs``
+---------------------------------
 
-Whenever a user includes the ``acme_hello`` namespace in a configuration file,
-the configuration under it is added to an array of configurations and
-passed to the ``load()`` method of your extension (Symfony2 automatically
-converts XML and YAML to an array).
+Za każdym razem, gdy użytkownik dołącza przestrzeń nazw ``acme_hello`` w pliku
+konfiguracyjnym, konfiguracja w nim zawarta jest dodawana do tablicy opcji i
+przekazywana do metody ``load()`` w klasie Extension (Symfony2 automatycznie
+przekształca XML i YAML do postaci tablicy).
 
-Take the following configuration:
+Zapoznaj się z następującą konfiguracją:
 
 .. configuration-block::
 
@@ -219,7 +217,7 @@ Take the following configuration:
             'bar' => 'barValue',
         ));
 
-The array passed to your ``load()`` method will look like this::
+Tablica przekazywana do metody ``load()`` będzie wyglądać tak::
 
     array(
         array(
@@ -228,10 +226,10 @@ The array passed to your ``load()`` method will look like this::
         ),
     )
 
-Notice that this is an *array of arrays*, not just a single flat array of the
-configuration values. This is intentional. For example, if ``acme_hello``
-appears in another configuration file - say ``config_dev.yml`` - with different
-values beneath it, then the incoming array might look like this::
+Zauważ, że jest to *tablica tablic*, a nie tylko prosta, płaska tablica z
+wartościami konfiguracji. Jest to zamierzone. Przykładowo, jeśli ``acme_hello``
+pojawia się w innym pliku konfiguracyjnym - powiedzmy ``config_dev.yml`` - z
+różnymi wartościami pod nim, wówczas finalna tablica mogłaby wyglądać tak::
 
     array(
         array(
@@ -244,15 +242,15 @@ values beneath it, then the incoming array might look like this::
         ),
     )
 
-The order of the two arrays depends on which one is set first.
+Kolejność dwóch tablic zależy od tego, która z nich została ustawiona jako pierwsza.
 
-It's your job, then, to decide how these configurations should be merged
-together. You might, for example, have later values override previous values
-or somehow merge them together.
+Zatem to twoje zadanie, aby zadecydować jak te konfiguracje powinny być połączone
+ze sobą. Móżna by przykładowo umówić się, że późniejsze wartości nadpiszą
+wcześniejsze lub też w jakiś sposób połączą się razem.
 
-Later, in the :ref:`Configuration Class<cookbook-bundles-extension-config-class>`
-section, you'll learn of a truly robust way to handle this. But for now,
-you might just merge them manually::
+Później, w sekcji :ref:`Configuration Class<cookbook-bundles-extension-config-class>`,
+dowiesz się jak poradzić sobię z tym kompleksowo. Póki co jednak, możesz połączyć
+je ręcznie::
 
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -261,37 +259,36 @@ you might just merge them manually::
             $config = array_merge($config, $subConfig);
         }
 
-        // ... now use the flat $config array
+        // ... teraz użyj płaskiej tablicy $config
     }
 
 .. caution::
 
-    Make sure the above merging technique makes sense for your bundle. This
-    is just an example, and you should be careful to not use it blindly.
+    Upewnij się, że powyższe techniki łączenia mają sens dla twojego pakietu.
+    To jest tylko przykład, należy więc uważać, aby nie używać go na oślep.
 
-Using the ``load()`` Method
----------------------------
+Używanie metody ``load()``
+--------------------------
 
-Within ``load()``, the ``$container`` variable refers to a container that only
-knows about this namespace configuration (i.e. it doesn't contain service
-information loaded from other bundles). The goal of the ``load()`` method
-is to manipulate the container, adding and configuring any methods or services
-needed by your bundle.
+Zmienna ``$container`` wewnątrz metody ``load()`` odnosi się do kontenera,
+który wie tylko o swojej konfiguracji przestrzeni nazw (tzn. nie zawiera informacji
+o usługach ładowanych z innych pakietów). Celem metody ``load()`` jest
+manipulacja kontenerem oraz dodawanie i konfigurowanie wszelkich niezbędnych metod lub
+usług w tym pakiecie.
 
-Loading External Configuration Resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Wczytywanie zasobów zewnętrznej konfiguracji
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-One common thing to do is to load an external configuration file that may
-contain the bulk of the services needed by your bundle. For example, suppose
-you have a ``services.xml`` file that holds much of your bundle's service
-configuration::
+Jedną, wspólną rzeczą do zrobienia jest wczytanie pliku zewnętrznej konfiguracji,
+który może zawierać większość usług używanych w pakiecie. Załóżmy przykładowo,
+że plik ``services.xml`` zawiera większość konfiguracji usług w pakiecie::
 
     use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
     use Symfony\Component\Config\FileLocator;
 
     public function load(array $configs, ContainerBuilder $container)
     {
-        // ... prepare your $config variable
+        // ... przygotuj zmienną $config
 
         $loader = new XmlFileLoader(
             $container,
@@ -300,9 +297,9 @@ configuration::
         $loader->load('services.xml');
     }
 
-You might even do this conditionally, based on one of the configuration values.
-For example, suppose you only want to load a set of services if an ``enabled``
-option is passed and set to true::
+Można to nawet zrobić warunkowo, bazując na jednej z wartości konfiguracyjnych.
+Załóżmy na przykład, że chce się wczytać zestaw usług, o ile przesyłana jest
+opcja ``enabled`` i ustawiona na true::
 
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -318,16 +315,15 @@ option is passed and set to true::
         }
     }
 
-Configuring Services and Setting Parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Konfigurowanie usług i ustawianie parametrów
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once you've loaded some service configuration, you may need to modify the
-configuration based on some of the input values. For example, suppose you
-have a service whose first argument is some string "type" that it will use
-internally. You'd like this to be easily configured by the bundle user, so
-in your service configuration file (e.g. ``services.xml``), you define this
-service and use a blank parameter - ``acme_hello.my_service_type`` - as
-its first argument:
+Po załadowaniu kilku ustawień usługi, być może trzeba będzie zmienić konfigurację
+w oparciu o niektóre z wartości wejściowych. Załóżmy, że stworzyło się usługę, której
+pierwszym argumentem jest jakiś napis "type", którego będzie używała wewnętrznie.
+Jeśli chciałoby się ułatwić konfiguracje tego pakietu użytkownikom wewnątrz
+pliku ustawień usługi (np. ``services.xml``), powinno się ją zdefiniować
+z użyciem pustego parametru - ``acme_hello.my_service_type`` - jako jej pierwszego argumentu:
 
 .. code-block:: xml
 
@@ -347,15 +343,15 @@ its first argument:
         </services>
     </container>
 
-But why would you define an empty parameter and then pass it to your service?
-The answer is that you'll set this parameter in your extension class, based
-on the incoming configuration values. Suppose, for example, that you want
-to allow the user to define this *type* option under a key called ``my_type``.
-Add the following to the ``load()`` method to do this::
+Dlaczego definiować pusty parametr i przekazywać go do swojej usługi?
+Odpowiedzią jest ustawienie tego parametru w klasie Extension, bazującej na
+przychodzących wartościach konfiguracyjnych. Założmy na przykład, że chce się
+umożliwić użytkownikowi definiowanie opcji *type* pod kluczem o nazwie ``my_type``.
+Należy dodać poniższe do metody ``load()``, aby to osiągnąć::
 
     public function load(array $configs, ContainerBuilder $container)
     {
-        // ... prepare your $config variable
+        // ... przygotuj zmienną $config
 
         $loader = new XmlFileLoader(
             $container,
@@ -375,8 +371,8 @@ Add the following to the ``load()`` method to do this::
         );
     }
 
-Now, the user can effectively configure the service by specifying the ``my_type``
-configuration value:
+Od teraz użytkownik może efektywnie skonfigurować usługę określając wartość
+konfiguracji ``my_type``:
 
 .. configuration-block::
 
@@ -411,11 +407,11 @@ configuration value:
             ...,
         ));
 
-Global Parameters
-~~~~~~~~~~~~~~~~~
+Parametry globalne
+~~~~~~~~~~~~~~~~~~
 
-When you're configuring the container, be aware that you have the following
-global parameters available to use:
+Podczas konfigurowania kontenera trzeba mieć świadomość o poniższych parametrach
+globalnych, które są gotowe do użycia od samego początku:
 
 * ``kernel.name``
 * ``kernel.environment``
@@ -428,27 +424,28 @@ global parameters available to use:
 
 .. caution::
 
-    All parameter and service names starting with a ``_`` are reserved for the
-    framework, and new ones must not be defined by bundles.
+    Wszystkie nazwy parametrów i usług zaczynające się od ``_`` są zarezerwowane
+    przez framework, a nowe nie mogą być definiowane przez pakiety.
 
 .. _cookbook-bundles-extension-config-class:
 
-Validation and Merging with a Configuration Class
--------------------------------------------------
+Walidacja i łączenie z klasą Configuration
+------------------------------------------
 
-So far, you've done the merging of your configuration arrays by hand and
-are checking for the presence of config values manually using the ``isset()``
-PHP function. An optional *Configuration* system is also available which
-can help with merging, validation, default values, and format normalization.
+Do tej pory udało się łączyć tablice konfiguracji ręcznie oraz sprawdzać,
+czy wartości konfiguracji są ustawione z użyciem funkcji PHP ``isset()``.
+Opcjonalny system *Configuration* jest również dostępny, dzięki któremu
+łączenie, walidacja, operowanie na wartościach domyślne oraz formacie normalizacji 
+mogą okazać się prostsze.
 
 .. note::
 
-    Format normalization refers to the fact that certain formats - largely XML -
-    result in slightly different configuration arrays and that these arrays
-    need to be "normalized" to match everything else.
+    Normalizacja formatu odnosi się do faktu, że niektóre formaty - głównie
+    XML - powodują powstawanie nieco innych tablic konfiguracyjnych, przez co
+    wymagają one "normalizacji", by dopasować się do wszystkiego innego.
 
-To take advantage of this system, you'll create a ``Configuration`` class
-and build a tree that defines your configuration in that class::
+Aby skorzystać z tego systemu, można utworzyć klasę ``Configuration``
+i zbudować drzewo, które określi konfigurację w tej klasie::
 
     // src/Acme/HelloBundle/DependencyInjection/Configuration.php
     namespace Acme\HelloBundle\DependencyInjection;
@@ -472,10 +469,10 @@ and build a tree that defines your configuration in that class::
         }
     }
 
-This is a *very* simple example, but you can now use this class in your ``load()``
-method to merge your configuration and force validation. If any options other
-than ``my_type`` are passed, the user will be notified with an exception
-that an unsupported option was passed::
+To jest *bardzo* prosty przykład, pozwala jednak wykorzystać tę klasę w metodzie 
+``load()`` w celu połączenia konfiguracji oraz wymuszenia walidacji. Jeśli przekazano
+coś innego niż ``my_type``, użytkownik zostanie poinformowany wyjątkiem, że
+przekazana opcja jest nieobsługiwana::
 
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -486,42 +483,41 @@ that an unsupported option was passed::
         // ...
     }
 
-The ``processConfiguration()`` method uses the configuration tree you've defined
-in the ``Configuration`` class to validate, normalize and merge all of the
-configuration arrays together.
+Metoda ``processConfiguration()`` używa drzewa konfiguracji, które zdefiniowano
+w klasie ``Configuration``, w celach walidacji, normalizacji oraz łączenia wszystkich
+dostępnych tablic konfiguracji razem.
 
-The ``Configuration`` class can be much more complicated than shown here,
-supporting array nodes, "prototype" nodes, advanced validation, XML-specific
-normalization and advanced merging. You can read more about this in :doc:`the Config Component documentation</components/config/definition>`.
-You can also see it action by checking out some of the core Configuration classes,
-such as the one from the `FrameworkBundle Configuration`_ or the `TwigBundle Configuration`_.
+Klasa ``Configuration`` może być o wiele bardziej skomplikowana niż ta ukazana 
+tutaj, wspierając węzły tablic, węzły "prototypów", zaawansowaną walidację, normalizacje
+specyficzne dla XMLa jak również zaawansowane połączenia. Można dowiedzieć się
+o tym więcej czytając :doc:`the Config Component documentation</components/config/definition>`.
+Można również zobaczyć to wszystko w akcji poprzez sprawdzenie głównych klas Configuration,
+takich jak te z `konfiguracji FrameworkBundle`_ lub `konfiguracji TwigBundle`_.
 
-Modifying the configuration of another Bundle
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Modyfikowanie konfiguracji innego pakietu
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you have multiple bundles that depend on each other, it may be useful
-to allow one ``Extension`` class to modify the configuration passed to another
-bundle's ``Extension`` class, as if the end-developer has actually placed that
-configuration in his/her ``app/config/config.yml`` file.
+Jeśli kilkanaście pakietów zależy od siebie, może okazać się użyteczne, aby
+umożliwić jednej klasie ``Extension`` modyfikowanie konfiguracji przekazywanej
+do innej klasy ``Extension`` innego pakietu, tak jakby umożliwiając końcowemu programiscie
+zamieszczenie tej konfigurację w jego pliku ``app/config/config.yml``.
 
-For more details, see :doc:`/cookbook/bundles/prepend_extension`.
+Aby uzyskać więcej informacji, zobacz :doc:`/cookbook/bundles/prepend_extension`.
 
-Default Configuration Dump
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Zrzut domyślnej konfiguracji
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``config:dump-reference`` command allows a bundle's default configuration to
-be output to the console in yaml.
+Polecenie ``config:dump-reference`` umożliwia podejrzenie domyślnej konfiguracji
+pakietu na wyjściu konsoli w formacie yaml.
 
-As long as your bundle's configuration is located in the standard location
-(``YourBundle\DependencyInjection\Configuration``) and does not have a
-``__construct()`` it will work automatically.  If you have something
-different, your ``Extension`` class must override the
-:method:`Extension::getConfiguration() <Symfony\\Component\\HttpKernel\\DependencyInjection\\Extension::getConfiguration>`
-method and return an instance of your
-``Configuration``.
+Tak długo jak konfiguracja pakietu mieści się w standardowej lokalizacji
+(``YourBundle\DependencyInjection\Configuration``) i nie posiada metody ``__construct()``,
+wszystko będzie działać automatycznie. Jeśli cokolwiek odbiega od normy,
+klasa ``Extension`` musi nadpisać metodę :method:`Extension::getConfiguration() <Symfony\\Component\\HttpKernel\\DependencyInjection\\Extension::getConfiguration>`, a następnie zwrócić
+instancję klasy ``Configuration``.
 
-Comments and examples can be added to your configuration nodes using the
-``->info()`` and ``->example()`` methods::
+Komentarze i przykłady mogą zostać dodane do wezłów konfiguracji z użyciem
+metod ``->info()`` oraz ``->example()``::
 
     // src/Acme/HelloBundle/DependencyExtension/Configuration.php
     namespace Acme\HelloBundle\DependencyInjection;
@@ -550,28 +546,27 @@ Comments and examples can be added to your configuration nodes using the
         }
     }
 
-This text appears as yaml comments in the output of the ``config:dump-reference``
-command.
+Ten tekst pojawi się jako komentarz w formacie yaml po wydaniu polecenia ``config:dump-reference``.
 
 .. index::
-   pair: Convention; Configuration
+   pair: Konwencje; Konfiguracja
 
-Extension Conventions
----------------------
+Konwencje rozszerzeń
+--------------------
 
-When creating an extension, follow these simple conventions:
+Podczas tworzenia klasy Extension, powinno się trzymać tych prostych konwencji:
 
-* The extension must be stored in the ``DependencyInjection`` sub-namespace;
+* Rozszerzenie musi być zlokalizowane w podprzestrzeni nazw ``DependencyInjection``;
 
-* The extension must be named after the bundle name and suffixed with
-  ``Extension`` (``AcmeHelloExtension`` for ``AcmeHelloBundle``);
+* Rozszerzenie musi być nazwane po nazwie pakietu i zakończone sufiksem ``Extension``
+  (``AcmeHelloExtension`` dla ``AcmeHelloBundle``);
 
-* The extension should provide an XSD schema.
+* Rozszerzenie powinno zapewnić schemat XSD.
 
-If you follow these simple conventions, your extensions will be registered
-automatically by Symfony2. If not, override the
+Jeśli stosuje się te proste konwencje, wszystkie rozszerzenia zostaną automatycznie
+zarejestrowane przez Symfony2. Jeśli nie, należy nadpisać metodę
 :method:`Bundle::build() <Symfony\\Component\\HttpKernel\\Bundle\\Bundle::build>`
-method in your bundle::
+w danym pakiecie::
 
     // ...
     use Acme\HelloBundle\DependencyInjection\UnconventionalExtensionClass;
@@ -582,20 +577,20 @@ method in your bundle::
         {
             parent::build($container);
 
-            // register extensions that do not follow the conventions manually
+            // zarejestruj rozszerzenie, które nie trzyma się konwencji
             $container->registerExtension(new UnconventionalExtensionClass());
         }
     }
 
-In this case, the extension class must also implement a ``getAlias()`` method
-and return a unique alias named after the bundle (e.g. ``acme_hello``). This
-is required because the class name doesn't follow the standards by ending
-in ``Extension``.
+W tym przypadku, klasa Extension musi również implementować metodę ``getAlias()``
+oraz zwracać unikalny alias stworzony na podstawie nazwy pakietu (np. ``acme_hello``).
+Jest to wymagane, ponieważ nazwa klasy nie przestrzega norm, nie kończąc się 
+sufiksem ``Extension``.
 
-Additionally, the ``load()`` method of your extension will *only* be called
-if the user specifies the ``acme_hello`` alias in at least one configuration
-file. Once again, this is because the Extension class doesn't follow the
-standards set out above, so nothing happens automatically.
+Dodatkowo, metoda ``load()`` klasy Extension zostanie wywołana *tylko*, gdy
+użytkownik określi alias ``acme_hello`` w przynajmniej jednym z plików konfiguracyjnych.
+Dla przypomnienia, jest tak dlatego, ponieważ klasa Extension nie trzyma się
+standardów określonych powyżej, zatem nic nie dzieje się automatycznie.
 
-.. _`FrameworkBundle Configuration`: https://github.com/symfony/symfony/blob/master/src/Symfony/Bundle/FrameworkBundle/DependencyInjection/Configuration.php
-.. _`TwigBundle Configuration`: https://github.com/symfony/symfony/blob/master/src/Symfony/Bundle/TwigBundle/DependencyInjection/Configuration.php
+.. _`konfiguracji FrameworkBundle`: https://github.com/symfony/symfony/blob/master/src/Symfony/Bundle/FrameworkBundle/DependencyInjection/Configuration.php
+.. _`konfiguracji TwigBundle`: https://github.com/symfony/symfony/blob/master/src/Symfony/Bundle/TwigBundle/DependencyInjection/Configuration.php
