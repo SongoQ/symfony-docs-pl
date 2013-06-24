@@ -278,7 +278,7 @@ Pobieranie parametrów konfiguracyjnych w kodzie z kontenera::
     $container->getParameter('acme_hello.email.from');
 
 Nawet jeśli ten mechanizm jest prosty, zachęca się do korzystania z semantycznej
-konfiguracji opisanej w receptariuszu.
+konfiguracji opisanej w Receptariuszu.
 
 .. note::
 

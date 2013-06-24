@@ -52,18 +52,18 @@ Po utworzeniu pakietu są dwa sposoby na zarządzanie jego konfiguracją:
     aplikacji. Aby poznać więcej szczegółów, zobacz ":ref:`service-container-imports-directive`".
     details.
 
-2. **Wystawianie semantycznej konfiguracji** (*zaawansowane*):
+2. **Eksponowanie semantycznej konfiguracji** (*zaawansowane*):
 
     To jest sposób, w jaki główne pakiety eksponują swoją konfigurację. (jak
     opisano powyżej). Podstawowa idea jest taka, że zamiast pozwalać użytkownikowi
-    na nadpisywanie indywidualnych parametrów, pozwala się mu tylko na konfigurację
-    tylko kilku, specjalnie przygotowanych wcześniej. Twórca pakietu powinien
+    na nadpisywanie indywidualnych parametrów, pozwala się mu na konfigurację
+    tylko kilku z nich, specjalnie przygotowanych wcześniej. Twórca pakietu powinien
     wówczas przeanalizować te opcje, a następnie wczytać usługi wewnątrz klasy
     "Extension". Dzięki ten metodzie, nie będzie trzeba importować żadnych zasobów
     z głównej konfiguracji swojej aplikacji: klasa Extension zajmie się tym wszystkim.
 
-Druga opcja - o której dowiesz się w tym artykule - jest o wiele bardziej elastyczna,
-ale wymaga stosunkowo więcej czasu na skonfigurowanie. Jeśli zastanawiasz się,
+Druga opcja - o której napisano w tym artykule - jest o wiele bardziej elastyczna,
+ale wymaga stosunkowo więcej czasu na skonfigurowanie. Jeśli nie ma się pewności,
 której metody użyć, dobrym pomysłem jest zacząć od metody #1, by potem w miarę
 upływu czasu przejść na metodę #2, o ile oczywiście zajdzie taka potrzeba.
 
@@ -77,11 +77,12 @@ Druga metoda ma kilka szczególnych zalet:
 * Pozwala na inteligentne łączenie wielu plików konfiguracyjnych (np. ``config_dev.yml``
   i ``config.yml``), które mogłyby nadpisywać swoje własne konfiguracje;
 
-* Sprawdzanie poprawności konfiguracji (jeśli używa się :ref:`Configuration Class<cookbook-bundles-extension-config-class>`);
+* Umożliwia sprawdzanie poprawności konfiguracji (jeśli używa się :ref:`Configuration Class<cookbook-bundles-extension-config-class>`);
 
-* Autouzupełnianie w IDE podczas tworzenia XSD dla programistów używających XML.
+* Pozwala na autouzupełnianie w środowisku IDE podczas tworzenia schematów XSD
+dla programistów używających języka XML.
 
-.. sidebar:: Nadpisywanie parametrów pakietu
+.. sidebar:: Przesłanianie parametrów pakietu
 
     Jeśli pakiet zawiera klasę Extension, to *nie* powinno się generalnie
     nadpisywać żadnych parametrów kontenera usług z tego pakietu. Ideą jest, że
@@ -100,7 +101,7 @@ Tworzenie klasy Extension
 Jeśli zdecydowano o wystawieniu semantycznej konfiguracji pakietu, będzie
 trzeba najpierw utworzyć nową klasę "Extension", odpowiedzialną za obsługiwanie
 tego procesu. Klasa ta powinna mieścić się w katalogu pakietu ``DependencyInjection``,
-a jej nazwa powinna zostać utworzona poprzez podmianę sufiksu ``Bundle`` z klasy
+a jej nazwa powinna zostać utworzona poprzez podmianę końcówki ``Bundle`` z klasy
 pakietu na ``Extension``. Przykładowo, klasa Extension pakietu ``AcmeHelloBundle``
 miałaby nazwę ``AcmeHelloExtension``::
 
@@ -188,7 +189,7 @@ konfiguracyjnym, konfiguracja w nim zawarta jest dodawana do tablicy opcji i
 przekazywana do metody ``load()`` w klasie Extension (Symfony2 automatycznie
 przekształca XML i YAML do postaci tablicy).
 
-Zapoznaj się z następującą konfiguracją:
+Proszę zapoznać się z następującą konfiguracją:
 
 .. configuration-block::
 
@@ -235,7 +236,7 @@ Tablica przekazywana do metody ``load()`` będzie wyglądać tak::
         ),
     )
 
-Zauważ, że jest to *tablica tablic*, a nie tylko prosta, płaska tablica z
+Proszę zauważyć, że jest to *tablica tablic*, a nie tylko prosta, płaska tablica z
 wartościami konfiguracji. Jest to zamierzone. Przykładowo, jeśli ``acme_hello``
 pojawia się w innym pliku konfiguracyjnym - powiedzmy ``config_dev.yml`` - z
 różnymi wartościami pod nim, wówczas finalna tablica mogłaby wyglądać tak::
@@ -253,13 +254,13 @@ różnymi wartościami pod nim, wówczas finalna tablica mogłaby wyglądać tak
 
 Kolejność dwóch tablic zależy od tego, która z nich została ustawiona jako pierwsza.
 
-Zatem to twoje zadanie, aby zadecydować jak te konfiguracje powinny być połączone
-ze sobą. Móżna by przykładowo umówić się, że późniejsze wartości nadpiszą
+Zatem jest to decyzja programisty, w jaki sposób te konfiguracje powinny zostać
+połączone ze sobą. Móżna by przykładowo umówić się, że późniejsze wartości nadpiszą
 wcześniejsze lub też w jakiś sposób połączą się razem.
 
 Później, w sekcji :ref:`Configuration Class<cookbook-bundles-extension-config-class>`,
-dowiesz się jak poradzić sobię z tym kompleksowo. Póki co jednak, możesz połączyć
-je ręcznie::
+wszystko zostanie rozwiązane kompleksowo. Póki co jednak, można połączyć konfiguracje
+ręcznie::
 
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -273,7 +274,7 @@ je ręcznie::
 
 .. caution::
 
-    Upewnij się, że powyższe techniki łączenia mają sens dla twojego pakietu.
+    Należy upewnić się, czy powyższe techniki łączenia mają sens dla danego pakietu.
     To jest tylko przykład, należy więc uważać, aby nie używać go na oślep.
 
 Używanie metody ``load()``
@@ -281,16 +282,16 @@ Używanie metody ``load()``
 
 Zmienna ``$container`` wewnątrz metody ``load()`` odnosi się do kontenera,
 który wie tylko o swojej konfiguracji przestrzeni nazw (tzn. nie zawiera informacji
-o usługach ładowanych z innych pakietów). Celem metody ``load()`` jest
+o usługach wczytywanych z innych pakietów). Celem metody ``load()`` jest
 manipulacja kontenerem oraz dodawanie i konfigurowanie wszelkich niezbędnych metod lub
-usług w tym pakiecie.
+usług tego pakietu.
 
 Wczytywanie zasobów zewnętrznej konfiguracji
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Jedną, wspólną rzeczą do zrobienia jest wczytanie pliku zewnętrznej konfiguracji,
 który może zawierać większość usług używanych w pakiecie. Załóżmy przykładowo,
-że plik ``services.xml`` zawiera większość konfiguracji usług w pakiecie::
+że plik ``services.xml`` zawiera znaczną część konfiguracji usług w pakiecie::
 
     use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
     use Symfony\Component\Config\FileLocator;
@@ -330,8 +331,8 @@ Konfigurowanie usług i ustawianie parametrów
 Po załadowaniu kilku ustawień usługi, być może trzeba będzie zmienić konfigurację
 w oparciu o niektóre z wartości wejściowych. Załóżmy, że stworzyło się usługę, której
 pierwszym argumentem jest jakiś napis "type", którego będzie używała wewnętrznie.
-Jeśli chciałoby się ułatwić konfiguracje tego pakietu użytkownikom wewnątrz
-pliku ustawień usługi (np. ``services.xml``), powinno się ją zdefiniować
+Jeśli chciałoby się uprościć konfigurację tego pakietu użytkownikom wewnątrz
+jednego z plików konfiguracyjnych usługi (np. ``services.xml``), powinno się ją zdefiniować
 z użyciem pustego parametru - ``acme_hello.my_service_type`` - jako jej pierwszego argumentu:
 
 .. code-block:: xml
@@ -357,7 +358,7 @@ Dlaczego definiować pusty parametr i przekazywać go do swojej usługi?
 Odpowiedzią jest ustawienie tego parametru w klasie Extension, bazującej na
 przychodzących wartościach konfiguracyjnych. Założmy na przykład, że chce się
 umożliwić użytkownikowi definiowanie opcji *type* pod kluczem o nazwie ``my_type``.
-Należy dodać poniższe do metody ``load()``, aby to osiągnąć::
+Aby to osiągnąć, należy dodać poniższe linie do metody ``load()``::
 
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -448,8 +449,8 @@ Walidacja i łączenie z klasą Configuration
 Do tej pory udało się łączyć tablice konfiguracji ręcznie oraz sprawdzać,
 czy wartości konfiguracji są ustawione z użyciem funkcji PHP ``isset()``.
 Opcjonalny system *Configuration* jest również dostępny, dzięki któremu
-łączenie, walidacja, operowanie na wartościach domyślne oraz formacie normalizacji 
-mogą okazać się prostsze.
+łączenie, walidacja, operowanie na wartościach domyślnych oraz formacie normalizacji
+mogą okazać się znacznie prostsze.
 
 .. note::
 
@@ -482,7 +483,7 @@ i zbudować drzewo, które określi konfigurację w tej klasie::
         }
     }
 
-To jest *bardzo* prosty przykład, pozwala jednak wykorzystać tę klasę w metodzie 
+To jest *bardzo* prosty przykład, pozwala jednak wykorzystać tę klasę w metodzie
 ``load()`` w celu połączenia konfiguracji oraz wymuszenia walidacji. Jeśli przekazano
 coś innego niż ``my_type``, użytkownik zostanie poinformowany wyjątkiem, że
 przekazana opcja jest nieobsługiwana::
@@ -500,7 +501,7 @@ Metoda ``processConfiguration()`` używa drzewa konfiguracji, które zdefiniowan
 w klasie ``Configuration``, w celach walidacji, normalizacji oraz łączenia wszystkich
 dostępnych tablic konfiguracji razem.
 
-Klasa ``Configuration`` może być o wiele bardziej skomplikowana niż ta ukazana 
+Klasa ``Configuration`` może być o wiele bardziej skomplikowana niż ta ukazana
 tutaj, wspierając węzły tablic, węzły "prototypów", zaawansowaną walidację, normalizacje
 specyficzne dla XMLa jak również zaawansowane połączenia. Można dowiedzieć się
 o tym więcej czytając :doc:`the Config Component documentation</components/config/definition>`.
@@ -513,7 +514,7 @@ Modyfikowanie konfiguracji innego pakietu
 Jeśli kilkanaście pakietów zależy od siebie, może okazać się użyteczne, aby
 umożliwić jednej klasie ``Extension`` modyfikowanie konfiguracji przekazywanej
 do innej klasy ``Extension`` innego pakietu, tak jakby umożliwiając końcowemu programiscie
-zamieszczenie tej konfigurację w jego pliku ``app/config/config.yml``.
+zamieszczenie jej w pliku ``app/config/config.yml``.
 
 Aby uzyskać więcej informacji, zobacz :doc:`/cookbook/bundles/prepend_extension`.
 
@@ -526,8 +527,8 @@ pakietu na wyjściu konsoli w formacie yaml.
 Tak długo jak konfiguracja pakietu mieści się w standardowej lokalizacji
 (``YourBundle\DependencyInjection\Configuration``) i nie posiada metody ``__construct()``,
 wszystko będzie działać automatycznie. Jeśli cokolwiek odbiega od normy,
-klasa ``Extension`` musi nadpisać metodę :method:`Extension::getConfiguration() <Symfony\\Component\\HttpKernel\\DependencyInjection\\Extension::getConfiguration>`, a następnie zwrócić
-instancję klasy ``Configuration``.
+klasa ``Extension`` musi nadpisać metodę :method:`Extension::getConfiguration() <Symfony\\Component\\HttpKernel\\DependencyInjection\\Extension::getConfiguration>`,
+a następnie zwrócić instancję klasy ``Configuration``.
 
 Komentarze i przykłady mogą zostać dodane do wezłów konfiguracji z użyciem
 metod ``->info()`` oraz ``->example()``::
@@ -571,13 +572,13 @@ Podczas tworzenia klasy Extension, powinno się trzymać tych prostych konwencji
 
 * Rozszerzenie musi być zlokalizowane w podprzestrzeni nazw ``DependencyInjection``;
 
-* Rozszerzenie musi być nazwane po nazwie pakietu i zakończone sufiksem ``Extension``
+* Rozszerzenie musi być nazwane po nazwie pakietu i zakończone końcówką ``Extension``
   (``AcmeHelloExtension`` dla ``AcmeHelloBundle``);
 
-* Rozszerzenie powinno zapewnić schemat XSD.
+* Rozszerzenie powinno dostarczać schemat XSD.
 
 Jeśli stosuje się te proste konwencje, wszystkie rozszerzenia zostaną automatycznie
-zarejestrowane przez Symfony2. Jeśli nie, należy nadpisać metodę
+zarejestrowane przez Symfony2. Jeśli nie, należy przesłonić metodę
 :method:`Bundle::build() <Symfony\\Component\\HttpKernel\\Bundle\\Bundle::build>`
 w danym pakiecie::
 
@@ -597,10 +598,10 @@ w danym pakiecie::
 
 W tym przypadku, klasa Extension musi również implementować metodę ``getAlias()``
 oraz zwracać unikalny alias stworzony na podstawie nazwy pakietu (np. ``acme_hello``).
-Jest to wymagane, ponieważ nazwa klasy nie przestrzega norm, nie kończąc się 
-sufiksem ``Extension``.
+Jest to wymagane, ponieważ nazwa klasy nie przestrzega jednej z norm, mianowicie
+nie kończy się końcówką ``Extension``.
 
-Dodatkowo, metoda ``load()`` klasy Extension zostanie wywołana *tylko*, gdy
+Dodatkowo metoda ``load()`` klasy Extension zostanie wywołana *tylko*, gdy
 użytkownik określi alias ``acme_hello`` w przynajmniej jednym z plików konfiguracyjnych.
 Dla przypomnienia, jest tak dlatego, ponieważ klasa Extension nie trzyma się
 standardów określonych powyżej, zatem nic nie dzieje się automatycznie.
