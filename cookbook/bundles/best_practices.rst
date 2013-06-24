@@ -1,12 +1,12 @@
 .. index::
    single: pakiet; najlepsze praktyki
 
-Jak stosować najlepsze praktyki w strukturze pakietów
-=====================================================
+Jak stosować najlepsze praktyki w strukturyzowaniu pakietów
+===========================================================
 
 Pakiet to katalog posiadający dobrze zdefiniowaną strukturę, mogący obsługiwać
 wszystko, począwszy od klas, a skończywszy na kontrolerach i zasobach internetowych.
-Nawet jeśli pakiety są bardzo elastyczne, należy stosować się do najlepszych
+Chociaż pakiety są bardzo elastyczne, należy stosować się do najlepszych
 praktyk, aby zacząć je z powodzeniem rozpowszechniać.
 
 .. index::

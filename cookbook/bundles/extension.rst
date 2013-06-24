@@ -2,8 +2,8 @@
    single: konfiguracja; semantyczny
    single: pakiet; konfiguracja rozszerzenia
 
-Jak wystawić semantyczną konfigurację pakietu
-=============================================
+Jak wyeksponować semantyczną konfigurację pakietu
+=================================================
 
 Po otwarciu pliku konfiguracyjnego aplikacji (zazwyczaj ``app/config/config.yml``)
 widać wiele różnych konfiguracji "przestrzeni nazw", takie jak ``framework``,
