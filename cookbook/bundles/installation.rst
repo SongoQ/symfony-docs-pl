@@ -1,5 +1,5 @@
 .. index::
-   single: Pakiet; Instalacja
+   single: pakiet; instalacja
 
 Jak zainstalować pakiety firm trzecich ?
 ========================================
@@ -13,7 +13,7 @@ Dodawanie zależności w Composer
 Począwszy od Symfony 2.1, zależności są zarządzane przez Composer. To dobry
 pomysł, aby nauczyć się podstaw Composera studiując `jego dokumentację`_.
 
-Przed użyciem composera do instalacji pakietu, należy sprawdzić czy dany
+Przed użyciem Composera do instalacji pakietu, należy sprawdzić czy dany
 pakiet istnieje w archiwum `Packagist`_. Na przykład, jeśli wyszukiwano
 popularnego `FOSUserBundle`_, archiwum powinno odnaleźć `friendsofsymfony/user-bundle`_.
 
@@ -44,6 +44,7 @@ Można zrobić to ręcznie:
 1. **Dodaj poniższe linie do pliku composer.json:**
 
    .. code-block:: json
+      :linenos:
 
        {
            ...,
@@ -56,18 +57,21 @@ Można zrobić to ręcznie:
 2. **Zaktualizuj zależności**
 
    .. code-block:: bash
+      :linenos:
 
        $ php composer.phar update friendsofsymfony/user-bundle
 
    albo zaktualizuj wszystkie zależności naraz
 
    .. code-block:: bash
+      :linenos:
 
        $ php composer.phar update
 
 Można to również zrobić jednym poleceniem:
 
 .. code-block:: bash
+   :linenos:
 
     $ php composer.phar require friendsofsymfony/user-bundle:2.0.*@dev
 
@@ -106,18 +110,21 @@ można również odwołać się do jego konfiguracji używając polecenia ``conf
 Na przykład, aby zobaczyć odwołania do konfiguracji ``assetic``, można użyć:
 
 .. code-block:: bash
+   :linenos:
 
     $ app/console config:dump-reference AsseticBundle
 
 albo też:
 
 .. code-block:: bash
+   :linenos:
 
     $ app/console config:dump-reference assetic
 
 Na wyjściu powinno się otrzymać coś podobnego do:
 
 .. code-block:: text
+   :linenos:
 
     assetic:
         debug:                %kernel.debug%

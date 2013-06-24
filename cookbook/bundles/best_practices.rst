@@ -10,7 +10,7 @@ Nawet jeśli pakiety są bardzo elastyczne, należy stosować się do najlepszyc
 praktyk, aby zacząć je z powodzeniem rozpowszechniać.
 
 .. index::
-   pair: Pakiet; Konwencje nazewnictwa
+   pair: pakiet; konwencje nazewnictwa
 
 .. _bundles-naming-conventions:
 
@@ -21,7 +21,7 @@ Pakiet to również przestrzeń nazw PHP. Przestrzeń ta musi przestrzegać
 zasad żądzących `standardami`_ w PHP 5.3 dla przestrzeni nazw oraz nazewnictwa
 klas: rozpoczyna się od segmentu dostawcy, następnie zawiera zero lub więcej
 segmentów kategorii, by zakończyć się krótka nazwą przestrzeni nazw, która
-musi koniecznie kończyć się sufiksem ``Bundle``.
+musi koniecznie kończyć się końcówką ``Bundle``.
 
 Przestrzeń nazw staję się pakietem w chwili, gdy doda się do niej klasę
 pakietu. Nazwa klasy pakietu musi przestrzegać następujących, prostych reguł:
@@ -29,11 +29,11 @@ pakietu. Nazwa klasy pakietu musi przestrzegać następujących, prostych reguł
 * Używać tylko znaków alfanumerycznych i podkreśleń;
 * Używać nazewnictwa w stylu CamelCase;
 * Używać treściwych i krótkich nazw (nie więcej niż 2 słowa);
-* Posiadać prefiks zawierający nazwę dostawcy (i opcjonalnie przestrzeń
-  nazw kategorii);
-* Posiadać sufiks ``Bundle``.
+* Posiadać przedrostek zawierający nazwę dostawcy (i opcjonalnie nazwę
+  przestrzeni);
+* Posiadać końcówkę ``Bundle``.
 
-Oto kilka poprawnych przestrzeni oraz nazw klas dla pakietów:
+Oto kilka poprawnych przestrzeni pakietów i nazw klas:
 
 +-----------------------------------+--------------------------+
 | Przestrzeń nazw                   | Nazwa klasy pakietu      |
@@ -45,7 +45,7 @@ Oto kilka poprawnych przestrzeni oraz nazw klas dla pakietów:
 | ``Acme\BlogBundle``               | ``AcmeBlogBundle``       |
 +-----------------------------------+--------------------------+
 
-Zwyczajowo, metoda ``getName()`` w klasie pakietu powinna zwracać nazwę
+Zgodnie z konwencją, metoda ``getName()`` w klasie pakietu powinna zwracać nazwę
 klasy.
 
 .. note::
@@ -204,10 +204,10 @@ albo rozszerzać :class:`Symfony\\Component\\DependencyInjection\\ContainerAware
 .. note::
 
     Gdyby spojrzeć na metody kontrolera :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`,
-    widać, że są to w głównej mierze skrótym które ułatwiają naukę.
+    widać, że są to w głównej mierze skróty ułatwiające naukę.
 
-Routing
--------
+Trasowanie (routing)
+--------------------
 
 Jeśli pakiet dostarcza trasy, muszą one zostać poprzedzone aliasem pakietu.
 Na przykład dla AcmeBlogBundle, wszystkie trasy powinny zawierać prefiks
@@ -223,10 +223,10 @@ aplikację.
 Pliki tłumaczeń
 ---------------
 
-Jeśli pakiet zawiera tłumaczenia wiadomości, muszą być one zdefiniowane w
+Jeśli pakiet zawiera tłumaczenia komunikatów, muszą być one zdefiniowane w
 formacie XLIFF; domeny powinny być nazwane po nazwie pakietu. (``bundle.hello``).
 
-Pakiet nie może nadpisywać istniejących wiadomości z innego pakietu.
+Pakiet nie może nadpisywać istniejącego komunikatu z innego pakietu.
 
 Konfiguracja
 ------------
@@ -246,12 +246,14 @@ Użytkownik może wprowadzić wartości w dowolnym pliku konfiguracyjnym:
 .. configuration-block::
 
     .. code-block:: yaml
+       :linenos:
 
         # app/config/config.yml
         parameters:
             acme_hello.email.from: fabien@example.com
 
     .. code-block:: xml
+       :linenos:
 
         <!-- app/config/config.xml -->
         <parameters>
@@ -259,11 +261,13 @@ Użytkownik może wprowadzić wartości w dowolnym pliku konfiguracyjnym:
         </parameters>
 
     .. code-block:: php
+       :linenos:
 
         // app/config/config.php
         $container->setParameter('acme_hello.email.from', 'fabien@example.com');
 
     .. code-block:: ini
+       :linenos:
 
         ; app/config/config.ini
         [parameters]
@@ -278,11 +282,11 @@ konfiguracji opisanej w receptariuszu.
 
 .. note::
 
-    Jeśli definiuje się serwisy, powinny one również zostać poprzedzone aliasem
+    Jeśli definiuje się usługi, powinny one również zostać poprzedzone aliasem
     pakietu.
 
-Dowiedz się więcej z Receptariusza
-----------------------------------
+Dalsza lektura
+--------------
 
 * :doc:`/cookbook/bundles/extension`
 
