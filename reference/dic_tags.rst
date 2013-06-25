@@ -8,7 +8,7 @@ Tagi wstrzykiwania zależności, które tu nazywać też będziemy w skrócie ta
 (od ang. *Dependency Injection*), są krótkimi łańcuchami znaków, które mogą być
 zastosowane do usług w celu ich oflagowania, tak by mogły być użyte w jakiś
 specjalny sposób. Na przykład, jeśli mamy usługę, którą chcemy zarejestrować jako
-detektor nasłuchujący (*ang. listner*) dla jakichś rdzennych zdarzeń Symfony,
+detektor nasłuchujący (*ang. listener*) dla jakichś rdzennych zdarzeń Symfony,
 to możemy ją oflagować tagiem ``kernel.event_listener``.
 
 Można dowiedzieć się trochę więcej o "tagach" czytając rozdział
@@ -65,7 +65,7 @@ i nie są one tutaj wymienione.
 +-----------------------------------+-----------------------------------------------------------------------+
 | `security.voter`_                 | Dodanie indywidualnych voterów do logiki autoryzacji Symfony          |
 +-----------------------------------+-----------------------------------------------------------------------+
-| `security.remember_me_aware`_     | Umożliwienie obsługi "pamietaj mnie" w autoryzacji                    |
+| `security.remember_me_aware`_     | Umożliwienie obsługi "pamiętaj mnie" w autoryzacji                    |
 +-----------------------------------+-----------------------------------------------------------------------+
 | `serializer.encoder`_             | Zarejestrowanie nowego kodera w usłudze ``serializer``                |
 +-----------------------------------+-----------------------------------------------------------------------+
@@ -356,7 +356,7 @@ Tag pozwala dodać własną logikę dla przetwarzania
 pola jest realizowany poprzez "interpretery" metadanych walidacyjnych i metadanych
 Doctrine (jeżeli używa się Doctrine).
 
-W celu dodania własnego inerpretera , należy utworzyć klasę implementującą interfejs
+W celu dodania własnego interpretera , należy utworzyć klasę implementującą interfejs
 :class:`Symfony\\Component\\Form\\FormTypeGuesserInterface`. Następnie otagować jej
 definicję usługi tagiem ``form.type_guesser`` (to nie ma opcji).
 
@@ -370,7 +370,7 @@ kernel.cache_clearer
 pamięci podręcznej
 
 Czyszczenie pamięci podręcznej ma miejsce, gdy uruchamiana jest polecenie ``cache:clear``.
-Jeżeli pakiet buforuje piliki, to można dodać własny kod czyszczący te pliki podczas
+Jeżeli pakiet buforuje pliki, to można dodać własny kod czyszczący te pliki podczas
 czysczenia pamięci.
 
 W celu zarejestrowania własnego kodu czyszczącego, najpierw musi się utworzyć klasę
@@ -500,14 +500,13 @@ kernel.event_listener
 
 **Przeznaczenie**: Nasłuchiwanie różnych zdarzeń (haków) w Symfony
 
-Tag umożliwia podłączyć swoją klasę do przetwarzania Symfony w różnych
-punktach.
+Tag ten pozwala podłączyć swoją klasę w różnych punktach do przetwarzania Symfony.
 
 W celu zobaczenia pełnego przykładu tego detektora, przeczytaj wpis
 :doc:`/cookbook/service_container/event_listener`.
 
-Drugi praktyczny przykład detektora nasłuchującego kernel jest pokazany w artykule
-":doc:`/cookbook/request/mime_type`".
+Kolejny praktyczny przykład detektora nasłuchującego kernel jest znajduje się w
+artykule ":doc:`/cookbook/request/mime_type`".
 
 Informacje o detektorze zdarzeń jądra
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -517,8 +516,8 @@ detektorach nasłuchujących jądro Symfony i ich priorytetach.
 
 .. note::
 
-    Wszystkie detektory tutaj wymienione mogą nie działać w środowisku w niektórych
-    środowiskach i pakietach. Wykaz ten nie zawiera detektory używancych w pakietach
+    Wszystkie detektory tutaj wymienione mogą nie działać w niektórych środowiskach
+    i pakietach. Wykaz ten nie obejmuje detektorów używanych w pakietach
     osób trzecich.
 
 kernel.request
@@ -595,7 +594,7 @@ kernel.terminate
 kernel.event_subscriber
 -----------------------
 
-**Przeznaczenie**: Do subskrybcji zbioru różnych zdarzeń (haków) w Symfony
+**Przeznaczenie**: Do subskrypcji zbioru różnych zdarzeń (haków) w Symfony
 
 Aby włączyć własnego subskrybenta, trzeba dodać go do zwykłej usługi w jednej ze
 swoich konfiguracji oraz oznaczyć ją jako ``kernel.event_subscriber``:
@@ -686,7 +685,7 @@ wstrzykiwania rejestratora do usługi.
 .. note::
 
     Działa to tylko wtedy, gdy usługa rejestrowania jest argumentem konstruktora,
-    a nie gdy jest wstrzykiwanna poprzez settera.
+    a nie gdy jest wstrzykiwana poprzez settera.
 
 .. _dic_tags-monolog-processor:
 
@@ -1002,10 +1001,10 @@ Teraz rejestrujemy loadera jako usługę i oznaczamy tagiem ``translation.loader
         ;
 
 Opcja ``alias`` jest wymagana i bardzo ważna: określa "przyrostek" nazwy pliku,
-który powinien być użyty dla plików zasobów wykorzystujacycj ten loader.
-Na przykład załóżmy, ze mamy jakiś własny format ``bin``, który potrzebujemy załadować.
-Jeśli mamy plik ``bin`` zawierający tłumaczenie polskie dla domeny ``messages``,
-to musimy mieć plik ``app/Resources/translations/messages.pl.bin``.
+który powinien być użyty dla plików zasobów wykorzystujących ten loader.
+Na przykład załóżmy, ze mamy jakiś niestandardowy format ``bin``, który potrzebujemy
+załadować. Jeśli mamy plik ``bin`` zawierający tłumaczenie polskie dla domeny
+``messages``, to musimy mieć plik ``app/Resources/translations/messages.pl.bin``.
 
 Kiedy Symfony próbuje załadować plik ``bin``, to przekazuje ścieżkę do naszego
 loadera jako argument ``$resource``. Następnie można wykonać jakąś logikę potrzebną
@@ -1023,7 +1022,7 @@ twig.extension
 
 **Przeznaczenie**: Zarejestrowanie indywidualnego rozszerzenia Twig
 
-W celu udostępnienia rozszerzenia Twig, trzeba dodać go jako zwykłą usługę w jedej
+W celu udostępnienia rozszerzenia Twig, trzeba dodać go jako zwykłą usługę w jednej
 ze swoich konfiguracji i oznaczyć tagiem ``twig.extension``:
 
 .. configuration-block::
@@ -1052,7 +1051,7 @@ ze swoich konfiguracji i oznaczyć tagiem ``twig.extension``:
             ->addTag('twig.extension')
         ;
 
-Dla uzyskania więcej informacji o tym jak rzeczywiście utworzyć klasę rozszerzającą
+Aby uzyskać więcej informacji, o tym jak rzeczywiście utworzyć klasę rozszerzającą,
 Twig proszę zapoznać się z `dokumentacją Twiga`_ w tym zakresie lub przeczytać artykuł:
 :doc:`/cookbook/templating/twig_extension`.
 
@@ -1139,16 +1138,17 @@ validator.initializer
 **Przeznaczenie**: Zarejestrowanie usługi, która inicjuje obiekty przed walidacją
 
 Tag zapewnia bardzo niezwykłą porcję funkcjonalności, umożliwiającą wykonywanie
-kilku różnego rodzaju akcji na obiekcieprzed jego walidacją. Na przykład, jest
-używany przez Doctrine w zapytaniu do wszystkich „leniwie ładowanych” danych w
-obiekcie przed jego sprawdzeniem. Bez tego niektóre dane w encji Doctrine będą
-podczas walidacji traktowane jako "barkująceymi", choć nie jest to prawdziwe.
+kilku różnego rodzaju działań na obiekcie przed jego walidacją. Na przykład, jest
+używany przez Doctrine w zapytaniu o wszystkie „leniwie ładowane” dane w
+obiekcie przed jego walidacją. Bez tego niektóre dane w encji Doctrine będą
+podczas walidacji traktowane jako "brakujące", choć nie jest to prawdziwe.
 
-Jeśli zachodzi pootrzeba użycia tego tagu, to wystarczy zrobić nową klasę implementujacą
-interfejs :class:`Symfony\\Component\\Validator\\ObjectInitializerInterface`.
+Jeśli zachodzi potrzeba użycia tego tagu, to wystarczy stworzyć nową klasę
+implementujacą interfejs
+:class:`Symfony\\Component\\Validator\\ObjectInitializerInterface`.
 Następnie oznaczyć ją tagiem ``validator.initializer`` (nie ma on opcji).
 
-Dla przykładu obejrzyj klasę ``EntityInitializer`` wewnątrz Doctrine Bridge.
+Dla przykładu przyjrzyj się klasie ``EntityInitializer`` wewnątrz Doctrine Bridge.
 
 .. _`dokumentacją Twiga`: http://twig.sensiolabs.org/doc/advanced.html#creating-an-extension
 .. _`oficjalne repozytorium Twiga`: https://github.com/fabpot/Twig-extensions
