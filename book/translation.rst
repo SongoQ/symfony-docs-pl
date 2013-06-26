@@ -927,7 +927,7 @@ Wymuszanie tłumaczeń regionalnych
 ---------------------------------
 
 Podczas tłumaczenia komunikatu Symfony2 używa identyfikatora regionalnego z bieżącego
-żądania lub w razie konieczności z wartości parametru ``fallback``. Można również
+żądania lub z wartości parametru ``fallback`` w razie konieczności. Można również
 ręcznie określić identyfikator regionalny do zastosowania w tłumaczeniu::
 
     $this->get('translator')->trans(
