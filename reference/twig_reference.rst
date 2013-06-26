@@ -179,7 +179,7 @@ Zmienne globalne
 ----------------
 
 +-----------------------------------------------------+---------------------------------------------------------------------------+
-| Variable                                            | Zastosowanie                                                              |
+| Zmienna                                             | Zastosowanie                                                              |
 +=====================================================+===========================================================================+
 | ``app`` *Attributes*: ``app.user``, ``app.request`` | Zmienna ``app`` jest dostępna wszędzie i umożliwia szybki dostęp do wielu |
 | ``app.session``, ``app.environment``, ``app.debug`` | najczęściej potrzebnych obiektów. Zmienna ``app`` jest instancją klasy    |
