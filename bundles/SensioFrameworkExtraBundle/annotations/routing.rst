@@ -176,7 +176,7 @@ Kontroler jako usługa
 
 Adnotacja *@Route* w klasie kontrolera może być również wykorzystywana do przypisania
 klasy kontrolera do usługi tak, że rezolwer kontrolera będzie tworzył instancję
-kontrolera przez pobieranie jej z kontenera DI zamiast wywoływania
+kontrolera przez pobieranie jej z kontenera DI zamiast wywoływanie
 ``new PostController()``::
 
    /**
