@@ -62,7 +62,7 @@ Funkcje
 |                                                    | :ref:`reference-forms-twig-end`.                                                            |
 +----------------------------------------------------+---------------------------------------------------------------------------------------------+
 | ``form_enctype(view)``                             | Renderuje obowiązkowy atrybut ``enctype="multipart/form-data"``                             |
-|                                                    | jeśli formularz zawiera co najmnij jedno pole ładujące dane, więcej informacji w            |
+|                                                    | jeśli formularz zawiera co najmnij jedno zaktualizowane pole, więcej informacji w           |
 |                                                    | :ref:`reference-forms-twig-enctype`.                                                        |
 +----------------------------------------------------+---------------------------------------------------------------------------------------------+
 | ``form_widget(view, variables = {})``              | Renderuje kompletny formularz lub konkretny kod widgetu HTML pola,                          |
