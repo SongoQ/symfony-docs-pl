@@ -5,20 +5,19 @@
 .. index::
    single: pakiety; dziedziczenie
 
-Jak wykorzystywać dziedziczenie pakietów w celu zastępowania części pakietu
-===========================================================================
+"Jak wykorzystywać dziedziczenie pakietów w celu zastępowania części pakietu
+============================================================================
 
-When working with third-party bundles, you'll probably come across a situation
-where you want to override a file in that third-party bundle with a file
-in one of your own bundles. Symfony gives you a very convenient way to override
-things like controllers, templates, and other files in a bundle's
-``Resources/`` directory.
+Podczas pracy z pakietami osób trzecich, najprawdopodobnie nadejdzie moment,
+w którym potrzeba będzie zastąpić plik z zewnętrznego pakietu plikiem
+obecnym we własnym pakiecie. Symfony umożliwia w bardzo wygodny sposób przesłanianie
+kontrolerów, szablonów i innych plików obecnych w katalogu ``Resources/``.
 
-For example, suppose that you're installing the `FOSUserBundle`_, but you
-want to override its base ``layout.html.twig`` template, as well as one of
-its controllers. Suppose also that you have your own ``AcmeUserBundle``
-where you want the overridden files to live. Start by registering the ``FOSUserBundle``
-as the "parent" of your bundle::
+Załóżmy na przykład, że instalując pakiet `FOSUserBundle`_ następuje potrzeba
+zastąpienia jego bazowego szablonu ``layout.html.twig`` oraz jego kontrolerów.
+Załóżmy także, że powstanie lokalny pakiet ``AcmeUserBundle``, gdzie będą
+trzymywane wszystkie przesłonięte pliki. By rozpocząć, należy zarejestrować
+pakiet ``FOSUserBundle`` jako "rodzica" pakietu ``AcmeUserBundle``::
 
     // src/Acme/UserBundle/AcmeUserBundle.php
     namespace Acme\UserBundle;
@@ -33,21 +32,22 @@ as the "parent" of your bundle::
         }
     }
 
-By making this simple change, you can now override several parts of the ``FOSUserBundle``
-simply by creating a file with the same name.
+Poprzez tą prostą zmianę, można teraz zastąpić kilka części pakietu ``FOSUserBundle``
+tworząc plik o identycznej nazwie.
 
 .. note::
 
-    Despite the method name, there is no parent/child relationship between 
-    the bundles, it is just a way to extend and override an existing bundle.
+    Pomimo nazwy metody, nie ma relacji "rodzic-dziecko" pomiędzy pakietami,
+    jest to tylko sposób na rozszerzenie i zastąpienie istniejącego pakietu.
 
-Overriding Controllers
-~~~~~~~~~~~~~~~~~~~~~~
+Przesłanianie kontrolerów
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Suppose you want to add some functionality to the ``registerAction`` of a
-``RegistrationController`` that lives inside ``FOSUserBundle``. To do so,
-just create your own ``RegistrationController.php`` file, override the bundle's
-original method, and change its functionality::
+Załóżmy, że trzeba dodać funkcjonalność do akcji ``registerAction`` z kontrolera
+``RegistrationController``, który mieści się w pakiecie ``FOSUserBundle``. Aby to
+zrobić, należy stworzyć swój plik kontrolera ``RegistrationController.php``,
+zastąpić oryginalną metodę pakietu ``FOSUserBundle``, a następnie zmienić jej
+funkcjonalność::
 
     // src/Acme/UserBundle/Controller/RegistrationController.php
     namespace Acme\UserBundle\Controller;
@@ -67,42 +67,43 @@ original method, and change its functionality::
 
 .. tip::
 
-    Depending on how severely you need to change the behavior, you might
-    call ``parent::registerAction()`` or completely replace its logic with
-    your own.
+    W zależności od tego, jak bardzo trzeba zmienić konkretne zachowanie,
+    można wywołać ``parent::registerAction()``, albo też całkowicie zastąpić jego
+    logike swoją własną.
 
 .. note::
 
-    Overriding controllers in this way only works if the bundle refers to
-    the controller using the standard ``FOSUserBundle:Registration:register``
-    syntax in routes and templates. This is the best practice.
+    Przesłanianie w ten sposób kontrolerów zadziały tylko, gdy pakiet
+    dotyczy kontrolera używającego standardowej składni ``FOSUserBundle::Registration::register``
+    dla tras i szablonów. Jest to najlepsza praktyka.
 
-Overriding Resources: Templates, Routing, Validation, etc
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Przesłanianie zasobów: szablony, trasowanie, walidacja, itd.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Most resources can also be overridden, simply by creating a file in the same
-location as your parent bundle.
+Większość zasobów może zostać przesłonięta, dzięki prostemu stworzeniu pliku w
+tej samej lokakalizacji co w pakiecie nadrzędnym.
 
-For example, it's very common to need to override the ``FOSUserBundle``'s
-``layout.html.twig`` template so that it uses your application's base layout.
-Since the file lives at ``Resources/views/layout.html.twig`` in the ``FOSUserBundle``,
-you can create your own file in the same location of ``AcmeUserBundle``.
-Symfony will ignore the file that lives inside the ``FOSUserBundle`` entirely,
-and use your file instead.
+Bardzo często zdarza się, że trzeba zastąpić szablon ``layout.html.twig`` z
+pakietu ``FOSUserBundle``, tak, aby używał głównego układu lokalnej aplikacji.
+Ponieważ plik ten mieści się wewnątrz pakietu w ``Resources/views/layout.html.twig``
+``FOSUserBundle``, można utworzyc swój plik w tej samej lokalizacji, tyle że w
+pakiecie ``AcmeUserBundle``. Symfony zignoruje wówczas plik, który mieści się
+wewnątrz pakietu ``FOSUserBundle``, a użyje zamiast tego pliku z lokalnego
+pakietu ``AcmeUserBundle``.
 
-The same goes for routing files, validation configuration and other resources.
+To samo dotyczy plików trasowania, walidacji, konfiguracji i innych zasobów.
 
 .. note::
 
-    The overriding of resources only works when you refer to resources with
-    the ``@FosUserBundle/Resources/config/routing/security.xml`` method.
-    If you refer to resources without using the @BundleName shortcut, they
-    can't be overridden in this way.
+    Przesłanianie zasobów zadziała tylko wtedy, gdy odnoszono się do nich z
+    użyciem metody ``@FosUserBundle/Resources/config/routing/security.xml``.
+    Jeśli odnoszono się do nich bez użycia skrótu @BundleName, wówczas nie
+    zostaną one zastąpione w ten sposób.
 
 .. caution::
 
-   Translation files do not work in the same way as described above. Read
-   :ref:`override-translations` if you want to learn how to override
-   translations.
+    Pliki tłumaczeń nie działają w ten sam sposób, jak opisano powyżej.
+    Przeczytaj :ref:`override-translations`, jeśli chcesz dowiedzieć się jak
+    zastąpić tłumaczenia.
 
 .. _`FOSUserBundle`: https://github.com/friendsofsymfony/fosuserbundle
