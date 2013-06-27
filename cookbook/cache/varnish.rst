@@ -1,84 +1,122 @@
 .. index::
     single: Cache; Varnish
 
-Jak używać Varnish do przyśpieszenia Strony WWW
-===============================================
+How to use Varnish to speed up my Website
+=========================================
 
-Ponieważ Symfony2 używa standardowego cachowania nagłówkami HTTP,
-:ref:`symfony-gateway-cache` może być łatwo zamieniony przez inny "reverse proxy".
-Varnish jest potężnym, open-sourcowym, akceleratorem HTTP który jest wstanie obsłużyć
-szybko zacechowaną treść, wspierany jest także :ref:`Edge Side Includes<edge-side-includes>`.
+Because Symfony2's cache uses the standard HTTP cache headers, the
+:ref:`symfony-gateway-cache` can easily be replaced with any other reverse
+proxy. Varnish is a powerful, open-source, HTTP accelerator capable of serving
+cached content quickly and including support for :ref:`Edge Side
+Includes<edge-side-includes>`.
 
 .. index::
     single: Varnish; configuration
 
-Konfiguracja
-------------
+Configuration
+-------------
 
-Jak widzieliśmy wcześniej, Symfony2 jest wystarczająco spryty aby wykryć czy komunikuje się 
-z reverse proxy który rozpoznaje ESI lub też nie. Funkcjonalność ta dostępna jest od razu
-jeśli korzystasz z reverse proxy dostępnego w Symfony2, ale aby działało to z Varnishem potrzebujesz
-dodatkowej konfiguracji. Na szczęście, Symfony2 opiera się na jeszcze innym standardzie napisanym przez Akamaï (`Edge Architecture`_),
-więc porady konfiguracyjne w tym dziale będą przydatne nawet jeśli nie korzystasz z Symfony2.
+As seen previously, Symfony2 is smart enough to detect whether it talks to a
+reverse proxy that understands ESI or not. It works out of the box when you
+use the Symfony2 reverse proxy, but you need a special configuration to make
+it work with Varnish. Thankfully, Symfony2 relies on yet another standard
+written by Akamaï (`Edge Architecture`_), so the configuration tips in this
+chapter can be useful even if you don't use Symfony2.
 
 .. note::
 
-    Varnish wspiera tylko atrybuty ``src`` dla tagów ESI (``onerror`` oraz ``alt``
-    są ignorowane).
+    Varnish only supports the ``src`` attribute for ESI tags (``onerror`` and
+    ``alt`` attributes are ignored).
 
-Po pierwsze, skonfiguruj Varnish tak aby wspierał ESI poprzez dodanie nagłówka ``Surrogate-Capability``
-do zapytań (requests) przekierowanych do aplikacji:
+First, configure Varnish so that it advertises its ESI support by adding a
+``Surrogate-Capability`` header to requests forwarded to the backend
+application:
 
 .. code-block:: text
 
     sub vcl_recv {
+        // Add a Surrogate-Capability header to announce ESI support.
         set req.http.Surrogate-Capability = "abc=ESI/1.0";
     }
 
-Następnie, zoptymalizuj Varnish aby analizował tylko zawartość Response
-jeśli zdefiniowany jest przynajmniej jeden tag ESI poprzez sprawdzenie nagłówka ``Surrogate-Control``
-który to jest dodawany automatycznie przez Symfony2:
+Then, optimize Varnish so that it only parses the Response contents when there
+is at least one ESI tag by checking the ``Surrogate-Control`` header that
+Symfony2 adds automatically:
 
 .. code-block:: text
 
     sub vcl_fetch {
+        /* 
+        Check for ESI acknowledgement 
+        and remove Surrogate-Control header
+        */
         if (beresp.http.Surrogate-Control ~ "ESI/1.0") {
             unset beresp.http.Surrogate-Control;
 
-            // for Varnish >= 3.0
+            // For Varnish >= 3.0
             set beresp.do_esi = true;
-            // for Varnish < 3.0
+            // For Varnish < 3.0
             // esi;
         }
     }
 
 .. caution::
 
-    Kompresja z ESI nie była wspierana w Varnish przed wersją 3.0 (przeczytaj `GZIP and Varnish`_).
-    Jeśli nie używasz Varnish w wersji 3.0, umieść serwer przed Varnishem dla uzyskania kompresji.
+    Compression with ESI was not supported in Varnish until version 3.0
+    (read `GZIP and Varnish`_). If you're not using Varnish 3.0, put a web
+    server in front of Varnish to perform the compression.
 
 .. index::
     single: Varnish; Invalidation
 
-Unieważnienie Cache
--------------------
+Cache Invalidation
+------------------
 
-Nie powinieneś mieć potrzeby do unieważniania cache ponieważ funkcjonalność ta jest 
-natywnie obsługiwana przez modele cache HTTP (zobacz :ref:`http-cache-invalidation`).
+You should never need to invalidate cached data because invalidation is already
+taken into account natively in the HTTP cache models (see :ref:`http-cache-invalidation`).
 
-Mimo to, Varnish może być skonfigurowany do używania specjalnej metody HTTP ``PURGE``
-która unieważni cache dla danego zasobu:
+Still, Varnish can be configured to accept a special HTTP ``PURGE`` method
+that will invalidate the cache for a given resource:
 
 .. code-block:: text
 
-    sub vcl_hit {
+    /* 
+     Connect to the backend server 
+     on the local machine on port 8080
+     */
+    backend default {
+        .host = "127.0.0.1";
+        .port = "8080";
+    }
+
+    sub vcl_recv {
+        /* 
+        Varnish default behaviour doesn't support PURGE.
+        Match the PURGE request and immediately do a cache lookup, 
+        otherwise Varnish will directly pipe the request to the backend
+        and bypass the cache        
+        */
         if (req.request == "PURGE") {
+            return(lookup);
+        }
+    }
+
+    sub vcl_hit {
+        // Match PURGE request
+        if (req.request == "PURGE") {
+            // Force object expiration for Varnish < 3.0
             set obj.ttl = 0s;
+            // Do an actual purge for Varnish >= 3.0
+            // purge;
             error 200 "Purged";
         }
     }
 
     sub vcl_miss {
+        /*
+        Match the PURGE request and
+        indicate the request wasn't stored in cache.
+        */
         if (req.request == "PURGE") {
             error 404 "Not purged";
         }
@@ -86,7 +124,57 @@ która unieważni cache dla danego zasobu:
 
 .. caution::
 
-    Musisz chronić metodę HTTP ``PURGE`` przed nieautoryzowanym czyszczeniem cache.
+    You must protect the ``PURGE`` HTTP method somehow to avoid random people
+    purging your cached data. You can do this by setting up an access list: 
+
+    .. code-block:: text
+
+        /* 
+         Connect to the backend server 
+         on the local machine on port 8080
+         */
+        backend default {
+            .host = "127.0.0.1";
+            .port = "8080";
+        }
+
+        // Acl's can contain IP's, subnets and hostnames
+        acl purge {
+            "localhost";
+            "192.168.55.0"/24;
+        }
+
+        sub vcl_recv {
+            // Match PURGE request to avoid cache bypassing
+            if (req.request == "PURGE") {
+                // Match client IP to the acl
+                if (!client.ip ~ purge) {
+                    // Deny access
+                    error 405 "Not allowed.";
+                }
+                // Perform a cache lookup
+                return(lookup);
+            }
+        }
+
+        sub vcl_hit {
+            // Match PURGE request
+            if (req.request == "PURGE") {
+                // Force object expiration for Varnish < 3.0
+                set obj.ttl = 0s;
+                // Do an actual purge for Varnish >= 3.0
+                // purge;
+                error 200 "Purged";
+            }
+        }
+
+        sub vcl_miss {
+            // Match PURGE request    
+            if (req.request == "PURGE") {
+                // Indicate that the object isn't stored in cache
+                error 404 "Not purged";
+            }
+        }
 
 .. _`Edge Architecture`: http://www.w3.org/TR/edge-arch
 .. _`GZIP and Varnish`: https://www.varnish-cache.org/docs/3.0/phk/gzip.html
