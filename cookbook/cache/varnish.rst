@@ -1,88 +1,90 @@
 .. index::
-    single: Cache; Varnish
+    single: pamięć podręczna; Varnish
 
-How to use Varnish to speed up my Website
-=========================================
+Jak używać Varnish do przyspieszania stron www
+==============================================
 
-Because Symfony2's cache uses the standard HTTP cache headers, the
-:ref:`symfony-gateway-cache` can easily be replaced with any other reverse
-proxy. Varnish is a powerful, open-source, HTTP accelerator capable of serving
-cached content quickly and including support for :ref:`Edge Side
-Includes<edge-side-includes>`.
+Ponieważ mechanizm buforowania (ang. cache) Symfony2 używa standardowych
+nagłówków buforowania (ang. cache headers) protokołu HTTP, :ref:`symfony-gateway-cache`,
+może on zostać z łatwością zastąpiony przez jakikolwiek inny serwer "reverse proxy".
+Varnish to potężny, otwartoźródłowy akcelerator HTTP, który jest w stanie
+zarówno obsłużyć buforowane treści szybko, jak i zapewnić wsparcie dla
+języka znaczników :ref:`Edge Side Includes<edge-side-includes>`.
 
 .. index::
-    single: Varnish; configuration
+    single: Varnish; konfiguracja
 
-Configuration
--------------
+Konfiguracja
+------------
 
-As seen previously, Symfony2 is smart enough to detect whether it talks to a
-reverse proxy that understands ESI or not. It works out of the box when you
-use the Symfony2 reverse proxy, but you need a special configuration to make
-it work with Varnish. Thankfully, Symfony2 relies on yet another standard
-written by Akamaï (`Edge Architecture`_), so the configuration tips in this
-chapter can be useful even if you don't use Symfony2.
+Jak wspomniano wcześniej, framework Symfony2 jest wystarczająco inteligentny, aby wykryć
+czy komunikacja przebiegała z udziałem serwera "reverse proxy" rozpoznającego ESI,
+czy też nie. Wszystko zadziała z automatu, jeśli używano serwera "reverse proxy"
+Symfony2, należy jednak dokonać dodatkowej konfiguracji w chwili, gdy planuje się pracę z
+akceleratorem Varnish. Na szczęście Symfony2 opiera się na jeszcze innym standardzie
+stworzonym przez Akamaï (`Architektura Edge`_), to też wskazówki konfiguracyjne w
+tym rozdziale powinny być przydatne nawet wówczas, gdy nie planuje się korzystać z Symfony2.
 
 .. note::
 
-    Varnish only supports the ``src`` attribute for ESI tags (``onerror`` and
-    ``alt`` attributes are ignored).
+    Varnish wspiera tylko atrybuty ``src`` dla tagów ESI (atrybuty ``onerror``
+    i ``alt`` są ignorowane).
 
-First, configure Varnish so that it advertises its ESI support by adding a
-``Surrogate-Capability`` header to requests forwarded to the backend
-application:
+Po pierwsze należy skonfigurować Varnish, aby powiadamiał o wsparciu dla ESI
+poprzez dodanie nagłówka ``Surrogate-Capability`` do zapytań (ang. requests)
+przekierowywanych do aplikacji zaplecza:
 
 .. code-block:: text
 
     sub vcl_recv {
-        // Add a Surrogate-Capability header to announce ESI support.
+        // Dodaj nagłówek Surrogate-Capability, aby ogłosić wsparcie dla ESI.
         set req.http.Surrogate-Capability = "abc=ESI/1.0";
     }
 
-Then, optimize Varnish so that it only parses the Response contents when there
-is at least one ESI tag by checking the ``Surrogate-Control`` header that
-Symfony2 adds automatically:
+Następnie należy zoptymalizować Varnish, aby analizował tylko te treści odpowiedzi
+serwera (ang. Response), które zawierają przynajmniej jeden tag ESI poprzez
+sprawdzanie nagłówka ``Surrogate-Control`` dodawanego automatycznie przez framework Symfony2:
 
 .. code-block:: text
 
     sub vcl_fetch {
-        /* 
-        Check for ESI acknowledgement 
-        and remove Surrogate-Control header
+        /*
+        Sprawdź potwierdzenie ESI
+        i usuń nagłówek Surrogate-Control
         */
         if (beresp.http.Surrogate-Control ~ "ESI/1.0") {
             unset beresp.http.Surrogate-Control;
 
-            // For Varnish >= 3.0
+            // Dla Varnish >= 3.0
             set beresp.do_esi = true;
-            // For Varnish < 3.0
+            // Dla Varnish < 3.0
             // esi;
         }
     }
 
 .. caution::
 
-    Compression with ESI was not supported in Varnish until version 3.0
-    (read `GZIP and Varnish`_). If you're not using Varnish 3.0, put a web
-    server in front of Varnish to perform the compression.
+    Kompresja z ESI nie była dostępna w Varnish aż do wersji 3.0 (proszę
+    przeczytać `GZIP i Varnish`_). Jeśli nie używa się Varnish w wersji 3.0,
+    należy umieścić dodatkowy serwer przed Varnish w celu wykonania poprawnej kompresji.
 
 .. index::
-    single: Varnish; Invalidation
+    single: Varnish; unieważnienie
 
-Cache Invalidation
-------------------
+Unieważnienie pamięci podręcznej
+--------------------------------
 
-You should never need to invalidate cached data because invalidation is already
-taken into account natively in the HTTP cache models (see :ref:`http-cache-invalidation`).
+Nie powinno być konieczne unieważnienie danych pamięci podręcznej, gdyż proces
+ten jest natywnie obsługiwany w modelach buforowania HTTP (proszę zobaczyć :ref:`http-cache-invalidation`).
 
-Still, Varnish can be configured to accept a special HTTP ``PURGE`` method
-that will invalidate the cache for a given resource:
+Mimo to, Varnish może zostać skonfigurowany do obsługi specjalnej metody ``PURGE``
+protokołu HTTP, która będzie w stanie unieważnić pamięć podręczną dla danego zasobu:
 
 .. code-block:: text
 
-    /* 
-     Connect to the backend server 
-     on the local machine on port 8080
+    /*
+     Połącz się z serwerem zaplecza
+     na maszynie lokalnej na porcie 8080
      */
     backend default {
         .host = "127.0.0.1";
@@ -90,11 +92,11 @@ that will invalidate the cache for a given resource:
     }
 
     sub vcl_recv {
-        /* 
-        Varnish default behaviour doesn't support PURGE.
-        Match the PURGE request and immediately do a cache lookup, 
-        otherwise Varnish will directly pipe the request to the backend
-        and bypass the cache        
+        /*
+        Domyślne zachowanie Varnish nie wspiera metody PURGE.
+        Dopasuj zapytanie PURGE i natychmiast wykonaj sprawdzenie
+        pamięci podręcznej, w innym przypadku Varnish przekieruje to zapytanie
+        bezpośrednio do zaplecza, a tym samym ominie jakiekolwiek buforownie.
         */
         if (req.request == "PURGE") {
             return(lookup);
@@ -102,20 +104,20 @@ that will invalidate the cache for a given resource:
     }
 
     sub vcl_hit {
-        // Match PURGE request
+        // Dopasuj zapytanie PURGE
         if (req.request == "PURGE") {
-            // Force object expiration for Varnish < 3.0
+            // Wymuś ważność obiektu dla Varnish < 3.0
             set obj.ttl = 0s;
-            // Do an actual purge for Varnish >= 3.0
-            // purge;
+            // Dokonaj właściwego czyszczenia dla for Varnish >= 3.0
+            // czyszczenie;
             error 200 "Purged";
         }
     }
 
     sub vcl_miss {
         /*
-        Match the PURGE request and
-        indicate the request wasn't stored in cache.
+        Dopasuj zapytanie PURGE i
+        oznacz, że nie było zapisane w pamięci podręcznej
         */
         if (req.request == "PURGE") {
             error 404 "Not purged";
@@ -124,57 +126,58 @@ that will invalidate the cache for a given resource:
 
 .. caution::
 
-    You must protect the ``PURGE`` HTTP method somehow to avoid random people
-    purging your cached data. You can do this by setting up an access list: 
+    Należy chronić metodę ``PURGE`` protokołu HTTP w celu uniknięcia sytuacji,
+    w której przypadkowi ludzie wyczyściliby dane z pamięci podręcznej. Można to
+    zrobić poprzez ustawienie list dostępu:
 
     .. code-block:: text
 
-        /* 
-         Connect to the backend server 
-         on the local machine on port 8080
+        /*
+         Połącz się z serwerem zaplecza
+         na lokalnej maszynie na porcie 8080
          */
         backend default {
             .host = "127.0.0.1";
             .port = "8080";
         }
 
-        // Acl's can contain IP's, subnets and hostnames
+        // Lista dostępu może zawierać adresy IP, podsieci i nazwy hostów
         acl purge {
             "localhost";
             "192.168.55.0"/24;
         }
 
         sub vcl_recv {
-            // Match PURGE request to avoid cache bypassing
+            // Dopasuj zapytanie PURGE, aby zapobiec pominięciu procesu buforowania
             if (req.request == "PURGE") {
-                // Match client IP to the acl
+                // Dopasuj adres IP klienta do listy dostępu
                 if (!client.ip ~ purge) {
-                    // Deny access
+                    // Odmowa dostępu
                     error 405 "Not allowed.";
                 }
-                // Perform a cache lookup
+                // Przygotuj sprawdzenie pamięci podręcznej
                 return(lookup);
             }
         }
 
         sub vcl_hit {
-            // Match PURGE request
+            // Dopasuj zapytanie PURGE
             if (req.request == "PURGE") {
-                // Force object expiration for Varnish < 3.0
+                // Wymuś ważność obiektu dla Varnish < 3.0
                 set obj.ttl = 0s;
-                // Do an actual purge for Varnish >= 3.0
-                // purge;
+                // Dokonaj właściwego czyszczenia dla for Varnish >= 3.0
+                // czyszczenie;
                 error 200 "Purged";
             }
         }
 
         sub vcl_miss {
-            // Match PURGE request    
+            // Dopasuj zapytanie PURGE
             if (req.request == "PURGE") {
-                // Indicate that the object isn't stored in cache
+                // Oznacz, że obiekt nie jest zapisany w pamięci podręcznej
                 error 404 "Not purged";
             }
         }
 
-.. _`Edge Architecture`: http://www.w3.org/TR/edge-arch
-.. _`GZIP and Varnish`: https://www.varnish-cache.org/docs/3.0/phk/gzip.html
+.. _`Architektura Edge`: http://www.w3.org/TR/edge-arch
+.. _`GZIP i Varnish`: https://www.varnish-cache.org/docs/3.0/phk/gzip.html

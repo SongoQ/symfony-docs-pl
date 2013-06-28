@@ -1,5 +1,5 @@
-Cache
-=====
+Pamięć podręczna (ang. cache)
+=============================
 
 .. toctree::
     :maxdepth: 2
