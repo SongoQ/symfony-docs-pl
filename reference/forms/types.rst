@@ -1,19 +1,19 @@
 .. index::
-   single: Forms; Types Reference
+   single: formularze; typy
 
-Typy Formularza
-===============
+Typy fomularzowe
+================
 
 .. toctree::
    :maxdepth: 1
    :hidden:
 
    types/birthday
+   types/button
    types/checkbox
    types/choice
    types/collection
    types/country
-   types/csrf
    types/date
    types/datetime
    types/email
@@ -31,7 +31,9 @@ Typy Formularza
    types/percent
    types/radio
    types/repeated
+   types/reset
    types/search
+   types/submit
    types/text
    types/textarea
    types/time
@@ -39,12 +41,12 @@ Typy Formularza
    types/url
 
 Formularz składa się z *pól*, z których każdy zbudowany jest z pomocą
-*typu* pola (np. typ ``text``, typ ``choice``, etc.). Symfony2 posiada
-sporą listę wbudowanych typów pól które mogą być użyte w Twojej aplikacji.
+*typu* pola (np. typ ``text``, typ ``choice`` itd.). Symfony2 posiada
+sporą listę wbudowanych typów pól które mogą być użyte w aplikacji.
 
-Wspierane Typy Pól
----------------------
+Obsługiwane typy pól
+--------------------
 
-Następujące typy pól są natywnie dostępne w Symfony2:
+w Symfony2 w Symfony2 są natywnie następujące typy pól:
 
 .. include:: /reference/forms/types/map.rst.inc

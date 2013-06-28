@@ -1,62 +1,62 @@
 .. index::
-   single: Forms; Fields; birthday
+   single: formularze; pola; birthday
 
-Data urodzin (birthday) - Typ Pola
-============================
+Typ pola: birthday
+==================
+
 Pole :doc:`date</reference/forms/types/date>` które specjalizuje się w
 obsługiwaniu daty urodzin.
 
-Może zostać wyrenderowany jako pojedyńczy input text, trzy inputy text
-(miesiąc, dzień, i rok), lub jako trzy pola typu select.
+Może zostać wyrenderowane jako pojedyńcze pole tekstowe, trzy pola tekstowe
+(*month*, *day* i *year*) lub jako trzy pola wyboru.
 
 Typ ten jest zasadniczno identyczny z typem :doc:`date</reference/forms/types/date>`,
 ale z bardziej właściwą domyślną wartością dla opcji `years`_. Opcja `years`_
 przyjmuje wartość 120 lat wstecz od aktualnego roku.
 
-+------------------------+-----------------------------------------------------------------------------+
-| Podstawowe Typy Danych | może być ``DateTime``, ``string``, ``timestamp``, or ``array``              |
-|                        | (zobacz :ref:`opcję input<form-reference-date-input>`)                      |
-+------------------------+-----------------------------------------------------------------------------+
-| Generowane jako        | mogą to być trzy pola select, lub 1 lub 3 pola text, w oparciu              |
-|                        | o opcję `widget`_                                                           |
-+------------------------+------------------------------------------------------------------------------------------------------------------------+
-| Opcje                  | - `years`_                                                                                                             |
-+------------------------+------------------------------------------------------------------------------------------------------------------------+
-| Odziedziczone          | - `widget`_                                                                                                            |
-| opcje                  | - `input`_                                                                                                             |
-|                        | - `input`_                                                                    |
-|                        | - `months`_                                                                   |
-|                        | - `days`_                                                                     |
-|                        | - `format`_                                                                   |
-|                        | - `data_timezone`_                                                            |
-|                        | - `user_timezone`_                                                            |
-|                        | - `invalid_message`_                                                          |
-|                        | - `invalid_message_parameters`_                                               |
-|                        | - `read_only`_                                                                |
-|                        | - `disabled`_                                                                 |
-|                        | - `mapped`_                                                                   |
-|                        | - `inherit_data`_                                                             |
-+------------------------+------------------------------------------------------------------------------------------------------------------------+
-| Rodzic                 | :doc:`date</reference/forms/types/date>`                                                                               |
-+------------------------+------------------------------------------------------------------------------------------------------------------------+
-| Klasa                  | :class:`Symfony\\Component\\Form\\Extension\\Core\\Type\\BirthdayType`                                                 |
-+------------------------+------------------------------------------------------------------------------------------------------------------------+
++------------------------+--------------------------------------------------------------------------+
+| Podstawowe Typy Danych | może być to ``DateTime``, ``string``, ``timestamp`` lub ``array``        |
+|                        | (zobacz :ref:`form-reference-date-input`)                                |
++------------------------+--------------------------------------------------------------------------+
+| Generowane jako        | mogą to być trzy pola wyboru albo 1 lub 3 pola tekstowe, oparte na opcji |
+|                        | `widget`_                                                                |
++------------------------+--------------------------------------------------------------------------+
+| Opcje przesłaniane     | - `years`_                                                               |
++------------------------+--------------------------------------------------------------------------+
+| Opcje odziedziczone    | - `widget`_                                                              |
+|                        | - `input`_                                                               |
+|                        | - `months`_                                                              |
+|                        | - `days`_                                                                |
+|                        | - `format`_                                                              |
+|                        | - `data_timezone`_                                                       |
+|                        | - `user_timezone`_                                                       |
+|                        | - `invalid_message`_                                                     |
+|                        | - `invalid_message_parameters`_                                          |
+|                        | - `read_only`_                                                           |
+|                        | - `disabled`_                                                            |
+|                        | - `mapped`_                                                              |
+|                        | - `inherit_data`_                                                        |
++------------------------+--------------------------------------------------------------------------+
+| Typ nadrzędny          | :doc:`date</reference/forms/types/date>`                                 |
++------------------------+--------------------------------------------------------------------------+
+| Klasa                  | :class:`Symfony\\Component\\Form\\Extension\\Core\\Type\\BirthdayType`   |
++------------------------+--------------------------------------------------------------------------+
 
-Opcje Pola
----------
+Opcje przesłoniane
+------------------
 
 years
 ~~~~~
 
 **typ**: ``array`` **domyślnie**: 120 lat wstecz od aktualnego roku
 
-Lista lat dostępna dla pola typu "year". Opcja ta dotyczy tylko wtedy
-gdy opcja ``widget`` jest ustawiona na wartość ``choice``.
+Lista lat dostępna typu pola *yaer*. Opcja ta jest istotna tylko gdy opcja ``widget``
+jest ustawiona na ``choice``.
 
-Odziedziczone opcje
------------------
+Opcje odziedziczone
+-------------------
 
-Opcje te są odziedziczone z typu :doc:`date</reference/forms/types/date>`:
+Opcje dziedziczone z typu :doc:`date</reference/forms/types/date>`:
 
 .. include:: /reference/forms/types/options/date_widget.rst.inc
     
@@ -72,7 +72,7 @@ Opcje te są odziedziczone z typu :doc:`date</reference/forms/types/date>`:
 
 .. include:: /reference/forms/types/options/user_timezone.rst.inc
 
-Opcje te dziedziczą po typie :doc:`date</reference/forms/types/form>`:
+Opcje dziedziczone z typu :doc:`date</reference/forms/types/form>`:
 
 .. include:: /reference/forms/types/options/invalid_message.rst.inc
 
