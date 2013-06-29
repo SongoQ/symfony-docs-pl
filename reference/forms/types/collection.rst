@@ -137,32 +137,33 @@ Aby umożliwić użytkownikowi dodanie innego adresu email, wystarczy ustawić o
 `allow_add`_ na ``true`` i (poprzez JavaScript) wyrenderować inne pole z nazwą
 ``form[emails][2]`` (i tak dale coraz więcej pól).
 
-To help make this easier, setting the `prototype`_ option to ``true`` allows
-you to render a "template" field, which you can then use in your JavaScript
-to help you dynamically create these new fields. A rendered prototype field
-will look like this:
+W celu ułatwienia, trzeba ustawić opcję `prototype`_ na ``true``, umożliwiając
+wyrenderowanie pola "template", które można następnie użyć w kodzie JavaScript,
+pomagając w ten sposób utworzyć to nowe pole. Wyrenderowane prototypowe pole
+wygląda tak:
 
 .. code-block:: html
 
     <input type="email" id="form_emails___name__" name="form[emails][__name__]" value="" />
 
-By replacing ``__name__`` with some unique value (e.g. ``2``),
-you can build and insert new HTML fields into your form.
+Zastępując ``__name__`` jakąś unikalną wartością (np. ``2``), można zbudować i
+dołączyć do formularza nowe pola HTML.
 
-Using jQuery, a simple example might look like this. If you're rendering
-your collection fields all at once (e.g. ``form_row(form.emails)``), then
-things are even easier because the ``data-prototype`` attribute is rendered
-automatically for you (with a slight difference - see note below) and all
-you need is the JavaScript:
+Przy wykorzystaniu jQuery prosty przykład może wyglądać, tak jak niżej. Jeżeli
+renderujemy naraz kolekcję wszystkich pól (np. ``form_row(form.emails)``), to
+następnie wszystkie rzeczy są nawet łatwiejsze, ponieważ atrybut ``data-prototype``
+zostaje wyrenderowany automatycznie (z drobną różnicą – przeczytaj uwagę poniżej)
+i wszystko, co się potrzebuje jest w kodzie JavaScript:
 
 .. configuration-block::
 
     .. code-block:: html+jinja
+       :linenos:
 
         {{ form_start(form) }}
             {# ... #}
 
-            {# store the prototype on the data-prototype attribute #}
+            {# przechowanie prototypu w atrybucie data-prototype #}
             <ul id="email-fields-list" data-prototype="{{ form_widget(form.emails.vars.prototype) | e }}">
             {% for emailField in form.emails %}
                 <li>
@@ -178,22 +179,22 @@ you need is the JavaScript:
         {{ form_end(form) }}
 
         <script type="text/javascript">
-            // keep track of how many email fields have been rendered
+            // śledzenie jak dużo pól email zostało wyrenderowanych
             var emailCount = '{{ form.emails | length }}';
 
             jQuery(document).ready(function() {
                 jQuery('#add-another-email').click(function() {
                     var emailList = jQuery('#email-fields-list');
 
-                    // grab the prototype template
+                    // pobranie szablonu prototype
                     var newWidget = emailList.attr('data-prototype');
-                    // replace the "__name__" used in the id and name of the prototype
-                    // with a number that's unique to your emails
-                    // end name attribute looks like name="contact[emails][2]"
+                    // zamiana "__name__" używającego id i name prototypu
+                    // na unikalną liczbę dla naszych emaili
+                    // i zakończenie atrybutem name, wygladającym tak: name="contact[emails][2]"
                     newWidget = newWidget.replace(/__name__/g, emailCount);
                     emailCount++;
 
-                    // create a new list element and add it to the list
+                    // utworzenie elementu listy i dodanie go do listy
                     var newLi = jQuery('<li></li>').html(newWidget);
                     newLi.appendTo(jQuery('#email-fields-list'));
 
@@ -204,36 +205,35 @@ you need is the JavaScript:
 
 .. tip::
 
-    If you're rendering the entire collection at once, then the prototype
-    is automatically available on the ``data-prototype`` attribute of the
-    element (e.g. ``div`` or ``table``) that surrounds your collection. The
-    only difference is that the entire "form row" is rendered for you, meaning
-    you wouldn't have to wrap it in any container element as was done
-    above.
+    Jeśli renderuje się na raz całą kolekcję, to prototyp jest dostępny automatycznie
+    w atrybucie ``data-prototype`` elementu otaczającego kolekcję (np. ``div``
+    lub ``table``). Jedyną różnicą jest to, że renderowany jest cały "wiersz formularza",
+    co oznacza, że trzeba opakować go w jakiś element kontenerowy, tak jak to miało
+    miejsce w powyższym przykładzie.
 
-Field Options
--------------
+Opcje pola
+----------
 
 type
 ~~~~
 
-**type**: ``string`` or :class:`Symfony\\Component\\Form\\FormTypeInterface` **required**
+**typ**: ``string`` lub :class:`Symfony\\Component\\Form\\FormTypeInterface` **wymagane**
 
-This is the field type for each item in this collection (e.g. ``text``, ``choice``,
-etc). For example, if you have an array of email addresses, you'd use the
-:doc:`email</reference/forms/types/email>` type. If you want to embed
-a collection of some other form, create a new instance of your form type
-and pass it as this option.
+Jest to typ pola dla każdego elementu w kolekcji (np. ``text``, ``choice`` itd.).
+Na przykład, jeśli ma się tablicę adresów email, można użyć typu
+:doc:`email</reference/forms/types/email>`. Jeśli chce się osadzić kolekcję w
+jakimś innym formularzu, to trzeba utworzyć nową instancję typu formularzowego
+i przekazać ten obiekt jako tą opcję.
 
 options
 ~~~~~~~
 
-**type**: ``array`` **default**: ``array()``
+**typ**: ``array`` **domyślnie**: ``array()``
 
-This is the array that's passed to the form type specified in the `type`_
-option. For example, if you used the :doc:`choice</reference/forms/types/choice>`
-type as your `type`_ option (e.g. for a collection of drop-down menus), then
-you'd need to at least pass the ``choices`` option to the underlying type::
+Jest to tablica przekazywana do typ formularzowego określonego w opcji `type`_.
+Na przykład, jeśli używa się typu :doc:`choice</reference/forms/types/choice>`
+określonego w opcji `type`_ (np. dla kolekcji menu rozwijanego), to trzeba co
+najmniej przekazać opcję ``choices`` do odpowiedniego typu::
 
     $builder->add('favorite_cities', 'collection', array(
         'type'   => 'choice',
@@ -250,63 +250,65 @@ you'd need to at least pass the ``choices`` option to the underlying type::
 allow_add
 ~~~~~~~~~
 
-**type**: ``Boolean`` **default**: ``false``
+**typ**: ``Boolean`` **domyślnie**: ``false``
 
-If set to ``true``, then if unrecognized items are submitted to the collection,
-they will be added as new items. The ending array will contain the existing
-items as well as the new item that was in the submitted data. See the above
-example for more details.
+Jeśli ustawiona na ``true``, to jeśli zgłoszone zostaną elementy nie ujęte w kolekcji,
+to będą one dodane jako nowe elementy kolekcji. Ostateczna tablica będzie zawierać
+istniejące elementy, jak też elementy nowe elementy. W celu poznania szczegółów
+zobacz powyższy przykład.
 
-The `prototype`_ option can be used to help render a prototype item that
-can be used - with JavaScript - to create new form items dynamically on the
-client side. For more information, see the above example and :ref:`cookbook-form-collections-new-prototype`.
+Opcja `prototype`_ może zostać użyta do pomocy w wyrenderowaniu elementu protoptypu,
+który można wykorzystać (w JavaScript) do dynamicznego tworzenia nowych elementów
+formularza po stronie klienta. Więcej informacji można znaleźć w powyższym przykładzie
+i artykule „:ref:`cookbook-form-collections-new-prototype`”.
 
 .. caution::
 
-    If you're embedding entire other forms to reflect a one-to-many database
-    relationship, you may need to manually ensure that the foreign key of
-    these new objects is set correctly. If you're using Doctrine, this won't
-    happen automatically. See the above link for more details.
+    Jeśli osadza się w całości inne formularze w celu odzwierciedlenia relacji
+    bazodanowej jeden-do-wielu, być może trzeba będzie ręcznie zapewnić klucz
+    obcy tych nowych obiektów, by zostało to odpowiednio ustawione. Jeśli stosuje
+    się Doctrine, to nie odbędzie się to automatycznie. W celu poznania szczegółów,
+    proszę odwiedzić powyższy link.
 
 allow_delete
 ~~~~~~~~~~~~
 
-**type**: ``Boolean`` **default**: ``false``
+**typ**: ``Boolean`` **domyślnie**: ``false``
 
-If set to ``true``, then if an existing item is not contained in the submitted
-data, it will be correctly absent from the final array of items. This means
-that you can implement a "delete" button via JavaScript which simply removes
-a form element from the DOM. When the user submits the form, its absence
-from the submitted data will mean that it's removed from the final array.
+Jeśli jest ustawiona na ``true``, to jeśli istniejący element kolekcji nie zostanie
+objety w zgłoszeniu danych formularza, to element ten nie zostanie dodany do elementów
+ostatecznej tablicy. Oznacza to, że można zaimplementować przyciski "delete" w
+JavaScript, który po prostu usunie elemnt ze struktury DOM. Gdy użytkownik wyśle
+formularz, to brak tego elementu w zgłoszonych danych spowoduje, że zostanie ten
+elemnt usunięty z ostatecznej tablicy.
 
-For more information, see :ref:`cookbook-form-collections-remove`.
+Więcej informacji można znaleźć w artykule ":ref:`cookbook-form-collections-remove`".
 
 .. caution::
 
-    Be careful when using this option when you're embedding a collection
-    of objects. In this case, if any embedded forms are removed, they *will*
-    correctly be missing from the final array of objects. However, depending on
-    your application logic, when one of those objects is removed, you may want
-    to delete it or at least remove its foreign key reference to the main object.
-    None of this is handled automatically. For more information, see
-    :ref:`cookbook-form-collections-remove`.
+    Należy zachować ostrożność gdy używa się tą opcję do osadzenia kolekcji obiektów.
+    W takim przypadku, jeśli zostaną usunięte jakieś osadzone formularze, to będzie
+    ich zwyczajnie brakować w ostatecznej tablicy obiektów. Jednakże, w zależności
+    od logiki aplikacji, gdy usunięty ma być jeden z tych obiektów, to można go
+    usunąć lub usunąć tylko klucz obcy odwołujący się do obiektu głównego.
+    Nie jesto jednak obsługiwane automatycznie. W celu uzyskania więcej informacji
+    proszę przeczytać artykuł „:ref:`cookbook-form-collections-remove`”.
 
 prototype
 ~~~~~~~~~
 
-**type**: ``Boolean`` **default**: ``true``
+**typ**: ``Boolean`` **domyślnie**: ``true``
 
-This option is useful when using the `allow_add`_ option. If ``true`` (and
-if `allow_add`_ is also ``true``), a special "prototype" attribute will be
-available so that you can render a "template" example on your page of what
-a new element should look like. The ``name`` attribute given to this element
-is ``__name__``. This allows you to add a "add another" button via JavaScript
-which reads the prototype, replaces ``__name__`` with some unique name or
-number, and render it inside your form. When submitted, it will be added
-to your underlying array due to the `allow_add`_ option.
+Opcja ta jest przydatna, gdy wykorzystuje się opcję `allow_add`_. Jeśli ``true``
+(i jeśli `allow_add`_ jest też ustawione na ``true``), to dostępny będzie specjalny
+atrybut "prototype", tak że można wyrenderować jakiś przykładowy "szablon" na swojej
+stronie, pokazujący jak powinien wyglądać nowy element. Podawany do tego elementu
+atrybut ``name``, to ``__name__``. Umożliwia on dodanie poprzez JavaScript przycisku
+w stylu "dodaj kolejny", który czyta prototyp, zamienia ``__name__`` na unikalną
+nazwę lub liczbę i renderuje elemnt wewnątrz formularza. Podczas wysyłania formularza,
+zostanie on dodany do podstawowej tablicy dzięki opcji `allow_add`_.
 
-The prototype field can be rendered via the ``prototype`` variable in the
-collection field:
+Pole prototypu może być renderowane poprzez zmienną ``prototype`` w polu typu *collection*:
 
 .. configuration-block::
 
@@ -318,32 +320,34 @@ collection field:
 
         <?php echo $view['form']->row($form['emails']->vars['prototype']) ?>
 
-Note that all you really need is the "widget", but depending on how you're
-rendering your form, having the entire "form row" may be easier for you.
+Proszę zauwżyć, że wszystko, czego się potrzebuje, to "widget". Lecz w zależności
+od tego jak renderuje się formularz, posługiwanie się całym "wierszem formularza"
+może być łatwiejsze.
 
 .. tip::
 
-    If you're rendering the entire collection field at once, then the prototype
-    form row is automatically available on the ``data-prototype`` attribute
-    of the element (e.g. ``div`` or ``table``) that surrounds your collection.
+    Jeśli renderuje się na raz całe pole typu *collection*, to w atrybucie
+    ``data-prototype`` elementu automatycznie pojawia się wiersz formularza
+    z prototypem otaczający kolekcję (np. ``div`` lub ``table``).
 
-For details on how to actually use this option, see the above example as well
-as :ref:`cookbook-form-collections-new-prototype`.
+Szczegóły tego jak można w rzeczywistości wykorzystać tą opcje pokazane są w powyższym
+przykładzie jak również omówione są w artykule „:ref:`cookbook-form-collections-new-prototype`”.
 
 prototype_name
 ~~~~~~~~~~~~~~
 
-**type**: ``String`` **default**: ``__name__``
+**typ**: ``String`` **domyślnie**: ``__name__``
 
-If you have several collections in your form, or worse, nested collections
-you may want to change the placeholder so that unrelated placeholders are not
-replaced with the same value.
+Jeśli ma się w formularzu kilka kolekcji lub, co gorsza, kolekcje zagnieżdżone,
+to można chcieć zmienić wieloznacznik, aby wieloznaczniki niepowiązane nie zostały
+przekształcone na taką samą wartość.
 
-Inherited options
------------------
+Opcje odziedziczone
+-------------------
 
-These options inherit from the :doc:`field</reference/forms/types/form>` type.
-Not all options are listed here - only the most applicable to this type:
+Opcje dziedziczące z typu doc:`field</reference/forms/types/form>`.
+Tutaj nie wymieniono wszystkich opcji – tylko te najbardziej wykorzystywane w tym
+typie:
 
 .. include:: /reference/forms/types/options/label.rst.inc
 
@@ -352,7 +356,7 @@ Not all options are listed here - only the most applicable to this type:
 error_bubbling
 ~~~~~~~~~~~~~~
 
-**type**: ``Boolean`` **default**: ``true``
+**typ**: ``Boolean`` **domyślnie**: ``true``
 
 .. include:: /reference/forms/types/options/_error_bubbling_body.rst.inc
 
