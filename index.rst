@@ -4,7 +4,8 @@ Symfony2 - polska dokumentacja
 ##############################
 
 Jest to polskie tłumczenie oficjalnej dokumentacji platformy aplikacyjnej Symfony,
-publikowanej na stronach http://symfony.com/.
+publikowanej na stronach http://symfony.com/, rozszerzone o polskojęzyczne artykuły
+tam nie ujęte.  
 
 
 :doc:`/quick_tour/index`
@@ -12,7 +13,7 @@ publikowanej na stronach http://symfony.com/.
 
 Co może być lepszego dla uzupełnienia swojej wiedzy, niż wypróbowanie przez siebie Symfony?
 To zajmie Ci trochę czasu, ale warto go poświęcić. Krok, po kroku będziesz tu odkrywał
-świat Symfony. Uważaj, od Symfony możesz się uzależnić.
+świat Symfony. Uważaj, możesz się uzależnić od Symfony.
 
 .. toctree::
    :maxdepth: 1
@@ -35,16 +36,17 @@ podręcznik mieć pod ręka.
 :doc:`/cookbook/index`
 ======================
 
-Ten dział w oryginale nosi nazwę „Cookbook”, czyli „książka kucharska”, u nas "Receptariusz".
-Jest to przewodnik po recepturach przygotowanych wg precyzyjnej metodologii, pokazujących,
-jak przygotować ”konkretne potrawy”, czyli elementy aplikacji internetowej z użyciem Symfony.
+Ten dział w oryginale nosi nazwę „Cookbook”, czyli „książka kucharska" - u nas "Receptariusz".
+Jest to przewodnik po recepturach przygotowanych wg precyzyjnej metodologii, pokazujących, jak przygotować
+”konkretne potrawy”, czyli elementy aplikacji internetowej z użyciem Symfony.
 Znajdziesz tu konkretne rozwiązania dla konkretnych potrzeb.
 
 
 :doc:`/reference/index/`
 ========================
 
-Odkryj wielkie możliwości dostosowania frameworka Symfony do swoich potrzeb
+Uzyskaj szybko potrzebne informacje wprost z dokumentów referencyjnych:
+
 
 Pakiety
 =======
@@ -55,14 +57,26 @@ Symfony zbudowany jest z pakietów. Dowiedz się o nich więcej.
    :maxdepth: 2
    
    /bundles/index
-   
+   /cmf/bundles/index
+
 Ponadto dostępnych jest wiele innych użytecznych pakietów osób trzecich.
-Lista tych pakietów dostępna jest na serwisie `Knp Bundles <http://knpbundles.com/>`_.       
+Lista tych pakietów dostępna jest na serwisie `Knp Bundles <http://knpbundles.com/>`_.
+
+
+:doc:`/cmf/index`
+=================
+
+*Symfony Content Management Framework* (w skrócie Symfony CMF) jest dystrybucją
+frameworka Symfony i celowo dobranych pakietów, tworzących w ten sposób framework
+systemu zarządania treścią (CMF). System ten ma swoją bogatą dokumentację, ale do
+jej lektury niezbędna jest znajomość zagadnień omówionych w :doc:`Podręczniku
+Symfony<book/index>`.  
+       
 
 :doc:`/contributing/index`
 ==========================
 
-Zbiór artykułów dotyczących społeczności Symfony i współpracy przy rozwijaniu projektu
+Zbiór artykułów dotyczących społeności Symfony i współpracy przy rozwijaniu projektu
 i dokumentacji Symfony2
 
 .. toctree::
