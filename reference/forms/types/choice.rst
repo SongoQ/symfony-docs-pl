@@ -1,53 +1,63 @@
 .. index::
-   single: Forms; Fields; choice
+   single: formularze; pola; choice
 
-choice Typ Pola
-===============
+Typ pola: choice
+================
 
-Wielofunkcyjne pole używane do umożliwienia użytkownikowi "wybrania" jednej lub kilku opcji.
-Może być wyrenderowany jako pole ``select``, przyciski radio, lub checkboxy.
+Wielofunkcyjne pole używane do umożliwienia użytkownikowi wybrania jednej lub kilku
+opcji. Może być wyrenderowany jako zacznik ``select``, przyciski radio lub pola
+wyboru.
 
-Aby użyć tego pola, musisz zdefiniować *jedno* z opcji ``choice_list`` lub ``choices``.
+Aby użyć to pole, musi się podać opcję ``choice_list`` albo ``choices``.
 
-+------------------+----------------------------------------------------------------------------------------------+
-| Rednerowany jako | może być generowany na kilka sposobów (zobacz poniżej)                                       |
-+------------------+----------------------------------------------------------------------------------------------+
-| Opcje            | - `choices`_                                                                                 |
-|                  | - `choice_list`_                                                                             |
-|                  | - `multiple`_                                                                                |
-|                  | - `expanded`_                                                                                |
-|                  | - `preferred_choices`_                                                                       |
-|                  | - `empty_value`_                                                                             |
-+------------------+----------------------------------------------------------------------------------------------+
-| Odziedziczone    | - `required`_                                                                                |
-| opcje            | - `label`_                                                                                   |
-|                  | - `read_only`_                                                                               |
-|                  | - `error_bubbling`_                                                                          |
-+------------------+----------------------------------------------------------------------------------------------+
-| Rodzic           | :doc:`form</reference/forms/types/form>` (jeśli rozszerzono), ``field`` w przeciwnym wypadku |
-+------------------+----------------------------------------------------------------------------------------------+
-| Klasa            | :class:`Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType`                         |
-+------------------+----------------------------------------------------------------------------------------------+
++------------------+----------------------------------------------------------------------+
+| Rednerowane jako | może to być kilka znaczników (zobacz poniżej)                        |
++------------------+----------------------------------------------------------------------+
+| Opcje            | - `choices`_                                                         |
+|                  | - `choice_list`_                                                     |
+|                  | - `multiple`_                                                        |
+|                  | - `expanded`_                                                        |
+|                  | - `preferred_choices`_                                               |
+|                  | - `empty_value`_                                                     |
++------------------+----------------------------------------------------------------------+
+| Opcje            | - `required`_                                                        |
+| odziedziczone    | - `label`_                                                           |
+|                  | - `read_only`_                                                       |
+|                  | - `disabled`_                                                        |
+|                  | - `error_bubbling`_                                                  |
+|                  | - `mapped`_                                                          |
+|                  | - `inherit_data`_                                                    |
+|                  | - `by_reference`_                                                    |
+|                  | - `empty_data`_                                                      |
++------------------+----------------------------------------------------------------------+
+| Typ nadrzędny    | :doc:`form</reference/forms/types/form>` (jeśli rozszerzone),        |
+|                  | inaczej ``field``                                                    |
++------------------+----------------------------------------------------------------------+
+| Klasa            | :class:`Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType` |
++------------------+----------------------------------------------------------------------+
 
-Przykład Użycia
+Przykład użycia
 ---------------
 
-Najprostszym sposobem na użycie tego pola jest zdefiniowane możliwych opcji wyboru poprzez
-opcję ``choices``. Klucz tablicy staje się wartością która zostanie zapisana w Twoim obiekcie
-(np. ``m``), a wartość jest tym co zobaczy użytkownik w formularzu (np. ``Male``).
+Najprostszym sposobem na użycie tego pola jest bezpośrenie określenie pól wyboru
+poprzez opcję ``choices``. Klucz elementu tablicy staje się wartością, która w
+rzeczywistości ustawia się w odnośnym obiekcie (np. ``m``), podczas gdy wartość
+jest tym, co użytkownik widzi w formularzu (np. ``Male``).
 
 .. code-block:: php
+   :linenos:
 
     $builder->add('gender', 'choice', array(
         'choices'   => array('m' => 'Male', 'f' => 'Female'),
         'required'  => false,
     ));
 
-Ustawiając opcję ``multiple`` na true, zezwolisz użytkownikowi na zaznaczenie kilku opcji. 
-Widget zostanie wygenerowany jako lista wielokrotnego wyboru ``select`` lub też lista
-checkboxów, w zależności od wyboru opcji ``expanded``:
+Ustawiając opcję ``multiple`` na true, umożliwia sie użytkownikowi wybór
+wielu  wartości. Widget będzie wyrenderowany jako złozony znacznik``select`` lub
+jako seria pól wyboru w zalezności od opcji ``expanded``:
 
 .. code-block:: php
+   :linenos:
 
     $builder->add('availability', 'choice', array(
         'choices'   => array(
@@ -58,14 +68,14 @@ checkboxów, w zależności od wyboru opcji ``expanded``:
         'multiple'  => true,
     ));
 
-Możesz także użyć opcji ``choice_list``, która to pobiera obiekt który może
-definiować możliwe opcje wyboru w widgecie.
+Można również użyć opcję ``choice_list``, która pobiera obiekt mogący określić
+pola wyboru dla widgetu.
 
 .. _forms-reference-choice-tags:
 
 .. include:: /reference/forms/types/options/select_how_rendered.rst.inc
 
-Opcje Pola
+Opcje pola
 ----------
 
 choices
@@ -73,10 +83,9 @@ choices
 
 **typ**: ``array`` **domyślnie**: ``array()``
 
-Jest to najbardziej podstawowa możliwość definiowania opcji wyboru
-które powinny być użyte przez te pole. Opcja ``choices`` jest tablicą,
-gdzie kluczem tablicy jest wartość opcji, a wartość tablicy jest etykietą
-opcji::
+Jest to najbardziej podstawowy sposób określenia pól typu *choice*,
+które powinny być użyte przez to pole. Opcja ``choices`` jest tablicą,
+gdzie kluczem jest wartość elementu, a wartością jest etykieta elementu::
 
     $builder->add('gender', 'choice', array(
         'choices' => array('m' => 'Male', 'f' => 'Female')
@@ -87,10 +96,10 @@ choice_list
 
 **typ**: ``Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface``
 
-Jest to jeden z sposobów definiowania opcji użytych dla tego pola.
+Jest to jeden ze sposobów określenia opcji, które uzywa się dla tego pola.
 Opcja ``choice_list`` musi być instancją interfejsu ``ChoiceListInterface``.
-Dla bardziej zaawansowanych przypadków, można stworzyć zwyczajną klasę
-implementującą ten interfejs do zasilenia opcji wyboru.
+Dla bardziej zaawansowanych przypadków, w celu dostarczenie pól typu *choice*,
+można utworzyć własną klasa implementującą ten interfejs.
 
 .. include:: /reference/forms/types/options/multiple.rst.inc
 
@@ -100,10 +109,10 @@ implementującą ten interfejs do zasilenia opcji wyboru.
 
 .. include:: /reference/forms/types/options/empty_value.rst.inc
 
-Odziedziczone opcje
+Opcje odziedziczone
 -------------------
 
-Opcje te są odziedziczone z typu :doc:`field</reference/forms/types/field>`:
+Opcje odziedziczone z typu :doc:`field</reference/forms/types/form>`:
 
 .. include:: /reference/forms/types/options/required.rst.inc
 
@@ -111,4 +120,16 @@ Opcje te są odziedziczone z typu :doc:`field</reference/forms/types/field>`:
 
 .. include:: /reference/forms/types/options/read_only.rst.inc
 
+.. include:: /reference/forms/types/options/disabled.rst.inc
+
 .. include:: /reference/forms/types/options/error_bubbling.rst.inc
+
+.. include:: /reference/forms/types/options/mapped.rst.inc
+
+.. include:: /reference/forms/types/options/inherit_data.rst.inc
+
+.. include:: /reference/forms/types/options/by_reference.rst.inc
+
+.. include:: /reference/forms/types/options/empty_data.rst.inc
+
+

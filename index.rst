@@ -1,110 +1,87 @@
-Symfony2 - Polska Dokumentacja
-======================
+
+##############################
+Symfony2 - polska dokumentacja
+##############################
 
 Jest to polskie tłumczenie oficjalnej dokumentacji platformy aplikacyjnej Symfony,
 publikowanej na stronach http://symfony.com/, rozszerzone o polskojęzyczne artykuły
-jeszcze tam nie ujęte.
+tam nie ujęte.  
 
-Szybkie wprowadzenie
-----------
 
-Zacznij szybko z Symfony2 :doc:`Quick Tour <quick_tour/index>`:
+:doc:`/quick_tour/index`
+========================
+
+Co może być lepszego dla uzupełnienia swojej wiedzy, niż wypróbowanie przez siebie Symfony?
+To zajmie Ci trochę czasu, ale warto go poświęcić. Krok, po kroku będziesz tu odkrywał
+świat Symfony. Uważaj, możesz się uzależnić od Symfony.
 
 .. toctree::
-    :hidden:
+   :maxdepth: 1
 
-    quick_tour/index
+   /quick_tour/the_big_picture
+   /quick_tour/the_view
+   /quick_tour/the_controller
+   /quick_tour/the_architecture
 
-* :doc:`quick_tour/the_big_picture` >
-* :doc:`quick_tour/the_view` >
-* :doc:`quick_tour/the_controller` >
-* :doc:`quick_tour/the_architecture`
 
-Podręcznik
-----
+:doc:`/book/index`
+==================
 
 Jest to biblia Symfony, przygotowana przez zespół rdzenia tego projektu.
 Jest kierowany do wszystkich użytkowników Symfony2, którzy zazwyczaj chcą ten
 podręcznik mieć pod ręka.
 
-.. toctree::
-    :hidden:
-
-    book/index
-
 .. include:: /book/map.rst.inc
 
-Cookbook - książka kucharska
---------
+:doc:`/cookbook/index`
+======================
 
-Ten dział w oryginale nosi nazwę „Cookbook”, czyli „książka kucharska”.
-Ta „książka kucharska” nie jest przeznaczona do nauki gotowania. Jest to przewodnik
-po recepturach przygotowanych wg precyzyjnej metodologii, pokazujących, jak przygotować
+Ten dział w oryginale nosi nazwę „Cookbook”, czyli „książka kucharska" - u nas "Receptariusz".
+Jest to przewodnik po recepturach przygotowanych wg precyzyjnej metodologii, pokazujących, jak przygotować
 ”konkretne potrawy”, czyli elementy aplikacji internetowej z użyciem Symfony.
 Znajdziesz tu konkretne rozwiązania dla konkretnych potrzeb.
 
-.. toctree::
-    :hidden:
 
-    cookbook/index
+:doc:`/reference/index/`
+========================
 
-Czytaj :doc:`Cookbook </cookbook/index>`.
+Uzyskaj szybko potrzebne informacje wprost z dokumentów referencyjnych.
 
-Komponenty
-----------
-
-.. toctree::
-    :hidden:
-
-    components/index
-
-Czytaj :doc:`Components </components/index>` documentation.
-
-Dokumenty źródłowe
--------------------
-
-Odkryj wielkie możliwości dostosowania frameworka Symfony do swoich potrzeb:
-
-.. toctree::
-    :hidden:
-
-    reference/index
-
-.. include:: /reference/map.rst.inc
 
 Pakiety
--------
+=======
 
-Symfony Standardowa Edycja zbudowana jest z pakietów. Dowiedz się o niej więcej:
+Symfony zbudowany jest z pakietów. Dowiedz się o nich więcej.
 
 .. toctree::
-    :hidden:
+   :maxdepth: 2
+   
+   /bundles/index
+   /cmf/bundles/index
 
-    bundles/index
+Ponadto dostępnych jest wiele innych użytecznych pakietów osób trzecich.
+Lista tych pakietów dostępna jest na serwisie `Knp Bundles <http://knpbundles.com/>`_.
 
-.. include:: /bundles/map.rst.inc
 
-CMF
----
+:doc:`/cmf/index`
+=================
 
 *Symfony Content Management Framework* (w skrócie Symfony CMF) jest dystrybucją
 frameworka Symfony i celowo dobranych pakietów, tworzących w ten sposób framework
-systemu zarządania treścią.
+systemu zarządania treścią (CMF). System ten ma swoją bogatą dokumentację, ale do
+jej lektury niezbędna jest znajomość zagadnień omówionych w :doc:`Podręczniku
+Symfony<book/index>`.  
+       
+
+:doc:`/contributing/index`
+==========================
+
+Zbiór artykułów dotyczących społeczności Symfony i współpracy przy rozwijaniu projektu
+i dokumentacji Symfony2
 
 .. toctree::
-    :hidden:
-
-    cmf/index
-
-Współpraca
-------------
-
-Zbiór artykułów dotyczących społeności Symfony i współpracy przy rozwijaniu 
-projektu i dokumentacji Symfony2:
-
-.. toctree::
-    :hidden:
-
-    contributing/index
-
-.. include:: /contributing/map.rst.inc
+   :maxdepth: 2
+   
+   /contributing/code/index
+   /contributing/documentation/index
+   /contributing/community/index

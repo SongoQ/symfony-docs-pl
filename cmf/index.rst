@@ -25,15 +25,6 @@ liderów otwartego oprogramowania upowszechniających koncepcję `rozdzielonego 
 (*ang. decoupled CMS*). Możesz dowiedzieć się więcej o projekcie czytając
 stronę `about`_.
 
-Dokumentacja ta (zarówno angielski oryginał jak i polskie tłumaczennie) są jeszcze 
-w fazie tworzenia i dalekie są od skończenia. Jeśli chodzi o oryginalną,
-angielskojezyczną dokumentację, to proszę przeczytać dokument
-`Documentation planning`_ w celu zapoznania się z planowanymi pracami przy tej wersji.
-Plan pracy z polską dokumentacją opisany jest w sekcji :ref:`docs-pl-roadmap`.
-Chcesz pomóc? Dzięki, wszelka pomoc jest mile widziana. Proszę o zapoznanie się
-z sekcją :ref:`contributing-to-docs`.  
- 
-
 Misja
 -----
 

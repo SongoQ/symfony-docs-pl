@@ -2,12 +2,12 @@
    :linenothreshold: 2
 
 .. index::
-   bezpieczeństwo, system bezpieczeństwa, ochrona bezpieczeństwa
+   ochrona dostępu, system bezpieczeństwa, bezpieczeństwo
 
-Bezpieczeństwo
-==============
+System bezpieczeństwa
+=====================
 
-Ochrona bezpieczeństwa jest dwuetapowym procesem którego celem jest uniemożliwienie
+Ochrona dostępu jest dwuetapowym procesem którego celem jest uniemożliwienie
 użytkownikowi dostępu do zasobów do których nie powinien mieć dostępu.
 
 W pierwszym etapie tego procesu system bezpieczeństwa identyfikuje, kto jest użytkownikiem,
@@ -2226,7 +2226,7 @@ do pliku *seed*. Wystarczy podać nazwę pliku aby to umożliwić::
 Wnioski końcowe
 ---------------
 
-Ochrona bezpieczeństwa w aplikacji powinna być głęboka i rozwiązywać poprawnie
+Ochrona dostępu w aplikacji powinna być głęboka i rozwiązywać poprawnie
 skomplikowane problemy bezpieczeństwa. Na szczęście, komponent bezpieczeństwa Symfony
 spełnia bardzo dobrze te zadania opierając się na modelu  *uwierzytelniania*
 i *autoryzacji*. Uwierzytelnianie, które zawsze realizowane jest w pierwszej kolejności,
