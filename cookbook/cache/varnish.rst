@@ -20,21 +20,22 @@ Konfiguracja
 Jak wspomniano wcześniej, framework Symfony2 jest wystarczająco inteligentny, aby wykryć
 czy komunikacja przebiegała z udziałem serwera "reverse proxy" rozpoznającego ESI,
 czy też nie. Wszystko zadziała z automatu, jeśli używano serwera "reverse proxy"
-Symfony2, należy jednak dokonać dodatkowej konfiguracji w chwili, gdy planuje się pracę z
+Symfony2, należy dokonać dodatkowej konfiguracji w chwili, gdy planuje się pracę z
 akceleratorem Varnish. Na szczęście Symfony2 opiera się na jeszcze innym standardzie
 stworzonym przez Akamaï (`Architektura Edge`_), to też wskazówki konfiguracyjne w
 tym rozdziale powinny być przydatne nawet wówczas, gdy nie planuje się korzystać z Symfony2.
 
 .. note::
 
-    Varnish wspiera tylko atrybuty ``src`` dla tagów ESI (atrybuty ``onerror``
+    Varnish wspiera tylko atrybuty ``src`` dla znaczników ESI (atrybuty ``onerror``
     i ``alt`` są ignorowane).
 
 Po pierwsze należy skonfigurować Varnish, aby powiadamiał o wsparciu dla ESI
-poprzez dodanie nagłówka ``Surrogate-Capability`` do zapytań (ang. requests)
-przekierowywanych do aplikacji zaplecza:
+poprzez dodanie nagłówka ``Surrogate-Capability`` do żądań HTTP przekierowywanych
+do aplikacji zaplecza:
 
 .. code-block:: text
+   :linenos:
 
     sub vcl_recv {
         // Dodaj nagłówek Surrogate-Capability, aby ogłosić wsparcie dla ESI.
@@ -42,10 +43,11 @@ przekierowywanych do aplikacji zaplecza:
     }
 
 Następnie należy zoptymalizować Varnish, aby analizował tylko te treści odpowiedzi
-serwera (ang. Response), które zawierają przynajmniej jeden tag ESI poprzez
-sprawdzanie nagłówka ``Surrogate-Control`` dodawanego automatycznie przez framework Symfony2:
+serwera, które zawierają przynajmniej jeden znacznik ESI poprzez sprawdzanie
+nagłówka ``Surrogate-Control`` dodawanego automatycznie przez framework Symfony2:
 
 .. code-block:: text
+   :linenos:
 
     sub vcl_fetch {
         /*
@@ -81,6 +83,7 @@ Mimo to, Varnish może zostać skonfigurowany do obsługi specjalnej metody ``PU
 protokołu HTTP, która będzie w stanie unieważnić pamięć podręczną dla danego zasobu:
 
 .. code-block:: text
+   :linenos:
 
     /*
      Połącz się z serwerem zaplecza
@@ -131,6 +134,7 @@ protokołu HTTP, która będzie w stanie unieważnić pamięć podręczną dla d
     zrobić poprzez ustawienie list dostępu:
 
     .. code-block:: text
+       :linenos:
 
         /*
          Połącz się z serwerem zaplecza
