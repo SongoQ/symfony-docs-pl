@@ -45,7 +45,7 @@ Znajdziesz tu konkretne rozwiązania dla konkretnych potrzeb.
 :doc:`/reference/index/`
 ========================
 
-Uzyskaj szybko potrzebne informacje wprost z dokumentów referencyjnych:
+Uzyskaj szybko potrzebne informacje wprost z dokumentów referencyjnych.
 
 
 Pakiety
@@ -76,7 +76,7 @@ Symfony<book/index>`.
 :doc:`/contributing/index`
 ==========================
 
-Zbiór artykułów dotyczących społeności Symfony i współpracy przy rozwijaniu projektu
+Zbiór artykułów dotyczących społeczności Symfony i współpracy przy rozwijaniu projektu
 i dokumentacji Symfony2
 
 .. toctree::
